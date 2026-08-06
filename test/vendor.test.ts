@@ -32,10 +32,13 @@ describe("vendored firmware extraction", () => {
 
   test("verb vocabulary is closed", () => {
     const seen = new Set(routes.flatMap((r) => r.verbs));
-    assert.deepEqual(
-      [...seen].sort(),
-      ["CREATE", "DELETE", "GET", "SUBSCRIBE", "UPDATE"],
-    );
+    assert.deepEqual([...seen].sort(), [
+      "CREATE",
+      "DELETE",
+      "GET",
+      "SUBSCRIBE",
+      "UPDATE",
+    ]);
   });
 
   test("every type value is a Go struct definition", () => {

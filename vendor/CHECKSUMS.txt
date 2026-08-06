@@ -1,2 +1,2 @@
-96e150dff2262e3bc1f01898068f61038eef70b54a656545fdc9164c1372dc03  /Users/alex/leap-api/vendor/leap-routes.json
-7ba9088710330c5530b3ebabfebb5e8215ccb423774641a04655b4934ab27e22  /Users/alex/leap-api/vendor/leap-types.json
+96e150dff2262e3bc1f01898068f61038eef70b54a656545fdc9164c1372dc03  vendor/leap-routes.json
+7ba9088710330c5530b3ebabfebb5e8215ccb423774641a04655b4934ab27e22  vendor/leap-types.json
