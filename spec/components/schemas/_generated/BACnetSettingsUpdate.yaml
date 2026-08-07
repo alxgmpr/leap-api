@@ -1,0 +1,22 @@
+type: object
+properties:
+  Enabled:
+    type: boolean
+  NetworkNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  DeviceInstance:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Port:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  BBMDIPAddress:
+    type: string
+  BBMDTTL:
+    type: integer
+    minimum: 0
+    maximum: 4294967295

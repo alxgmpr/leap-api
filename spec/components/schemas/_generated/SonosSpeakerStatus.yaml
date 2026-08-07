@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Status:
+    type: string
+    description: "TODO(enum): members of SpeakerStatus were not recovered from the
+      firmware extraction"
+required:
+  - Status

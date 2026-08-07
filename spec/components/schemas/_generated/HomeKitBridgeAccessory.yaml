@@ -1,0 +1,6 @@
+type: object
+properties:
+  SerialNumber:
+    type: string
+required:
+  - SerialNumber

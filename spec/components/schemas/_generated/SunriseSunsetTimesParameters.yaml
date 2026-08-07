@@ -1,0 +1,4 @@
+type: object
+properties:
+  Date:
+    $ref: "#/components/schemas/Date"

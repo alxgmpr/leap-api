@@ -1,0 +1,8 @@
+type: object
+properties:
+  Name:
+    type: string
+  AssociatedAreas:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedArea"

@@ -1,0 +1,12 @@
+type: object
+properties:
+  Name:
+    type: string
+  AggregatedBy:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  OccupiedActionSchedule:
+    $ref: "#/components/schemas/ActionSchedule"
+  UnoccupiedActionSchedule:
+    $ref: "#/components/schemas/ActionSchedule"

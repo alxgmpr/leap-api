@@ -1,0 +1,14 @@
+type: object
+properties:
+  FanSpeed:
+    type: string
+    description: "TODO(enum): members of FanSpeed were not recovered from the
+      firmware extraction"
+  DelayTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  IgnoreLevelAndTurnOn:
+    type: boolean
+required:
+  - FanSpeed

@@ -1,0 +1,16 @@
+type: object
+properties:
+  AssignableResource:
+    $ref: "#/components/schemas/HyperReference"
+  Level:
+    type: number
+  FadeTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  DelayTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  CurveDimming:
+    $ref: "#/components/schemas/CurveDimming"

@@ -1,0 +1,16 @@
+type: object
+properties:
+  Sunday:
+    $ref: "#/components/schemas/HyperReference"
+  Monday:
+    $ref: "#/components/schemas/HyperReference"
+  Tuesday:
+    $ref: "#/components/schemas/HyperReference"
+  Wednesday:
+    $ref: "#/components/schemas/HyperReference"
+  Thursday:
+    $ref: "#/components/schemas/HyperReference"
+  Friday:
+    $ref: "#/components/schemas/HyperReference"
+  Saturday:
+    $ref: "#/components/schemas/HyperReference"

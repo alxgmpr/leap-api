@@ -1,0 +1,18 @@
+type: object
+properties:
+  href:
+    type: string
+  StartTime:
+    $ref: "#/components/schemas/NLOTime"
+  EndTime:
+    $ref: "#/components/schemas/NLOTime"
+  FadeFighterProperties:
+    $ref: "#/components/schemas/FadeFighterProperties"
+  AssociatedAreas:
+    type: array
+    items:
+      $ref: "#/components/schemas/NLOAssociatedArea"
+  AffectedResources:
+    type: array
+    items:
+      $ref: "#/components/schemas/AffectedResource"

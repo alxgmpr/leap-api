@@ -1,0 +1,16 @@
+type: object
+properties:
+  VENID:
+    type: string
+  VENName:
+    type: string
+  RegistrationID:
+    type: string
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  MarketContext:
+    type: string
+  VTNID:
+    type: string

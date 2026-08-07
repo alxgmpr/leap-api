@@ -1,0 +1,10 @@
+type: object
+properties:
+  Devices:
+    type: array
+    items:
+      $ref: "#/components/schemas/LIPDeviceIntegration"
+  Zones:
+    type: array
+    items:
+      $ref: "#/components/schemas/LIPZoneIntegration"

@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  Emergency:
+    $ref: "#/components/schemas/HyperReference"
+  ActiveState:
+    type: string
+    description: "TODO(enum): members of EmergencyState were not recovered from the
+      firmware extraction"
+required:
+  - ActiveState

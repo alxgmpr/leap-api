@@ -1,0 +1,9 @@
+type: object
+properties:
+  LEAPVersion:
+    type: number
+  BuildDate:
+    type: string
+required:
+  - LEAPVersion
+  - BuildDate

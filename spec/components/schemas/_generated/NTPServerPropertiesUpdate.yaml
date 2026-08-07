@@ -1,0 +1,6 @@
+type: object
+properties:
+  PropertiesType:
+    type: string
+    description: "TODO(enum): members of NTPServerPropertiesType were not recovered
+      from the firmware extraction"

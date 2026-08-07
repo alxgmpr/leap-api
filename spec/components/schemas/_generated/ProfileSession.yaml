@@ -1,0 +1,25 @@
+type: object
+properties:
+  href:
+    type: string
+  StartedAt:
+    $ref: "#/components/schemas/Timestamp"
+  ProcessName:
+    type: string
+    description: "TODO(enum): members of ProcessName were not recovered from the
+      firmware extraction"
+  ProfileType:
+    type: string
+    description: "TODO(enum): members of ProfileType were not recovered from the
+      firmware extraction"
+  GoRuntimeProfileProperties:
+    $ref: "#/components/schemas/GoRuntimeProfileProperties"
+  CPUProfileProperties:
+    $ref: "#/components/schemas/CPUProfileProperties"
+  TraceProfileProperties:
+    $ref: "#/components/schemas/TraceProfileProperties"
+  UploadTo:
+    $ref: "#/components/schemas/UploadTo"
+required:
+  - ProcessName
+  - ProfileType

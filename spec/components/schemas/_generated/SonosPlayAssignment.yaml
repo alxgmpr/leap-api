@@ -1,0 +1,14 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Favorite:
+    $ref: "#/components/schemas/HyperReference"
+  Speakers:
+    type: array
+    items:
+      $ref: "#/components/schemas/SonosPlayAssignmentSpeaker"
+required:
+  - Favorite

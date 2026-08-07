@@ -1,0 +1,12 @@
+type: object
+properties:
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  Timeout:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  Sensitivity:
+    type: string
+    description: "TODO(enum): members of OccupancySensorSensitivity were not
+      recovered from the firmware extraction"

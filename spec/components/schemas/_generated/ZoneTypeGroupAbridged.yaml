@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Type:
+    type: string
+    description: "TODO(enum): members of ZoneType were not recovered from the
+      firmware extraction"
+required:
+  - Type

@@ -1,0 +1,15 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"
+  ControlType:
+    type: string
+    description: "TODO(enum): members of ZoneType were not recovered from the
+      firmware extraction"
+required:
+  - Name
+  - ControlType

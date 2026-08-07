@@ -1,0 +1,6 @@
+type: object
+properties:
+  DeviceStatus:
+    $ref: "#/components/schemas/DeviceStatus"
+  RSSIDiscoveryResponse:
+    $ref: "#/components/schemas/RSSIDiscoveryResponse"

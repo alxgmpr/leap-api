@@ -1,0 +1,10 @@
+type: object
+properties:
+  DimmedProperties:
+    $ref: "#/components/schemas/DimmedEmergencyPropertiesUpdate"
+  SwitchedProperties:
+    $ref: "#/components/schemas/SwitchedEmergencyPropertiesUpdate"
+  CCOProperties:
+    $ref: "#/components/schemas/CCOEmergencyPropertiesUpdate"
+  ReceptacleProperties:
+    $ref: "#/components/schemas/ReceptacleEmergencyPropertiesUpdate"

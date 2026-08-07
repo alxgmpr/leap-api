@@ -1,0 +1,13 @@
+type: object
+properties:
+  href:
+    type: string
+  LoginID:
+    type: string
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+required:
+  - LoginID
+  - EnabledState

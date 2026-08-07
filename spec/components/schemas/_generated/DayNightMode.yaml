@@ -1,0 +1,11 @@
+type: object
+properties:
+  href:
+    type: string
+  Day:
+    $ref: "#/components/schemas/DayNightModeProperty"
+  Night:
+    $ref: "#/components/schemas/DayNightModeProperty"
+required:
+  - Day
+  - Night

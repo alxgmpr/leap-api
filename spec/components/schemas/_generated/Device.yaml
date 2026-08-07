@@ -1,0 +1,89 @@
+type: object
+properties:
+  DeviceBase:
+    $ref: "#/components/schemas/DeviceBase"
+  DeviceMiniDefinitionForMasterDeviceList:
+    $ref: "#/components/schemas/DeviceMiniDefinitionForMasterDeviceList"
+  FullyQualifiedName:
+    type: array
+    items:
+      type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  ModelNumber:
+    type: string
+  ProductReference:
+    type: string
+  DaylightCalibrationType:
+    type: string
+    description: "TODO(enum): members of DaylightCalibrationType were not recovered
+      from the firmware extraction"
+  RepeaterProperties:
+    $ref: "#/components/schemas/RepeaterProperties"
+  LocalZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  ButtonGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  OccupancySensors:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  DaylightSensors:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  EngravingKit:
+    type: string
+    description: "TODO(enum): members of DeviceEngravingKit were not recovered from
+      the firmware extraction"
+  Manufactured:
+    $ref: "#/components/schemas/ManufacturingDetails"
+  OwnedLinks:
+    type: array
+    items:
+      $ref: "#/components/schemas/Link"
+  LinkNodes:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  DeviceRules:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  FirmwareImage:
+    $ref: "#/components/schemas/FirmwareImage"
+  DeviceFirmwarePackage:
+    $ref: "#/components/schemas/FirmwarePackage"
+  OccupancyAggregator:
+    $ref: "#/components/schemas/HyperReference"
+  Logger:
+    $ref: "#/components/schemas/HyperReference"
+  Databases:
+    type: array
+    items:
+      $ref: "#/components/schemas/Database"
+  DeviceClass:
+    $ref: "#/components/schemas/DeviceClass"
+  AddressedState:
+    type: string
+    description: "TODO(enum): members of AddressedState were not recovered from the
+      firmware extraction"
+  IsThisDevice:
+    type: boolean
+  PhysicalDeviceProperties:
+    $ref: "#/components/schemas/PhysicalDeviceProperties"
+  AssociatedLink:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - DeviceBase
+  - DeviceMiniDefinitionForMasterDeviceList
+  - ModelNumber
+  - ProductReference
+  - DaylightCalibrationType
+  - EngravingKit
+  - AddressedState
+  - IsThisDevice

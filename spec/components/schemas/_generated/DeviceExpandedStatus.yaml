@@ -1,0 +1,10 @@
+type: object
+properties:
+  DeviceStatus:
+    $ref: "#/components/schemas/DeviceStatus"
+  Device:
+    $ref: "#/components/schemas/Device"
+  LinkNodeStatuses:
+    type: array
+    items:
+      $ref: "#/components/schemas/LinkNodeStatus"

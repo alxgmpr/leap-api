@@ -1,0 +1,8 @@
+type: object
+properties:
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EmergencyEnabledState were not recovered
+      from the firmware extraction"
+  Level:
+    type: number

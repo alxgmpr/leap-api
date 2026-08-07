@@ -1,0 +1,18 @@
+type: object
+properties:
+  href:
+    type: string
+  XID:
+    type: string
+  Name:
+    type: string
+  LoadType:
+    type: string
+    description: "TODO(enum): members of LoadType were not recovered from the
+      firmware extraction"
+  AssociatedZone:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - XID
+  - Name
+  - LoadType

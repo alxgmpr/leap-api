@@ -1,0 +1,10 @@
+type: object
+properties:
+  Status:
+    type: string
+    description: "TODO(enum): members of UserAccessControlStatus were not recovered
+      from the firmware extraction"
+  Expiration:
+    $ref: "#/components/schemas/UserAccessControlExpiration"
+required:
+  - Status

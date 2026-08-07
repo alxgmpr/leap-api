@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  IdleLED:
+    $ref: "#/components/schemas/LEDSpecificSettings"
+  NightlightLED:
+    $ref: "#/components/schemas/LEDSpecificSettings"

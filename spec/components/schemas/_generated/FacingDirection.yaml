@@ -1,0 +1,8 @@
+type: object
+properties:
+  Degrees:
+    type: integer
+    minimum: 0
+    maximum: 65535
+required:
+  - Degrees

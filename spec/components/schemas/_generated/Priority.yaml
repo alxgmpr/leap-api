@@ -1,0 +1,8 @@
+type: object
+properties:
+  Category:
+    type: string
+    description: "TODO(enum): members of PriorityCategory were not recovered from
+      the firmware extraction"
+required:
+  - Category

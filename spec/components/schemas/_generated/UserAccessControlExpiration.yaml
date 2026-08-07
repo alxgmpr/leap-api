@@ -1,0 +1,9 @@
+type: object
+properties:
+  Date:
+    $ref: "#/components/schemas/Date"
+  Time:
+    $ref: "#/components/schemas/Time"
+required:
+  - Date
+  - Time

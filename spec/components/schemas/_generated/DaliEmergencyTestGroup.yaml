@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  TestEvents:
+    $ref: "#/components/schemas/DaliEmergencyTestEvents"
+required:
+  - TestEvents

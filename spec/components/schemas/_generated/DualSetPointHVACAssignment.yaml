@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  AssignableResource:
+    $ref: "#/components/schemas/HyperReference"
+  HeatingSetPoint:
+    $ref: "#/components/schemas/SetPoint"
+  CoolingSetPoint:
+    $ref: "#/components/schemas/SetPoint"

@@ -1,0 +1,10 @@
+type: object
+properties:
+  ShowDefinitionType:
+    type: string
+    description: "TODO(enum): members of NaturalShowDefinitionType were not
+      recovered from the firmware extraction"
+  RampProperties:
+    $ref: "#/components/schemas/NaturalShowRampProperties"
+required:
+  - ShowDefinitionType

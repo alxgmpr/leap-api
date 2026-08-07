@@ -1,0 +1,21 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  LinkType:
+    type: string
+    description: "TODO(enum): members of LinkType were not recovered from the
+      firmware extraction"
+  LinkNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  ClearConnectTypeXLinkProperties:
+    $ref: "#/components/schemas/ClearConnectTypeXLinkProperties"
+  RFProperties:
+    $ref: "#/components/schemas/RFProperties"
+required:
+  - LinkType
+  - LinkNumber

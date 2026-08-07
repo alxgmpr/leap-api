@@ -1,0 +1,24 @@
+type: object
+properties:
+  Name:
+    type: string
+  ProductReference:
+    type: string
+  SerialNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  IncludePairedDevices:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedLink:
+    $ref: "#/components/schemas/HyperReference"
+  LoadControllers:
+    type: array
+    items:
+      $ref: "#/components/schemas/LoadControllerCreate"
+required:
+  - Name
+  - ProductReference
+  - SerialNumber

@@ -1,0 +1,20 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  AffectedZone:
+    $ref: "#/components/schemas/HyperReference"
+  Fade:
+    type: integer
+    minimum: 0
+    maximum: 65535
+  Delay:
+    type: integer
+    minimum: 0
+    maximum: 65535
+  Level:
+    type: number
+required:
+  - href

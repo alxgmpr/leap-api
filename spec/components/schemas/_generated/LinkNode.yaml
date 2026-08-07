@@ -1,0 +1,16 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  LinkType:
+    type: string
+    description: "TODO(enum): members of LinkType were not recovered from the
+      firmware extraction"
+  RFProperties:
+    $ref: "#/components/schemas/RFProperties"
+  AssociatedLink:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - LinkType

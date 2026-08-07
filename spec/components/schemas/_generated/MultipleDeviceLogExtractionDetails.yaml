@@ -1,0 +1,8 @@
+type: object
+properties:
+  Extractions:
+    type: array
+    items:
+      $ref: "#/components/schemas/LogExtractions"
+  Summary:
+    $ref: "#/components/schemas/SummaryStruct"

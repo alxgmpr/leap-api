@@ -1,0 +1,6 @@
+type: object
+properties:
+  href:
+    type: string
+  ZoneCreate:
+    $ref: "#/components/schemas/ZoneCreate"

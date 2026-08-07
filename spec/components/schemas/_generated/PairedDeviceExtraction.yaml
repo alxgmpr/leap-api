@@ -1,0 +1,21 @@
+type: object
+properties:
+  href:
+    type: string
+  SerialNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  DeviceType:
+    type: string
+  ModelNumber:
+    type: string
+  Error:
+    type: string
+    description: "TODO(enum): members of PairedDeviceErrorType were not recovered
+      from the firmware extraction"
+required:
+  - SerialNumber
+  - DeviceType
+  - ModelNumber
+  - Error

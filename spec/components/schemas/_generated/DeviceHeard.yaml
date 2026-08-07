@@ -1,0 +1,41 @@
+type: object
+properties:
+  DiscoveryMechanism:
+    type: string
+    description: "TODO(enum): members of DiscoveryMechanism were not recovered from
+      the firmware extraction"
+  UnassociatedDeviceDiscoverySession:
+    $ref: "#/components/schemas/HyperReference"
+  ModelNumber:
+    type: string
+  DeviceType:
+    type: string
+  SerialNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  PairedDevices:
+    $ref: "#/components/schemas/PairedDevices"
+  WiredSensors:
+    $ref: "#/components/schemas/WiredSensors"
+  ErrorCode:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  RelationshipStatus:
+    type: string
+    description: "TODO(enum): members of RelationshipStatus were not recovered from
+      the firmware extraction"
+  EngravingKit:
+    type: string
+  DeviceClass:
+    $ref: "#/components/schemas/DeviceClass"
+  Link:
+    $ref: "#/components/schemas/Link"
+required:
+  - DiscoveryMechanism
+  - ModelNumber
+  - DeviceType
+  - SerialNumber
+  - RelationshipStatus
+  - EngravingKit

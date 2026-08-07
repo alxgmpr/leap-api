@@ -1,0 +1,12 @@
+type: object
+properties:
+  ReportType:
+    type: string
+    description: "TODO(enum): members of ReportType were not recovered from the
+      firmware extraction"
+  Links:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+required:
+  - ReportType

@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  ProgrammingModel:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - Name

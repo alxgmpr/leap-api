@@ -1,0 +1,6 @@
+type: object
+properties:
+  Errors:
+    type: array
+    items:
+      $ref: "#/components/schemas/SonosError"

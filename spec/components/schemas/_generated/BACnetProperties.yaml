@@ -1,0 +1,12 @@
+type: object
+properties:
+  BACnetSettings:
+    $ref: "#/components/schemas/BACnetSettings"
+  Settings:
+    $ref: "#/components/schemas/HyperReference"
+  DefaultSettings:
+    $ref: "#/components/schemas/HyperReference"
+  Instances:
+    $ref: "#/components/schemas/HyperReference"
+  NetworkSettings:
+    $ref: "#/components/schemas/HyperReference"

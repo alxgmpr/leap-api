@@ -1,0 +1,6 @@
+type: object
+properties:
+  RampUp:
+    $ref: "#/components/schemas/NaturalShowRampPropertyModify"
+  RampDown:
+    $ref: "#/components/schemas/NaturalShowRampPropertyModify"

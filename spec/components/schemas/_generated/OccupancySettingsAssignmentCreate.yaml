@@ -1,0 +1,6 @@
+type: object
+properties:
+  AssignableResource:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancySettings:
+    $ref: "#/components/schemas/OccupancySettingsUpdate"

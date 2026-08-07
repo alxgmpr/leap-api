@@ -1,0 +1,4 @@
+type: object
+properties:
+  Sequence:
+    $ref: "#/components/schemas/HyperReference"

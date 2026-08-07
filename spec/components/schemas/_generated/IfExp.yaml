@@ -1,0 +1,6 @@
+type: object
+properties:
+  Binary:
+    $ref: "#/components/schemas/BinaryExp"
+required:
+  - Binary

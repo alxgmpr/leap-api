@@ -1,0 +1,10 @@
+type: object
+properties:
+  Name:
+    type: string
+  LoadType:
+    type: string
+    description: "TODO(enum): members of LoadType were not recovered from the
+      firmware extraction"
+  AssociatedZone:
+    $ref: "#/components/schemas/ZoneAssociationCreate"

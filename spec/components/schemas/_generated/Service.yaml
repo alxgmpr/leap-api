@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Type:
+    type: string
+  Body: {}
+required:
+  - Type
+  - Body

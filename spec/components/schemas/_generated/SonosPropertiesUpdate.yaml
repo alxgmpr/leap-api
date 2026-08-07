@@ -1,0 +1,8 @@
+type: object
+properties:
+  FavoriteHousehold:
+    $ref: "#/components/schemas/SonosFavoriteHouseholdUpdate"
+  Account:
+    $ref: "#/components/schemas/SonosAccountUpdate"
+  VoiceControl:
+    $ref: "#/components/schemas/SonosVoiceControl"

@@ -1,0 +1,6 @@
+type: object
+properties:
+  Configuration:
+    $ref: "#/components/schemas/HyperReference"
+  DataSummary:
+    $ref: "#/components/schemas/HyperReference"

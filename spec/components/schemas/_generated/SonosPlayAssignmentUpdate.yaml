@@ -1,0 +1,10 @@
+type: object
+properties:
+  Favorite:
+    $ref: "#/components/schemas/HyperReference"
+  Speakers:
+    type: array
+    items:
+      $ref: "#/components/schemas/SonosPlayAssignmentSpeaker"
+required:
+  - Favorite

@@ -1,0 +1,4 @@
+type: object
+properties:
+  Timestamp:
+    $ref: "#/components/schemas/Timestamp"

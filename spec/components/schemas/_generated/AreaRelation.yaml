@@ -1,0 +1,12 @@
+type: object
+properties:
+  Area:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancyGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  DaylightingGainGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"

@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  ShadeLiftAndTiltLevel:
+    $ref: "#/components/schemas/ShadeLiftAndTiltLevel"
+  ZoneScene:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - Name

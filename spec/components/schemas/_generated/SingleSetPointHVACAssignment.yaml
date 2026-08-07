@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  AssignableResource:
+    $ref: "#/components/schemas/HyperReference"
+  SetPoint:
+    $ref: "#/components/schemas/SetPoint"

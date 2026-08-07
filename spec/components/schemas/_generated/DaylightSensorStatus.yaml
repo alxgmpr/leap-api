@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  DaylightSensor:
+    $ref: "#/components/schemas/HyperReference"
+  ConnectedStatus:
+    type: string
+    description: "TODO(enum): members of ConnectedStatus were not recovered from the
+      firmware extraction"
+required:
+  - ConnectedStatus

@@ -1,0 +1,10 @@
+type: object
+properties:
+  HighEndTrim:
+    type: number
+  EnergyTrim:
+    type: number
+  LowEndTrim:
+    type: number
+  MinimumLightLevel:
+    type: number

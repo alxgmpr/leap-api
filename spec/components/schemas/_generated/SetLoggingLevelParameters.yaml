@@ -1,0 +1,10 @@
+type: object
+properties:
+  LoggingLevel:
+    type: string
+    description: "TODO(enum): members of LoggingLevel were not recovered from the
+      firmware extraction"
+  AutomaticReset:
+    $ref: "#/components/schemas/AutomaticReset"
+required:
+  - LoggingLevel

@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  AssignableResource:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancySettings:
+    $ref: "#/components/schemas/OccupancySettingsUpdate"

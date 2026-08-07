@@ -1,0 +1,12 @@
+type: object
+properties:
+  Name:
+    type: string
+  StepCount:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Steps:
+    type: array
+    items:
+      $ref: "#/components/schemas/SequenceStepCreate"

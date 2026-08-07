@@ -1,0 +1,8 @@
+type: object
+properties:
+  Status:
+    type: string
+    description: "TODO(enum): members of FirmwareUpdateStatus were not recovered
+      from the firmware extraction"
+required:
+  - Status

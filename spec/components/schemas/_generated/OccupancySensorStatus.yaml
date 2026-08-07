@@ -1,0 +1,17 @@
+type: object
+properties:
+  href:
+    type: string
+  OccupancySensor:
+    $ref: "#/components/schemas/HyperReference"
+  ConnectedStatus:
+    type: string
+    description: "TODO(enum): members of ConnectedStatus were not recovered from the
+      firmware extraction"
+  OccupancyStatus:
+    type: string
+    description: "TODO(enum): members of OccupancyStatus were not recovered from the
+      firmware extraction"
+required:
+  - ConnectedStatus
+  - OccupancyStatus

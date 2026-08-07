@@ -1,0 +1,8 @@
+type: object
+properties:
+  Devices:
+    type: array
+    items:
+      $ref: "#/components/schemas/DeviceMiniDefinitionForMasterDeviceList"
+  SignedWhiteList:
+    $ref: "#/components/schemas/SignedWhiteList"

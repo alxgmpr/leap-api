@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  AssociatedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedResource"
+  AssociatedShadeGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedResource"

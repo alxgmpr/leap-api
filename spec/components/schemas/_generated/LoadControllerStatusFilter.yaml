@@ -1,0 +1,10 @@
+type: object
+properties:
+  Equal:
+    type: boolean
+  ErrorDescriptions:
+    type: array
+    items:
+      type: string
+required:
+  - Equal

@@ -1,0 +1,8 @@
+type: object
+properties:
+  IncludedDates:
+    type: array
+    items:
+      $ref: "#/components/schemas/Date"
+  RecurrenceRule:
+    $ref: "#/components/schemas/RecurrenceRule"

@@ -1,0 +1,10 @@
+type: object
+properties:
+  TimeclockEvent:
+    $ref: "#/components/schemas/HyperReference"
+  EnableState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+required:
+  - EnableState

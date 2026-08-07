@@ -1,0 +1,14 @@
+type: object
+properties:
+  OutputNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  LoadControllerType:
+    type: string
+    description: "TODO(enum): members of LoadControllerType were not recovered from
+      the firmware extraction"
+  PhaseControlLoadControllerProperties:
+    $ref: "#/components/schemas/PhaseControlLoadControllerProperties"
+  AssociatedLoad:
+    $ref: "#/components/schemas/LoadAssociationCreate"

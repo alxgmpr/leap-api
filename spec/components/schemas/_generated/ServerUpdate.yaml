@@ -1,0 +1,25 @@
+type: object
+properties:
+  href:
+    type: string
+  Type:
+    type: string
+    description: "TODO(enum): members of ServerType were not recovered from the
+      firmware extraction"
+  NetworkInterfaces:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  EnableState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  LIPProperties:
+    $ref: "#/components/schemas/LIPPropertyDefinition"
+  LEAPProperties:
+    $ref: "#/components/schemas/LEAPPropertyDefinition"
+  IPLProperties:
+    $ref: "#/components/schemas/IPLPropertyUpdate"
+required:
+  - Type
+  - EnableState

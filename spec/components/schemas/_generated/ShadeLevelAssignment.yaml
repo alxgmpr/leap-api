@@ -1,0 +1,22 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  AssignableResource:
+    $ref: "#/components/schemas/HyperReference"
+  DelayTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  Level:
+    type: number
+  Action:
+    type: string
+    description: "TODO(enum): members of ShadeAction were not recovered from the
+      firmware extraction"
+  Scene:
+    $ref: "#/components/schemas/ZoneScene"
+required:
+  - Action

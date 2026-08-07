@@ -1,0 +1,23 @@
+type: object
+properties:
+  Low:
+    type: integer
+    minimum: 0
+    maximum: 255
+  Medium:
+    type: integer
+    minimum: 0
+    maximum: 255
+  MediumHigh:
+    type: integer
+    minimum: 0
+    maximum: 255
+  High:
+    type: integer
+    minimum: 0
+    maximum: 255
+required:
+  - Low
+  - Medium
+  - MediumHigh
+  - High

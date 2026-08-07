@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  DownloadFrom:
+    $ref: "#/components/schemas/DownloadFrom"
+  FilePackageDestination:
+    $ref: "#/components/schemas/FilePackageDestination"

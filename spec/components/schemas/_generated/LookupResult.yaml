@@ -1,0 +1,8 @@
+type: object
+properties:
+  LookupResourceParameter:
+    $ref: "#/components/schemas/LookupResourceParameter"
+  Results:
+    type: array
+    items:
+      $ref: "#/components/schemas/Result"

@@ -1,0 +1,16 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  IsLeaf:
+    type: boolean
+required:
+  - Name

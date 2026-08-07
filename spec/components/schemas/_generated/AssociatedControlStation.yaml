@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  XID:
+    type: string
+required:
+  - XID

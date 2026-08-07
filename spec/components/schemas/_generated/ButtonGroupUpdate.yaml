@@ -1,0 +1,10 @@
+type: object
+properties:
+  StopIfMoving:
+    type: string
+    description: "TODO(enum): members of StopIfMovingEnabledState were not recovered
+      from the firmware extraction"
+  Category:
+    $ref: "#/components/schemas/ButtonGroupCategory"
+required:
+  - StopIfMoving

@@ -1,0 +1,27 @@
+type: object
+properties:
+  Level:
+    type: number
+  Tilt:
+    type: number
+  SwitchedLevel:
+    type: string
+    description: "TODO(enum): members of SwitchedLevel were not recovered from the
+      firmware extraction"
+  CCOLevel:
+    type: string
+    description: "TODO(enum): members of CCOLevel were not recovered from the
+      firmware extraction"
+  ReceptacleLevel:
+    type: string
+    description: "TODO(enum): members of ReceptacleLevel were not recovered from the
+      firmware extraction"
+  FanSpeed:
+    type: string
+    description: "TODO(enum): members of FanSpeed were not recovered from the
+      firmware extraction"
+required:
+  - SwitchedLevel
+  - CCOLevel
+  - ReceptacleLevel
+  - FanSpeed

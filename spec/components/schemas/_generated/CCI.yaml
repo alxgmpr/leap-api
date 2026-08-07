@@ -1,0 +1,27 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  ProgrammingModel:
+    $ref: "#/components/schemas/HyperReference"
+  CCINumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  NormalState:
+    type: string
+    description: "TODO(enum): members of CCINormalState were not recovered from the
+      firmware extraction"
+required:
+  - Name
+  - CCINumber
+  - EnabledState
+  - NormalState

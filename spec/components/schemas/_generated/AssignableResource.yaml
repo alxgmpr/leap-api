@@ -1,0 +1,6 @@
+type: object
+properties:
+  Resource:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - Resource

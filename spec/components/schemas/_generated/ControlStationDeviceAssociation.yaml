@@ -1,0 +1,13 @@
+type: object
+properties:
+  href:
+    type: string
+  DeviceType:
+    type: string
+  AddressedState:
+    type: string
+    description: "TODO(enum): members of AddressedState were not recovered from the
+      firmware extraction"
+required:
+  - DeviceType
+  - AddressedState

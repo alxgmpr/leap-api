@@ -1,0 +1,8 @@
+type: object
+properties:
+  Strategy:
+    type: string
+    description: "TODO(enum): members of OccupancyReportingStrategyType were not
+      recovered from the firmware extraction"
+required:
+  - Strategy

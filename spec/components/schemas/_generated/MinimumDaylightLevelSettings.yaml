@@ -1,0 +1,8 @@
+type: object
+properties:
+  LevelType:
+    type: string
+    description: "TODO(enum): members of MinimumDaylightLevelType were not recovered
+      from the firmware extraction"
+required:
+  - LevelType

@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - Follows

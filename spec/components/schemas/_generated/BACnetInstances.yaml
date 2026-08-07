@@ -1,0 +1,6 @@
+type: object
+properties:
+  AreaInstances:
+    type: array
+    items:
+      $ref: "#/components/schemas/AreaBACnetInstance"

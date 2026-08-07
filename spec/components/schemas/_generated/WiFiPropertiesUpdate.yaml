@@ -1,0 +1,12 @@
+type: object
+properties:
+  SecurityEnabled:
+    type: boolean
+  SSID:
+    type: string
+  Passkey:
+    type: string
+  BroadcastSSID:
+    type: boolean
+  Enabled:
+    type: boolean

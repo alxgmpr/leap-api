@@ -1,0 +1,26 @@
+type: object
+properties:
+  Noisefloor:
+    type: integer
+    minimum: -128
+    maximum: 127
+  NoisefloorDeviation:
+    type: integer
+    minimum: 0
+    maximum: 255
+  NoisefloorStatus:
+    type: integer
+    minimum: 0
+    maximum: 255
+  ConnectivityStatus:
+    type: integer
+    minimum: 0
+    maximum: 255
+  ReturnPathStatus:
+    type: integer
+    minimum: 0
+    maximum: 255
+  CombinedDeviceStatus:
+    type: integer
+    minimum: 0
+    maximum: 255

@@ -1,0 +1,8 @@
+type: object
+properties:
+  Frequency:
+    type: string
+    description: "TODO(enum): members of Frequency were not recovered from the
+      firmware extraction"
+required:
+  - Frequency

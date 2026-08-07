@@ -1,0 +1,9 @@
+type: object
+properties:
+  Major:
+    type: integer
+  Minor:
+    type: integer
+required:
+  - Major
+  - Minor

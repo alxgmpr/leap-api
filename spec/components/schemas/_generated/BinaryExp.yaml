@@ -1,0 +1,14 @@
+type: object
+properties:
+  Operator:
+    type: string
+    description: "TODO(enum): members of BinaryOp were not recovered from the
+      firmware extraction"
+  Left:
+    $ref: "#/components/schemas/OperandExp"
+  Right:
+    $ref: "#/components/schemas/OperandExp"
+required:
+  - Operator
+  - Left
+  - Right

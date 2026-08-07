@@ -1,0 +1,21 @@
+type: object
+properties:
+  href:
+    type: string
+  ButtonNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  ProgrammingModel:
+    $ref: "#/components/schemas/ProgrammingModel"
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Name:
+    type: string
+  Engraving:
+    $ref: "#/components/schemas/Engraving"
+  AssociatedLED:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - ButtonNumber
+  - Name

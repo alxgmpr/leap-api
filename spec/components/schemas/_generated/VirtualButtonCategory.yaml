@@ -1,0 +1,13 @@
+type: object
+properties:
+  Type:
+    type: string
+    description: "TODO(enum): members of VirtualButtonCategoryType were not
+      recovered from the firmware extraction"
+  SubType:
+    type: string
+    description: "TODO(enum): members of VirtualButtonCategorySubType were not
+      recovered from the firmware extraction"
+required:
+  - Type
+  - SubType

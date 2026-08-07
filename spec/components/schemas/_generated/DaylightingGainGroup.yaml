@@ -1,0 +1,20 @@
+type: object
+properties:
+  href:
+    type: string
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  DaylightingGainSettings:
+    $ref: "#/components/schemas/HyperReference"
+  Sensors:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedZone"
+required:
+  - SortOrder

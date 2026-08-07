@@ -1,0 +1,29 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  Occupied:
+    $ref: "#/components/schemas/OccupancySettingsAction"
+  Unoccupied:
+    $ref: "#/components/schemas/OccupancySettingsAction"
+  OccupancyMode:
+    type: string
+    description: "TODO(enum): members of OccupancyMode were not recovered from the
+      firmware extraction"
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  PartiallyOccupied:
+    $ref: "#/components/schemas/OccupancySettingsAction"
+  PresetAssignmentUnsupported:
+    type: boolean
+  IsStagedOccupancyEnabled:
+    type: boolean
+required:
+  - EnabledState
+  - PresetAssignmentUnsupported

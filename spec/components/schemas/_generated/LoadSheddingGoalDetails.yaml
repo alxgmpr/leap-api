@@ -1,0 +1,15 @@
+type: object
+properties:
+  Dimmed:
+    type: number
+  Switched:
+    type: string
+    description: "TODO(enum): members of SwitchedLevel were not recovered from the
+      firmware extraction"
+  Receptacle:
+    type: string
+    description: "TODO(enum): members of ReceptacleLevel were not recovered from the
+      firmware extraction"
+required:
+  - Switched
+  - Receptacle

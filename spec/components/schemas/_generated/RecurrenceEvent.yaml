@@ -1,0 +1,17 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Calendar:
+    $ref: "#/components/schemas/Calendar"
+  Time:
+    $ref: "#/components/schemas/RecurrenceEventTime"
+  Action:
+    $ref: "#/components/schemas/RecurrenceEventAction"
+required:
+  - Parent
+  - Calendar
+  - Time
+  - Action

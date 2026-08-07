@@ -1,0 +1,4 @@
+type: object
+properties:
+  Leaf:
+    $ref: "#/components/schemas/Leaf"

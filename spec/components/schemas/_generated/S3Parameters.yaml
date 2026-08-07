@@ -1,0 +1,11 @@
+type: object
+properties:
+  Bucket:
+    type: string
+  Key:
+    type: string
+  VersionID:
+    type: string
+required:
+  - Bucket
+  - Key

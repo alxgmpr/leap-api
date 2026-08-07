@@ -1,0 +1,13 @@
+type: object
+properties:
+  Name:
+    type: string
+  ID:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Area:
+    $ref: "#/components/schemas/LIPAreaDefinition"
+required:
+  - Name
+  - ID

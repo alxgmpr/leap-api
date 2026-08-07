@@ -1,0 +1,6 @@
+type: object
+properties:
+  Direction:
+    type: string
+    description: "TODO(enum): members of PhaseDirection were not recovered from the
+      firmware extraction"

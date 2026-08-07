@@ -1,0 +1,20 @@
+type: object
+properties:
+  href:
+    type: string
+  DefaultName:
+    type: string
+  Name:
+    type: string
+  ID:
+    type: string
+  SupportedCommands:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of CommandType were not recovered from the
+        firmware extraction"
+required:
+  - DefaultName
+  - Name
+  - ID

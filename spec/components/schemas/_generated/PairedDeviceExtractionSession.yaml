@@ -1,0 +1,18 @@
+type: object
+properties:
+  href:
+    type: string
+  Status:
+    type: string
+    description: "TODO(enum): members of PairedDeviceExtractionStatus were not
+      recovered from the firmware extraction"
+  PairedDeviceExtractions:
+    type: array
+    items:
+      $ref: "#/components/schemas/PairedDeviceExtraction"
+  SystemStatus:
+    type: array
+    items:
+      $ref: "#/components/schemas/ExtractionError"
+required:
+  - Status

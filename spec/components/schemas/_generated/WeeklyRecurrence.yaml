@@ -1,0 +1,16 @@
+type: object
+properties:
+  Sunday:
+    type: boolean
+  Monday:
+    type: boolean
+  Tuesday:
+    type: boolean
+  Wednesday:
+    type: boolean
+  Thursday:
+    type: boolean
+  Friday:
+    type: boolean
+  Saturday:
+    type: boolean

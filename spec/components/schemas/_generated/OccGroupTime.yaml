@@ -1,0 +1,11 @@
+type: object
+properties:
+  TimeclockEventBase:
+    $ref: "#/components/schemas/TimeclockEventBase"
+  EventType:
+    type: string
+    description: "TODO(enum): members of EventTimeType were not recovered from the
+      firmware extraction"
+required:
+  - TimeclockEventBase
+  - EventType

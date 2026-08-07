@@ -1,0 +1,20 @@
+type: object
+properties:
+  PANID:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  ExtendedPANID:
+    type: string
+  Channel:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  NetworkName:
+    type: string
+  NetworkMasterKey:
+    type: string
+required:
+  - ExtendedPANID
+  - NetworkName
+  - NetworkMasterKey

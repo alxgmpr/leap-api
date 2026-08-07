@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Sequence:
+    $ref: "#/components/schemas/HyperReference"

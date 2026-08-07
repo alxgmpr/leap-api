@@ -1,0 +1,8 @@
+type: object
+properties:
+  SonosProperties:
+    $ref: "#/components/schemas/SonosPropertiesUpdate"
+  OpenADRProperties:
+    $ref: "#/components/schemas/OpenADRPropertiesUpdate"
+  NTPServerProperties:
+    $ref: "#/components/schemas/NTPServerPropertiesUpdate"

@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  FadeSettings:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - FadeSettings

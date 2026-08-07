@@ -1,0 +1,12 @@
+type: object
+properties:
+  Device:
+    $ref: "#/components/schemas/HyperReference"
+  Steps:
+    $ref: "#/components/schemas/DeviceTransferSteps"
+  Status:
+    type: string
+    description: "TODO(enum): members of OperationState were not recovered from the
+      firmware extraction"
+required:
+  - Status

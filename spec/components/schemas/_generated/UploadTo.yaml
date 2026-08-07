@@ -1,0 +1,12 @@
+type: object
+properties:
+  Protocol:
+    type: string
+    description: "TODO(enum): members of TransferProtocol were not recovered from
+      the firmware extraction"
+  HTTPSParameters:
+    $ref: "#/components/schemas/HTTPSParameters"
+  S3Parameters:
+    $ref: "#/components/schemas/S3Parameters"
+required:
+  - Protocol

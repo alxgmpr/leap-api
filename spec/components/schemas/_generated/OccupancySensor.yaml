@@ -1,0 +1,20 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  OccupancyGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  OccupancySensorSettings:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancyReportingStrategy:
+    $ref: "#/components/schemas/OccupancyReportingStrategy"
+required:
+  - EnabledState

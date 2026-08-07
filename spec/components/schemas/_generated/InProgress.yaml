@@ -1,0 +1,6 @@
+type: object
+properties:
+  EstimatedTimeRemaining:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S

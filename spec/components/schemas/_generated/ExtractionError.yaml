@@ -1,0 +1,8 @@
+type: object
+properties:
+  ErrorCode:
+    type: integer
+  Details:
+    type: string
+required:
+  - Details

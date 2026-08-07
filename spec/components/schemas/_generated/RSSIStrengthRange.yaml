@@ -1,0 +1,10 @@
+type: object
+properties:
+  Minimum:
+    type: integer
+    minimum: -128
+    maximum: 127
+  Maximum:
+    type: integer
+    minimum: -128
+    maximum: 127

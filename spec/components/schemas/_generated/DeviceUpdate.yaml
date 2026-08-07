@@ -1,0 +1,6 @@
+type: object
+properties:
+  Name:
+    type: string
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"

@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  Accessories:
+    type: array
+    items:
+      $ref: "#/components/schemas/HomeKitAccessory"

@@ -1,0 +1,9 @@
+type: object
+properties:
+  DurationTestEvent:
+    $ref: "#/components/schemas/HyperReference"
+  FunctionTestEvent:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - DurationTestEvent
+  - FunctionTestEvent

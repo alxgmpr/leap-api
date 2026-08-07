@@ -1,0 +1,12 @@
+type: object
+properties:
+  Name:
+    type: string
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedGangedDevices:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedGangedDeviceCreate"
+required:
+  - Name

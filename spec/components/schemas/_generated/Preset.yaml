@@ -1,0 +1,110 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  PresetAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  DimmedLevelAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  ShadeLevelAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  ShadeLevelWithTiltAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  ShadeLevelWithTiltWhenClosedAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  SwitchedLevelAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  FanSpeedAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  CCOLevelAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  ReceptacleLevelAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  SpectrumTuningLevelAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  TiltAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  OccupancySettingsAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  OccupancySensorSettingsAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  StartSequenceAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  SonosPlayAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  FavoriteCycleAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  NextTrackAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  RaiseLowerAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  PauseAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  PlayPauseToggleAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssignableResources:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AreaSceneAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  StartEmergencyAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  StopEmergencyAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  WhiteTuningLevelAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  WarmDimAssignments:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"

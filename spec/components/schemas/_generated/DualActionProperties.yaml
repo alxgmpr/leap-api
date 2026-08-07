@@ -1,0 +1,6 @@
+type: object
+properties:
+  PressPreset:
+    $ref: "#/components/schemas/HyperReference"
+  ReleasePreset:
+    $ref: "#/components/schemas/HyperReference"

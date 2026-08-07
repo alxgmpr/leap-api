@@ -1,0 +1,6 @@
+type: object
+properties:
+  URL:
+    type: string
+required:
+  - URL

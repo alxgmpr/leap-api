@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  FilePackageDestination:
+    $ref: "#/components/schemas/FilePackageDestination"
+required:
+  - FilePackageDestination

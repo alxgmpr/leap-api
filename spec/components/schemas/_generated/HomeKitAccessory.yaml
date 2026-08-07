@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Resource:
+    $ref: "#/components/schemas/HyperReference"
+  SerialNumber:
+    type: string
+required:
+  - SerialNumber

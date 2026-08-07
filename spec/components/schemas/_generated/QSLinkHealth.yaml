@@ -1,0 +1,18 @@
+type: object
+properties:
+  NoiseError:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  OverrunError:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  FramingError:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - NoiseError
+  - OverrunError
+  - FramingError

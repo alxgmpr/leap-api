@@ -1,0 +1,13 @@
+type: object
+properties:
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EmergencyEnabledState were not recovered
+      from the firmware extraction"
+  SwitchedLevel:
+    type: string
+    description: "TODO(enum): members of SwitchedLevel were not recovered from the
+      firmware extraction"
+required:
+  - EnabledState
+  - SwitchedLevel

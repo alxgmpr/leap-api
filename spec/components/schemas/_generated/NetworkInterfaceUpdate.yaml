@@ -1,0 +1,10 @@
+type: object
+properties:
+  IPv4Properties:
+    $ref: "#/components/schemas/IPv4PropertiesUpdate"
+  IPv6Properties:
+    $ref: "#/components/schemas/IPv6Properties"
+  WiFiProperties:
+    $ref: "#/components/schemas/WiFiPropertiesUpdate"
+  SOCKS5ProxyProperties:
+    $ref: "#/components/schemas/SOCKS5ProxyPropertiesUpdate"

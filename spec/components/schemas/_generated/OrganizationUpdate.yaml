@@ -1,0 +1,10 @@
+type: object
+properties:
+  Name:
+    type: string
+  Phone:
+    type: string
+  Email:
+    type: string
+  AccountNumber:
+    type: string

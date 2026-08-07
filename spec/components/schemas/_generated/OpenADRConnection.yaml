@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Credentials:
+    $ref: "#/components/schemas/Credentials"
+  VTNURL:
+    type: string
+required:
+  - VTNURL

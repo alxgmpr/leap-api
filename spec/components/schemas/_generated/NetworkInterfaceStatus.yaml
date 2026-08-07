@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  ConnectedStatus:
+    type: string
+    description: "TODO(enum): members of NetworkInterfaceConnectedStatus were not
+      recovered from the firmware extraction"
+required:
+  - ConnectedStatus

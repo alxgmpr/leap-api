@@ -1,0 +1,39 @@
+type: object
+properties:
+  href:
+    type: string
+  XID:
+    type: string
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  LoadControllerType:
+    type: string
+    description: "TODO(enum): members of LoadControllerType were not recovered from
+      the firmware extraction"
+  FanSpeedLoadControllerProperties:
+    $ref: "#/components/schemas/FanSpeedLoadControllerProperties"
+  PhaseControlLoadControllerProperties:
+    $ref: "#/components/schemas/PhaseControlLoadControllerProperties"
+  TuningSettings:
+    $ref: "#/components/schemas/HyperReference"
+  OutputNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  AssociatedLoad:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedZone:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedDevice:
+    $ref: "#/components/schemas/HyperReference"
+  DimmedLoadControllerProperties:
+    $ref: "#/components/schemas/DimmedLoadControllerProperties"
+required:
+  - XID
+  - Name
+  - Parent
+  - LoadControllerType
+  - OutputNumber
+  - AssociatedDevice

@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Type:
+    type: string
+  SonosStatus:
+    $ref: "#/components/schemas/SonosStatus"
+required:
+  - Type

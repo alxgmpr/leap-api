@@ -1,0 +1,11 @@
+type: object
+properties:
+  href:
+    type: string
+  LoadController:
+    $ref: "#/components/schemas/HyperReference"
+  ErrorStatus:
+    $ref: "#/components/schemas/ErrorStatus"
+required:
+  - LoadController
+  - ErrorStatus

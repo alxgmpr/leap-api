@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Emergency:
+    $ref: "#/components/schemas/HyperReference"
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  ExplicitSettings:
+    $ref: "#/components/schemas/ExplicitEmergencySettings"

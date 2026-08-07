@@ -1,0 +1,12 @@
+type: object
+properties:
+  DeviceRules:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  MaxAllowed:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - MaxAllowed

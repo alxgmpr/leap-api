@@ -1,0 +1,12 @@
+type: object
+properties:
+  Status:
+    type: string
+    description: "TODO(enum): members of OperationState were not recovered from the
+      firmware extraction"
+  Errors:
+    type: array
+    items:
+      $ref: "#/components/schemas/ExceptionDetailError"
+required:
+  - Status

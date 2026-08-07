@@ -1,0 +1,6 @@
+type: object
+properties:
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  LoadSheddingGoalDetails:
+    $ref: "#/components/schemas/LoadSheddingGoalDetails"

@@ -1,0 +1,9 @@
+type: object
+properties:
+  StartStep:
+    $ref: "#/components/schemas/NaturalShowStep"
+  StopStep:
+    $ref: "#/components/schemas/NaturalShowStep"
+required:
+  - StartStep
+  - StopStep

@@ -1,0 +1,23 @@
+type: object
+properties:
+  href:
+    type: string
+  Organization:
+    type: string
+  DisplayName:
+    type: string
+  DeviceUID:
+    type: string
+  Issued:
+    $ref: "#/components/schemas/Issued"
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  ThirdPartyDevice:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - Organization
+  - DisplayName
+  - DeviceUID
+  - EnabledState

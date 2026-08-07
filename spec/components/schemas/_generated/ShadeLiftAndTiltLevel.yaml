@@ -1,0 +1,6 @@
+type: object
+properties:
+  Lift:
+    type: number
+  Tilt:
+    type: number

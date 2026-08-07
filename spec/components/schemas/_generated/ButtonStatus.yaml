@@ -1,0 +1,6 @@
+type: object
+properties:
+  Button:
+    $ref: "#/components/schemas/HyperReference"
+  ButtonEvent:
+    $ref: "#/components/schemas/ButtonEvent"

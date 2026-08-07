@@ -1,0 +1,42 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  ControlType:
+    type: string
+    description: "TODO(enum): members of ZoneType were not recovered from the
+      firmware extraction"
+  AvailableControlTypes:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of ZoneType were not recovered from the
+        firmware extraction"
+  DisplayCategories:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of DisplayCategoryType were not recovered from
+        the firmware extraction"
+  Zone:
+    $ref: "#/components/schemas/HyperReference"
+  Area:
+    $ref: "#/components/schemas/ZoneAreaInfo"
+  ShadeGroup:
+    $ref: "#/components/schemas/HyperReference"
+  FriendlyDescription:
+    type: string
+  ID:
+    type: string
+  SerialNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - Name
+  - ControlType
+  - FriendlyDescription
+  - ID
+  - SerialNumber

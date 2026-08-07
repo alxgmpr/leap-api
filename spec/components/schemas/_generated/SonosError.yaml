@@ -1,0 +1,8 @@
+type: object
+properties:
+  ErrorCode:
+    type: string
+    description: "TODO(enum): members of SonosErrorCode were not recovered from the
+      firmware extraction"
+required:
+  - ErrorCode

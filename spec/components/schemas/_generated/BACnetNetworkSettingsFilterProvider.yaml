@@ -1,0 +1,6 @@
+type: object
+properties:
+  Hrefs:
+    type: array
+    items:
+      type: string

@@ -1,0 +1,14 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  TimeclockEvents:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  Name:
+    type: string
+required:
+  - Name

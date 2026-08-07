@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  Area:
+    $ref: "#/components/schemas/HyperReference"
+  Instance:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - Instance

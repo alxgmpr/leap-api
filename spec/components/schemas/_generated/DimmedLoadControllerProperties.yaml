@@ -1,0 +1,10 @@
+type: object
+properties:
+  TuningSettings:
+    $ref: "#/components/schemas/HyperReference"
+  PhaseControlType:
+    type: string
+    description: "TODO(enum): members of PhaseControlType were not recovered from
+      the firmware extraction"
+required:
+  - PhaseControlType

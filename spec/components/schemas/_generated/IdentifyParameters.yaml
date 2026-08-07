@@ -1,0 +1,16 @@
+type: object
+properties:
+  SerialNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  TimeOutDuration:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  ConnectedObjectNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Link:
+    $ref: "#/components/schemas/HyperReference"

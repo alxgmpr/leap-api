@@ -1,0 +1,6 @@
+type: object
+properties:
+  EventTime:
+    $ref: "#/components/schemas/EventTime"
+required:
+  - EventTime

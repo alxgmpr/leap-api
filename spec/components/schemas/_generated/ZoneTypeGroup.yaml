@@ -1,0 +1,20 @@
+type: object
+properties:
+  href:
+    type: string
+  Type:
+    type: string
+    description: "TODO(enum): members of ZoneType were not recovered from the
+      firmware extraction"
+  Area:
+    $ref: "#/components/schemas/HyperReference"
+  Zones:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  LoadShedding:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancySettings:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - Type

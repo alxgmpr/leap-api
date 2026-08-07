@@ -1,0 +1,11 @@
+type: object
+properties:
+  href:
+    type: string
+  RentableSpace:
+    $ref: "#/components/schemas/HyperReference"
+  Area:
+    $ref: "#/components/schemas/Area"
+required:
+  - RentableSpace
+  - Area

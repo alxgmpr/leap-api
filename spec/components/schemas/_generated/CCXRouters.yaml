@@ -1,0 +1,23 @@
+type: object
+properties:
+  Count:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  LinkQuality3Count:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  LinkQuality2Count:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  LinkQuality1Count:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - Count
+  - LinkQuality3Count
+  - LinkQuality2Count
+  - LinkQuality1Count

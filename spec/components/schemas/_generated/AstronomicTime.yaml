@@ -1,0 +1,10 @@
+type: object
+properties:
+  Sunrise:
+    type: array
+    items:
+      $ref: "#/components/schemas/Time"
+  Sunset:
+    type: array
+    items:
+      $ref: "#/components/schemas/Time"

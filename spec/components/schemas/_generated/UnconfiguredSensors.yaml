@@ -1,0 +1,6 @@
+type: object
+properties:
+  Occupancy:
+    type: array
+    items:
+      $ref: "#/components/schemas/UnconfiguredSensor"

@@ -1,0 +1,14 @@
+type: object
+properties:
+  Name:
+    type: string
+  Category:
+    $ref: "#/components/schemas/ZoneCategoryUpdate"
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedFacade:
+    $ref: "#/components/schemas/HyperReference"
+  MaxWattage:
+    type: integer
+    minimum: 0
+    maximum: 4294967295

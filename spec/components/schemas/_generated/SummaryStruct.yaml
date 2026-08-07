@@ -1,0 +1,13 @@
+type: object
+properties:
+  Total:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Remaining:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - Total
+  - Remaining

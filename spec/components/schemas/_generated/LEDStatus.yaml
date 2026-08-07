@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  LED:
+    $ref: "#/components/schemas/HyperReference"
+  State:
+    type: string
+    description: "TODO(enum): members of LEDState were not recovered from the
+      firmware extraction"
+required:
+  - State

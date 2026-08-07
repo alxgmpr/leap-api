@@ -1,0 +1,18 @@
+type: object
+properties:
+  href:
+    type: string
+  ShadePositionDetails:
+    type: array
+    items:
+      $ref: "#/components/schemas/ShadePositionDetail"
+  StageType:
+    type: string
+    description: "TODO(enum): members of StageType were not recovered from the
+      firmware extraction"
+  StageTimes:
+    type: array
+    items:
+      $ref: "#/components/schemas/FixedTime"
+required:
+  - StageType

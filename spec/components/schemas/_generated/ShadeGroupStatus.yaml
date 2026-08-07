@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Level:
+    type: number
+  Tilt:
+    type: number
+  ShadeGroup:
+    $ref: "#/components/schemas/HyperReference"

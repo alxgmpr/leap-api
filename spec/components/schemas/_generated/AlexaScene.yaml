@@ -1,0 +1,29 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  ID:
+    type: string
+  FriendlyDescription:
+    type: string
+  SupportedCommands:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of CommandType were not recovered from the
+        firmware extraction"
+  DeviceModelNumber:
+    type: string
+  DisplayCategories:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of DisplayCategoryType were not recovered from
+        the firmware extraction"
+required:
+  - Name
+  - ID
+  - FriendlyDescription
+  - DeviceModelNumber

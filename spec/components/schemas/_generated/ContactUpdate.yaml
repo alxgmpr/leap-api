@@ -1,0 +1,14 @@
+type: object
+properties:
+  Role:
+    type: string
+    description: "TODO(enum): members of Role were not recovered from the firmware
+      extraction"
+  Name:
+    $ref: "#/components/schemas/ContactNameUpdate"
+  Organization:
+    $ref: "#/components/schemas/OrganizationUpdate"
+  Email:
+    type: string
+  PrimaryPhone:
+    type: string

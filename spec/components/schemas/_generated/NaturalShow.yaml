@@ -1,0 +1,19 @@
+type: object
+properties:
+  href:
+    type: string
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Name:
+    type: string
+  AffectsIntensity:
+    type: boolean
+  ShowDefinition:
+    $ref: "#/components/schemas/NaturalShowDefinition"
+required:
+  - SortOrder
+  - Name
+  - AffectsIntensity
+  - ShowDefinition

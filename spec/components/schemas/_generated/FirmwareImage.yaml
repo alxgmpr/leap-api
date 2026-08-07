@@ -1,0 +1,14 @@
+type: object
+properties:
+  href:
+    type: string
+  Device:
+    $ref: "#/components/schemas/HyperReference"
+  Firmware:
+    $ref: "#/components/schemas/Firmware"
+  Installed:
+    $ref: "#/components/schemas/Timestamp"
+  Contents:
+    type: array
+    items:
+      $ref: "#/components/schemas/FirmwareContent"

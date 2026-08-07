@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  DaylightingGainGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"

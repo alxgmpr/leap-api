@@ -1,0 +1,6 @@
+type: object
+properties:
+  Pem:
+    type: string
+required:
+  - Pem

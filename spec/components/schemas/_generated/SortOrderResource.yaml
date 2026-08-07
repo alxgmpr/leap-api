@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295

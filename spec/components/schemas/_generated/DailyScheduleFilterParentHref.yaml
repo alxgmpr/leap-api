@@ -1,0 +1,6 @@
+type: object
+properties:
+  ParentHrefs:
+    type: array
+    items:
+      type: string

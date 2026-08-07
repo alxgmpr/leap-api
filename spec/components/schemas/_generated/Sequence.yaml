@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  Steps:
+    type: array
+    items:
+      $ref: "#/components/schemas/SequenceStep"
+required:
+  - Name

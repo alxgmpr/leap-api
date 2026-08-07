@@ -1,0 +1,14 @@
+type: object
+properties:
+  Name:
+    type: string
+  Category:
+    $ref: "#/components/schemas/ThirdPartyDeviceCategoryCreate"
+  AssociatedAreas:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedArea"
+  SystemUsers:
+    type: array
+    items:
+      $ref: "#/components/schemas/SystemUserCreate"

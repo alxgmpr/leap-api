@@ -1,0 +1,14 @@
+type: object
+properties:
+  InAssociationMode:
+    type: boolean
+  OperatingMode:
+    type: string
+    description: "TODO(enum): members of SystemMode were not recovered from the
+      firmware extraction"
+  System:
+    $ref: "#/components/schemas/HyperReference"
+  UserAccessControlProperties:
+    $ref: "#/components/schemas/UserAccessControlProperties"
+required:
+  - OperatingMode

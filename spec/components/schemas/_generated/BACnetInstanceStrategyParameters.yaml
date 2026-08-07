@@ -1,0 +1,6 @@
+type: object
+properties:
+  InstanceStrategy:
+    type: string
+    description: "TODO(enum): members of BACnetInstanceStrategy were not recovered
+      from the firmware extraction"

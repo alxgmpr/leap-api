@@ -1,0 +1,16 @@
+type: object
+properties:
+  Role:
+    type: string
+    description: "TODO(enum): members of NetworkRoleType were not recovered from the
+      firmware extraction"
+  Noisefloor:
+    type: integer
+    minimum: -128
+    maximum: 127
+  CCXRouters:
+    $ref: "#/components/schemas/CCXRouters"
+required:
+  - Role
+  - Noisefloor
+  - CCXRouters

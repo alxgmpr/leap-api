@@ -1,0 +1,10 @@
+type: object
+properties:
+  RSSIStrength:
+    type: integer
+    minimum: -128
+    maximum: 127
+  AssociatedToBeacon:
+    type: boolean
+required:
+  - RSSIStrength

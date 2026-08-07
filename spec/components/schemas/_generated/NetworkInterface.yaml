@@ -1,0 +1,17 @@
+type: object
+properties:
+  href:
+    type: string
+  NetworkInterfaceSmallDefinition:
+    $ref: "#/components/schemas/NetworkInterfaceSmallDefinition"
+  AdapterType:
+    type: string
+    description: "TODO(enum): members of NetworkInterfaceType were not recovered
+      from the firmware extraction"
+  WiFiProperties:
+    $ref: "#/components/schemas/WiFiProperties"
+  SOCKS5ProxyProperties:
+    $ref: "#/components/schemas/SOCKS5ProxyProperties"
+required:
+  - NetworkInterfaceSmallDefinition
+  - AdapterType

@@ -1,0 +1,10 @@
+type: object
+properties:
+  ScheduleType:
+    type: string
+    description: "TODO(enum): members of ScheduleType were not recovered from the
+      firmware extraction"
+  DailyScheduleProperties:
+    $ref: "#/components/schemas/DailyScheduleProperties"
+required:
+  - ScheduleType

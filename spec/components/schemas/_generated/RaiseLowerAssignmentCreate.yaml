@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  AssignableResource:
+    $ref: "#/components/schemas/HyperReference"

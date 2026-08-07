@@ -1,0 +1,6 @@
+type: object
+properties:
+  SingleSetPointHVACStatus:
+    $ref: "#/components/schemas/SingleSetPointHVACStatus"
+  DualSetPointHVACStatus:
+    $ref: "#/components/schemas/DualSetPointHVACStatus"

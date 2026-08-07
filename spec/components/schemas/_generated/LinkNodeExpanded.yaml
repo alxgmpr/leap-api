@@ -1,0 +1,8 @@
+type: object
+properties:
+  LinkNode:
+    $ref: "#/components/schemas/LinkNode"
+  Parent:
+    $ref: "#/components/schemas/Device"
+required:
+  - LinkNode

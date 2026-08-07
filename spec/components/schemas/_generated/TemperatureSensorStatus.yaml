@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  Temperaturesensor:
+    $ref: "#/components/schemas/HyperReference"
+  CurrentTemperature:
+    $ref: "#/components/schemas/SetPoint"

@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  Rules:
+    type: array
+    items:
+      $ref: "#/components/schemas/RepeatableDeviceRule"

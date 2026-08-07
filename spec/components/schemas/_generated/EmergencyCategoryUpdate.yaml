@@ -1,0 +1,6 @@
+type: object
+properties:
+  Type:
+    type: string
+    description: "TODO(enum): members of EmergencyCategoryType were not recovered
+      from the firmware extraction"

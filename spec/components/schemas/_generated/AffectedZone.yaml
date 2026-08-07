@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Zone:
+    $ref: "#/components/schemas/HyperReference"
+  ButtonGroup:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - href

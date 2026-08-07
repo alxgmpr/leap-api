@@ -1,0 +1,6 @@
+type: object
+properties:
+  StartTime:
+    $ref: "#/components/schemas/OccGroupTime"
+  EndTime:
+    $ref: "#/components/schemas/OccGroupTime"

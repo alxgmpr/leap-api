@@ -1,0 +1,14 @@
+type: object
+properties:
+  href:
+    type: string
+  ConnectedStatus:
+    type: string
+    description: "TODO(enum): members of ConnectedStatus were not recovered from the
+      firmware extraction"
+  Errors:
+    type: array
+    items:
+      $ref: "#/components/schemas/ErrorDetails"
+required:
+  - ConnectedStatus

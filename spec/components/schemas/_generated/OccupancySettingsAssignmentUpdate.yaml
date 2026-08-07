@@ -1,0 +1,4 @@
+type: object
+properties:
+  OccupancySettings:
+    $ref: "#/components/schemas/OccupancySettingsUpdateUpdate"

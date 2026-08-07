@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  OnFadeValue:
+    $ref: "#/components/schemas/FadeValue"
+  OffFadeValue:
+    $ref: "#/components/schemas/FadeValue"

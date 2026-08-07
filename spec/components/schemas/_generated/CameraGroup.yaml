@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  AssignmentStrategy:
+    type: string
+    description: "TODO(enum): members of NestAssignmentStrategy were not recovered
+      from the firmware extraction"
+required:
+  - AssignmentStrategy

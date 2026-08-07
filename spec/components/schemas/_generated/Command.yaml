@@ -1,0 +1,124 @@
+type: object
+properties:
+  CommandType:
+    type: string
+    description: "TODO(enum): members of CommandType were not recovered from the
+      firmware extraction"
+  Parameter:
+    type: array
+    items:
+      $ref: "#/components/schemas/Parameter"
+  DimmedLevelParameters:
+    $ref: "#/components/schemas/DimmedLevelParameters"
+  SwitchedLevelParameters:
+    $ref: "#/components/schemas/SwitchedLevelParameters"
+  FanSpeedParameters:
+    $ref: "#/components/schemas/FanSpeedParameters"
+  ShadeLevelParameters:
+    $ref: "#/components/schemas/ShadeLevelParameters"
+  ShadeWithTiltLevelParameters:
+    $ref: "#/components/schemas/ShadeWithTiltLevelParameters"
+  ShadeWithTiltWhenClosedLevelParameters:
+    $ref: "#/components/schemas/ShadeWithTiltWhenClosedLevelParameters"
+  ShadeLimitRaiseParameters:
+    $ref: "#/components/schemas/ShadeLimitRaiseParameters"
+  ShadeLimitLowerLiftParameters:
+    $ref: "#/components/schemas/ShadeLimitLowerLiftParameters"
+  ShadeLimitRaiseLiftParameters:
+    $ref: "#/components/schemas/ShadeLimitRaiseLiftParameters"
+  ShadeLimitLowerTiltParameters:
+    $ref: "#/components/schemas/ShadeLimitLowerTiltParameters"
+  ShadeLimitRaiseTiltParameters:
+    $ref: "#/components/schemas/ShadeLimitRaiseTiltParameters"
+  SpectrumTuningLevelParameters:
+    $ref: "#/components/schemas/SpectrumTuningLevelParameters"
+  WhiteTuningLevelParameters:
+    $ref: "#/components/schemas/WhiteTuningLevelParameters"
+  WarmDimParameters:
+    $ref: "#/components/schemas/WarmDimParameters"
+  ShadeLimitLowerParameters:
+    $ref: "#/components/schemas/ShadeLimitLowerParameters"
+  CCOLevelParameters:
+    $ref: "#/components/schemas/CCOLevelParameters"
+  ReceptacleLevelParameters:
+    $ref: "#/components/schemas/ReceptacleLevelParameters"
+  MixedLevelParameters:
+    $ref: "#/components/schemas/MixedLevelParameters"
+  GroupLightingLevelParameters:
+    $ref: "#/components/schemas/GroupLightingLevelParameters"
+  ExtractPairedDevicesParameters:
+    $ref: "#/components/schemas/ExtractPairedDevicesParameters"
+  RSSIDiscoveryParameters:
+    $ref: "#/components/schemas/RSSIDiscoveryParameters"
+  RequestDeviceHeardParameters:
+    $ref: "#/components/schemas/RequestDeviceHeardParameters"
+  CacheDeviceHeardParameters:
+    $ref: "#/components/schemas/CacheDeviceHeardParameters"
+  RequestBeginUnassociatedDeviceDiscoveryParameters:
+    $ref: "#/components/schemas/RequestBeginUnassociatedDeviceDiscoveryParameters"
+  EMailLogsParameters:
+    $ref: "#/components/schemas/EMailLogsParameters"
+  IdentifyParameters:
+    $ref: "#/components/schemas/IdentifyParameters"
+  TuningSettingsParameters:
+    $ref: "#/components/schemas/TuningSettingsUpdate"
+  OccupancyGroupsAssociationsParameters:
+    $ref: "#/components/schemas/OccupancyGroupsAssociationsParameters"
+  BACnetInstanceStrategyParameters:
+    $ref: "#/components/schemas/BACnetInstanceStrategyParameters"
+  LookupResourceParameters:
+    type: array
+    items:
+      $ref: "#/components/schemas/LookupResourceParameter"
+  SunriseSunsetTimesParameters:
+    $ref: "#/components/schemas/SunriseSunsetTimesParameters"
+  RetransferConfigurationParameters:
+    $ref: "#/components/schemas/RetransferConfigurationParameters"
+  GenerateProfileParameters:
+    $ref: "#/components/schemas/GenerateProfileParameters"
+  GenerateLogPackageParameters:
+    $ref: "#/components/schemas/GenerateLogPackageParameters"
+  GenerateLogPackageSession:
+    $ref: "#/components/schemas/GenerateLogPackageSession"
+  SetLoggingLevelParameters:
+    $ref: "#/components/schemas/SetLoggingLevelParameters"
+  FilterParameters:
+    $ref: "#/components/schemas/FilterParameters"
+  TiltParameters:
+    $ref: "#/components/schemas/TiltParameters"
+  VerifyWiFiPasskeyParameters:
+    $ref: "#/components/schemas/VerifyWiFiPasskeyParameters"
+  GenerateCustomerLogPackageParameters:
+    $ref: "#/components/schemas/GenerateCustomerLogPackageParameters"
+  SetSortOrderParameters:
+    $ref: "#/components/schemas/SetSortOrderParameters"
+  PersonDetectedParameters:
+    $ref: "#/components/schemas/PersonDetectedParameters"
+  PerformDatabaseBackupParameters:
+    $ref: "#/components/schemas/PerformDatabaseBackupParameters"
+  BeginTransferSessionParameters:
+    $ref: "#/components/schemas/DatabaseTransferSessionCreate"
+  ApplyNowParameters:
+    $ref: "#/components/schemas/ApplyNowParameters"
+  GoToSceneParameters:
+    $ref: "#/components/schemas/GoToSceneParameters"
+  AddressDeviceParameters:
+    $ref: "#/components/schemas/AddressDeviceParameters"
+  UnaddressDeviceParameters:
+    $ref: "#/components/schemas/UnaddressDeviceParameters"
+  BeginFirmwareUpdateSessionParameters:
+    $ref: "#/components/schemas/BeginFirmwareUpdateSessionParameters"
+  EnableDaliSniffingParameters:
+    $ref: "#/components/schemas/EnableDaliSniffingParameters"
+  BeginOccupancyTestModeParameters:
+    $ref: "#/components/schemas/BeginOccupancyTestModeParameters"
+  EnableDataShippingRuleParameters:
+    $ref: "#/components/schemas/EnableDataShippingRuleParameters"
+  DisableDataShippingRuleParameters:
+    $ref: "#/components/schemas/DisableDataShippingRuleParameters"
+  EditNaturalShowRampParameters:
+    $ref: "#/components/schemas/EditNaturalShowRampParameters"
+  EditDayNightModeParameters:
+    $ref: "#/components/schemas/EditDayNightModeParameters"
+required:
+  - CommandType

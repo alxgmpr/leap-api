@@ -1,0 +1,28 @@
+type: object
+properties:
+  TotalFanSpeeds:
+    type: integer
+    minimum: 0
+    maximum: 255
+  Low:
+    type: integer
+    minimum: 0
+    maximum: 255
+  Medium:
+    type: integer
+    minimum: 0
+    maximum: 255
+  MediumHigh:
+    type: integer
+    minimum: 0
+    maximum: 255
+  High:
+    type: integer
+    minimum: 0
+    maximum: 255
+required:
+  - TotalFanSpeeds
+  - Low
+  - Medium
+  - MediumHigh
+  - High

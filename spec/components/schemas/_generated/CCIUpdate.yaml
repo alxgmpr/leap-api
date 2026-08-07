@@ -1,0 +1,12 @@
+type: object
+properties:
+  Name:
+    type: string
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  NormalState:
+    type: string
+    description: "TODO(enum): members of CCINormalState were not recovered from the
+      firmware extraction"

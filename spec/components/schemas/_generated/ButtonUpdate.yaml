@@ -1,0 +1,6 @@
+type: object
+properties:
+  Name:
+    type: string
+  Engraving:
+    $ref: "#/components/schemas/Engraving"

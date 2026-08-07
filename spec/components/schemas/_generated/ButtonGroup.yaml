@@ -1,0 +1,33 @@
+type: object
+properties:
+  href:
+    type: string
+  Buttons:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AffectedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/AffectedZoneSummary"
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  StopIfMoving:
+    type: string
+    description: "TODO(enum): members of StopIfMovingEnabledState were not recovered
+      from the firmware extraction"
+  Category:
+    $ref: "#/components/schemas/ButtonGroupCategory"
+  ProgrammingType:
+    type: string
+    description: "TODO(enum): members of ProgrammingType were not recovered from the
+      firmware extraction"
+required:
+  - href
+  - SortOrder
+  - StopIfMoving
+  - ProgrammingType

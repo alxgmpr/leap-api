@@ -1,0 +1,28 @@
+type: object
+properties:
+  href:
+    type: string
+  DeviceTransfers:
+    type: array
+    items:
+      $ref: "#/components/schemas/DeviceTransferDetails"
+  DeviceFirmwareUploads:
+    type: array
+    items:
+      $ref: "#/components/schemas/MultipleDeviceTransferDetails"
+  DeviceFirmwareInstalls:
+    type: array
+    items:
+      $ref: "#/components/schemas/MultipleDeviceTransferDetails"
+  DeviceLogExtractionStatus:
+    $ref: "#/components/schemas/MultipleDeviceLogExtractionDetails"
+  Status:
+    type: string
+    description: "TODO(enum): members of OperationState were not recovered from the
+      firmware extraction"
+  TimeMetrics:
+    $ref: "#/components/schemas/TimeMetrics"
+  Priority:
+    $ref: "#/components/schemas/Priority"
+required:
+  - Status

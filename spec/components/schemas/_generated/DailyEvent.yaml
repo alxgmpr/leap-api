@@ -1,0 +1,18 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Name:
+    type: string
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  TimeOfDay:
+    $ref: "#/components/schemas/EventTime"
+  Action:
+    $ref: "#/components/schemas/EventAction"
+required:
+  - Name

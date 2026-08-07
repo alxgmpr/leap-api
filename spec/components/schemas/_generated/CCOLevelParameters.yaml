@@ -1,0 +1,12 @@
+type: object
+properties:
+  CCOLevel:
+    type: string
+    description: "TODO(enum): members of CCOLevel were not recovered from the
+      firmware extraction"
+  DelayTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+required:
+  - CCOLevel

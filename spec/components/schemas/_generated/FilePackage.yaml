@@ -1,0 +1,14 @@
+type: object
+properties:
+  Protocol:
+    type: string
+    description: "TODO(enum): members of TransferProtocol were not recovered from
+      the firmware extraction"
+  Path:
+    type: string
+  Username:
+    type: string
+required:
+  - Protocol
+  - Path
+  - Username

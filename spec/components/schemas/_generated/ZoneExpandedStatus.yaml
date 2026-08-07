@@ -1,0 +1,8 @@
+type: object
+properties:
+  ZoneStatus:
+    $ref: "#/components/schemas/ZoneStatus"
+  Zone:
+    $ref: "#/components/schemas/Zone"
+required:
+  - ZoneStatus

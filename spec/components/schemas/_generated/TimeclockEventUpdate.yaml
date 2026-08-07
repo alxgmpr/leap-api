@@ -1,0 +1,52 @@
+type: object
+properties:
+  Name:
+    type: string
+  GlobalID:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  ScheduleType:
+    type: string
+    description: "TODO(enum): members of ScheduleType were not recovered from the
+      firmware extraction"
+  WeeklyRecurrence:
+    $ref: "#/components/schemas/WeeklyRecurrence"
+  Dates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  AnnuallyReoccurringDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  BeginDate:
+    $ref: "#/components/schemas/Date"
+  EndDate:
+    $ref: "#/components/schemas/Date"
+  ExceptionDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  AnnuallyReoccurringExceptionDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  TimeclockEventType:
+    type: string
+    description: "TODO(enum): members of EventTimeType were not recovered from the
+      firmware extraction"
+  TimeOfDay:
+    $ref: "#/components/schemas/FixedTime"
+  AstronomicEventType:
+    type: string
+    description: "TODO(enum): members of AstronomicEventType were not recovered from
+      the firmware extraction"
+  AstronomicTimeOffset:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+required:
+  - WeeklyRecurrence
+  - TimeclockEventType
+  - AstronomicEventType

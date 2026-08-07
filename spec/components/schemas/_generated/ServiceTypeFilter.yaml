@@ -1,0 +1,6 @@
+type: object
+properties:
+  ServiceTypes:
+    type: array
+    items:
+      type: string

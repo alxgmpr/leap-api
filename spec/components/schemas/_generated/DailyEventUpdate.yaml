@@ -1,0 +1,10 @@
+type: object
+properties:
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  TimeOfDay:
+    $ref: "#/components/schemas/EventTime"
+  Action:
+    $ref: "#/components/schemas/EventAction"

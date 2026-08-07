@@ -1,0 +1,8 @@
+type: object
+properties:
+  BatteryLevelState:
+    type: string
+    description: "TODO(enum): members of BatteryLevelState were not recovered from
+      the firmware extraction"
+required:
+  - BatteryLevelState

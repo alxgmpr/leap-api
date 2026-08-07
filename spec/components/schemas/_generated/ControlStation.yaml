@@ -1,0 +1,21 @@
+type: object
+properties:
+  href:
+    type: string
+  XID:
+    type: string
+  Name:
+    type: string
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  AssociatedGangedDevices:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedGangedDevice"
+required:
+  - XID
+  - Name

@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  State:
+    type: string
+    description: "TODO(enum): members of SystemLoadSheddingState were not recovered
+      from the firmware extraction"
+  SystemLoadShedding:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - State

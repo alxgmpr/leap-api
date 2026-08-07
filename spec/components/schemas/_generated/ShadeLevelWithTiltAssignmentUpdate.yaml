@@ -1,0 +1,14 @@
+type: object
+properties:
+  AssignableResource:
+    $ref: "#/components/schemas/HyperReference"
+  DelayTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  Level:
+    type: number
+  Tilt:
+    type: number
+  Scene:
+    $ref: "#/components/schemas/HyperReference"

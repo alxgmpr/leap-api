@@ -1,0 +1,12 @@
+type: object
+properties:
+  DateTime:
+    $ref: "#/components/schemas/Timestamp"
+  Type:
+    type: string
+    description: "TODO(enum): members of FirmwareUpdateType were not recovered from
+      the firmware extraction"
+  Result:
+    $ref: "#/components/schemas/FirmwareUpdateResult"
+required:
+  - Type

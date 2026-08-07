@@ -1,0 +1,18 @@
+type: object
+properties:
+  Message:
+    type: string
+  Source:
+    type: string
+  StackTrace:
+    type: string
+  ErrorCode:
+    type: integer
+  Errors:
+    type: array
+    items:
+      $ref: "#/components/schemas/ExceptionDetailError"
+required:
+  - Message
+  - Source
+  - StackTrace

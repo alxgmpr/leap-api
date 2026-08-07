@@ -1,0 +1,26 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  SpeakerType:
+    type: string
+    description: "TODO(enum): members of SpeakerType were not recovered from the
+      firmware extraction"
+  SoftwareVersion:
+    type: string
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"
+  Capabilities:
+    type: array
+    items:
+      type: string
+  Online:
+    type: boolean
+required:
+  - Name
+  - SpeakerType
+  - SoftwareVersion

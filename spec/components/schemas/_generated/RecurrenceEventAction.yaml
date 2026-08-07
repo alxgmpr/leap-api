@@ -1,0 +1,12 @@
+type: object
+properties:
+  ActionType:
+    type: string
+    description: "TODO(enum): members of RecurrenceEventActionType were not
+      recovered from the firmware extraction"
+  DaliEmergencyFunctionTestAssignment:
+    $ref: "#/components/schemas/DaliEmergencyFunctionTestAssignment"
+  DaliEmergencyDurationTestAssignment:
+    $ref: "#/components/schemas/DaliEmergencyDurationTestAssignment"
+required:
+  - ActionType

@@ -1,0 +1,17 @@
+type: object
+properties:
+  href:
+    type: string
+  NaturalLightOptimization:
+    $ref: "#/components/schemas/HyperReference"
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  ActiveState:
+    type: string
+    description: "TODO(enum): members of ActiveState were not recovered from the
+      firmware extraction"
+required:
+  - EnabledState
+  - ActiveState

@@ -1,0 +1,13 @@
+type: object
+properties:
+  href:
+    type: string
+  ContextType:
+    type: string
+    description: "TODO(enum): members of ContextType were not recovered from the
+      firmware extraction"
+  LoginID:
+    type: string
+required:
+  - ContextType
+  - LoginID

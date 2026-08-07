@@ -1,0 +1,8 @@
+type: object
+properties:
+  SessionRole:
+    type: string
+    description: "TODO(enum): members of SessionRole were not recovered from the
+      firmware extraction"
+required:
+  - SessionRole

@@ -1,0 +1,10 @@
+type: object
+properties:
+  Errors:
+    type: array
+    items:
+      $ref: "#/components/schemas/ExceptionDetailError"
+  DiscoveredMembers:
+    $ref: "#/components/schemas/DiscoveredMembers"
+  CommunicatingMembers:
+    $ref: "#/components/schemas/CommunicatingMembers"

@@ -1,0 +1,14 @@
+type: object
+properties:
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  Hostname:
+    type: string
+  Port:
+    type: integer
+    minimum: 0
+    maximum: 65535
+required:
+  - EnabledState

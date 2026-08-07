@@ -1,0 +1,64 @@
+type: object
+properties:
+  href:
+    type: string
+  XID:
+    type: string
+  PersistentID:
+    type: string
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  BACnetID:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Category:
+    $ref: "#/components/schemas/AreaCategory"
+  AssociatedDevices:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedShadeGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedOccupancyGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  ZoneTypeGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/ZoneTypeGroupAbridged"
+  LoadShedding:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancySettings:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancySensorSettings:
+    $ref: "#/components/schemas/HyperReference"
+  DaylightingGainSettings:
+    $ref: "#/components/schemas/HyperReference"
+  VirtualButtons:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedControlStations:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  IsLeaf:
+    type: boolean
+required:
+  - XID
+  - PersistentID
+  - Name

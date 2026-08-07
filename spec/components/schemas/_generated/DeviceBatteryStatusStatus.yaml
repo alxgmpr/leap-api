@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  Device:
+    $ref: "#/components/schemas/HyperReference"
+  BatteryStatus:
+    $ref: "#/components/schemas/BatteryStatus"

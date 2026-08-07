@@ -1,0 +1,6 @@
+type: object
+properties:
+  Negative:
+    $ref: "#/components/schemas/SetPoint"
+  Positive:
+    $ref: "#/components/schemas/SetPoint"

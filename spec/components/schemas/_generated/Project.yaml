@@ -1,0 +1,28 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  ProductType:
+    type: string
+    description: "TODO(enum): members of ProductType were not recovered from the
+      firmware extraction"
+  MasterDeviceList:
+    $ref: "#/components/schemas/DeviceReferences"
+  Contacts:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  GUID:
+    type: string
+  TimeclockEventRules:
+    $ref: "#/components/schemas/HyperReference"
+  DeviceRules:
+    $ref: "#/components/schemas/HyperReference"
+  ProjectModifiedTimestamp:
+    $ref: "#/components/schemas/Timestamp"
+required:
+  - Name
+  - ProductType
+  - GUID

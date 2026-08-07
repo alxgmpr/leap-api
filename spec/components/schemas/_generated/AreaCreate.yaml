@@ -1,0 +1,14 @@
+type: object
+properties:
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Category:
+    $ref: "#/components/schemas/AreaCategory"
+  AssociatedOccupancyGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+required:
+  - Name

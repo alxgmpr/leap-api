@@ -1,0 +1,24 @@
+type: object
+properties:
+  Configuration:
+    $ref: "#/components/schemas/HyperReference"
+  DataSummary:
+    $ref: "#/components/schemas/HyperReference"
+  DeviceID:
+    type: string
+  BonjourServiceName:
+    type: string
+  BridgeAccessory:
+    $ref: "#/components/schemas/HomeKitBridgeAccessory"
+  MaxAssociations:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Errors:
+    type: array
+    items:
+      $ref: "#/components/schemas/ErrorDetails"
+required:
+  - DeviceID
+  - BonjourServiceName
+  - MaxAssociations

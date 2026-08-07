@@ -1,0 +1,14 @@
+type: object
+properties:
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  CameraGroup:
+    $ref: "#/components/schemas/CameraGroup"
+  TriggerGroup:
+    $ref: "#/components/schemas/TriggerGroup"
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"

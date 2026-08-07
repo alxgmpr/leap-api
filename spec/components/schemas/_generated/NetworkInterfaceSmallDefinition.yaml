@@ -1,0 +1,10 @@
+type: object
+properties:
+  MACAddress:
+    type: string
+  IPv4Properties:
+    $ref: "#/components/schemas/IPv4Properties"
+  IPv6Properties:
+    $ref: "#/components/schemas/IPv6Properties"
+required:
+  - MACAddress

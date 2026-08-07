@@ -1,0 +1,41 @@
+type: object
+properties:
+  href:
+    type: string
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  NetworkNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  DeviceInstance:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  DeviceInstanceType:
+    type: string
+    description: "TODO(enum): members of DeviceInstanceType were not recovered from
+      the firmware extraction"
+  Port:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  BBMDIPAddress:
+    type: string
+  BBMDTTL:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Instances:
+    $ref: "#/components/schemas/HyperReference"
+  Provider:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - EnabledState
+  - NetworkNumber
+  - DeviceInstanceType
+  - Port
+  - BBMDIPAddress
+  - BBMDTTL

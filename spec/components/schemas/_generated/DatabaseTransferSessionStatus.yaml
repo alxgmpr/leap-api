@@ -1,0 +1,6 @@
+type: object
+properties:
+  Download:
+    $ref: "#/components/schemas/DatabaseTransferSessionDownloadStatus"
+required:
+  - Download

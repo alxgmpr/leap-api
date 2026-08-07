@@ -1,0 +1,15 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Date:
+    $ref: "#/components/schemas/Date"
+  ScheduledNaturalLightOptimizationStages:
+    type: array
+    items:
+      $ref: "#/components/schemas/ScheduledNaturalLightOptimizationStage"
+required:
+  - Parent
+  - Date

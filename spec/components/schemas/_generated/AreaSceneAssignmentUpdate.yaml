@@ -1,0 +1,6 @@
+type: object
+properties:
+  AreaScene:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - AreaScene

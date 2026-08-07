@@ -1,0 +1,37 @@
+type: object
+properties:
+  Year:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Month:
+    type: integer
+    minimum: 1
+    maximum: 12
+  Day:
+    type: integer
+    minimum: 0
+    maximum: 255
+  Hour:
+    type: integer
+    minimum: 0
+    maximum: 255
+  Minute:
+    type: integer
+    minimum: 0
+    maximum: 255
+  Second:
+    type: integer
+    minimum: 0
+    maximum: 255
+  UTC:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+required:
+  - Year
+  - Month
+  - Day
+  - Hour
+  - Minute
+  - Second

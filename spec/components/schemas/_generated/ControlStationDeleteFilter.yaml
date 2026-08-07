@@ -1,0 +1,8 @@
+type: object
+properties:
+  DeleteAssociatedGangedDevices:
+    type: boolean
+  DeleteExclusivelyControlledZones:
+    type: boolean
+  DeleteAssociatedLoads:
+    type: boolean

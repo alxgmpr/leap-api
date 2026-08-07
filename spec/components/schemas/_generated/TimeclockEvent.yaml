@@ -1,0 +1,55 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  ProgrammingModel:
+    $ref: "#/components/schemas/HyperReference"
+  Name:
+    type: string
+  GlobalID:
+    type: string
+  ScheduleType:
+    type: string
+    description: "TODO(enum): members of ScheduleType were not recovered from the
+      firmware extraction"
+  WeeklyRecurrence:
+    $ref: "#/components/schemas/WeeklyRecurrence"
+  Dates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  AnnuallyReoccurringDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  BeginDate:
+    $ref: "#/components/schemas/Date"
+  EndDate:
+    $ref: "#/components/schemas/Date"
+  ExceptionDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  AnnuallyReoccurringExceptionDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  TimeclockEventType:
+    type: string
+    description: "TODO(enum): members of EventTimeType were not recovered from the
+      firmware extraction"
+  TimeclockEventBase:
+    $ref: "#/components/schemas/TimeclockEventBase"
+required:
+  - Name
+  - GlobalID
+  - ScheduleType
+  - WeeklyRecurrence
+  - Dates
+  - AnnuallyReoccurringDates
+  - ExceptionDates
+  - AnnuallyReoccurringExceptionDates
+  - TimeclockEventType
+  - TimeclockEventBase

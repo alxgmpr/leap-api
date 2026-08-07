@@ -1,0 +1,34 @@
+type: object
+properties:
+  href:
+    type: string
+  Device:
+    $ref: "#/components/schemas/HyperReference"
+  UnconfiguredSensors:
+    $ref: "#/components/schemas/UnconfiguredSensors"
+  FailedTransfers:
+    $ref: "#/components/schemas/FailedTransfers"
+  ConfigurationTransferStatus:
+    type: string
+    description: "TODO(enum): members of ConfigurationTransferStatus were not
+      recovered from the firmware extraction"
+  SensorHeard:
+    $ref: "#/components/schemas/SensorHeard"
+  DeviceHeard:
+    $ref: "#/components/schemas/DeviceHeard"
+  Availability:
+    type: string
+    description: "TODO(enum): members of Availability were not recovered from the
+      firmware extraction"
+  BatteryStatus:
+    $ref: "#/components/schemas/BatteryStatus"
+  StatusAccuracy:
+    type: string
+    description: "TODO(enum): members of StatusAccuracy were not recovered from the
+      firmware extraction"
+  FirmwareUpdateStatus:
+    $ref: "#/components/schemas/DeviceFirmwareUpdateStatus"
+required:
+  - ConfigurationTransferStatus
+  - Availability
+  - StatusAccuracy

@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  AffectedResources:
+    type: array
+    items:
+      $ref: "#/components/schemas/AffectedResource"
+  StartTime:
+    $ref: "#/components/schemas/StartAndEndTime"
+  EndTime:
+    $ref: "#/components/schemas/StartAndEndTime"

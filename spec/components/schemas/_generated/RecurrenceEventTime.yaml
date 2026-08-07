@@ -1,0 +1,10 @@
+type: object
+properties:
+  TimeType:
+    type: string
+    description: "TODO(enum): members of EventTimeType were not recovered from the
+      firmware extraction"
+  FixedTime:
+    $ref: "#/components/schemas/FixedTime"
+required:
+  - TimeType

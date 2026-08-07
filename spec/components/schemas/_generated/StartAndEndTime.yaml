@@ -1,0 +1,11 @@
+type: object
+properties:
+  SystemAwayEventType:
+    type: string
+    description: "TODO(enum): members of EventTimeType were not recovered from the
+      firmware extraction"
+  TimeOfDay:
+    $ref: "#/components/schemas/FixedTime"
+required:
+  - SystemAwayEventType
+  - TimeOfDay

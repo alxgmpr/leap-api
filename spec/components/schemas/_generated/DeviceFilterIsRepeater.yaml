@@ -1,0 +1,6 @@
+type: object
+properties:
+  IsRepeater:
+    type: boolean
+required:
+  - IsRepeater

@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  FilePackageDestination:
+    $ref: "#/components/schemas/FilePackageDestination"
+  DeviceFirmwareUploadProgress:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"

@@ -1,0 +1,4 @@
+type: object
+properties:
+  Emergency:
+    $ref: "#/components/schemas/HyperReference"

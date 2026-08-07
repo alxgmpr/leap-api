@@ -1,0 +1,12 @@
+type: object
+properties:
+  FavoriteHousehold:
+    $ref: "#/components/schemas/HyperReference"
+  Households:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  Account:
+    $ref: "#/components/schemas/SonosAccount"
+  VoiceControl:
+    $ref: "#/components/schemas/SonosVoiceControl"

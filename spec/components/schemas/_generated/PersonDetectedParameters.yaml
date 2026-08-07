@@ -1,0 +1,6 @@
+type: object
+properties:
+  UUID:
+    type: string
+required:
+  - UUID

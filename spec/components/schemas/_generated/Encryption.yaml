@@ -1,0 +1,8 @@
+type: object
+properties:
+  PublicKeyAlias:
+    type: string
+    description: "TODO(enum): members of PublicKeyAlias were not recovered from the
+      firmware extraction"
+required:
+  - PublicKeyAlias

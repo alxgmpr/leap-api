@@ -1,0 +1,14 @@
+type: object
+properties:
+  Hour:
+    type: integer
+    minimum: 0
+    maximum: 255
+  Minute:
+    type: integer
+    minimum: 0
+    maximum: 255
+  Second:
+    type: integer
+    minimum: 0
+    maximum: 255

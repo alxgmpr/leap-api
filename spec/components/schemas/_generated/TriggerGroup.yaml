@@ -1,0 +1,6 @@
+type: object
+properties:
+  Triggers:
+    type: array
+    items:
+      $ref: "#/components/schemas/Trigger"

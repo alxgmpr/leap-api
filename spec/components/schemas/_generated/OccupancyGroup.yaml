@@ -1,0 +1,35 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  AssociatedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedZone"
+  AssociatedSensors:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedSensor"
+  AssociatedAreas:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedArea"
+  ProgrammingType:
+    type: string
+    description: "TODO(enum): members of ProgrammingType were not recovered from the
+      firmware extraction"
+  ProgrammingModel:
+    $ref: "#/components/schemas/HyperReference"
+  AggregatedBy:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  OccupiedActionSchedule:
+    $ref: "#/components/schemas/ActionSchedule"
+  UnoccupiedActionSchedule:
+    $ref: "#/components/schemas/ActionSchedule"
+required:
+  - Name
+  - ProgrammingType

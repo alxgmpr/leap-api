@@ -1,0 +1,6 @@
+type: object
+properties:
+  ClientMajorVersion:
+    type: integer
+  ClientMinorVersion:
+    type: integer

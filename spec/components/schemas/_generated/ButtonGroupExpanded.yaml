@@ -1,0 +1,10 @@
+type: object
+properties:
+  ButtonGroup:
+    $ref: "#/components/schemas/ButtonGroup"
+  Buttons:
+    type: array
+    items:
+      $ref: "#/components/schemas/Button"
+required:
+  - ButtonGroup

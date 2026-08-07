@@ -1,0 +1,6 @@
+type: object
+properties:
+  State:
+    type: string
+    description: "TODO(enum): members of SystemLoadSheddingState were not recovered
+      from the firmware extraction"

@@ -1,0 +1,21 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  TargetSetPoint:
+    type: number
+  ImmediateLevelChangeUnsupported:
+    type: boolean
+  MinimumDaylightLevelSettings:
+    $ref: "#/components/schemas/MinimumDaylightLevelSettings"
+required:
+  - EnabledState
+  - ImmediateLevelChangeUnsupported

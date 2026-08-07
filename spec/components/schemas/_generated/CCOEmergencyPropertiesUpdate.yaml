@@ -1,0 +1,10 @@
+type: object
+properties:
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EmergencyEnabledState were not recovered
+      from the firmware extraction"
+  CCOLevel:
+    type: string
+    description: "TODO(enum): members of CCOLevel were not recovered from the
+      firmware extraction"

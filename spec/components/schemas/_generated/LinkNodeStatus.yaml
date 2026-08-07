@@ -1,0 +1,16 @@
+type: object
+properties:
+  href:
+    type: string
+  Link:
+    $ref: "#/components/schemas/HyperReference"
+  LinkType:
+    type: string
+    description: "TODO(enum): members of LinkType were not recovered from the
+      firmware extraction"
+  LinkNode:
+    $ref: "#/components/schemas/HyperReference"
+  ClearConnectTypeXLinkNodeStatus:
+    $ref: "#/components/schemas/CCXLinkNodeStatus"
+required:
+  - LinkType

@@ -1,0 +1,6 @@
+type: object
+properties:
+  LinkHref:
+    type: string
+required:
+  - LinkHref

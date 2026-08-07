@@ -1,0 +1,17 @@
+type: object
+properties:
+  href:
+    type: string
+  Timeout:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  AssociatedZone:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - Timeout
+  - EnabledState

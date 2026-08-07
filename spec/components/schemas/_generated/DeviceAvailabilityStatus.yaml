@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  Device:
+    $ref: "#/components/schemas/HyperReference"
+  Availability:
+    type: string
+    description: "TODO(enum): members of Availability were not recovered from the
+      firmware extraction"
+required:
+  - Availability

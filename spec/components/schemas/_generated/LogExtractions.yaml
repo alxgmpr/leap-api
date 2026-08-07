@@ -1,0 +1,12 @@
+type: object
+properties:
+  Devices:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  Status:
+    type: string
+    description: "TODO(enum): members of OperationState were not recovered from the
+      firmware extraction"
+required:
+  - Status

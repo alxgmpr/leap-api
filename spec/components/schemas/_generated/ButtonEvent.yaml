@@ -1,0 +1,8 @@
+type: object
+properties:
+  EventType:
+    type: string
+    description: "TODO(enum): members of EventType were not recovered from the
+      firmware extraction"
+required:
+  - EventType

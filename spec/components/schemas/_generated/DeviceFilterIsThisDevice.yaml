@@ -1,0 +1,6 @@
+type: object
+properties:
+  IsThisDevice:
+    type: boolean
+required:
+  - IsThisDevice

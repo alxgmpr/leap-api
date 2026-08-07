@@ -1,0 +1,23 @@
+type: object
+properties:
+  href:
+    type: string
+  Type:
+    type: string
+    description: "TODO(enum): members of DatabaseType were not recovered from the
+      firmware extraction"
+  Version:
+    $ref: "#/components/schemas/DatabaseVersion"
+  TransferGUID:
+    type: string
+  ConfigurationStateRevision:
+    type: string
+  UnsynchronizedChanges:
+    $ref: "#/components/schemas/UnsynchronizedChanges"
+  InstalledOnDevices:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+required:
+  - Type
+  - ConfigurationStateRevision

@@ -1,0 +1,12 @@
+type: object
+properties:
+  ActionType:
+    type: string
+    description: "TODO(enum): members of EventActionType were not recovered from the
+      firmware extraction"
+  SingleSetPointHVACAssignment:
+    $ref: "#/components/schemas/SingleSetPointHVACAssignment"
+  DualSetPointHVACAssignment:
+    $ref: "#/components/schemas/DualSetPointHVACAssignment"
+required:
+  - ActionType

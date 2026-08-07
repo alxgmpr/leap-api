@@ -1,0 +1,14 @@
+type: object
+properties:
+  XYTuningLevel:
+    $ref: "#/components/schemas/XYTuningLevel"
+  HSVTuningLevel:
+    $ref: "#/components/schemas/HSVTuningLevel"
+  RGBTuningLevel:
+    $ref: "#/components/schemas/RGBTuningLevel"
+  WhiteTuningLevel:
+    $ref: "#/components/schemas/WhiteTuningLevel"
+  CurveDimming:
+    $ref: "#/components/schemas/CurveDimming"
+  NaturalShow:
+    $ref: "#/components/schemas/HyperReference"

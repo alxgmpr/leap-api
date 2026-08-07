@@ -1,0 +1,10 @@
+type: object
+properties:
+  Links:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  Duration:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S

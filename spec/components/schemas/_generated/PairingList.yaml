@@ -1,0 +1,8 @@
+type: object
+properties:
+  href:
+    type: string
+  Pairings:
+    type: array
+    items:
+      $ref: "#/components/schemas/Pairing"

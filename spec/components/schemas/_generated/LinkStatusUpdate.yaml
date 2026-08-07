@@ -1,0 +1,14 @@
+type: object
+properties:
+  href:
+    type: string
+  Link:
+    $ref: "#/components/schemas/HyperReference"
+  OperatingModes:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of LinkOperatingMode were not recovered from
+        the firmware extraction"
+required:
+  - Link

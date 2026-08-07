@@ -1,0 +1,10 @@
+type: object
+properties:
+  Action:
+    type: string
+    description: "TODO(enum): members of DeviceClassAction were not recovered from
+      the firmware extraction"
+  DeviceClass:
+    $ref: "#/components/schemas/DeviceClass"
+required:
+  - Action

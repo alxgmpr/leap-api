@@ -1,0 +1,13 @@
+type: object
+properties:
+  href:
+    type: string
+  Database:
+    $ref: "#/components/schemas/HyperReference"
+  DataIntegrity:
+    type: string
+    description: "TODO(enum): members of DatabaseDataIntegrity were not recovered
+      from the firmware extraction"
+required:
+  - Database
+  - DataIntegrity

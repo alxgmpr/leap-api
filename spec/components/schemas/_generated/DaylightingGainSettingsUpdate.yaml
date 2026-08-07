@@ -1,0 +1,12 @@
+type: object
+properties:
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"
+  TargetSetPoint:
+    type: number
+  MinimumDaylightLevelSettings:
+    $ref: "#/components/schemas/MinimumDaylightLevelSettingsUpdate"

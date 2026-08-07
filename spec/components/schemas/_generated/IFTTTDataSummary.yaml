@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  Scenes:
+    type: array
+    items:
+      $ref: "#/components/schemas/IFTTTScene"
+  Devices:
+    type: array
+    items:
+      $ref: "#/components/schemas/IFTTTDevice"

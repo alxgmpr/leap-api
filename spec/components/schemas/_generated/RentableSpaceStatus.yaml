@@ -1,0 +1,42 @@
+type: object
+properties:
+  href:
+    type: string
+  RentableSpace:
+    $ref: "#/components/schemas/HyperReference"
+  RentalStatus:
+    type: string
+    description: "TODO(enum): members of RentalStatus were not recovered from the
+      firmware extraction"
+  MakeUpRoomRequest:
+    type: string
+    description: "TODO(enum): members of MakeUpRoomRequest were not recovered from
+      the firmware extraction"
+  DoNotDisturbRequest:
+    type: string
+    description: "TODO(enum): members of DoNotDisturbRequest were not recovered from
+      the firmware extraction"
+  Automation:
+    type: string
+    description: "TODO(enum): members of Automation were not recovered from the
+      firmware extraction"
+  InitialEntry:
+    type: string
+    description: "TODO(enum): members of InitialEntry were not recovered from the
+      firmware extraction"
+  TurnDownSceneActivation:
+    type: string
+    description: "TODO(enum): members of TurnDownSceneActivation were not recovered
+      from the firmware extraction"
+  PresenceStatus:
+    type: string
+    description: "TODO(enum): members of PresenceStatus were not recovered from the
+      firmware extraction"
+required:
+  - RentalStatus
+  - MakeUpRoomRequest
+  - DoNotDisturbRequest
+  - Automation
+  - InitialEntry
+  - TurnDownSceneActivation
+  - PresenceStatus

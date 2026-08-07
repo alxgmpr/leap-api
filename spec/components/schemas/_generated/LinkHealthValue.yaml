@@ -1,0 +1,10 @@
+type: object
+properties:
+  Link:
+    $ref: "#/components/schemas/Link"
+  QSLinkHealth:
+    $ref: "#/components/schemas/QSLinkHealth"
+  CCXLinkHealth:
+    $ref: "#/components/schemas/CCXLinkHealth"
+required:
+  - Link

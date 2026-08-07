@@ -1,0 +1,21 @@
+type: object
+properties:
+  ChannelSet:
+    $ref: "#/components/schemas/ChannelSet"
+  Repeater:
+    $ref: "#/components/schemas/Repeater"
+  Channel:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  DefaultChannel:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  SubnetAddress:
+    type: integer
+    minimum: 0
+    maximum: 65535
+required:
+  - Channel
+  - DefaultChannel

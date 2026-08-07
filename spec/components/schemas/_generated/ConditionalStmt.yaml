@@ -1,0 +1,10 @@
+type: object
+properties:
+  If:
+    $ref: "#/components/schemas/IfExp"
+  Then:
+    type: array
+    items:
+      $ref: "#/components/schemas/Statement"
+required:
+  - If

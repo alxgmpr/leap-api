@@ -1,0 +1,4 @@
+type: object
+properties:
+  Package:
+    $ref: "#/components/schemas/Firmware"

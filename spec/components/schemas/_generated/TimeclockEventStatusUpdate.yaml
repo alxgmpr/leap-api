@@ -1,0 +1,6 @@
+type: object
+properties:
+  EnableState:
+    type: string
+    description: "TODO(enum): members of EnabledState were not recovered from the
+      firmware extraction"

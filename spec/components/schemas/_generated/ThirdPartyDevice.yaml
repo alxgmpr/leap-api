@@ -1,0 +1,18 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  Category:
+    $ref: "#/components/schemas/ThirdPartyDeviceCategory"
+  AssociatedAreas:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedArea"
+  SystemUsers:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+required:
+  - Name

@@ -1,0 +1,6 @@
+type: object
+properties:
+  DataShippingRules:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"

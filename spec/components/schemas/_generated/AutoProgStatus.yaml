@@ -1,0 +1,10 @@
+type: object
+properties:
+  VirtualButtons:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  ButtonGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"

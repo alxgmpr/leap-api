@@ -1,0 +1,16 @@
+type: object
+properties:
+  href:
+    type: string
+  SerialNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  NetworkInterfaces:
+    type: array
+    items:
+      $ref: "#/components/schemas/NetworkInterfaceSmallDefinition"
+  IPL:
+    $ref: "#/components/schemas/IPL"
+required:
+  - SerialNumber

@@ -1,0 +1,15 @@
+type: object
+properties:
+  SecurityEnabled:
+    type: boolean
+  SSID:
+    type: string
+  BroadcastSSID:
+    type: boolean
+  Enabled:
+    type: boolean
+required:
+  - SecurityEnabled
+  - SSID
+  - BroadcastSSID
+  - Enabled
