@@ -1,0 +1,9 @@
+type: string
+description: |
+  Server's role/protocol. The firmware extraction did not recover the full
+  enum; members below were recovered from Server.Type observed on RA3
+  v03.247 (`LEAP`, `IPL`) and Caseta v01.123 (`LEAP`), via /server.
+  Unlisted values are possible.
+enum:
+  - LEAP
+  - IPL

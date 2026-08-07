@@ -1,0 +1,11 @@
+# Hand-authored: GET /server's collection response (see
+# spec/paths/server.yaml). Entirely absent from _generated/server.yaml --
+# the generated file only recovered sub-routes (/server/ipl, /server/leap/*,
+# /server/status/ping), never the bare `/server` route itself. Confirmed
+# 200 OK with body key `Servers` on both RA3 v03.247 and Caseta v01.123.
+# Per the established convention (no plural type exists anywhere in the
+# firmware's 408 structs -- the plural wrapper is wire-only), this is an
+# array of the singular `Server` schema, not an object wrapper.
+type: array
+items:
+  $ref: "#/components/schemas/Server"

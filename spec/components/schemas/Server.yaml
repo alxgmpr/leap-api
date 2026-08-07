@@ -1,0 +1,31 @@
+type: object
+description: |
+  Firmware marks `EnableState` and `ProtocolVersion` non-pointer (always
+  present), but the RA3 v03.247 `IPL`-type server omits both (only the
+  `LEAP`-type servers on both platforms carry them) -- not universal across
+  server types, relaxed to optional on hardware evidence.
+properties:
+  href:
+    type: string
+  Type:
+    $ref: "#/components/schemas/ServerType"
+  NetworkInterfaces:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  EnableState:
+    $ref: "#/components/schemas/EnabledState"
+  LIPProperties:
+    $ref: "#/components/schemas/LIPPropertyDefinition"
+  LEAPProperties:
+    $ref: "#/components/schemas/LEAPPropertyDefinition"
+  IPLProperties:
+    $ref: "#/components/schemas/IPLPropertyDefinition"
+  Endpoints:
+    type: array
+    items:
+      $ref: "#/components/schemas/Endpoint"
+  ProtocolVersion:
+    type: string
+required:
+  - Type

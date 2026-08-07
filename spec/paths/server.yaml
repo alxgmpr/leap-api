@@ -1,0 +1,102 @@
+# Refined from spec/paths/_generated/server.yaml. One deviation from a
+# straight copy:
+#
+# /server is HAND-AUTHORED, not copied. It responds on real hardware but is
+# entirely absent from the generated corpus -- the route-table extraction
+# only recovered /server's sub-routes (/server/ipl, /server/leap/*,
+# /server/status/ping), never the bare collection route itself. Captured
+# traffic is authoritative: confirmed 200 OK with body key `Servers` on
+# both RA3 v03.247 and Caseta v01.123.
+/server:
+  get:
+    operationId: getServer
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Servers
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Servers"
+    summary: List servers
+/server/ipl:
+  get:
+    operationId: getServerIPL
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServerIPL
+    tags:
+      - server
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/server/leap/integrator/pairing:
+  get:
+    operationId: getServerLEAPIntegratorPairing
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/server/leap/pairing:
+  post:
+    operationId: createServerLEAPPairing
+    tags:
+      - server
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Create LEAP pairing
+/server/leap/pairing/{pairingId}:
+  get:
+    operationId: getServerLEAPPairingID
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Read pairing
+  put:
+    operationId: updateServerLEAPPairingID
+    tags:
+      - server
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update pairing
+  parameters:
+    - name: pairingId
+      in: path
+      required: true
+      schema:
+        type: string
+/server/status/ping:
+  get:
+    operationId: getServerStatusPing
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Ping server status
