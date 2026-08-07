@@ -143,6 +143,40 @@ describe("routeToPathItem", () => {
     );
   });
 
+  test("CREATE+SUBSCRIBE route (no GET) puts subscribable markers on path item alongside post operation", () => {
+    const { item } = routeToPathItem({
+      ident: "Area",
+      path: "/area",
+      verbs: ["CREATE", "SUBSCRIBE"],
+      handlers: {},
+      responseType: "Area",
+    });
+    // Subscribable markers are on path item, not on post
+    assert.equal(
+      (item as Record<string, unknown>)["x-leap-subscribable"],
+      true,
+      "subscribable should be on path item",
+    );
+    const eventSchema = (item as Record<string, unknown>)[
+      "x-leap-event-schema"
+    ] as Record<string, unknown>;
+    assert.equal(eventSchema.$ref, "#/components/schemas/Area");
+    // POST operation exists and is undisturbed
+    const post = item.post as Record<string, unknown>;
+    assert.ok(post, "post operation should exist");
+    assert.equal(post.operationId, "createArea");
+    assert.equal(post["x-leap-body-type"], "Area");
+    const postResponses = post.responses as Record<string, unknown>;
+    const postResponse = (postResponses["200"] as Record<string, unknown>)
+      .content as Record<string, unknown>;
+    const postSchema = (
+      postResponse["application/json"] as Record<string, unknown>
+    ).schema as Record<string, unknown>;
+    assert.equal(postSchema.$ref, "#/components/schemas/Area");
+    // No GET invented
+    assert.ok(!("get" in item), "should not create a get operation");
+  });
+
   test("responseType becomes a 200 ref plus x-leap-body-type", () => {
     const { item } = routeToPathItem({
       ident: "ZoneID",

@@ -85,12 +85,14 @@ export function routeToPathItem(route: Route): {
     item[method] = op;
   }
 
-  // SUBSCRIBE annotates the read operation rather than adding one of its own.
+  // SUBSCRIBE annotates the get operation when present; otherwise the path item.
   //
-  // 7 routes are SUBSCRIBE-without-GET, and 5 of those carry a responseType.
-  // They are pure notification channels: a ReadRequest does not work, but a
-  // subscriber does receive bodies of that type. Annotating the path item
-  // itself keeps that fact in the document instead of discarding it.
+  // When a route has no GET operation, subscribable markers go on the path item
+  // as siblings of any other operations (e.g., POST, PUT, DELETE). This handles
+  // two cases: SUBSCRIBE-only routes (pure notification channels where a
+  // ReadRequest does not work), and routes like /area (CREATE+SUBSCRIBE) where
+  // a non-read operation exists but there's still no GET. Either way, subscribers
+  // receive bodies of responseType and that fact is recorded in the document.
   if (route.verbs.includes("SUBSCRIBE")) {
     const target = (item.get ?? item) as Record<string, unknown>;
     target["x-leap-subscribable"] = true;
