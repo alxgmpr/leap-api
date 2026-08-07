@@ -1,0 +1,10 @@
+# Hand-authored: GET /occupancygroup/status's collection response. The
+# firmware route-table extraction recorded a mangled `/occupancygroupstatus`
+# route instead (see _generated/occupancygroupstatus.yaml, left in staging
+# per this task's instructions -- it also mislabels the response as the
+# singular `OccupancyGroupStatus`). Captured traffic shows the real wire
+# URL is `/occupancygroup/status`, body key `OccupancyGroupStatuses`. 200
+# OK on Caseta v01.123; 204 NoContent on RA3 v03.247.
+type: array
+items:
+  $ref: "#/components/schemas/OccupancyGroupStatus"

@@ -1,0 +1,15 @@
+# Hand-authored: GET /occupancygroup's collection response. NOT one of this
+# task's explicitly-briefed five hand-authored paths, but the same class of
+# issue: _generated/occupancygroup.yaml has no GET on the bare
+# `/occupancygroup` path at all (only POST create) -- the route-table
+# extraction instead produced a separately-tagged, TODO(response) family at
+# `/alloccupancygroups` (see _generated/alloccupancygroups.yaml, left in
+# staging), which matches this route's real shape (`getAllOccupancyGroups`
+# operationId). Captured traffic confirms the real wire URL is the plain
+# `/occupancygroup`, body key `OccupancyGroups`. 200 OK on Caseta v01.123
+# (24 instances); 204 NoContent on RA3 v03.247. Flagged in the task report
+# since it extends the brief's explicit list by inference from the same
+# mangled-collection-route pattern, not from a fresh instruction.
+type: array
+items:
+  $ref: "#/components/schemas/OccupancyGroup"

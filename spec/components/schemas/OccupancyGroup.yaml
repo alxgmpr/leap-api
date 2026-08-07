@@ -1,0 +1,42 @@
+# `required` trimmed: firmware marks Name non-pointer, but it's absent on
+# all 48 observed OccupancyGroup objects (Caseta v01.123, via
+# /occupancygroup and /occupancygroup/{occupancygroupId}; RA3 v03.247
+# returns 204 NoContent on the bare collection route, unconfirmed there) --
+# relaxed to optional. ProgrammingType (48/48) stays required.
+#
+# `ProgrammingType` points at the shared ProgrammingType schema (already
+# recovered from ButtonGroup.ProgrammingType, see ProgrammingType.yaml) --
+# same marker text/type name, and the single observed value here
+# (`Freeform`) is already a member.
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  AssociatedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedZone"
+  AssociatedSensors:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedSensor"
+  AssociatedAreas:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedArea"
+  ProgrammingType:
+    $ref: "#/components/schemas/ProgrammingType"
+  ProgrammingModel:
+    $ref: "#/components/schemas/HyperReference"
+  AggregatedBy:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  OccupiedActionSchedule:
+    $ref: "#/components/schemas/ActionSchedule"
+  UnoccupiedActionSchedule:
+    $ref: "#/components/schemas/ActionSchedule"
+required:
+  - ProgrammingType

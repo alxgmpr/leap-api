@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  OccupancyGroup:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancyStatus:
+    $ref: "#/components/schemas/OccupancyStatus"
+required:
+  - OccupancyStatus

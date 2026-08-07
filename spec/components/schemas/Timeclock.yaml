@@ -1,0 +1,16 @@
+# `required` trimmed: firmware marks Name non-pointer, but it's absent on
+# the single Caseta v01.123 Timeclock (via /timeclock; RA3 v03.247's one
+# Timeclock has it). Platform disagreement, same shape as prior tasks'
+# XID/GUID findings -- relaxed to optional.
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  TimeclockEvents:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  Name:
+    type: string

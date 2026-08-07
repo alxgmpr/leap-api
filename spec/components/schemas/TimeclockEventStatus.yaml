@@ -1,0 +1,15 @@
+# `EnableState`'s enum was pointed at the shared EnabledState schema even
+# without direct fixture coverage for this route (/timeclockevent/{id}/status
+# has zero 200 probes in either fixture): the firmware extraction's marker
+# text ("members of EnabledState") names the identical shared type already
+# recovered from Server.EnableState, NaturalLightOptimizationStatus.EnabledState
+# (Task 12b), and TimeclockStatus.EnabledState (this task) -- not a new
+# value invented from nothing, just recognizing established type identity.
+type: object
+properties:
+  TimeclockEvent:
+    $ref: "#/components/schemas/HyperReference"
+  EnableState:
+    $ref: "#/components/schemas/EnabledState"
+required:
+  - EnableState

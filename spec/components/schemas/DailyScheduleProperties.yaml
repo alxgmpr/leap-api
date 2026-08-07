@@ -1,0 +1,12 @@
+# Copied verbatim: zero fixture coverage. ActionSchedule.DailyScheduleProperties
+# is never populated on any of the 48 observed OccupancyGroup ActionSchedule
+# objects (both OccupiedActionSchedule and UnoccupiedActionSchedule always
+# have ScheduleType "None", never "DayOfWeek" or anything else that would
+# populate this field), so no fixture evidence exists to triage its
+# structure.
+type: object
+properties:
+  StartTime:
+    $ref: "#/components/schemas/OccGroupTime"
+  EndTime:
+    $ref: "#/components/schemas/OccGroupTime"

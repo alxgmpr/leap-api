@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Timeclock:
+    $ref: "#/components/schemas/HyperReference"
+  EnabledState:
+    $ref: "#/components/schemas/EnabledState"
+required:
+  - EnabledState

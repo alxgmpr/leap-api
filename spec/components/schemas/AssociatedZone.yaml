@@ -1,0 +1,6 @@
+type: object
+properties:
+  href:
+    type: string
+  Zone:
+    $ref: "#/components/schemas/HyperReference"

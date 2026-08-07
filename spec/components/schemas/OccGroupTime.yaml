@@ -1,0 +1,24 @@
+# Copied verbatim structurally: zero fixture coverage (see
+# DailyScheduleProperties.yaml -- nothing in either fixture populates this
+# type). `TimeclockEventBase` is left NESTED here, unlike TimeclockEvent.yaml
+# and NLOTime.yaml, which flatten it -- per this task's instruction not to
+# generalize the anonymous-embed flatten from the name==type shape alone,
+# absent fixture evidence for THIS schema specifically, it stays as
+# generated.
+#
+# `EventType`'s enum was pointed at the shared EventTimeType schema even
+# without direct fixture coverage for this field: the firmware extraction's
+# marker text ("members of EventTimeType") names the identical shared type
+# already recovered from StartAndEndTime.SystemAwayEventType,
+# NLOTime.NaturalLightOptimizationEventType (Task 12b), and
+# TimeclockEvent.TimeclockEventType (this task) -- not a new value
+# invented from nothing, just recognizing established type identity.
+type: object
+properties:
+  TimeclockEventBase:
+    $ref: "#/components/schemas/TimeclockEventBase"
+  EventType:
+    $ref: "#/components/schemas/EventTimeType"
+required:
+  - TimeclockEventBase
+  - EventType

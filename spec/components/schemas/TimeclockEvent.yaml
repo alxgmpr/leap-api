@@ -1,0 +1,72 @@
+# Refined from _generated/TimeclockEvent.yaml. Two deviations, both decided
+# from fixture evidence (2 observed TimeclockEvent objects, both RA3
+# v03.247, via /timeclockevent -- hand-authored, see timeclockevent.yaml
+# and timeclock.yaml):
+#
+# 1. FLATTENED `TimeclockEventBase` and `WeeklyRecurrence`, both named
+#    fields whose Go type shares the field name -- anonymous embeds, same
+#    class of bug as ZoneExpandedStatus (Task 10), Device/ButtonGroupExpanded/
+#    LinkNodeExpanded (Task 12a), and NLOTime (Task 12b, which flattened
+#    this same TimeclockEventBase type for a different parent schema). Both
+#    observed TimeclockEvent objects have TimeclockEventBase's fields
+#    (AstronomicEventType, AstronomicTimeOffset) and WeeklyRecurrence's
+#    fields (Sunday..Saturday) sitting flat at the top level, never nested
+#    under a "TimeclockEventBase" or "WeeklyRecurrence" key. Restructured as
+#    `allOf` against both, following NLOTime.yaml's precedent of not
+#    overriding TimeclockEventBase's own `required: [AstronomicEventType]`
+#    (both observed instances are Astronomic-scheduled and do carry it; a
+#    non-Astronomic TimeclockEvent's shape is unconfirmed in either
+#    fixture).
+#
+# 2. `required` trimmed: firmware marks GlobalID, Dates,
+#    AnnuallyReoccurringDates, ExceptionDates, and
+#    AnnuallyReoccurringExceptionDates non-pointer, but none are present on
+#    either of the 2 observed instances (0/2 each) -- relaxed to optional.
+#    Name, ScheduleType, TimeclockEventType (2/2 each) stay required.
+#
+# `ScheduleType` and `TimeclockEventType` point at shared enum schemas
+# (ScheduleType.yaml, EventTimeType.yaml) recovered from this and other
+# tasks' fixture evidence -- see those files' descriptions.
+type: object
+allOf:
+  - $ref: "#/components/schemas/TimeclockEventBase"
+  - $ref: "#/components/schemas/WeeklyRecurrence"
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  ProgrammingModel:
+    $ref: "#/components/schemas/HyperReference"
+  Name:
+    type: string
+  GlobalID:
+    type: string
+  ScheduleType:
+    $ref: "#/components/schemas/ScheduleType"
+  Dates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  AnnuallyReoccurringDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  BeginDate:
+    $ref: "#/components/schemas/Date"
+  EndDate:
+    $ref: "#/components/schemas/Date"
+  ExceptionDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  AnnuallyReoccurringExceptionDates:
+    type: string
+    description: "TODO(enum): members of DateList were not recovered from the
+      firmware extraction"
+  TimeclockEventType:
+    $ref: "#/components/schemas/EventTimeType"
+required:
+  - Name
+  - ScheduleType
+  - TimeclockEventType

@@ -2,11 +2,16 @@ type: string
 description: |
   Enabled/disabled toggle. The firmware extraction did not recover the full
   enum (multiple properties across the API -- Server.EnableState,
-  NaturalLightOptimizationStatus.EnabledState, and others -- reference this
-  same named type as an open string); members below were recovered from
-  Server.EnableState (RA3 v03.247, Caseta v01.123) and
-  NaturalLightOptimizationStatus.EnabledState (Caseta v01.123). Unlisted
-  values are possible.
+  NaturalLightOptimizationStatus.EnabledState, TimeclockStatus.EnabledState,
+  TimeclockEventStatus.EnableState, and others -- reference this same named
+  type as an open string); members below were recovered from
+  Server.EnableState (RA3 v03.247, Caseta v01.123),
+  NaturalLightOptimizationStatus.EnabledState (Caseta v01.123), and
+  TimeclockStatus.EnabledState (RA3 v03.247, via /timeclock/status).
+  TimeclockEventStatus.EnableState is typed against this same schema by
+  type-identity (matching marker text) but has zero direct fixture coverage
+  of its own (/timeclockevent/{id}/status is never probed with a 200 in
+  either fixture). Unlisted values are possible.
 enum:
   - Enabled
   - Disabled

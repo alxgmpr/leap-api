@@ -1,0 +1,20 @@
+# Copied verbatim, but only ever observed FLATTENED onto TimeclockEvent (an
+# anonymous embed, field name == type name) -- see TimeclockEvent.yaml. This
+# file still exists as a standalone component because TimeclockEvent.yaml's
+# `allOf` references it directly.
+type: object
+properties:
+  Sunday:
+    type: boolean
+  Monday:
+    type: boolean
+  Tuesday:
+    type: boolean
+  Wednesday:
+    type: boolean
+  Thursday:
+    type: boolean
+  Friday:
+    type: boolean
+  Saturday:
+    type: boolean

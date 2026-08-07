@@ -1,0 +1,8 @@
+type: object
+properties:
+  ScheduleType:
+    $ref: "#/components/schemas/ScheduleType"
+  DailyScheduleProperties:
+    $ref: "#/components/schemas/DailyScheduleProperties"
+required:
+  - ScheduleType

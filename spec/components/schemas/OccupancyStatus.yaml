@@ -1,0 +1,12 @@
+type: string
+description: |
+  Current occupancy reading for an occupancy group. The firmware extraction
+  did not recover the full enum; the only member below was recovered from
+  OccupancyGroupStatus.OccupancyStatus observed on Caseta v01.123 (24
+  instances, via /occupancygroup/status -- hand-authored, see
+  occupancygroup.yaml). Never observed on RA3 v03.247 (204 NoContent on
+  this route). This is a single-value, single-platform sample -- `Occupied`
+  and `Unoccupied` counterparts are expected by the concept but unconfirmed
+  in either fixture. Unlisted values are possible.
+enum:
+  - Unknown

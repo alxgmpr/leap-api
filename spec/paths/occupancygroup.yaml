@@ -1,0 +1,105 @@
+# Refined from _generated/occupancygroup.yaml. Two HAND-AUTHORED paths
+# added:
+#
+# - /occupancygroup/status: body key `OccupancyGroupStatuses`. One of this
+#   task's five explicitly-briefed probe-derived paths -- the extraction
+#   mangled it into a separate `/occupancygroupstatus` family (see
+#   _generated/occupancygroupstatus.yaml, left in staging). 200 OK on
+#   Caseta v01.123; 204 NoContent on RA3 v03.247.
+#
+# - /occupancygroup (GET): body key `OccupancyGroups`. NOT one of the five
+#   explicitly-briefed paths, but the same class of issue: the extraction
+#   never recovered a GET for the bare `/occupancygroup` path at all (only
+#   POST create survived in _generated/occupancygroup.yaml); instead it
+#   produced a separately-tagged, TODO(response) `/alloccupancygroups`
+#   route (see _generated/alloccupancygroups.yaml, left in staging) whose
+#   operationId (`getAllOccupancyGroups`) and shape match this route.
+#   Captured traffic confirms the real wire URL is the plain
+#   `/occupancygroup`. 200 OK on Caseta v01.123 (24 instances); 204
+#   NoContent on RA3 v03.247. Flagged in the task report as an inferred
+#   extension of the brief's explicit five-path list.
+#
+# No fixture evidence exists for /occupancygroup/{id}/associatedsensor,
+# /associatedzone, or a per-id /status route -- all return 400 BadRequest
+# on every probed id in both fixtures, and none were recovered by the
+# extraction in any form (mangled or otherwise), so they're omitted here
+# rather than invented.
+/occupancygroup:
+  post:
+    operationId: createOccupancyGroup
+    tags:
+      - occupancygroup
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: OccupancyGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroup"
+    summary: Create occupancy group
+  get:
+    operationId: getOccupancyGroup
+    tags:
+      - occupancygroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OccupancyGroups
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroups"
+    summary: List all occupancy groups
+/occupancygroup/status:
+  get:
+    operationId: getOccupancyGroupStatus
+    tags:
+      - occupancygroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OccupancyGroupStatuses
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroupStatuses"
+    summary: List all occupancy group statuses
+/occupancygroup/{occupancygroupId}:
+  get:
+    operationId: getOccupancyGroupID
+    tags:
+      - occupancygroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OccupancyGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroup"
+    summary: Read occupancy group
+  put:
+    operationId: updateOccupancyGroupID
+    tags:
+      - occupancygroup
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: OccupancyGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroup"
+    summary: Update occupancy group
+  parameters:
+    - name: occupancygroupId
+      in: path
+      required: true
+      schema:
+        type: string
