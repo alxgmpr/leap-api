@@ -1,0 +1,20 @@
+type: object
+description: |
+  Firmware models this as `{ZoneStatus: {...}, Zone: {...}}` — a `ZoneStatus`
+  key nesting the status fields. Captured traffic (RA3 v03.247, Caseta
+  v01.123) shows the opposite: `ZoneStatus`'s fields (href, Level,
+  StatusAccuracy, ...) are flattened directly into the response body
+  alongside a `Zone` key holding the full parent `Zone` object, not a
+  ZoneStatus-style href-only reference. Go promotes fields from the
+  anonymously-embedded `leapobj.ZoneStatus`, the same class of bug Task 3
+  fixed for `HyperReference` embeds — the extraction's struct-to-schema pass
+  didn't special-case this one. Fixed here to match the wire: `allOf` pulls
+  in every ZoneStatus field, and the sibling `Zone` property overrides
+  ZoneStatus's href-only reference with the full `Zone` schema.
+allOf:
+  - $ref: "#/components/schemas/ZoneStatus"
+properties:
+  Zone:
+    $ref: "#/components/schemas/Zone"
+required:
+  - Zone

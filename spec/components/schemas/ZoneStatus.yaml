@@ -1,0 +1,56 @@
+type: object
+description: |
+  Firmware marks SwitchedLevel, CCOLevel, ReceptacleLevel, FanSpeed,
+  Availability, and ZoneLockState as non-pointer (required), but across 41
+  observed zones (RA3 v03.247, Caseta v01.123) each is only ever present on
+  the zone types it applies to (e.g. FanSpeed only on fan zones, SwitchedLevel
+  only on switched zones) and most are absent entirely from one platform or
+  the other — relaxed to optional here on hardware evidence. StatusAccuracy
+  was present on all 41 and stays required.
+properties:
+  href:
+    type: string
+  Level:
+    type: number
+  Vibrancy:
+    type: number
+  ColorTuningStatus:
+    $ref: "#/components/schemas/ColorTuningStatus"
+  Tilt:
+    type: number
+  SwitchedLevel:
+    type: string
+    description: "TODO(enum): members of SwitchedLevel were not recovered from the
+      firmware extraction"
+  CCOLevel:
+    type: string
+    description: "TODO(enum): members of CCOLevel were not recovered from the
+      firmware extraction"
+  ReceptacleLevel:
+    type: string
+    description: "TODO(enum): members of ReceptacleLevel were not recovered from the
+      firmware extraction"
+  FanSpeed:
+    type: string
+    description: "TODO(enum): members of FanSpeed were not recovered from the
+      firmware extraction"
+  Zone:
+    $ref: "#/components/schemas/HyperReference"
+  StatusAccuracy:
+    type: string
+    description: "TODO(enum): members of StatusAccuracy were not recovered from the
+      firmware extraction"
+  Availability:
+    type: string
+    description: "TODO(enum): members of Availability were not recovered from the
+      firmware extraction"
+  SingleSetPointHVACStatus:
+    $ref: "#/components/schemas/SingleSetPointHVACStatus"
+  DualSetPointHVACStatus:
+    $ref: "#/components/schemas/DualSetPointHVACStatus"
+  ZoneLockState:
+    type: string
+    description: "TODO(enum): members of ZoneLockState were not recovered from the
+      firmware extraction"
+required:
+  - StatusAccuracy

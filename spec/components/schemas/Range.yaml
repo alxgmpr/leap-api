@@ -1,0 +1,8 @@
+type: object
+properties:
+  Min:
+    type: number
+  Max:
+    type: number
+  Step:
+    type: number

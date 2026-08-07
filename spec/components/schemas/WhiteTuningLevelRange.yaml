@@ -1,0 +1,9 @@
+type: object
+properties:
+  Min:
+    type: number
+  Max:
+    type: number
+required:
+  - Min
+  - Max

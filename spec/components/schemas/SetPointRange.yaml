@@ -1,0 +1,6 @@
+type: object
+properties:
+  F:
+    $ref: "#/components/schemas/Range"
+  C:
+    $ref: "#/components/schemas/Range"

@@ -1,0 +1,11 @@
+type: array
+description: |
+  Body of a `ReadRequest` on the `/zone` collection (MessageBodyType
+  `Zones`; the wire wraps this array as `{"Zones": [...]}`, unwrapped here
+  per the MessageBodyType convention). Not present in the firmware-extracted
+  route table: the extraction recorded `getZone`'s x-leap-body-type as
+  `Zone` (singular), but Caseta v01.123 (RA3 returns 405 on the bare
+  collection route, so unconfirmed there) responds with a `Zones` array of
+  `Zone` objects. Hand-authored from captured traffic.
+items:
+  $ref: "#/components/schemas/Zone"

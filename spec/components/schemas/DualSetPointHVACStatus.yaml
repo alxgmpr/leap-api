@@ -1,0 +1,35 @@
+type: object
+properties:
+  CurrentTemperature:
+    $ref: "#/components/schemas/SetPoint"
+  HeatingSetPoint:
+    $ref: "#/components/schemas/SetPoint"
+  CoolingSetPoint:
+    $ref: "#/components/schemas/SetPoint"
+  OperatingMode:
+    type: string
+    description: "TODO(enum): members of OperatingMode were not recovered from the
+      firmware extraction"
+  OperatingStatuses:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of OperatingStatus were not recovered from the
+        firmware extraction"
+  FanMode:
+    type: string
+    description: "TODO(enum): members of FanMode were not recovered from the
+      firmware extraction"
+  FanStatus:
+    type: string
+    description: "TODO(enum): members of FanStatus were not recovered from the
+      firmware extraction"
+  ScheduleStatus:
+    type: string
+    description: "TODO(enum): members of ActiveState were not recovered from the
+      firmware extraction"
+required:
+  - OperatingMode
+  - FanMode
+  - FanStatus
+  - ScheduleStatus

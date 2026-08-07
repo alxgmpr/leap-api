@@ -1,0 +1,4 @@
+type: object
+properties:
+  PowerLoss:
+    $ref: "#/components/schemas/PowerLossEmergencyProperties"

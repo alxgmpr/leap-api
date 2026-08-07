@@ -1,0 +1,11 @@
+type: array
+description: |
+  Body of a `ReadRequest` on the `/zone/status` collection (MessageBodyType
+  `ZoneStatuses`; the wire wraps this array as `{"ZoneStatuses": [...]}`,
+  unwrapped here per the MessageBodyType convention). This route is absent
+  from the firmware-extracted route table (the extraction records collection
+  paths concatenated, e.g. `/zonestatus`, not the real `/zone/status`), so
+  both the path and this schema are hand-authored from captured traffic
+  (RA3 v03.247, Caseta v01.123 — both 200 OK).
+items:
+  $ref: "#/components/schemas/ZoneStatus"

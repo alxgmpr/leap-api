@@ -1,0 +1,65 @@
+type: object
+description: |
+  A controllable output. Firmware marks `XID` non-pointer (always present),
+  but Caseta v01.123 omits it on all 14 observed zones (RA3 v03.247 includes
+  it on all 27) — relaxed to optional here on hardware evidence.
+properties:
+  href:
+    type: string
+  XID:
+    type: string
+  Name:
+    type: string
+  AvailableControlTypes:
+    type: array
+    items:
+      $ref: "#/components/schemas/ZoneType"
+  Category:
+    $ref: "#/components/schemas/ZoneCategory"
+  ThirdPartyIdentification:
+    $ref: "#/components/schemas/ThirdPartyIdentification"
+  Device:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedFacade:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancySettings:
+    $ref: "#/components/schemas/HyperReference"
+  DaylightingGainSettings:
+    $ref: "#/components/schemas/HyperReference"
+  PhaseSettings:
+    $ref: "#/components/schemas/HyperReference"
+  MaxWattageType:
+    type: string
+    description: |
+      TODO(enum): members of MaxWattageType were not recovered from the
+      firmware extraction. Never observed on RA3 v03.247 or Caseta v01.123
+      (0/41 zones) — see the relaxed `required` list below.
+  MaxWattage:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  SingleSetPointHVACProperties:
+    $ref: "#/components/schemas/SingleSetPointHVACProperties"
+  DualSetPointHVACProperties:
+    $ref: "#/components/schemas/DualSetPointHVACProperties"
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  EmergencyProperties:
+    $ref: "#/components/schemas/EmergencyProperties"
+  ColorTuningProperties:
+    $ref: "#/components/schemas/ColorTuningProperties"
+  DefaultDimCurve:
+    $ref: "#/components/schemas/HyperReference"
+  CountdownTimer:
+    $ref: "#/components/schemas/HyperReference"
+  TuningSettings:
+    $ref: "#/components/schemas/HyperReference"
+  ControlType:
+    $ref: "#/components/schemas/ZoneType"
+required:
+  - Name
+  - ControlType

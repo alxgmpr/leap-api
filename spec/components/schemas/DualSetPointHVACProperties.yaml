@@ -1,0 +1,28 @@
+type: object
+properties:
+  TemperatureScales:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of TemperatureUnit were not recovered from the
+        firmware extraction"
+  FanModes:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of FanMode were not recovered from the
+        firmware extraction"
+  OperatingModes:
+    type: array
+    items:
+      type: string
+      description: "TODO(enum): members of OperatingMode were not recovered from the
+        firmware extraction"
+  HeatingSetPointRange:
+    $ref: "#/components/schemas/SetPointRange"
+  CoolingSetPointRange:
+    $ref: "#/components/schemas/SetPointRange"
+  HeatingCoolingDelta:
+    $ref: "#/components/schemas/SetPointRange"
+  Schedule:
+    $ref: "#/components/schemas/Schedule"

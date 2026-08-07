@@ -1,0 +1,6 @@
+type: object
+properties:
+  Hue:
+    type: number
+  Saturation:
+    type: number

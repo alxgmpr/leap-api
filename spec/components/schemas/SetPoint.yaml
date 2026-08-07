@@ -1,0 +1,6 @@
+type: object
+properties:
+  F:
+    type: number
+  C:
+    type: number

@@ -1,0 +1,370 @@
+# Refined from spec/paths/_generated/zone.yaml. Deviations from a straight
+# copy, all decided and recorded in the Task 10 report:
+#
+# 1. GET /zone: x-leap-body-type and the 200 schema were changed from `Zone`
+#    (singular) to `Zones` (array). The firmware extraction mislabeled the
+#    collection route's MessageBodyType; captured Caseta v01.123 traffic
+#    (RA3 returns 405 on the bare collection route, so unconfirmed there)
+#    shows the wire body is `{"Zones": [...]}`.
+#
+# 2. /zone/status and /zone/{zoneId}/status/expanded are HAND-AUTHORED, not
+#    copied. Both are absent from _generated/zone.yaml: the route-table
+#    extraction records collection paths concatenated (would need
+#    `/zonestatus`) and reorders the expanded-status segments (the firmware
+#    table has `/zone/{id}/expanded/status`). Captured traffic (RA3 v03.247,
+#    Caseta v01.123, both 200 OK) is authoritative for both -- the mangled
+#    generated forms (`/zone/{zoneId}/expanded/status`, and the entirely
+#    absent `/zone/status`) are excluded from this file so they never reach
+#    the bundle.
+#
+# 3. /zone/{zoneId} and /zone/{zoneXid} (and their /associatedloadcontroller
+#    children) are MERGED. OpenAPI forbids two paths differing only in
+#    parameter name (redocly's no-identical-paths); in LEAP a zone is
+#    addressable by either its numeric integration id or its XID string, so
+#    dropping one silently would lose a real access path. Each pair is
+#    merged into one `/zone/{zoneId}` path whose parameter description
+#    documents both accepted forms, keeping the union of operations (the
+#    `{zoneId}` variant carried richer metadata -- subscribability, event
+#    schema, summary -- than its `{zoneXid}` counterpart for the same
+#    operation, so that is the definition kept).
+/zone:
+  get:
+    operationId: getZone
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Zones
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zones"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Zone"
+    summary: List all zones
+/zone/status:
+  # HAND-AUTHORED (probe-derived): absent from _generated/zone.yaml. The
+  # firmware route-table extraction records collection paths concatenated
+  # (e.g. it would need a literal `/zonestatus` segment); the real wire URL
+  # is `/zone/status`. Confirmed 200 OK with body key `ZoneStatuses` on both
+  # RA3 v03.247 and Caseta v01.123.
+  get:
+    operationId: getZoneStatus
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneStatuses
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneStatuses"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/ZoneStatus"
+    summary: List all zone statuses
+/zone/daylightinggainsettings:
+  get:
+    operationId: getZoneDaylightingGainSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/zone/{zoneId}:
+  get:
+    operationId: getZoneID
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Zone
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zone"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Zone"
+    summary: Read zone
+  put:
+    operationId: updateZoneID
+    tags:
+      - zone
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Zone
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zone"
+    summary: Update zone
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      description: |
+        Zone identifier. Accepts either the numeric integration id (e.g.
+        `518`) or the resource XID string (e.g.
+        `AbCdEfGhIjKlMnOpQrStUv`). Merged from the generated `zoneId` and
+        `zoneXid` route variants, which are the same resource addressed two
+        ways.
+      schema:
+        type: string
+/zone/{zoneId}/associatedloadcontroller:
+  get:
+    operationId: getZoneIDAssociatedLoadController
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List load controllers for zone
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      description: |
+        Zone identifier. Accepts either the numeric integration id (e.g.
+        `518`) or the resource XID string (e.g.
+        `AbCdEfGhIjKlMnOpQrStUv`). Merged from the generated `zoneId` and
+        `zoneXid` route variants, which are the same resource addressed two
+        ways.
+      schema:
+        type: string
+/zone/{zoneId}/countdowntimer:
+  get:
+    operationId: getZoneIDCountdownTimer
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone countdown timer
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/daylightinggainsettings:
+  get:
+    operationId: getZoneIDDaylightingGainSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone daylighting gain settings
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/status/expanded:
+  # HAND-AUTHORED (probe-derived): _generated/zone.yaml has this same
+  # operation under `/zone/{zoneId}/expanded/status` -- the firmware route
+  # table has the `expanded` and `status` segments REORDERED relative to the
+  # real wire URL. Confirmed 200 OK with body key `ZoneExpandedStatus` on
+  # both RA3 v03.247 and Caseta v01.123; the wire form (`status/expanded`)
+  # is used here and the mangled generated path is dropped.
+  get:
+    operationId: getZoneIDStatusExpanded
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneExpandedStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneExpandedStatus"
+    summary: Get expanded zone status
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/naturalshows:
+  get:
+    operationId: getZoneIDNaturalShows
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/occupancysettings:
+  get:
+    operationId: getZoneIDOccupancySettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone occupancy settings
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/phasesettings:
+  get:
+    operationId: getZoneIDPhaseSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone phase settings
+  put:
+    operationId: updateZoneIDPhaseSettings
+    tags:
+      - zone
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update zone phase settings
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/status:
+  get:
+    operationId: getZoneIDStatus
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/ZoneStatus"
+    summary: Get zone status
+  put:
+    operationId: updateZoneIDStatus
+    tags:
+      - zone
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ZoneStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneStatus"
+    summary: Set zone level
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/tuningsettings:
+  get:
+    operationId: getZoneIDTuningSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone tuning settings
+  put:
+    operationId: updateZoneIDTuningSettings
+    tags:
+      - zone
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update zone tuning settings
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/zonescene:
+  get:
+    operationId: getZoneIDZoneScene
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List zone scenes
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/occupancysettings:
+  get:
+    operationId: getZoneOccupancySettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/zone/tuningsettings:
+  get:
+    operationId: getZoneTuningSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
