@@ -88,6 +88,35 @@ duplicated into description text — each is a single short value rather than a
 table, discoverable in the raw spec or via a renderer's "show extensions"
 toggle without materially losing readability by staying out of the prose.
 
+## Subscription markers: `x-leap-subscribable` and `x-leap-event-schema`
+
+Two more vendor extensions, scoped narrowly to the subscription lifecycle
+rather than to every operation like the three above — see
+`docs/subscriptions.md` for the full lifecycle account these support:
+
+- **`x-leap-subscribable`** — `true` on any operation that also accepts a
+  `SubscribeRequest`. It sits on the `get` operation when one exists; on the
+  one route with no `GET` at all (`/area`, reachable only via `POST` and
+  `SUBSCRIBE`), it sits on the path item itself, as a sibling of `post`. 19
+  routes carry this marker in the finished specification.
+- **`x-leap-event-schema`** — a `$ref` to the schema of the frames the
+  processor pushes on that subscription once it is active (an unsolicited
+  push, in `docs/subscriptions.md`'s terms). It sits in the same place as
+  `x-leap-subscribable` — the `get` operation, or the path item when there is
+  none. It is present only where a subscribable route also has a known
+  response type recovered from the firmware extraction: 16 of the 19
+  subscribable routes carry one. The 3 that don't
+  (`/area/{areaId}/occupancysensorsettings`,
+  `/service/bacnetnetworksettings/{bacnetnetworksettingsId}`,
+  `/service/bacnetsettings`) are still subscribable — the marker above is
+  still `true` — but the shape of what gets pushed on them is not established
+  in this specification.
+
+Neither is mirrored into rendered `description` text the way
+`x-leap-platforms` is (see "Why they are mirrored into descriptions" above)
+— both stay as raw extension keys, visible in the spec source and via a
+renderer's "show extensions" toggle.
+
 ## Collection GETs and the singular/plural defect
 
 The firmware route extraction that this specification's schemas are generated
@@ -132,6 +161,22 @@ mangled generated forms are excluded from the bundled specification, and the
 correct, traffic-confirmed paths are hand-authored in their place. Each
 hand-authored path's YAML file states this explicitly and cites the
 confirming capture.
+
+## Merged id/xid paths
+
+A third, unrelated path-level adjustment: in LEAP, several resources are
+addressable either by a numeric integration id or by an XID string, and the
+firmware route extraction records both as separate routes (e.g.
+`/area/{id}` and `/area/{xid}`). OpenAPI forbids two paths in the same
+document that differ only in a path parameter's name — Redoc's
+`no-identical-paths` rule rejects it, and rightly so, since both would
+normalize to the same template. Dropping one silently would lose a real
+access path, so instead each such pair is merged into a single path (e.g.
+`/area/{areaId}`) whose parameter description documents both accepted forms,
+keeping the union of whichever operations, subscribability, and event schema
+either half of the pair carried. `spec/paths/area.yaml` and
+`spec/paths/zone.yaml` both record a concrete example of this merge and the
+reasoning for which half's metadata was kept.
 
 ## The flat `Command` model
 
