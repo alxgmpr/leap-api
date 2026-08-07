@@ -1,0 +1,66 @@
+/detectiongroup/{detectiongroupId}:
+  delete:
+    operationId: deleteDetectionGroupID
+    tags:
+      - detectiongroup
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: DetectionGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DetectionGroup"
+    summary: Delete detection group
+  get:
+    operationId: getDetectionGroupID
+    tags:
+      - detectiongroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DetectionGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DetectionGroup"
+    summary: Read detection group (camera)
+  put:
+    operationId: updateDetectionGroupID
+    tags:
+      - detectiongroup
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: DetectionGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DetectionGroup"
+    summary: Update detection group
+  parameters:
+    - name: detectiongroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/detectiongroup/{detectiongroupId}/camera:
+  get:
+    operationId: getDetectionGroupIDCamera
+    tags:
+      - detectiongroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List cameras in detection group
+  parameters:
+    - name: detectiongroupId
+      in: path
+      required: true
+      schema:
+        type: string

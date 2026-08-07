@@ -1,0 +1,15 @@
+/daliemergencytestgroup:
+  get:
+    operationId: getDaliEmergencyTestGroup
+    tags:
+      - daliemergencytestgroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DaliEmergencyTestGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DaliEmergencyTestGroup"
+    summary: List DALI emergency test groups

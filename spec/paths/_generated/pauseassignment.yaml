@@ -1,0 +1,33 @@
+/pauseassignment/{pauseassignmentId}:
+  delete:
+    operationId: deletePauseAssignmentID
+    tags:
+      - pauseassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: PauseAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PauseAssignment"
+  get:
+    operationId: getPauseAssignmentID
+    tags:
+      - pauseassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: PauseAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PauseAssignment"
+  parameters:
+    - name: pauseassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

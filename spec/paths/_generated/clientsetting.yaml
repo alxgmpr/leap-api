@@ -1,0 +1,29 @@
+/clientsetting:
+  get:
+    operationId: getClientSetting
+    tags:
+      - clientsetting
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ClientSetting
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientSetting"
+    summary: Get client settings
+  put:
+    operationId: updateClientSetting
+    tags:
+      - clientsetting
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ClientSetting
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientSetting"
+    summary: Update client settings

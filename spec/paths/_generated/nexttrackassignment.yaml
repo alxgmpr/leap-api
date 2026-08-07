@@ -1,0 +1,33 @@
+/nexttrackassignment/{nexttrackassignmentId}:
+  delete:
+    operationId: deleteNextTrackAssignmentID
+    tags:
+      - nexttrackassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: NextTrackAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NextTrackAssignment"
+  get:
+    operationId: getNextTrackAssignmentID
+    tags:
+      - nexttrackassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: NextTrackAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NextTrackAssignment"
+  parameters:
+    - name: nexttrackassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

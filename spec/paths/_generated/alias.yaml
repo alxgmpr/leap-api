@@ -1,0 +1,64 @@
+/alias:
+  post:
+    operationId: createAlias
+    tags:
+      - alias
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: Alias
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Alias"
+    summary: Create alias
+  get:
+    operationId: getAlias
+    tags:
+      - alias
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Alias
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Alias"
+    summary: List aliases
+/alias/{aliasId}:
+  get:
+    operationId: getAliasID
+    tags:
+      - alias
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Alias
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Alias"
+    summary: Read alias
+  put:
+    operationId: updateAliasID
+    tags:
+      - alias
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Alias
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Alias"
+    summary: Update alias
+  parameters:
+    - name: aliasId
+      in: path
+      required: true
+      schema:
+        type: string

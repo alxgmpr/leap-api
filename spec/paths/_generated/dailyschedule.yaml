@@ -1,0 +1,55 @@
+/dailyschedule:
+  get:
+    operationId: getDailySchedule
+    tags:
+      - dailyschedule
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DailySchedule
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DailySchedule"
+    summary: List daily schedules
+  put:
+    operationId: updateDailySchedule
+    tags:
+      - dailyschedule
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: DailySchedule
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DailySchedule"
+    summary: Update daily schedule
+/dailyschedule/{dailyscheduleId}/dailyevents:
+  get:
+    operationId: getDailyScheduleIDDailyEvents
+    tags:
+      - dailyschedule
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: dailyscheduleId
+      in: path
+      required: true
+      schema:
+        type: string
+/dailyschedule/query:
+  get:
+    operationId: getDailyScheduleQuery
+    tags:
+      - dailyschedule
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

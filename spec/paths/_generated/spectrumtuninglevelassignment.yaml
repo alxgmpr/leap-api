@@ -1,0 +1,46 @@
+/spectrumtuninglevelassignment/{spectrumtuninglevelassignmentId}:
+  delete:
+    operationId: deleteSpectrumTuningLevelAssignmentID
+    tags:
+      - spectrumtuninglevelassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: SpectrumTuningLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SpectrumTuningLevelAssignment"
+  get:
+    operationId: getSpectrumTuningLevelAssignmentID
+    tags:
+      - spectrumtuninglevelassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SpectrumTuningLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SpectrumTuningLevelAssignment"
+  put:
+    operationId: updateSpectrumTuningLevelAssignmentID
+    tags:
+      - spectrumtuninglevelassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: SpectrumTuningLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SpectrumTuningLevelAssignment"
+  parameters:
+    - name: spectrumtuninglevelassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

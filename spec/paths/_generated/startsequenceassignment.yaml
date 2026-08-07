@@ -1,0 +1,33 @@
+/startsequenceassignment/{startsequenceassignmentId}:
+  delete:
+    operationId: deleteStartSequenceAssignmentID
+    tags:
+      - startsequenceassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: StartSequenceAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartSequenceAssignment"
+  get:
+    operationId: getStartSequenceAssignmentID
+    tags:
+      - startsequenceassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: StartSequenceAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartSequenceAssignment"
+  parameters:
+    - name: startsequenceassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

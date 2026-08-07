@@ -1,0 +1,24 @@
+/rentablespacestatus:
+  x-leap-subscribable: true
+  x-leap-event-schema:
+    $ref: "#/components/schemas/RentableSpaceStatus"
+/rentablespacestatus/with/explicit/paging:
+  get:
+    operationId: getRentableSpaceStatusWithExplicitPaging
+    tags:
+      - rentablespacestatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/rentablespacestatus/with/implicit/paging:
+  get:
+    operationId: getRentableSpaceStatusWithImplicitPaging
+    tags:
+      - rentablespacestatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

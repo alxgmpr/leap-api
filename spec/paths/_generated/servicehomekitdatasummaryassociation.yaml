@@ -1,0 +1,16 @@
+/servicehomekitdatasummaryassociation/{servicehomekitdatasummaryassociationId}:
+  get:
+    operationId: getServiceHomeKitDataSummaryAssociationID
+    tags:
+      - servicehomekitdatasummaryassociation
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: servicehomekitdatasummaryassociationId
+      in: path
+      required: true
+      schema:
+        type: string

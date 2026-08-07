@@ -1,0 +1,75 @@
+/countdowntimer:
+  post:
+    operationId: createCountdownTimer
+    tags:
+      - countdowntimer
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: CountdownTimer
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CountdownTimer"
+    summary: Create countdown timer
+  get:
+    operationId: getCountdownTimer
+    tags:
+      - countdowntimer
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: CountdownTimer
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CountdownTimer"
+    summary: List countdown timers
+/countdowntimer/{countdowntimerId}:
+  delete:
+    operationId: deleteCountdownTimerID
+    tags:
+      - countdowntimer
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: CountdownTimer
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CountdownTimer"
+  get:
+    operationId: getCountdownTimerID
+    tags:
+      - countdowntimer
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: CountdownTimer
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CountdownTimer"
+  put:
+    operationId: updateCountdownTimerID
+    tags:
+      - countdowntimer
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: CountdownTimer
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CountdownTimer"
+  parameters:
+    - name: countdowntimerId
+      in: path
+      required: true
+      schema:
+        type: string

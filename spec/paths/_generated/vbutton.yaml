@@ -1,0 +1,34 @@
+/vbutton/{vbuttonId}:
+  delete:
+    operationId: deleteVButtonID
+    tags:
+      - vbutton
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getVButtonID
+    tags:
+      - vbutton
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateVButtonID
+    tags:
+      - vbutton
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: vbuttonId
+      in: path
+      required: true
+      schema:
+        type: string

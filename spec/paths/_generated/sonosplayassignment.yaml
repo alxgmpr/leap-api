@@ -1,0 +1,46 @@
+/sonosplayassignment/{sonosplayassignmentId}:
+  delete:
+    operationId: deleteSonosPlayAssignmentID
+    tags:
+      - sonosplayassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: SonosPlayAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SonosPlayAssignment"
+  get:
+    operationId: getSonosPlayAssignmentID
+    tags:
+      - sonosplayassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SonosPlayAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SonosPlayAssignment"
+  put:
+    operationId: updateSonosPlayAssignmentID
+    tags:
+      - sonosplayassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: SonosPlayAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SonosPlayAssignment"
+  parameters:
+    - name: sonosplayassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

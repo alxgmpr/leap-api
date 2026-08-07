@@ -1,0 +1,41 @@
+/load/{loadId}:
+  get:
+    operationId: getLoadID
+    tags:
+      - load
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Load
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Load"
+    summary: Read load
+  parameters:
+    - name: loadId
+      in: path
+      required: true
+      schema:
+        type: string
+/load/{loadXid}:
+  get:
+    operationId: getLoadXID
+    tags:
+      - load
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Load
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Load"
+  parameters:
+    - name: loadXid
+      in: path
+      required: true
+      schema:
+        type: string

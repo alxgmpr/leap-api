@@ -1,0 +1,187 @@
+/zonetypegroup:
+  get:
+    operationId: getZoneTypeGroup
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneTypeGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneTypeGroup"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/ZoneTypeGroup"
+    summary: List all zone type groups
+/zonetypegroup/{zonetypegroupId}:
+  get:
+    operationId: getZoneTypeGroupID
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneTypeGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneTypeGroup"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/ZoneTypeGroup"
+    summary: Read zone type group
+  parameters:
+    - name: zonetypegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/zonetypegroup/{zonetypegroupId}/emergencysettings:
+  get:
+    operationId: getZoneTypeGroupIDEmergencySettings
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: zonetypegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/zonetypegroup/{zonetypegroupId}/emergencysettings/{emergencysettingsId}:
+  get:
+    operationId: getZoneTypeGroupIDEmergencySettingsID
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get emergency settings for zone type group
+  put:
+    operationId: updateZoneTypeGroupIDEmergencySettingsID
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update emergency settings
+  parameters:
+    - name: zonetypegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: emergencysettingsId
+      in: path
+      required: true
+      schema:
+        type: string
+/zonetypegroup/{zonetypegroupId}/loadshedding:
+  get:
+    operationId: getZoneTypeGroupIDLoadShedding
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneTypeGroupLoadShedding
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneTypeGroupLoadShedding"
+    summary: Get zone type group load shedding
+  parameters:
+    - name: zonetypegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/zonetypegroup/{zonetypegroupId}/loadsheddinggoal:
+  get:
+    operationId: getZoneTypeGroupIDLoadSheddingGoal
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateZoneTypeGroupIDLoadSheddingGoal
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: zonetypegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/zonetypegroup/{zonetypegroupId}/occupancysettings:
+  get:
+    operationId: getZoneTypeGroupIDOccupancySettings
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone type group occupancy settings
+  parameters:
+    - name: zonetypegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/zonetypegroup/{zonetypegroupId}/status:
+  get:
+    operationId: getZoneTypeGroupIDStatus
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneTypeGroupStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneTypeGroupStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/ZoneTypeGroupStatus"
+    summary: Get zone type group status
+  parameters:
+    - name: zonetypegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/zonetypegroup/occupancysettings:
+  get:
+    operationId: getZoneTypeGroupOccupancySettings
+    tags:
+      - zonetypegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

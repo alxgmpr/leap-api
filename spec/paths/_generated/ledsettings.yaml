@@ -1,0 +1,29 @@
+/ledsettings:
+  get:
+    operationId: getLEDSettings
+    tags:
+      - ledsettings
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LEDSettings
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LEDSettings"
+    summary: Get LED settings
+  put:
+    operationId: updateLEDSettings
+    tags:
+      - ledsettings
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: LEDSettings
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LEDSettings"
+    summary: Update LED settings

@@ -1,0 +1,49 @@
+/dimmedlevelassignment/{dimmedlevelassignmentId}:
+  delete:
+    operationId: deleteDimmedLevelAssignmentID
+    tags:
+      - dimmedlevelassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: DimmedLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DimmedLevelAssignment"
+    summary: Delete assignment
+  get:
+    operationId: getDimmedLevelAssignmentID
+    tags:
+      - dimmedlevelassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DimmedLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DimmedLevelAssignment"
+    summary: Read assignment
+  put:
+    operationId: updateDimmedLevelAssignmentID
+    tags:
+      - dimmedlevelassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: DimmedLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DimmedLevelAssignment"
+    summary: Update assignment
+  parameters:
+    - name: dimmedlevelassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

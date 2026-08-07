@@ -1,0 +1,46 @@
+/switchedlevelassignment/{switchedlevelassignmentId}:
+  delete:
+    operationId: deleteSwitchedLevelAssignmentID
+    tags:
+      - switchedlevelassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: SwitchedLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SwitchedLevelAssignment"
+  get:
+    operationId: getSwitchedLevelAssignmentID
+    tags:
+      - switchedlevelassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SwitchedLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SwitchedLevelAssignment"
+  put:
+    operationId: updateSwitchedLevelAssignmentID
+    tags:
+      - switchedlevelassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: SwitchedLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SwitchedLevelAssignment"
+  parameters:
+    - name: switchedlevelassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,121 @@
+/system:
+  get:
+    operationId: getSystem
+    tags:
+      - system
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: System
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/System"
+    summary: Get system info
+  put:
+    operationId: updateSystem
+    tags:
+      - system
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: System
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/System"
+    summary: Update system settings
+/system/action/intruder/{intruderId}:
+  get:
+    operationId: getSystemActionIntruderID
+    tags:
+      - system
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateSystemActionIntruderID
+    tags:
+      - system
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: intruderId
+      in: path
+      required: true
+      schema:
+        type: string
+/system/emergencysettings:
+  get:
+    operationId: getSystemEmergencySettings
+    tags:
+      - system
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get emergency settings
+/system/emergencysettings/{emergencysettingsId}:
+  get:
+    operationId: getSystemEmergencySettingsID
+    tags:
+      - system
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Read emergency settings
+  put:
+    operationId: updateSystemEmergencySettingsID
+    tags:
+      - system
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update emergency settings
+  parameters:
+    - name: emergencysettingsId
+      in: path
+      required: true
+      schema:
+        type: string
+/system/emergencysettings/query:
+  get:
+    operationId: getSystemEmergencySettingsQuery
+    tags:
+      - system
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/system/loadsheddinggoal:
+  get:
+    operationId: getSystemLoadSheddingGoal
+    tags:
+      - system
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateSystemLoadSheddingGoal
+    tags:
+      - system
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

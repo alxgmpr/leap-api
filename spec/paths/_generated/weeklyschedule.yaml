@@ -1,0 +1,29 @@
+/weeklyschedule:
+  get:
+    operationId: getWeeklySchedule
+    tags:
+      - weeklyschedule
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: WeeklySchedule
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WeeklySchedule"
+    summary: List weekly schedules
+  put:
+    operationId: updateWeeklySchedule
+    tags:
+      - weeklyschedule
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: WeeklySchedule
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WeeklySchedule"
+    summary: Update weekly schedule

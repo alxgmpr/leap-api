@@ -1,0 +1,17 @@
+/unassociateddevicediscoverysession/{unassociateddevicediscoverysessionId}:
+  get:
+    operationId: getUnassociatedDeviceDiscoverySessionID
+    tags:
+      - unassociateddevicediscoverysession
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get unassociated device discovery session
+  parameters:
+    - name: unassociateddevicediscoverysessionId
+      in: path
+      required: true
+      schema:
+        type: string

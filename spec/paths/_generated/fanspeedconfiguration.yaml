@@ -1,0 +1,68 @@
+/fanspeedconfiguration/{fanspeedconfigurationId}:
+  get:
+    operationId: getFanSpeedConfigurationID
+    tags:
+      - fanspeedconfiguration
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: FanSpeedConfiguration
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FanSpeedConfiguration"
+    summary: Read fan speed configuration
+  put:
+    operationId: updateFanSpeedConfigurationID
+    tags:
+      - fanspeedconfiguration
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: FanSpeedConfiguration
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FanSpeedConfiguration"
+    summary: Update fan speed configuration
+  parameters:
+    - name: fanspeedconfigurationId
+      in: path
+      required: true
+      schema:
+        type: string
+/fanspeedconfiguration/{fanspeedconfigurationXid}:
+  get:
+    operationId: getFanSpeedConfigurationXID
+    tags:
+      - fanspeedconfiguration
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: FanSpeedConfiguration
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FanSpeedConfiguration"
+  put:
+    operationId: updateFanSpeedConfigurationXID
+    tags:
+      - fanspeedconfiguration
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: FanSpeedConfiguration
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FanSpeedConfiguration"
+  parameters:
+    - name: fanspeedconfigurationXid
+      in: path
+      required: true
+      schema:
+        type: string

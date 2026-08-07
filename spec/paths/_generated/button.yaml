@@ -1,0 +1,50 @@
+/button:
+  get:
+    operationId: getButton
+    tags:
+      - button
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Button
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Button"
+    summary: List all buttons
+/button/{buttonId}:
+  get:
+    operationId: getButtonID
+    tags:
+      - button
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Button
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Button"
+    summary: Read button
+  put:
+    operationId: updateButtonID
+    tags:
+      - button
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Button
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Button"
+    summary: Update button
+  parameters:
+    - name: buttonId
+      in: path
+      required: true
+      schema:
+        type: string

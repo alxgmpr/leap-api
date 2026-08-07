@@ -1,0 +1,459 @@
+/area:
+  post:
+    operationId: createArea
+    tags:
+      - area
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: Area
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Area"
+    summary: Create area
+  x-leap-subscribable: true
+  x-leap-event-schema:
+    $ref: "#/components/schemas/Area"
+/area/daylightinggainsettings:
+  get:
+    operationId: getAreaDaylightingGainSettings
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/area/{areaId}:
+  get:
+    operationId: getAreaID
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Area
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Area"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Area"
+    summary: Read area
+  put:
+    operationId: updateAreaID
+    tags:
+      - area
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Area
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Area"
+    summary: Update area
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/areascene:
+  get:
+    operationId: getAreaIDAreaScene
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List scenes in area
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/associatedcontrolstation:
+  get:
+    operationId: getAreaIDAssociatedControlStation
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List control stations in area
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/associateddevice:
+  post:
+    operationId: createAreaIDAssociatedDevice
+    tags:
+      - area
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/associatedzone:
+  get:
+    operationId: getAreaIDAssociatedZone
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List zones in area
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/associatedzone/status:
+  get:
+    operationId: getAreaIDAssociatedZoneStatus
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/associatedzone/status/expanded:
+  get:
+    operationId: getAreaIDAssociatedZoneStatusExpanded
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/childarea/areascene/with/explicit/paging:
+  get:
+    operationId: getAreaIDChildAreaAreaSceneWithExplicitPaging
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/childarea/areascene/with/implicit/paging:
+  get:
+    operationId: getAreaIDChildAreaAreaSceneWithImplicitPaging
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/childarea/summary:
+  get:
+    operationId: getAreaIDChildAreaSummary
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List child area summaries
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/daylightinggainsettings:
+  get:
+    operationId: getAreaIDDaylightingGainSettings
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get area daylighting gain settings
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/loadshedding:
+  get:
+    operationId: getAreaIDLoadShedding
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: AreaLoadShedding
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaLoadShedding"
+    summary: Get area load shedding config
+  put:
+    operationId: updateAreaIDLoadShedding
+    tags:
+      - area
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: AreaLoadShedding
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaLoadShedding"
+    summary: Update area load shedding
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/occupancygroups:
+  get:
+    operationId: getAreaIDOccupancyGroups
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/occupancysensorsettings:
+  get:
+    operationId: getAreaIDOccupancySensorSettings
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    x-leap-subscribable: true
+    summary: Get area occupancy sensor settings
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/occupancysettings:
+  get:
+    operationId: getAreaIDOccupancySettings
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get area occupancy settings
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/relation:
+  get:
+    operationId: getAreaIDRelation
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: AreaRelation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaRelation"
+    summary: Get area relations
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/status:
+  get:
+    operationId: getAreaIDStatus
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: AreaStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/AreaStatus"
+    summary: Get area status
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/summary:
+  get:
+    operationId: getAreaIDSummary
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: AreaSummary
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaSummary"
+    summary: Get area summary
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/{areaId}/vbutton:
+  get:
+    operationId: getAreaIDVButton
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      schema:
+        type: string
+/area/occupancysensorsettings:
+  get:
+    operationId: getAreaOccupancySensorSettings
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/area/occupancysettings:
+  get:
+    operationId: getAreaOccupancySettings
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/area/with/explicit/paging:
+  get:
+    operationId: getAreaWithExplicitPaging
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/area/with/implicit/paging:
+  get:
+    operationId: getAreaWithImplicitPaging
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/area/{areaXid}:
+  get:
+    operationId: getAreaXID
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Area
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Area"
+  parameters:
+    - name: areaXid
+      in: path
+      required: true
+      schema:
+        type: string

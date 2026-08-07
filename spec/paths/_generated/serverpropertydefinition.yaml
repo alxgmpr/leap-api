@@ -1,0 +1,10 @@
+/serverpropertydefinition:
+  put:
+    operationId: updateServerPropertyDefinition
+    tags:
+      - serverpropertydefinition
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

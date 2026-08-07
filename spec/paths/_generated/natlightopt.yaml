@@ -1,0 +1,67 @@
+/natlightopt/{natlightoptId}:
+  get:
+    operationId: getNatLightOptID
+    tags:
+      - natlightopt
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateNatLightOptID
+    tags:
+      - natlightopt
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: natlightoptId
+      in: path
+      required: true
+      schema:
+        type: string
+/natlightopt/{natlightoptId}/preview:
+  get:
+    operationId: getNatLightOptIDPreview
+    tags:
+      - natlightopt
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: natlightoptId
+      in: path
+      required: true
+      schema:
+        type: string
+/natlightopt/{natlightoptId}/status:
+  get:
+    operationId: getNatLightOptIDStatus
+    tags:
+      - natlightopt
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    x-leap-subscribable: true
+  put:
+    operationId: updateNatLightOptIDStatus
+    tags:
+      - natlightopt
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: natlightoptId
+      in: path
+      required: true
+      schema:
+        type: string

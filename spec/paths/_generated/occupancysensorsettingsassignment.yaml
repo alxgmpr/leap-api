@@ -1,0 +1,46 @@
+/occupancysensorsettingsassignment/{occupancysensorsettingsassignmentId}:
+  delete:
+    operationId: deleteOccupancySensorSettingsAssignmentID
+    tags:
+      - occupancysensorsettingsassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: OccupancySensorSettingsAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySensorSettingsAssignment"
+  get:
+    operationId: getOccupancySensorSettingsAssignmentID
+    tags:
+      - occupancysensorsettingsassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OccupancySensorSettingsAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySensorSettingsAssignment"
+  put:
+    operationId: updateOccupancySensorSettingsAssignmentID
+    tags:
+      - occupancysensorsettingsassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: OccupancySensorSettingsAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySensorSettingsAssignment"
+  parameters:
+    - name: occupancysensorsettingsassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

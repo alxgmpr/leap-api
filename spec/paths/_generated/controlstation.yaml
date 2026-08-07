@@ -1,0 +1,116 @@
+/controlstation:
+  post:
+    operationId: createControlStation
+    tags:
+      - controlstation
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+    summary: Create control station
+/controlstation/{controlstationId}:
+  delete:
+    operationId: deleteControlStationID
+    tags:
+      - controlstation
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+    summary: Delete control station
+  get:
+    operationId: getControlStationID
+    tags:
+      - controlstation
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+    summary: Read control station
+  put:
+    operationId: updateControlStationID
+    tags:
+      - controlstation
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+    summary: Update control station
+  parameters:
+    - name: controlstationId
+      in: path
+      required: true
+      schema:
+        type: string
+/controlstation/{controlstationId}/device/ledstatus:
+  get:
+    operationId: getControlStationIDDeviceLEDStatus
+    tags:
+      - controlstation
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: controlstationId
+      in: path
+      required: true
+      schema:
+        type: string
+/controlstation/{controlstationId}/query:
+  delete:
+    operationId: deleteControlStationIDQuery
+    tags:
+      - controlstation
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: controlstationId
+      in: path
+      required: true
+      schema:
+        type: string
+/controlstation/{controlstationXid}:
+  get:
+    operationId: getControlStationXID
+    tags:
+      - controlstation
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+  parameters:
+    - name: controlstationXid
+      in: path
+      required: true
+      schema:
+        type: string

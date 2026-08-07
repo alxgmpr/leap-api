@@ -1,0 +1,30 @@
+/systemloadsheddingstatus:
+  get:
+    operationId: getSystemLoadSheddingStatus
+    tags:
+      - systemloadsheddingstatus
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SystemLoadSheddingStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemLoadSheddingStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/SystemLoadSheddingStatus"
+  put:
+    operationId: updateSystemLoadSheddingStatus
+    tags:
+      - systemloadsheddingstatus
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: SystemLoadSheddingStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemLoadSheddingStatus"

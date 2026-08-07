@@ -1,0 +1,16 @@
+/firmwaresessiondevice/{firmwaresessiondeviceId}:
+  delete:
+    operationId: deleteFirmwareSessionDeviceID
+    tags:
+      - firmwaresessiondevice
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: firmwaresessiondeviceId
+      in: path
+      required: true
+      schema:
+        type: string

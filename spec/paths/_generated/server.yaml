@@ -1,0 +1,78 @@
+/server/ipl:
+  get:
+    operationId: getServerIPL
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServerIPL
+    tags:
+      - server
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/server/leap/integrator/pairing:
+  get:
+    operationId: getServerLEAPIntegratorPairing
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/server/leap/pairing:
+  post:
+    operationId: createServerLEAPPairing
+    tags:
+      - server
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Create LEAP pairing
+/server/leap/pairing/{pairingId}:
+  get:
+    operationId: getServerLEAPPairingID
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Read pairing
+  put:
+    operationId: updateServerLEAPPairingID
+    tags:
+      - server
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update pairing
+  parameters:
+    - name: pairingId
+      in: path
+      required: true
+      schema:
+        type: string
+/server/status/ping:
+  get:
+    operationId: getServerStatusPing
+    tags:
+      - server
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Ping server status

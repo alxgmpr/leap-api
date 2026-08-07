@@ -1,0 +1,35 @@
+/natlightoptaffectedresource:
+  post:
+    operationId: createNatLightOptAffectedResource
+    tags:
+      - natlightoptaffectedresource
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/natlightoptaffectedresource/{natlightoptaffectedresourceId}:
+  delete:
+    operationId: deleteNatLightOptAffectedResourceID
+    tags:
+      - natlightoptaffectedresource
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getNatLightOptAffectedResourceID
+    tags:
+      - natlightoptaffectedresource
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: natlightoptaffectedresourceId
+      in: path
+      required: true
+      schema:
+        type: string

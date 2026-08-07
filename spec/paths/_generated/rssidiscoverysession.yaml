@@ -1,0 +1,16 @@
+/rssidiscoverysession/{rssidiscoverysessionId}:
+  delete:
+    operationId: deleteRssiDiscoverySessionID
+    tags:
+      - rssidiscoverysession
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: rssidiscoverysessionId
+      in: path
+      required: true
+      schema:
+        type: string

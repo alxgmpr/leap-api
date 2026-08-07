@@ -1,0 +1,124 @@
+/timeclockevent/{timeclockeventId}:
+  delete:
+    operationId: deleteTimeclockEventID
+    tags:
+      - timeclockevent
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: TimeclockEvent
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeclockEvent"
+    summary: Delete time clock event
+  get:
+    operationId: getTimeclockEventID
+    tags:
+      - timeclockevent
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: TimeclockEvent
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeclockEvent"
+    summary: Read time clock event
+  put:
+    operationId: updateTimeclockEventID
+    tags:
+      - timeclockevent
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: TimeclockEvent
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeclockEvent"
+    summary: Update time clock event
+  parameters:
+    - name: timeclockeventId
+      in: path
+      required: true
+      schema:
+        type: string
+/timeclockevent/{timeclockeventId}/status:
+  get:
+    operationId: getTimeclockEventIDStatus
+    tags:
+      - timeclockevent
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: TimeclockEventStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeclockEventStatus"
+    summary: Get event status
+  put:
+    operationId: updateTimeclockEventIDStatus
+    tags:
+      - timeclockevent
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: TimeclockEventStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeclockEventStatus"
+    summary: Update event status (enable/disable)
+  parameters:
+    - name: timeclockeventId
+      in: path
+      required: true
+      schema:
+        type: string
+/timeclockevent/query/with/explicit/paging:
+  get:
+    operationId: getTimeclockEventQueryWithExplicitPaging
+    tags:
+      - timeclockevent
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/timeclockevent/query/with/implicit/paging:
+  get:
+    operationId: getTimeclockEventQueryWithImplicitPaging
+    tags:
+      - timeclockevent
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/timeclockevent/with/explicit/paging:
+  get:
+    operationId: getTimeclockEventWithExplicitPaging
+    tags:
+      - timeclockevent
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/timeclockevent/with/implicit/paging:
+  get:
+    operationId: getTimeclockEventWithImplicitPaging
+    tags:
+      - timeclockevent
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

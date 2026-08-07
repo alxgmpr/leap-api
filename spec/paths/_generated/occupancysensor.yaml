@@ -1,0 +1,84 @@
+/occupancysensor:
+  post:
+    operationId: createOccupancySensor
+    tags:
+      - occupancysensor
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: OccupancySensor
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySensor"
+    summary: Create occupancy sensor
+/occupancysensor/{occupancysensorId}:
+  get:
+    operationId: getOccupancySensorID
+    tags:
+      - occupancysensor
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OccupancySensor
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySensor"
+    summary: Read occupancy sensor
+  parameters:
+    - name: occupancysensorId
+      in: path
+      required: true
+      schema:
+        type: string
+/occupancysensor/{occupancysensorId}/occupancysensorsettings:
+  get:
+    operationId: getOccupancySensorIDOccupancySensorSettings
+    tags:
+      - occupancysensor
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get sensor settings
+  parameters:
+    - name: occupancysensorId
+      in: path
+      required: true
+      schema:
+        type: string
+/occupancysensor/{occupancysensorId}/status:
+  get:
+    operationId: getOccupancySensorIDStatus
+    tags:
+      - occupancysensor
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OccupancySensorStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySensorStatus"
+    summary: Get sensor status
+  parameters:
+    - name: occupancysensorId
+      in: path
+      required: true
+      schema:
+        type: string
+/occupancysensor/occupancysensorsettings:
+  get:
+    operationId: getOccupancySensorOccupancySensorSettings
+    tags:
+      - occupancysensor
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

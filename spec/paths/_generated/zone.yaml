@@ -1,0 +1,335 @@
+/zone:
+  get:
+    operationId: getZone
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Zone
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zone"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Zone"
+    summary: List all zones
+/zone/daylightinggainsettings:
+  get:
+    operationId: getZoneDaylightingGainSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/zone/{zoneId}:
+  get:
+    operationId: getZoneID
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Zone
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zone"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Zone"
+    summary: Read zone
+  put:
+    operationId: updateZoneID
+    tags:
+      - zone
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Zone
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zone"
+    summary: Update zone
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/associatedloadcontroller:
+  get:
+    operationId: getZoneIDAssociatedLoadController
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List load controllers for zone
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/countdowntimer:
+  get:
+    operationId: getZoneIDCountdownTimer
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone countdown timer
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/daylightinggainsettings:
+  get:
+    operationId: getZoneIDDaylightingGainSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone daylighting gain settings
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/expanded/status:
+  get:
+    operationId: getZoneIDExpandedStatus
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneExpandedStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneExpandedStatus"
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/naturalshows:
+  get:
+    operationId: getZoneIDNaturalShows
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/occupancysettings:
+  get:
+    operationId: getZoneIDOccupancySettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone occupancy settings
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/phasesettings:
+  get:
+    operationId: getZoneIDPhaseSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone phase settings
+  put:
+    operationId: updateZoneIDPhaseSettings
+    tags:
+      - zone
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update zone phase settings
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/status:
+  get:
+    operationId: getZoneIDStatus
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/ZoneStatus"
+    summary: Get zone status
+  put:
+    operationId: updateZoneIDStatus
+    tags:
+      - zone
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ZoneStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneStatus"
+    summary: Set zone level
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/tuningsettings:
+  get:
+    operationId: getZoneIDTuningSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get zone tuning settings
+  put:
+    operationId: updateZoneIDTuningSettings
+    tags:
+      - zone
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update zone tuning settings
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneId}/zonescene:
+  get:
+    operationId: getZoneIDZoneScene
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List zone scenes
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/occupancysettings:
+  get:
+    operationId: getZoneOccupancySettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/zone/tuningsettings:
+  get:
+    operationId: getZoneTuningSettings
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/zone/{zoneXid}:
+  get:
+    operationId: getZoneXID
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Zone
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zone"
+  parameters:
+    - name: zoneXid
+      in: path
+      required: true
+      schema:
+        type: string
+/zone/{zoneXid}/associatedloadcontroller:
+  get:
+    operationId: getZoneXIDAssociatedLoadController
+    tags:
+      - zone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: zoneXid
+      in: path
+      required: true
+      schema:
+        type: string

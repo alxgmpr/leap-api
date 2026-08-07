@@ -1,0 +1,11 @@
+/v2operationstatus:
+  get:
+    operationId: getV2OperationStatus
+    tags:
+      - v2operationstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    x-leap-subscribable: true

@@ -1,0 +1,17 @@
+/paireddeviceextractionsession/{paireddeviceextractionsessionId}/status:
+  get:
+    operationId: getPairedDeviceExtractionSessionIDStatus
+    tags:
+      - paireddeviceextractionsession
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get paired device extraction session status
+  parameters:
+    - name: paireddeviceextractionsessionId
+      in: path
+      required: true
+      schema:
+        type: string

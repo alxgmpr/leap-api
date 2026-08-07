@@ -1,0 +1,46 @@
+/warmdimassignment/{warmdimassignmentId}:
+  delete:
+    operationId: deleteWarmDimAssignmentID
+    tags:
+      - warmdimassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: WarmDimAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WarmDimAssignment"
+  get:
+    operationId: getWarmDimAssignmentID
+    tags:
+      - warmdimassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: WarmDimAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WarmDimAssignment"
+  put:
+    operationId: updateWarmDimAssignmentID
+    tags:
+      - warmdimassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: WarmDimAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WarmDimAssignment"
+  parameters:
+    - name: warmdimassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

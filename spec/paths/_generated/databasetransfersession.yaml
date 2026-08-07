@@ -1,0 +1,29 @@
+/databasetransfersession:
+  delete:
+    operationId: deleteDatabaseTransferSession
+    tags:
+      - databasetransfersession
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: DatabaseTransferSession
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DatabaseTransferSession"
+    summary: Cancel transfer session
+  get:
+    operationId: getDatabaseTransferSession
+    tags:
+      - databasetransfersession
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DatabaseTransferSession
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DatabaseTransferSession"
+    summary: Get transfer session

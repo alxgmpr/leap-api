@@ -1,0 +1,26 @@
+/servicealexaconfigalias:
+  get:
+    operationId: getServiceAlexaConfigAlias
+    tags:
+      - servicealexaconfigalias
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/servicealexaconfigalias/{servicealexaconfigaliasId}:
+  get:
+    operationId: getServiceAlexaConfigAliasID
+    tags:
+      - servicealexaconfigalias
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: servicealexaconfigaliasId
+      in: path
+      required: true
+      schema:
+        type: string

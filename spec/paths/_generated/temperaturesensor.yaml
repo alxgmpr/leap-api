@@ -1,0 +1,14 @@
+/temperaturesensor:
+  get:
+    operationId: getTemperatureSensor
+    tags:
+      - temperaturesensor
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: TemperatureSensor
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TemperatureSensor"

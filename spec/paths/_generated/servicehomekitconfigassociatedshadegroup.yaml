@@ -1,0 +1,35 @@
+/servicehomekitconfigassociatedshadegroup:
+  post:
+    operationId: createServiceHomeKitConfigAssociatedShadeGroup
+    tags:
+      - servicehomekitconfigassociatedshadegroup
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getServiceHomeKitConfigAssociatedShadeGroup
+    tags:
+      - servicehomekitconfigassociatedshadegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/servicehomekitconfigassociatedshadegroup/{servicehomekitconfigassociatedshadegroupId}:
+  get:
+    operationId: getServiceHomeKitConfigAssociatedShadeGroupID
+    tags:
+      - servicehomekitconfigassociatedshadegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: servicehomekitconfigassociatedshadegroupId
+      in: path
+      required: true
+      schema:
+        type: string

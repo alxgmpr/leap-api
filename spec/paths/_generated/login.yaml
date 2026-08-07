@@ -1,0 +1,29 @@
+/login:
+  get:
+    operationId: getLogin
+    tags:
+      - login
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Login
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+    summary: Get login info
+  put:
+    operationId: updateLogin
+    tags:
+      - login
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Login
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+    summary: Update login

@@ -1,0 +1,21 @@
+/daynightmode/{daynightmodeId}:
+  get:
+    operationId: getDayNightModeID
+    tags:
+      - daynightmode
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DayNightMode
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DayNightMode"
+    summary: Read day/night mode
+  parameters:
+    - name: daynightmodeId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,53 @@
+/resourcegroup/intruder/{intruderId}:
+  get:
+    operationId: getResourceGroupIntruderID
+    tags:
+      - resourcegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: intruderId
+      in: path
+      required: true
+      schema:
+        type: string
+/resourcegroup/intruder/{intruderId}/associatedzone:
+  post:
+    operationId: createResourceGroupIntruderIDAssociatedZone
+    tags:
+      - resourcegroup
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: intruderId
+      in: path
+      required: true
+      schema:
+        type: string
+/resourcegroup/intruder/{intruderId}/associatedzone/{associatedzoneId}:
+  get:
+    operationId: getResourceGroupIntruderIDAssociatedZoneID
+    tags:
+      - resourcegroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: intruderId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: associatedzoneId
+      in: path
+      required: true
+      schema:
+        type: string

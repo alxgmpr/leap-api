@@ -1,0 +1,10 @@
+/servicenestdetectiongroup:
+  post:
+    operationId: createServiceNestDetectionGroup
+    tags:
+      - servicenestdetectiongroup
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

@@ -1,0 +1,331 @@
+/device:
+  post:
+    operationId: createDevice
+    tags:
+      - device
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    summary: Create device
+  get:
+    operationId: getDevice
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Device"
+    summary: List all devices
+/device/{deviceId}:
+  delete:
+    operationId: deleteDeviceID
+    tags:
+      - device
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    summary: Delete device
+  get:
+    operationId: getDeviceID
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Device"
+    summary: Read device
+  put:
+    operationId: updateDeviceID
+    tags:
+      - device
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    summary: Update device
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/buttongroup:
+  get:
+    operationId: getDeviceIDButtonGroup
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List button groups on device
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/buttongroupexpanded:
+  get:
+    operationId: getDeviceIDButtonGroupExpanded
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/cci:
+  get:
+    operationId: getDeviceIDCCI
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List CCIs on device
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/ledsettings:
+  get:
+    operationId: getDeviceIDLEDSettings
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get device LED settings
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/linknode/{linknodeId}:
+  get:
+    operationId: getDeviceIDLinkNodeID
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get device link node
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: linknodeId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/linknode/{linknodeId}/sentby:
+  post:
+    operationId: createDeviceIDLinkNodeIDSentBy
+    tags:
+      - device
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: linknodeId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/logger:
+  get:
+    operationId: getDeviceIDLogger
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DeviceLogger
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceLogger"
+    summary: Get device logger
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/loggerstatus:
+  get:
+    operationId: getDeviceIDLoggerStatus
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DeviceLoggerStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceLoggerStatus"
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/query:
+  delete:
+    operationId: deleteDeviceIDQuery
+    tags:
+      - device
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/repeatabledevicerules:
+  get:
+    operationId: getDeviceIDRepeatableDeviceRules
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get repeatable device rules
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/status:
+  get:
+    operationId: getDeviceIDStatus
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DeviceStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceStatus"
+    summary: Get device status
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/temperaturesensors:
+  get:
+    operationId: getDeviceIDTemperatureSensors
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/zonecontrollers:
+  get:
+    operationId: getDeviceIDZoneControllers
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/query:
+  get:
+    operationId: getDeviceQuery
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

@@ -1,0 +1,75 @@
+/thirdpartydevice:
+  post:
+    operationId: createThirdPartyDevice
+    tags:
+      - thirdpartydevice
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: ThirdPartyDevice
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThirdPartyDevice"
+    summary: Create third-party device
+  get:
+    operationId: getThirdPartyDevice
+    tags:
+      - thirdpartydevice
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ThirdPartyDevice
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThirdPartyDevice"
+    summary: List third-party devices
+/thirdpartydevice/{thirdpartydeviceId}:
+  delete:
+    operationId: deleteThirdPartyDeviceID
+    tags:
+      - thirdpartydevice
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: ThirdPartyDevice
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThirdPartyDevice"
+  get:
+    operationId: getThirdPartyDeviceID
+    tags:
+      - thirdpartydevice
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ThirdPartyDevice
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThirdPartyDevice"
+  put:
+    operationId: updateThirdPartyDeviceID
+    tags:
+      - thirdpartydevice
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ThirdPartyDevice
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThirdPartyDevice"
+  parameters:
+    - name: thirdpartydeviceId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,49 @@
+/areasceneassignment/{areasceneassignmentId}:
+  delete:
+    operationId: deleteAreaSceneAssignmentID
+    tags:
+      - areasceneassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: AreaSceneAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaSceneAssignment"
+    summary: Delete area scene assignment
+  get:
+    operationId: getAreaSceneAssignmentID
+    tags:
+      - areasceneassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: AreaSceneAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaSceneAssignment"
+    summary: Read area scene assignment
+  put:
+    operationId: updateAreaSceneAssignmentID
+    tags:
+      - areasceneassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: AreaSceneAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaSceneAssignment"
+    summary: Update area scene assignment
+  parameters:
+    - name: areasceneassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

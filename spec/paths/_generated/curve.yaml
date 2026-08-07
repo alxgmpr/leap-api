@@ -1,0 +1,15 @@
+/curve:
+  get:
+    operationId: getCurve
+    tags:
+      - curve
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Curve
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Curve"
+    summary: List curves

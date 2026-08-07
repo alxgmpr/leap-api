@@ -1,0 +1,50 @@
+/occupancygroup:
+  post:
+    operationId: createOccupancyGroup
+    tags:
+      - occupancygroup
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: OccupancyGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroup"
+    summary: Create occupancy group
+/occupancygroup/{occupancygroupId}:
+  get:
+    operationId: getOccupancyGroupID
+    tags:
+      - occupancygroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OccupancyGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroup"
+    summary: Read occupancy group
+  put:
+    operationId: updateOccupancyGroupID
+    tags:
+      - occupancygroup
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: OccupancyGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroup"
+    summary: Update occupancy group
+  parameters:
+    - name: occupancygroupId
+      in: path
+      required: true
+      schema:
+        type: string

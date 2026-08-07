@@ -1,0 +1,57 @@
+/shadegroup:
+  get:
+    operationId: getShadeGroup
+    tags:
+      - shadegroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ShadeGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeGroup"
+    summary: List shade groups
+/shadegroup/{shadegroupId}:
+  get:
+    operationId: getShadeGroupID
+    tags:
+      - shadegroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ShadeGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeGroup"
+    summary: Read shade group
+  parameters:
+    - name: shadegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/shadegroup/{shadegroupId}/status:
+  get:
+    operationId: getShadeGroupIDStatus
+    tags:
+      - shadegroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ShadeGroupStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeGroupStatus"
+    summary: Get shade group status
+  parameters:
+    - name: shadegroupId
+      in: path
+      required: true
+      schema:
+        type: string

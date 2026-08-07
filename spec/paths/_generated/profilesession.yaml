@@ -1,0 +1,74 @@
+/profilesession:
+  get:
+    operationId: getProfileSession
+    tags:
+      - profilesession
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ProfileSession
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileSession"
+    summary: List profile sessions
+/profilesession/{profilesessionId}:
+  delete:
+    operationId: deleteProfileSessionID
+    tags:
+      - profilesession
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: ProfileSession
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileSession"
+    summary: Delete profile session
+  get:
+    operationId: getProfileSessionID
+    tags:
+      - profilesession
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ProfileSession
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileSession"
+    summary: Read profile session
+  parameters:
+    - name: profilesessionId
+      in: path
+      required: true
+      schema:
+        type: string
+/profilesession/{profilesessionId}/status:
+  get:
+    operationId: getProfileSessionIDStatus
+    tags:
+      - profilesession
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ProfileSessionStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileSessionStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/ProfileSessionStatus"
+    summary: Get profile session status
+  parameters:
+    - name: profilesessionId
+      in: path
+      required: true
+      schema:
+        type: string

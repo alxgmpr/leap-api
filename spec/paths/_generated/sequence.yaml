@@ -1,0 +1,78 @@
+/sequence:
+  post:
+    operationId: createSequence
+    tags:
+      - sequence
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: Sequence
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sequence"
+    summary: Create sequence
+  get:
+    operationId: getSequence
+    tags:
+      - sequence
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Sequence
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sequence"
+    summary: List sequences
+/sequence/{sequenceId}:
+  delete:
+    operationId: deleteSequenceID
+    tags:
+      - sequence
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: Sequence
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sequence"
+    summary: Delete sequence
+  get:
+    operationId: getSequenceID
+    tags:
+      - sequence
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Sequence
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sequence"
+    summary: Read sequence
+  put:
+    operationId: updateSequenceID
+    tags:
+      - sequence
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Sequence
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sequence"
+    summary: Update sequence
+  parameters:
+    - name: sequenceId
+      in: path
+      required: true
+      schema:
+        type: string

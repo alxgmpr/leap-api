@@ -1,0 +1,103 @@
+/project:
+  get:
+    operationId: getProject
+    tags:
+      - project
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Project
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Project"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Project"
+    summary: Get project info
+  put:
+    operationId: updateProject
+    tags:
+      - project
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Project
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Project"
+    summary: Update project
+/project/contact:
+  post:
+    operationId: createProjectContact
+    tags:
+      - project
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getProjectContact
+    tags:
+      - project
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/project/masterdevicelist/deviceexpandedstatus:
+  get:
+    operationId: getProjectMasterDeviceListDeviceExpandedStatus
+    tags:
+      - project
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/project/masterdevicelist/devices:
+  get:
+    operationId: getProjectMasterDeviceListDevices
+    tags:
+      - project
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/project/masterdevicelist:
+  get:
+    operationId: getProjectMasterDevicelist
+    tags:
+      - project
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get master device list
+  put:
+    operationId: updateProjectMasterDevicelist
+    tags:
+      - project
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update master device list
+/project/timeclockeventrules:
+  get:
+    operationId: getProjectTimeclockEventRules
+    tags:
+      - project
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get time clock event rules

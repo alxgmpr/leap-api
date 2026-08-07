@@ -1,0 +1,47 @@
+/systemuser:
+  get:
+    operationId: getSystemUser
+    tags:
+      - systemuser
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SystemUser
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemUser"
+/systemuser/{systemuserId}:
+  get:
+    operationId: getSystemUserID
+    tags:
+      - systemuser
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SystemUser
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemUser"
+  put:
+    operationId: updateSystemUserID
+    tags:
+      - systemuser
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: SystemUser
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemUser"
+  parameters:
+    - name: systemuserId
+      in: path
+      required: true
+      schema:
+        type: string

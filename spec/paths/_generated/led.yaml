@@ -1,0 +1,44 @@
+/led/{ledId}:
+  get:
+    operationId: getLedID
+    tags:
+      - led
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Read LED
+  parameters:
+    - name: ledId
+      in: path
+      required: true
+      schema:
+        type: string
+/led/{ledId}/status:
+  get:
+    operationId: getLedIDStatus
+    tags:
+      - led
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get LED status
+  put:
+    operationId: updateLedIDStatus
+    tags:
+      - led
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Set LED status
+  parameters:
+    - name: ledId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,64 @@
+/daylightinggaingroup/associatedzone/with/{withId}:
+  get:
+    operationId: getDaylightingGainGroupAssociatedZoneWithID
+    tags:
+      - daylightinggaingroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: withId
+      in: path
+      required: true
+      schema:
+        type: string
+/daylightinggaingroup/daylightinggainsettings:
+  get:
+    operationId: getDaylightingGainGroupDaylightingGainSettings
+    tags:
+      - daylightinggaingroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/daylightinggaingroup/{daylightinggaingroupId}:
+  get:
+    operationId: getDaylightingGainGroupID
+    tags:
+      - daylightinggaingroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DaylightingGainGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DaylightingGainGroup"
+    summary: Read daylighting gain group
+  parameters:
+    - name: daylightinggaingroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/daylightinggaingroup/{daylightinggaingroupId}/daylightinggainsettings:
+  get:
+    operationId: getDaylightingGainGroupIDDaylightingGainSettings
+    tags:
+      - daylightinggaingroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get gain group daylighting settings
+  parameters:
+    - name: daylightinggaingroupId
+      in: path
+      required: true
+      schema:
+        type: string

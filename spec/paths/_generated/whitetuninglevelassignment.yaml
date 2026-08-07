@@ -1,0 +1,46 @@
+/whitetuninglevelassignment/{whitetuninglevelassignmentId}:
+  delete:
+    operationId: deleteWhiteTuningLevelAssignmentID
+    tags:
+      - whitetuninglevelassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: WhiteTuningLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WhiteTuningLevelAssignment"
+  get:
+    operationId: getWhiteTuningLevelAssignmentID
+    tags:
+      - whitetuninglevelassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: WhiteTuningLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WhiteTuningLevelAssignment"
+  put:
+    operationId: updateWhiteTuningLevelAssignmentID
+    tags:
+      - whitetuninglevelassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: WhiteTuningLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WhiteTuningLevelAssignment"
+  parameters:
+    - name: whitetuninglevelassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

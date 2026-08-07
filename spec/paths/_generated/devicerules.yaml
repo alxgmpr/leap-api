@@ -1,0 +1,15 @@
+/devicerules:
+  get:
+    operationId: getDeviceRules
+    tags:
+      - devicerules
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DeviceRules
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceRules"
+    summary: List device rules

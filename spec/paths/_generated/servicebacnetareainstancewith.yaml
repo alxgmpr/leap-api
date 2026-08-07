@@ -1,0 +1,25 @@
+/servicebacnetareainstancewith/{servicebacnetareainstancewithId}:
+  get:
+    operationId: getServiceBACnetAreaInstanceWithID
+    tags:
+      - servicebacnetareainstancewith
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServiceBACnetAreaInstanceWithID
+    tags:
+      - servicebacnetareainstancewith
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: servicebacnetareainstancewithId
+      in: path
+      required: true
+      schema:
+        type: string

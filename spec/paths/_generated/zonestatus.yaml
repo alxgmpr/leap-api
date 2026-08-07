@@ -1,0 +1,20 @@
+/zonestatus/with/explicit/paging:
+  get:
+    operationId: getZoneStatusWithExplicitPaging
+    tags:
+      - zonestatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/zonestatus/with/implicit/paging:
+  get:
+    operationId: getZoneStatusWithImplicitPaging
+    tags:
+      - zonestatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

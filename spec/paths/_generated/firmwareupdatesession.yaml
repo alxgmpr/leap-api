@@ -1,0 +1,15 @@
+/firmwareupdatesession:
+  get:
+    operationId: getFirmwareUpdateSession
+    tags:
+      - firmwareupdatesession
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: FirmwareUpdateSession
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FirmwareUpdateSession"
+    summary: Get firmware update session

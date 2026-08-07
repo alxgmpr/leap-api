@@ -1,0 +1,58 @@
+/database/{databaseId}:
+  get:
+    operationId: getDatabaseID
+    tags:
+      - database
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Database
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Database"
+    summary: Read database info
+  parameters:
+    - name: databaseId
+      in: path
+      required: true
+      schema:
+        type: string
+/database/{databaseId}/databasetransfersession:
+  post:
+    operationId: createDatabaseIDDatabaseTransferSession
+    tags:
+      - database
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: databaseId
+      in: path
+      required: true
+      schema:
+        type: string
+/database/{databaseId}/status:
+  get:
+    operationId: getDatabaseIDStatus
+    tags:
+      - database
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DatabaseStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DatabaseStatus"
+    summary: Get database status
+  parameters:
+    - name: databaseId
+      in: path
+      required: true
+      schema:
+        type: string

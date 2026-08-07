@@ -1,0 +1,35 @@
+/areascene/{areasceneId}:
+  get:
+    operationId: getAreaSceneID
+    tags:
+      - areascene
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: AreaScene
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaScene"
+    summary: Read area scene
+  put:
+    operationId: updateAreaSceneID
+    tags:
+      - areascene
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: AreaScene
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaScene"
+    summary: Update area scene
+  parameters:
+    - name: areasceneId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,24 @@
+/devicebatterystatusstatus:
+  x-leap-subscribable: true
+  x-leap-event-schema:
+    $ref: "#/components/schemas/DeviceBatteryStatusStatus"
+/devicebatterystatusstatus/with/explicit/paging:
+  get:
+    operationId: getDeviceBatteryStatusStatusWithExplicitPaging
+    tags:
+      - devicebatterystatusstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/devicebatterystatusstatus/with/implicit/paging:
+  get:
+    operationId: getDeviceBatteryStatusStatusWithImplicitPaging
+    tags:
+      - devicebatterystatusstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

@@ -1,0 +1,14 @@
+/occupancygroupstatus:
+  get:
+    operationId: getOccupancyGroupStatus
+    tags:
+      - occupancygroupstatus
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OccupancyGroupStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancyGroupStatus"

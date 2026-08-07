@@ -1,0 +1,33 @@
+/favoritecycleassignment/{favoritecycleassignmentId}:
+  delete:
+    operationId: deleteFavoriteCycleAssignmentID
+    tags:
+      - favoritecycleassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: FavoriteCycleAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavoriteCycleAssignment"
+  get:
+    operationId: getFavoriteCycleAssignmentID
+    tags:
+      - favoritecycleassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: FavoriteCycleAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavoriteCycleAssignment"
+  parameters:
+    - name: favoritecycleassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

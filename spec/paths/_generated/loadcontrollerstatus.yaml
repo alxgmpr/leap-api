@@ -1,0 +1,44 @@
+/loadcontrollerstatus:
+  x-leap-subscribable: true
+  x-leap-event-schema:
+    $ref: "#/components/schemas/LoadControllerStatus"
+/loadcontrollerstatus/query/with/explicit/paging:
+  get:
+    operationId: getLoadControllerStatusQueryWithExplicitPaging
+    tags:
+      - loadcontrollerstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/loadcontrollerstatus/query/with/implicit/paging:
+  get:
+    operationId: getLoadControllerStatusQueryWithImplicitPaging
+    tags:
+      - loadcontrollerstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/loadcontrollerstatus/with/explicit/paging:
+  get:
+    operationId: getLoadControllerStatusWithExplicitPaging
+    tags:
+      - loadcontrollerstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/loadcontrollerstatus/with/implicit/paging:
+  get:
+    operationId: getLoadControllerStatusWithImplicitPaging
+    tags:
+      - loadcontrollerstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

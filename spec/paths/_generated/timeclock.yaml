@@ -1,0 +1,103 @@
+/timeclock/{timeclockId}:
+  get:
+    operationId: getTimeclockID
+    tags:
+      - timeclock
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Timeclock
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Timeclock"
+    summary: Read time clock
+  parameters:
+    - name: timeclockId
+      in: path
+      required: true
+      schema:
+        type: string
+/timeclock/{timeclockId}/status:
+  get:
+    operationId: getTimeclockIDStatus
+    tags:
+      - timeclock
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: TimeclockStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeclockStatus"
+    summary: Get time clock status
+  put:
+    operationId: updateTimeclockIDStatus
+    tags:
+      - timeclock
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: TimeclockStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeclockStatus"
+    summary: Update time clock status (enable/disable)
+  parameters:
+    - name: timeclockId
+      in: path
+      required: true
+      schema:
+        type: string
+/timeclock/{timeclockId}/timeclockevent:
+  post:
+    operationId: createTimeclockIDTimeclockEvent
+    tags:
+      - timeclock
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Create time clock event
+  get:
+    operationId: getTimeclockIDTimeclockEvent
+    tags:
+      - timeclock
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List events for time clock
+  parameters:
+    - name: timeclockId
+      in: path
+      required: true
+      schema:
+        type: string
+/timeclock/with/explicit/paging:
+  get:
+    operationId: getTimeclockWithExplicitPaging
+    tags:
+      - timeclock
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/timeclock/with/implicit/paging:
+  get:
+    operationId: getTimeclockWithImplicitPaging
+    tags:
+      - timeclock
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

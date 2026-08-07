@@ -1,0 +1,117 @@
+/loadcontroller/{loadcontrollerId}:
+  get:
+    operationId: getLoadControllerID
+    tags:
+      - loadcontroller
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LoadController
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadController"
+    summary: Read load controller
+  parameters:
+    - name: loadcontrollerId
+      in: path
+      required: true
+      schema:
+        type: string
+/loadcontroller/{loadcontrollerId}/status:
+  get:
+    operationId: getLoadControllerIDStatus
+    tags:
+      - loadcontroller
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LoadControllerStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadControllerStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/LoadControllerStatus"
+    summary: Get load controller status
+  parameters:
+    - name: loadcontrollerId
+      in: path
+      required: true
+      schema:
+        type: string
+/loadcontroller/{loadcontrollerXid}:
+  get:
+    operationId: getLoadControllerXID
+    tags:
+      - loadcontroller
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LoadController
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadController"
+  parameters:
+    - name: loadcontrollerXid
+      in: path
+      required: true
+      schema:
+        type: string
+/loadcontroller/{loadcontrollerId}/tuningsettings:
+  get:
+    operationId: getLoadcontrollerIDTuningSettings
+    tags:
+      - loadcontroller
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get load controller tuning settings
+  put:
+    operationId: updateLoadcontrollerIDTuningSettings
+    tags:
+      - loadcontroller
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update tuning settings
+  parameters:
+    - name: loadcontrollerId
+      in: path
+      required: true
+      schema:
+        type: string
+/loadcontroller/{loadcontrollerXid}/tuningsettings:
+  get:
+    operationId: getLoadcontrollerXIDTuningSettings
+    tags:
+      - loadcontroller
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateLoadcontrollerXIDTuningSettings
+    tags:
+      - loadcontroller
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: loadcontrollerXid
+      in: path
+      required: true
+      schema:
+        type: string

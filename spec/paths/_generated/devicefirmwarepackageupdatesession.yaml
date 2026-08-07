@@ -1,0 +1,20 @@
+/devicefirmwarepackageupdatesession/{devicefirmwarepackageupdatesessionId}:
+  delete:
+    operationId: deleteDeviceFirmwarePackageUpdateSessionID
+    tags:
+      - devicefirmwarepackageupdatesession
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: DeviceFirmwarePackageUpdateSession
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceFirmwarePackageUpdateSession"
+  parameters:
+    - name: devicefirmwarepackageupdatesessionId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,35 @@
+/sequencestep/{sequencestepId}:
+  get:
+    operationId: getSequenceStepID
+    tags:
+      - sequencestep
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SequenceStep
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SequenceStep"
+    summary: Read sequence step
+  put:
+    operationId: updateSequenceStepID
+    tags:
+      - sequencestep
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: SequenceStep
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SequenceStep"
+    summary: Update sequence step
+  parameters:
+    - name: sequencestepId
+      in: path
+      required: true
+      schema:
+        type: string

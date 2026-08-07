@@ -1,0 +1,46 @@
+/shadelevelwithtiltwhenclosedassignment/{shadelevelwithtiltwhenclosedassignmentId}:
+  delete:
+    operationId: deleteShadeLevelWithTiltWhenClosedAssignmentID
+    tags:
+      - shadelevelwithtiltwhenclosedassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: ShadeLevelWithTiltWhenClosedAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelWithTiltWhenClosedAssignment"
+  get:
+    operationId: getShadeLevelWithTiltWhenClosedAssignmentID
+    tags:
+      - shadelevelwithtiltwhenclosedassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ShadeLevelWithTiltWhenClosedAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelWithTiltWhenClosedAssignment"
+  put:
+    operationId: updateShadeLevelWithTiltWhenClosedAssignmentID
+    tags:
+      - shadelevelwithtiltwhenclosedassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ShadeLevelWithTiltWhenClosedAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelWithTiltWhenClosedAssignment"
+  parameters:
+    - name: shadelevelwithtiltwhenclosedassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

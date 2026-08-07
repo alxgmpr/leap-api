@@ -1,0 +1,36 @@
+/facade:
+  get:
+    operationId: getFacade
+    tags:
+      - facade
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Facade
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Facade"
+    summary: List facades
+/facade/{facadeId}:
+  get:
+    operationId: getFacadeID
+    tags:
+      - facade
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Facade
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Facade"
+    summary: Read facade
+  parameters:
+    - name: facadeId
+      in: path
+      required: true
+      schema:
+        type: string

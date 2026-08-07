@@ -1,0 +1,46 @@
+/tiltassignment/{tiltassignmentId}:
+  delete:
+    operationId: deleteTiltAssignmentID
+    tags:
+      - tiltassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: TiltAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TiltAssignment"
+  get:
+    operationId: getTiltAssignmentID
+    tags:
+      - tiltassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: TiltAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TiltAssignment"
+  put:
+    operationId: updateTiltAssignmentID
+    tags:
+      - tiltassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: TiltAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TiltAssignment"
+  parameters:
+    - name: tiltassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,35 @@
+/servicehomekitconfigassociatedzone:
+  post:
+    operationId: createServiceHomeKitConfigAssociatedZone
+    tags:
+      - servicehomekitconfigassociatedzone
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getServiceHomeKitConfigAssociatedZone
+    tags:
+      - servicehomekitconfigassociatedzone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/servicehomekitconfigassociatedzone/{servicehomekitconfigassociatedzoneId}:
+  get:
+    operationId: getServiceHomeKitConfigAssociatedZoneID
+    tags:
+      - servicehomekitconfigassociatedzone
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: servicehomekitconfigassociatedzoneId
+      in: path
+      required: true
+      schema:
+        type: string

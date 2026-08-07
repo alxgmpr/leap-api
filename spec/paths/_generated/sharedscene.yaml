@@ -1,0 +1,21 @@
+/sharedscene/{sharedsceneId}:
+  get:
+    operationId: getSharedSceneID
+    tags:
+      - sharedscene
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SharedScene
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SharedScene"
+    summary: Read shared scene
+  parameters:
+    - name: sharedsceneId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,27 @@
+/contact:
+  get:
+    operationId: getContact
+    tags:
+      - contact
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Contact
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Contact"
+  put:
+    operationId: updateContact
+    tags:
+      - contact
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Contact
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Contact"

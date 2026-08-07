@@ -1,0 +1,14 @@
+/systemloadshedding:
+  get:
+    operationId: getSystemLoadShedding
+    tags:
+      - systemloadshedding
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: SystemLoadShedding
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemLoadShedding"

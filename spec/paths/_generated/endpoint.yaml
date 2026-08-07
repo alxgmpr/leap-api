@@ -1,0 +1,32 @@
+/endpoint/{endpointId}/associatednetworkinterface/{associatednetworkinterfaceId}:
+  get:
+    operationId: getEndpointIDAssociatedNetworkInterfaceID
+    tags:
+      - endpoint
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get endpoint-interface association
+  put:
+    operationId: updateEndpointIDAssociatedNetworkInterfaceID
+    tags:
+      - endpoint
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Update endpoint-interface association
+  parameters:
+    - name: endpointId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: associatednetworkinterfaceId
+      in: path
+      required: true
+      schema:
+        type: string

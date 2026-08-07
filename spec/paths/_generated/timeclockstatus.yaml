@@ -1,0 +1,24 @@
+/timeclockstatus:
+  x-leap-subscribable: true
+  x-leap-event-schema:
+    $ref: "#/components/schemas/TimeclockStatus"
+/timeclockstatus/with/explicit/paging:
+  get:
+    operationId: getTimeclockStatusWithExplicitPaging
+    tags:
+      - timeclockstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/timeclockstatus/with/implicit/paging:
+  get:
+    operationId: getTimeclockStatusWithImplicitPaging
+    tags:
+      - timeclockstatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

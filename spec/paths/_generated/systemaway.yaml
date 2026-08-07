@@ -1,0 +1,35 @@
+/systemaway:
+  get:
+    operationId: getSystemAway
+    tags:
+      - systemaway
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/systemaway/{systemawayId}:
+  get:
+    operationId: getSystemAwayID
+    tags:
+      - systemaway
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateSystemAwayID
+    tags:
+      - systemaway
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: systemawayId
+      in: path
+      required: true
+      schema:
+        type: string

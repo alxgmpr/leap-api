@@ -1,0 +1,29 @@
+/dailyevent:
+  get:
+    operationId: getDailyEvent
+    tags:
+      - dailyevent
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DailyEvent
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DailyEvent"
+    summary: List all daily events
+  put:
+    operationId: updateDailyEvent
+    tags:
+      - dailyevent
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: DailyEvent
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DailyEvent"
+    summary: Update daily event

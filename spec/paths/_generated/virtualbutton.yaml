@@ -1,0 +1,67 @@
+/virtualbutton:
+  post:
+    operationId: createVirtualButton
+    tags:
+      - virtualbutton
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: VirtualButton
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualButton"
+    summary: Create virtual button
+  get:
+    operationId: getVirtualButton
+    tags:
+      - virtualbutton
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: VirtualButton
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualButton"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/VirtualButton"
+    summary: List all virtual buttons
+/virtualbutton/{virtualbuttonId}:
+  get:
+    operationId: getVirtualButtonID
+    tags:
+      - virtualbutton
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: VirtualButton
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualButton"
+    summary: Read virtual button
+  put:
+    operationId: updateVirtualButtonID
+    tags:
+      - virtualbutton
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: VirtualButton
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VirtualButton"
+    summary: Update virtual button
+  parameters:
+    - name: virtualbuttonId
+      in: path
+      required: true
+      schema:
+        type: string

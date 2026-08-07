@@ -1,0 +1,46 @@
+/shadelevelwithtiltassignment/{shadelevelwithtiltassignmentId}:
+  delete:
+    operationId: deleteShadeLevelWithTiltAssignmentID
+    tags:
+      - shadelevelwithtiltassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: ShadeLevelWithTiltAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelWithTiltAssignment"
+  get:
+    operationId: getShadeLevelWithTiltAssignmentID
+    tags:
+      - shadelevelwithtiltassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ShadeLevelWithTiltAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelWithTiltAssignment"
+  put:
+    operationId: updateShadeLevelWithTiltAssignmentID
+    tags:
+      - shadelevelwithtiltassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ShadeLevelWithTiltAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelWithTiltAssignment"
+  parameters:
+    - name: shadelevelwithtiltassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

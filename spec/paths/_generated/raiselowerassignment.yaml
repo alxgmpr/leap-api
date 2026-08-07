@@ -1,0 +1,33 @@
+/raiselowerassignment/{raiselowerassignmentId}:
+  delete:
+    operationId: deleteRaiseLowerAssignmentID
+    tags:
+      - raiselowerassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: RaiseLowerAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RaiseLowerAssignment"
+  get:
+    operationId: getRaiseLowerAssignmentID
+    tags:
+      - raiselowerassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: RaiseLowerAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RaiseLowerAssignment"
+  parameters:
+    - name: raiselowerassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

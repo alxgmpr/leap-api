@@ -1,0 +1,46 @@
+/shadelevelassignment/{shadelevelassignmentId}:
+  delete:
+    operationId: deleteShadeLevelAssignmentID
+    tags:
+      - shadelevelassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: ShadeLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelAssignment"
+  get:
+    operationId: getShadeLevelAssignmentID
+    tags:
+      - shadelevelassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ShadeLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelAssignment"
+  put:
+    operationId: updateShadeLevelAssignmentID
+    tags:
+      - shadelevelassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ShadeLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShadeLevelAssignment"
+  parameters:
+    - name: shadelevelassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

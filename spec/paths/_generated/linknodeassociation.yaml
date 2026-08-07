@@ -1,0 +1,17 @@
+/linknodeassociation/{linknodeassociationId}:
+  get:
+    operationId: getLinkNodeAssociationID
+    tags:
+      - linknodeassociation
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Read link node association
+  parameters:
+    - name: linknodeassociationId
+      in: path
+      required: true
+      schema:
+        type: string

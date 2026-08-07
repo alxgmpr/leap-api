@@ -1,0 +1,29 @@
+/fadesettings:
+  get:
+    operationId: getFadeSettings
+    tags:
+      - fadesettings
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: FadeSettings
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FadeSettings"
+    summary: Get fade settings
+  put:
+    operationId: updateFadeSettings
+    tags:
+      - fadesettings
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: FadeSettings
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FadeSettings"
+    summary: Update fade settings

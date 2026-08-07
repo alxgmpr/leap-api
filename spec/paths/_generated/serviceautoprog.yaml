@@ -1,0 +1,10 @@
+/serviceautoprog:
+  get:
+    operationId: getServiceAutoProg
+    tags:
+      - serviceautoprog
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

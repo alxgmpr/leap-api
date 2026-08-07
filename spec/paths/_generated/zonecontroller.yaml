@@ -1,0 +1,21 @@
+/zonecontroller/{zonecontrollerId}:
+  get:
+    operationId: getZoneControllerID
+    tags:
+      - zonecontroller
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneController
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneController"
+    summary: Read zone controller
+  parameters:
+    - name: zonecontrollerId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,14 @@
+/zonetypegrouploadshedding:
+  get:
+    operationId: getZoneTypeGroupLoadShedding
+    tags:
+      - zonetypegrouploadshedding
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ZoneTypeGroupLoadShedding
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneTypeGroupLoadShedding"

@@ -1,0 +1,42 @@
+/daylightsensor/{daylightsensorId}:
+  get:
+    operationId: getDaylightSensorID
+    tags:
+      - daylightsensor
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DaylightSensor
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DaylightSensor"
+    summary: Read daylight sensor
+  parameters:
+    - name: daylightsensorId
+      in: path
+      required: true
+      schema:
+        type: string
+/daylightsensor/{daylightsensorId}/status:
+  get:
+    operationId: getDaylightSensorIDStatus
+    tags:
+      - daylightsensor
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DaylightSensorStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DaylightSensorStatus"
+    summary: Get daylight sensor status
+  parameters:
+    - name: daylightsensorId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,35 @@
+/datashippingrule/{datashippingruleId}:
+  get:
+    operationId: getDataShippingRuleID
+    tags:
+      - datashippingrule
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DataShippingRule
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataShippingRule"
+    summary: Read data shipping rule
+  put:
+    operationId: updateDataShippingRuleID
+    tags:
+      - datashippingrule
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: DataShippingRule
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataShippingRule"
+    summary: Update data shipping rule
+  parameters:
+    - name: datashippingruleId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,44 @@
+/servicentpserver:
+  get:
+    operationId: getServiceNTPServer
+    tags:
+      - servicentpserver
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServiceNTPServer
+    tags:
+      - servicentpserver
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/servicentpserver/{servicentpserverId}:
+  get:
+    operationId: getServiceNTPServerID
+    tags:
+      - servicentpserver
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServiceNTPServerID
+    tags:
+      - servicentpserver
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: servicentpserverId
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,33 @@
+/playpausetoggleassignment/{playpausetoggleassignmentId}:
+  delete:
+    operationId: deletePlayPauseToggleAssignmentID
+    tags:
+      - playpausetoggleassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: PlayPauseToggleAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayPauseToggleAssignment"
+  get:
+    operationId: getPlayPauseToggleAssignmentID
+    tags:
+      - playpausetoggleassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: PlayPauseToggleAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlayPauseToggleAssignment"
+  parameters:
+    - name: playpausetoggleassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

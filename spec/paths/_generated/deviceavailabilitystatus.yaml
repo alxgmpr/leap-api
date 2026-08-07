@@ -1,0 +1,24 @@
+/deviceavailabilitystatus:
+  x-leap-subscribable: true
+  x-leap-event-schema:
+    $ref: "#/components/schemas/DeviceAvailabilityStatus"
+/deviceavailabilitystatus/with/explicit/paging:
+  get:
+    operationId: getDeviceAvailabilityStatusWithExplicitPaging
+    tags:
+      - deviceavailabilitystatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/deviceavailabilitystatus/with/implicit/paging:
+  get:
+    operationId: getDeviceAvailabilityStatusWithImplicitPaging
+    tags:
+      - deviceavailabilitystatus
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

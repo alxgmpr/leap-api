@@ -1,0 +1,33 @@
+/stopemergencyassignment/{stopemergencyassignmentId}:
+  delete:
+    operationId: deleteStopEmergencyAssignmentID
+    tags:
+      - stopemergencyassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: StopEmergencyAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StopEmergencyAssignment"
+  get:
+    operationId: getStopEmergencyAssignmentID
+    tags:
+      - stopemergencyassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: StopEmergencyAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StopEmergencyAssignment"
+  parameters:
+    - name: stopemergencyassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

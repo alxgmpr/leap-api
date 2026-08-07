@@ -1,0 +1,17 @@
+/operationstatus:
+  get:
+    operationId: getOperationStatus
+    tags:
+      - operationstatus
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: OperationStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OperationStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/OperationStatus"

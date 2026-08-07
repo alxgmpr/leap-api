@@ -1,0 +1,46 @@
+/receptaclelevelassignment/{receptaclelevelassignmentId}:
+  delete:
+    operationId: deleteReceptacleLevelAssignmentID
+    tags:
+      - receptaclelevelassignment
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: ReceptacleLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceptacleLevelAssignment"
+  get:
+    operationId: getReceptacleLevelAssignmentID
+    tags:
+      - receptaclelevelassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ReceptacleLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceptacleLevelAssignment"
+  put:
+    operationId: updateReceptacleLevelAssignmentID
+    tags:
+      - receptaclelevelassignment
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ReceptacleLevelAssignment
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceptacleLevelAssignment"
+  parameters:
+    - name: receptaclelevelassignmentId
+      in: path
+      required: true
+      schema:
+        type: string

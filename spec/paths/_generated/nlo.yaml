@@ -1,0 +1,32 @@
+/nlo/{nloId}/fadefighterproppreset:
+  get:
+    operationId: getNloIDFadeFighterPropPreset
+    tags:
+      - nlo
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: nloId
+      in: path
+      required: true
+      schema:
+        type: string
+/nlo/{nloId}/fadefighterproptiltassignment:
+  get:
+    operationId: getNloIDFadeFighterPropTiltAssignment
+    tags:
+      - nlo
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: nloId
+      in: path
+      required: true
+      schema:
+        type: string

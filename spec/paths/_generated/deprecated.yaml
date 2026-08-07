@@ -1,0 +1,59 @@
+/deprecated/presetassignment/{presetassignmentId}:
+  delete:
+    operationId: deleteDeprecatedPresetAssignmentID
+    tags:
+      - deprecated
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getDeprecatedPresetAssignmentID
+    tags:
+      - deprecated
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateDeprecatedPresetAssignmentID
+    tags:
+      - deprecated
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetassignmentId
+      in: path
+      required: true
+      schema:
+        type: string
+/deprecated/preset/{presetId}/presetassignment:
+  post:
+    operationId: createDeprecatedPresetIDPresetAssignment
+    tags:
+      - deprecated
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getDeprecatedPresetIDPresetAssignment
+    tags:
+      - deprecated
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string

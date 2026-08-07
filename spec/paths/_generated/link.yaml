@@ -1,0 +1,217 @@
+/link:
+  get:
+    operationId: getLink
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Link
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Link"
+    summary: List all links
+/link/{linkId}:
+  get:
+    operationId: getLinkID
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Link
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Link"
+    summary: Read link
+  put:
+    operationId: updateLinkID
+    tags:
+      - link
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Link
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Link"
+    summary: Update link
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/associatedlinknodeexpandedquerystringwithexplicitpaging:
+  get:
+    operationId: getLinkIDAssociatedLinkNodeExpandedQueryStringWithExplicitPaging
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/associatedlinknodeexpandedquerystringwithimplicitpaging:
+  get:
+    operationId: getLinkIDAssociatedLinkNodeExpandedQueryStringWithImplicitPaging
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/associatedlinknodeexpandedwithexplicitpaging:
+  get:
+    operationId: getLinkIDAssociatedLinkNodeExpandedWithExplicitPaging
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/associatedlinknodeexpandedwithimplicitpaging:
+  get:
+    operationId: getLinkIDAssociatedLinkNodeExpandedWithImplicitPaging
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/associatedlinknodes:
+  get:
+    operationId: getLinkIDAssociatedLinkNodes
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/memberdiscoverysession/{memberdiscoverysessionId}/status:
+  get:
+    operationId: getLinkIDMemberDiscoverySessionIDStatus
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LinkMemberDiscoverySessionStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkMemberDiscoverySessionStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/LinkMemberDiscoverySessionStatus"
+    summary: Get member discovery session status
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: memberdiscoverysessionId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/memberinfostatus:
+  get:
+    operationId: getLinkIDMemberInfoStatus
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LinkMemberInfoStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkMemberInfoStatus"
+    summary: Get member info status
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/status:
+  get:
+    operationId: getLinkIDStatus
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LinkStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/LinkStatus"
+    summary: Get link status
+  put:
+    operationId: updateLinkIDStatus
+    tags:
+      - link
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: LinkStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkStatus"
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string

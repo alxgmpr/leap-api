@@ -1,0 +1,53 @@
+/programmingmodel:
+  get:
+    operationId: getProgrammingModel
+    tags:
+      - programmingmodel
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ProgrammingModel
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProgrammingModel"
+    summary: List programming models
+/programmingmodel/{programmingmodelId}:
+  get:
+    operationId: getProgrammingModelID
+    tags:
+      - programmingmodel
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ProgrammingModel
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProgrammingModel"
+    summary: Read programming model
+  parameters:
+    - name: programmingmodelId
+      in: path
+      required: true
+      schema:
+        type: string
+/programmingmodel/{programmingmodelId}/preset:
+  get:
+    operationId: getProgrammingModelIDPreset
+    tags:
+      - programmingmodel
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List presets for programming model
+  parameters:
+    - name: programmingmodelId
+      in: path
+      required: true
+      schema:
+        type: string

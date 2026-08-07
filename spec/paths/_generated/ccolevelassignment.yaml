@@ -1,0 +1,34 @@
+/ccolevelassignment/{ccolevelassignmentId}:
+  delete:
+    operationId: deleteCcoLevelAssignmentID
+    tags:
+      - ccolevelassignment
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getCcoLevelAssignmentID
+    tags:
+      - ccolevelassignment
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateCcoLevelAssignmentID
+    tags:
+      - ccolevelassignment
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: ccolevelassignmentId
+      in: path
+      required: true
+      schema:
+        type: string
