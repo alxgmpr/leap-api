@@ -1,0 +1,11 @@
+type: object
+properties:
+  ErrorCode:
+    type: integer
+  Message:
+    type: string
+  FieldPath:
+    type: string
+required:
+  - Message
+  - FieldPath

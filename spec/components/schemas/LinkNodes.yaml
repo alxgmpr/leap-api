@@ -1,0 +1,6 @@
+# Hand-authored: the wire body of the probe-derived
+# `/link/{linkId}/associatedlinknode` route (see spec/paths/link.yaml).
+# Confirmed 200 OK with body key `LinkNodes` on RA3 v03.247.
+type: array
+items:
+  $ref: "#/components/schemas/LinkNode"

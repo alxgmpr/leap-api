@@ -1,0 +1,7 @@
+# Hand-authored: the wire body of the probe-derived
+# `/link/{linkId}/associatedlinknode/expanded` route (see
+# spec/paths/link.yaml). Confirmed 200 OK with body key `LinkNodesExpanded`
+# on both RA3 v03.247 and Caseta v01.123.
+type: array
+items:
+  $ref: "#/components/schemas/LinkNodeExpanded"

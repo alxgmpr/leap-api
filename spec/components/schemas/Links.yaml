@@ -1,0 +1,8 @@
+# Hand-authored: GET /link's collection response. The firmware extraction
+# recorded getLink's MessageBodyType as `Link` (singular); captured traffic
+# (RA3 v03.247 and Caseta v01.123, both 200 OK) shows the wire body is
+# `{"Links": [...]}`. Same class of mislabel Task 10 found and fixed for
+# GET /zone -> Zones, and this task fixed for GET /device -> Devices.
+type: array
+items:
+  $ref: "#/components/schemas/Link"

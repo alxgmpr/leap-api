@@ -1,0 +1,20 @@
+# Refined from _generated/LinkNodeExpanded.yaml. FLATTENED: `LinkNode` is a
+# named field whose Go type shares its field name -- an anonymous embed,
+# same class of bug as ZoneExpandedStatus (Task 10), Device, and
+# ButtonGroupExpanded (both this task). Captured `LinkNodesExpanded` items
+# (57 observed, both platforms, via
+# /link/{linkId}/associatedlinknode/expanded) never have a "LinkNode" key;
+# its fields (href, LinkType, RFProperties, AssociatedLink) appear directly
+# at the top level alongside a `Parent` key holding the full parent `Device`
+# object (57/57 full-device shape, never href-only) -- not the href-only
+# reference plain LinkNode.Parent carries. Restructured as `allOf` against
+# LinkNode, with `Parent` overridden to the full `Device` schema. `Parent`
+# is required: present on all 57 observed items.
+type: object
+allOf:
+  - $ref: "#/components/schemas/LinkNode"
+properties:
+  Parent:
+    $ref: "#/components/schemas/Device"
+required:
+  - Parent

@@ -1,0 +1,215 @@
+# Refined from spec/paths/_generated/link.yaml. Deviations from a straight
+# copy, all decided and recorded in the Task 12a report:
+#
+# 1. GET /link: x-leap-body-type and the 200 schema were changed from `Link`
+#    (singular) to `Links` (a new array schema). Same class of extraction
+#    mislabel Task 10 found for GET /zone and this task found for GET
+#    /device -- captured traffic (RA3 v03.247 and Caseta v01.123, both 200
+#    OK) shows the wire body is `{"Links": [...]}`.
+#
+# 2. /link/{linkId}/associatedlinknode and
+#    /link/{linkId}/associatedlinknode/expanded are HAND-AUTHORED, not
+#    copied. Both are absent from _generated/link.yaml: the extraction only
+#    recovered mangled query-string/paging variants of these routes
+#    (`associatedlinknodeexpandedquerystringwith...paging`, etc.), never the
+#    plain wire form. Captured traffic is authoritative for both:
+#    `/link/{linkId}/associatedlinknode` is 200 OK on RA3 v03.247 (body key
+#    `LinkNodes`); `/link/{linkId}/associatedlinknode/expanded` is 200 OK on
+#    both RA3 v03.247 and Caseta v01.123 (body key `LinkNodesExpanded`).
+#    The mangled generated variants
+#    (`associatedlinknodeexpandedquerystringwithexplicitpaging`,
+#    `associatedlinknodeexpandedquerystringwithimplicitpaging`,
+#    `associatedlinknodeexpandedwithexplicitpaging`,
+#    `associatedlinknodeexpandedwithimplicitpaging`, and the plain
+#    `associatedlinknodes`) are excluded from this file so they never reach
+#    the bundle.
+/link:
+  get:
+    operationId: getLink
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Links
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Links"
+    summary: List all links
+/link/{linkId}:
+  get:
+    operationId: getLinkID
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Link
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Link"
+    summary: Read link
+  put:
+    operationId: updateLinkID
+    tags:
+      - link
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Link
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Link"
+    summary: Update link
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/associatedlinknode:
+  # HAND-AUTHORED (probe-derived): absent from _generated/link.yaml. The
+  # firmware route-table extraction only recovered mangled query-string/
+  # paging variants of this route (see the file header); the real wire URL
+  # is `/link/{linkId}/associatedlinknode`. Confirmed 200 OK with body key
+  # `LinkNodes` on RA3 v03.247 (Caseta v01.123 returns 204 NoContent for its
+  # probed link, which has no associated link nodes -- not a route
+  # failure).
+  get:
+    operationId: getLinkIDAssociatedLinkNode
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LinkNodes
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkNodes"
+    summary: List link nodes associated with link
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/associatedlinknode/expanded:
+  # HAND-AUTHORED (probe-derived): absent from _generated/link.yaml, for the
+  # same reason as /link/{linkId}/associatedlinknode above. Confirmed 200 OK
+  # with body key `LinkNodesExpanded` on both RA3 v03.247 and Caseta
+  # v01.123.
+  get:
+    operationId: getLinkIDAssociatedLinkNodeExpanded
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LinkNodesExpanded
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkNodesExpanded"
+    summary: List expanded link nodes associated with link
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/memberdiscoverysession/{memberdiscoverysessionId}/status:
+  get:
+    operationId: getLinkIDMemberDiscoverySessionIDStatus
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LinkMemberDiscoverySessionStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkMemberDiscoverySessionStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/LinkMemberDiscoverySessionStatus"
+    summary: Get member discovery session status
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: memberdiscoverysessionId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/memberinfostatus:
+  get:
+    operationId: getLinkIDMemberInfoStatus
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LinkMemberInfoStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkMemberInfoStatus"
+    summary: Get member info status
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/status:
+  get:
+    operationId: getLinkIDStatus
+    tags:
+      - link
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LinkStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkStatus"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/LinkStatus"
+    summary: Get link status
+  put:
+    operationId: updateLinkIDStatus
+    tags:
+      - link
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: LinkStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkStatus"
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string

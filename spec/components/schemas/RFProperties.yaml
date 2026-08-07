@@ -1,3 +1,12 @@
+# `required` dropped entirely: firmware marks Channel and DefaultChannel
+# non-pointer, but they're populated in only 3 of 93 observed RFProperties
+# objects (both platforms) -- the 3 that hang directly off a top-level Link
+# (LinkType RF, e.g. /link/439). The 90 nested inside LinkNode/
+# LinkNodeExpanded (link family) are empty objects with neither field. Not a
+# platform split; a context split this schema can't express structurally,
+# so both are relaxed to optional. Originally copied unmodified as part of
+# the device family's transitive closure; corrected here once link-family
+# fixtures exposed the disagreement.
 type: object
 properties:
   ChannelSet:
@@ -16,6 +25,3 @@ properties:
     type: integer
     minimum: 0
     maximum: 65535
-required:
-  - Channel
-  - DefaultChannel
