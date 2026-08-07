@@ -1,7 +1,11 @@
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse, stringify } from "yaml";
-import { disambiguatePath, type Route, routeToPathItem } from "../lib/route-to-path.ts";
+import {
+  disambiguatePath,
+  type Route,
+  routeToPathItem,
+} from "../lib/route-to-path.ts";
 
 const OUT = "spec/paths/_generated";
 

@@ -37,7 +37,10 @@ describe("generated paths", () => {
       single.get.responses["200"].content["application/json"].schema.$ref,
       "#/components/schemas/Zone",
     );
-    assert.equal(zone["/zone/{zoneId}/status"].get["x-leap-subscribable"], true);
+    assert.equal(
+      zone["/zone/{zoneId}/status"].get["x-leap-subscribable"],
+      true,
+    );
   });
 
   test("summaries are seeded from the legacy spec where one exists", () => {
