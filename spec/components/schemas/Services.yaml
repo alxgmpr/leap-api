@@ -1,0 +1,8 @@
+# Hand-authored: GET /service's collection response. The firmware
+# extraction recorded getService's MessageBodyType as `Service` (singular);
+# captured traffic on both RA3 v03.247 and Caseta v01.123 shows the wire
+# body is `{"Services": [...]}`. Same class of mislabel Task 10 found for
+# GET /zone and Task 12a found for GET /device and GET /link.
+type: array
+items:
+  $ref: "#/components/schemas/Service"

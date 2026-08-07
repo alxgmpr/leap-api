@@ -1,0 +1,686 @@
+# Refined from spec/paths/_generated/service.yaml. One deviation from a
+# straight copy:
+#
+# GET /service: x-leap-body-type and the 200 schema were changed from
+# `Service` (singular) to `Services` (a new array schema). The firmware
+# extraction mislabeled the collection route's MessageBodyType; captured
+# traffic on both RA3 v03.247 and Caseta v01.123 shows the wire body is
+# `{"Services": [...]}`. Same class of mislabel Task 10 found for GET /zone
+# and Task 12a found for GET /device and GET /link.
+/service:
+  post:
+    operationId: createService
+    tags:
+      - service
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: Service
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Create service
+  get:
+    operationId: getService
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Services
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Services"
+    summary: List all services
+/service/alexa:
+  get:
+    operationId: getServiceAlexa
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/alexadatasummary:
+  get:
+    operationId: getServiceAlexaDataSummary
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/alexadatasummary/scene/with/{withId}:
+  get:
+    operationId: getServiceAlexaDataSummarySceneWithID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: withId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/alexadatasummary/shadegroup/{shadegroupId}:
+  get:
+    operationId: getServiceAlexaDataSummaryShadeGroupID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: shadegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/alexadatasummary/zone/{zoneId}:
+  get:
+    operationId: getServiceAlexaDataSummaryZoneID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/bacnet:
+  get:
+    operationId: getServiceBACnet
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/bacnetinstances:
+  get:
+    operationId: getServiceBACnetInstances
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/bacnetnetworksettings:
+  get:
+    operationId: getServiceBACnetNetworkSettings
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/bacnetnetworksettings/{bacnetnetworksettingsId}:
+  get:
+    operationId: getServiceBACnetNetworkSettingsID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    x-leap-subscribable: true
+  put:
+    operationId: updateServiceBACnetNetworkSettingsID
+    tags:
+      - service
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: bacnetnetworksettingsId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/bacnetnetworksettings/{bacnetnetworksettingsId}/bacnetinstances:
+  get:
+    operationId: getServiceBACnetNetworkSettingsIDBacnetInstances
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: bacnetnetworksettingsId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/bacnetnetworksettings/query:
+  get:
+    operationId: getServiceBACnetNetworkSettingsQuery
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/bacnetsettings:
+  get:
+    operationId: getServiceBACnetSettings
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    x-leap-subscribable: true
+  put:
+    operationId: updateServiceBACnetSettings
+    tags:
+      - service
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/googlehomedatasummary:
+  get:
+    operationId: getServiceGoogleHomeDataSummary
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/googlehomedatasummary/scene/{sceneId}:
+  get:
+    operationId: getServiceGoogleHomeDataSummarySceneID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sceneId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/googlehomedatasummary/shadegroup/{shadegroupId}:
+  get:
+    operationId: getServiceGoogleHomeDataSummaryShadeGroupID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: shadegroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/googlehomedatasummary/zone/{zoneId}:
+  get:
+    operationId: getServiceGoogleHomeDataSummaryZoneID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/homekit:
+  get:
+    operationId: getServiceHomeKit
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/homekitdatasummary:
+  get:
+    operationId: getServiceHomeKitDataSummary
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/{serviceId}:
+  delete:
+    operationId: deleteServiceID
+    tags:
+      - service
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: Service
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Delete service
+  get:
+    operationId: getServiceID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Service
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Read service
+  put:
+    operationId: updateServiceID
+    tags:
+      - service
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Service
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Update service
+  parameters:
+    - name: serviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/ifttt:
+  get:
+    operationId: getServiceIFTTT
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/iftttdatasummary:
+  get:
+    operationId: getServiceIFTTTDataSummary
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/iftttdatasummary/scene/{sceneId}:
+  get:
+    operationId: getServiceIFTTTDataSummarySceneID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sceneId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/iftttdatasummary/zone/{zoneId}:
+  get:
+    operationId: getServiceIFTTTDataSummaryZoneID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/openadr:
+  get:
+    operationId: getServiceOpenADR
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServiceOpenADR
+    tags:
+      - service
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/openadrconnection:
+  get:
+    operationId: getServiceOpenADRConnection
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServiceOpenADRConnection
+    tags:
+      - service
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/openadrconnectionstatus:
+  get:
+    operationId: getServiceOpenADRConnectionStatus
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/openadr/credentials:
+  get:
+    operationId: getServiceOpenADRCredentials
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServiceOpenADRCredentials
+    tags:
+      - service
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/query:
+  get:
+    operationId: getServiceQuery
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/sonos:
+  get:
+    operationId: getServiceSonos
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServiceSonos
+    tags:
+      - service
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/sonosaccounthousehold:
+  get:
+    operationId: getServiceSonosAccountHousehold
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/sonoshousehold:
+  get:
+    operationId: getServiceSonosHousehold
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+/service/sonoshousehold/{sonoshouseholdId}:
+  get:
+    operationId: getServiceSonosHouseholdID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonoshousehold/{sonoshouseholdId}/favorite:
+  get:
+    operationId: getServiceSonosHouseholdIDFavorite
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonoshousehold/{sonoshouseholdId}/favorite/{favoriteId}:
+  get:
+    operationId: getServiceSonosHouseholdIDFavoriteID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: favoriteId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonoshousehold/{sonoshouseholdId}/favorite/{favoriteId}/status:
+  get:
+    operationId: getServiceSonosHouseholdIDFavoriteIDStatus
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: favoriteId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonoshousehold/{sonoshouseholdId}/favoritestatus:
+  get:
+    operationId: getServiceSonosHouseholdIDFavoriteStatus
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonoshousehold/{sonoshouseholdId}/speaker:
+  get:
+    operationId: getServiceSonosHouseholdIDSpeaker
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonoshousehold/{sonoshouseholdId}/speaker/{speakerId}:
+  get:
+    operationId: getServiceSonosHouseholdIDSpeakerID
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  put:
+    operationId: updateServiceSonosHouseholdIDSpeakerID
+    tags:
+      - service
+    x-leap-communique-type: UpdateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: speakerId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonoshousehold/{sonoshouseholdId}/speaker/{speakerId}/status:
+  get:
+    operationId: getServiceSonosHouseholdIDSpeakerIDStatus
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: speakerId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonoshousehold/{sonoshouseholdId}/speakerstatus:
+  get:
+    operationId: getServiceSonosHouseholdIDSpeakerStatus
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: sonoshouseholdId
+      in: path
+      required: true
+      schema:
+        type: string
+/service/sonosstatus:
+  get:
+    operationId: getServiceSonosStatus
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

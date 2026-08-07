@@ -1,0 +1,22 @@
+type: object
+description: |
+  Firmware marks `Body` non-pointer (always present), but no observed
+  instance (RA3 v03.247, Caseta v01.123, via /service) ever carries a
+  literal `Body` key. Instead, type-specific properties sit flat on the
+  object under their own keys (`AlexaProperties`, `GoogleHomeProperties`,
+  `BACnetProperties`, `HomeKitProperties`, `IFTTTProperties`,
+  `AutoProgrammerProperties`, observed across both platforms) -- the same
+  per-`Type` discriminated-property pattern the design doc describes for
+  `Command`, just not modeled as a generic catch-all field on the wire.
+  Relaxed `Body` to optional on hardware evidence; its untyped `{}` schema
+  already permits any shape it might legitimately take, and the
+  type-specific properties validate as unvalidated additional properties
+  (this schema does not set `additionalProperties: false`).
+properties:
+  href:
+    type: string
+  Type:
+    type: string
+  Body: {}
+required:
+  - Type
