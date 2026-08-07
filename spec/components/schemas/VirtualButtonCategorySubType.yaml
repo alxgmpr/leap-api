@@ -1,0 +1,18 @@
+type: string
+description: |
+  Sub-category of a virtual/scene button, presumably scoped to its
+  Category.Type (e.g. `Bedside` scenes vs `Kitchen` scenes). The firmware
+  extraction did not recover the full enum; members below were recovered
+  from the 6 `/vbutton/{id}`-shaped objects embedded in Caseta v01.123's
+  `/virtualbutton` collection response: `GoodNight`, `Alert` (both
+  `Bedside`); `Off`, `Dining`, `Cooking`, `Bright` (all `Kitchen`). Never
+  observed on RA3 v03.247. This is a small, single-platform sample --
+  unlisted values are very likely, especially for Category.Types other than
+  `Bedside`/`Kitchen`.
+enum:
+  - GoodNight
+  - Alert
+  - Off
+  - Dining
+  - Cooking
+  - Bright

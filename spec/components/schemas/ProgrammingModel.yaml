@@ -1,7 +1,16 @@
-# `required` trimmed: firmware marks Direction non-pointer, but it's absent
-# on all 54 observed ProgrammingModel objects (nested inside Buttons, both
-# platforms). Relaxed to optional; ProgrammingModelType (54/54) stays
-# required.
+# `required` trimmed: firmware marks Direction and ProgrammingModelType
+# non-pointer. Direction is absent on all 54 ProgrammingModel objects
+# observed nested inside device-family Buttons (both platforms) --
+# relaxed. ProgrammingModelType stayed required through the device family's
+# commit (54/54 present there), but the button family's own /button route
+# (Caseta v01.123, 105 observed Buttons) falsifies it: Button.ProgrammingModel
+# is a bare href-only reference in that context (`{"href":
+# "/programmingmodel/N"}`), never carrying ProgrammingModelType. Same
+# context-dependent-required shape Task 12a found for RFProperties (full
+# when direct-fetched via /programmingmodel, href-only when embedded via
+# /button) -- relaxed per the same "any falsifying 200 instance relaxes the
+# field" standard. No field in this schema is universally required across
+# every context it's embedded in.
 type: object
 properties:
   href:
@@ -9,18 +18,12 @@ properties:
   Parent:
     $ref: "#/components/schemas/HyperReference"
   Direction:
-    type: string
-    description: "TODO(enum): members of RaiseLowerDirection were not recovered from
-      the firmware extraction"
+    $ref: "#/components/schemas/RaiseLowerDirection"
   ProgrammingModelType:
-    type: string
-    description: "TODO(enum): members of ProgrammingModelType were not recovered
-      from the firmware extraction"
+    $ref: "#/components/schemas/ProgrammingModelType"
   Preset:
     $ref: "#/components/schemas/HyperReference"
   DualActionProperties:
     $ref: "#/components/schemas/DualActionProperties"
   AdvancedToggleProperties:
     $ref: "#/components/schemas/AdvancedToggleProperties"
-required:
-  - ProgrammingModelType

@@ -1,0 +1,11 @@
+type: object
+properties:
+  href:
+    type: string
+  DeviceType:
+    type: string
+  AddressedState:
+    $ref: "#/components/schemas/AddressedState"
+required:
+  - DeviceType
+  - AddressedState

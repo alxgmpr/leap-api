@@ -1,0 +1,9 @@
+type: object
+properties:
+  Type:
+    $ref: "#/components/schemas/VirtualButtonCategoryType"
+  SubType:
+    $ref: "#/components/schemas/VirtualButtonCategorySubType"
+required:
+  - Type
+  - SubType

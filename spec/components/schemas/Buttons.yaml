@@ -1,0 +1,17 @@
+# Hand-authored: GET /button's collection response. The firmware extraction
+# recorded getButton's MessageBodyType as `Button` (singular); captured
+# Caseta v01.123 traffic (200 OK) shows the wire body is `{"Buttons": [...]}`.
+# Same class of mislabel Task 10 found for GET /zone -> Zones.
+#
+# RA3 v03.247 also returns 200 OK on this route, but with a literal empty
+# object `{}` -- no `Buttons` key at all -- rather than `{"Buttons": []}` or
+# a 204. Confirmed real (not a capture error) per this task's instructions.
+# Modeled as a `oneOf` of the normal array and the specific empty-object
+# shape (`additionalProperties: false`, so it only accepts exactly `{}`,
+# not an escape hatch for arbitrary objects).
+oneOf:
+  - type: array
+    items:
+      $ref: "#/components/schemas/Button"
+  - type: object
+    additionalProperties: false

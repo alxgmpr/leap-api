@@ -1,0 +1,18 @@
+type: string
+description: |
+  Kind of programming model attached to a button, virtual button, or
+  occupancy group. The firmware extraction did not recover the full enum;
+  members below were recovered from ProgrammingModel.ProgrammingModelType
+  observed on RA3 v03.247 (`AdvancedToggleProgrammingModel`,
+  `SingleActionProgrammingModel`, `SingleSceneLowerProgrammingModel`,
+  `SingleSceneRaiseProgrammingModel`) and Caseta v01.123
+  (`SingleActionProgrammingModel`, `SingleSceneLowerProgrammingModel`,
+  `SingleSceneRaiseProgrammingModel`, `DualActionProgrammingModel`), via
+  /programmingmodel and /device/{deviceId}/buttongroup/expanded. Unlisted
+  values are possible.
+enum:
+  - AdvancedToggleProgrammingModel
+  - SingleActionProgrammingModel
+  - SingleSceneLowerProgrammingModel
+  - SingleSceneRaiseProgrammingModel
+  - DualActionProgrammingModel

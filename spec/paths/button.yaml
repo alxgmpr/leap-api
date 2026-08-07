@@ -1,0 +1,63 @@
+# Refined from _generated/button.yaml. One deviation from a straight copy:
+#
+# GET /button: x-leap-body-type and the 200 schema were changed from
+# `Button` (singular) to `Buttons` (a new array schema). Same class of
+# extraction mislabel Task 10 found for GET /zone -- the extraction
+# recorded getButton's MessageBodyType as `Button` (singular). Caseta
+# v01.123's actual 200 response is `{"Buttons": [...]}` (an array). RA3
+# v03.247 also returns 200 OK on this route, but with an empty object `{}`
+# -- no buttons reportable at probe time on that unit, a real response
+# (per this task's instructions), not a capture error; it validates fine
+# against the `Buttons` array schema since a bare `{}` unwraps to no
+# recognized MessageBodyType key and the conformance test skips it (see
+# test/conformance.test.ts's body-key lookup).
+/button:
+  get:
+    operationId: getButton
+    tags:
+      - button
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Buttons
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Buttons"
+    summary: List all buttons
+/button/{buttonId}:
+  get:
+    operationId: getButtonID
+    tags:
+      - button
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Button
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Button"
+    summary: Read button
+  put:
+    operationId: updateButtonID
+    tags:
+      - button
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Button
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Button"
+    summary: Update button
+  parameters:
+    - name: buttonId
+      in: path
+      required: true
+      schema:
+        type: string

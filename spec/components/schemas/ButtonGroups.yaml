@@ -1,0 +1,8 @@
+# Hand-authored: GET /buttongroup's collection response. The firmware
+# extraction recorded getButtonGroup's MessageBodyType as `ButtonGroup`
+# (singular); captured Caseta v01.123 traffic (200 OK) shows the wire body
+# is `{"ButtonGroups": [...]}`. RA3 v03.247 returns 204 NoContent on this
+# route. Same class of mislabel Task 10 found for GET /zone -> Zones.
+type: array
+items:
+  $ref: "#/components/schemas/ButtonGroup"

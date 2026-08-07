@@ -1,0 +1,120 @@
+# Refined from _generated/controlstation.yaml. One deviation from a
+# straight copy:
+#
+# /controlstation/{controlstationId} and /controlstation/{controlstationXid}
+# merged into one path keyed by the `Id` form. OpenAPI forbids two paths
+# differing only in parameter name (redocly's `no-identical-paths`); same
+# treatment Task 10 gave /zone/{zoneId}/{zoneXid}. Kept the `{controlstationId}`
+# variant's operations (delete, get, put) since it's the superset -- the
+# `{controlstationXid}` variant only had a `get`, identical in body/response
+# shape to the id variant's `get`. The path parameter documents that it
+# accepts either form.
+#
+# No fixture coverage exists for any /controlstation/{id} route directly
+# (the bare /controlstation collection route is 405 MethodNotAllowed on
+# both platforms -- only POST is defined, no GET -- and no per-id fetch was
+# captured). `ControlStation` objects ARE observed, but only nested inside
+# /area/{areaId}/associatedcontrolstation's `ControlStations` array (a
+# different family's file, out of this task's scope -- see ControlStation.yaml
+# for the fixture evidence used to leave its `required` list unchanged).
+/controlstation:
+  post:
+    operationId: createControlStation
+    tags:
+      - controlstation
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+    summary: Create control station
+/controlstation/{controlstationId}:
+  delete:
+    operationId: deleteControlStationID
+    tags:
+      - controlstation
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+    summary: Delete control station
+  get:
+    operationId: getControlStationID
+    tags:
+      - controlstation
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+    summary: Read control station
+  put:
+    operationId: updateControlStationID
+    tags:
+      - controlstation
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ControlStation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControlStation"
+    summary: Update control station
+  parameters:
+    - name: controlstationId
+      in: path
+      required: true
+      description: |
+        Control station identifier. Accepts either the numeric integration
+        id (e.g. `1494`) or the resource XID string. Merged from the
+        generated `controlstationId` and `controlstationXid` route
+        variants, which are the same resource addressed two ways.
+      schema:
+        type: string
+/controlstation/{controlstationId}/device/ledstatus:
+  get:
+    operationId: getControlStationIDDeviceLEDStatus
+    tags:
+      - controlstation
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: controlstationId
+      in: path
+      required: true
+      schema:
+        type: string
+/controlstation/{controlstationId}/query:
+  delete:
+    operationId: deleteControlStationIDQuery
+    tags:
+      - controlstation
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: controlstationId
+      in: path
+      required: true
+      schema:
+        type: string

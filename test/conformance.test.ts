@@ -58,8 +58,14 @@ for (const platform of ["ra3", "caseta"] as const) {
 
       test(`${platform} ${concrete} matches ${ref}`, () => {
         // The probe body wraps the payload in its MessageBodyType key.
+        // A body with zero keys (a literal `{}`, e.g. RA3's /button when it
+        // has nothing to report) has no key to unwrap -- validate the raw
+        // `{}` itself rather than `body[undefined]`, which would silently
+        // become `undefined` and never reach the schema as the empty
+        // object it actually is.
         const bodyKey = Object.keys(result.body ?? {})[0];
-        const payload = result.body?.[bodyKey];
+        const payload =
+          bodyKey === undefined ? result.body : result.body?.[bodyKey];
         const validate = ajv.compile({
           ...schema,
           components: doc.components,

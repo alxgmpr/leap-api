@@ -1,0 +1,8 @@
+# Hand-authored: GET /virtualbutton's collection response. The firmware
+# extraction recorded getVirtualButton's MessageBodyType as `VirtualButton`
+# (singular); captured Caseta v01.123 traffic (200 OK) shows the wire body
+# is `{"VirtualButtons": [...]}`. RA3 v03.247 returns 204 NoContent on this
+# route. Same class of mislabel Task 10 found for GET /zone -> Zones.
+type: array
+items:
+  $ref: "#/components/schemas/VirtualButton"

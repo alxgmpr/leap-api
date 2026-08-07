@@ -1,0 +1,39 @@
+# `required` trimmed: firmware marks Name non-pointer, but the /virtualbutton
+# collection route (Caseta v01.123) returns a MIXED array under the
+# `VirtualButtons` MessageBodyType key: 100 objects with `href` matching
+# `/virtualbutton/{id}` (the real VirtualButton resource, Name 100/100
+# present) and 6 objects with `href` matching `/vbutton/{id}` (a distinct,
+# separately-tagged resource in the generated route corpus --
+# `_generated/vbutton.yaml`, out of this task's family scope, TODO(response)
+# throughout -- but whose objects are embedded in this same wire array).
+# The 6 `/vbutton/*` objects never carry `Name` (they instead carry
+# `Category` -- see VirtualButtonCategory.yaml). `ButtonNumber`, `Parent`,
+# `IsProgrammed` are present on all 106; those stay required. `Name`
+# relaxed to optional so both shapes validate under one schema, since every
+# other field they carry already matches VirtualButton's existing
+# properties.
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  ButtonNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  ProgrammingModel:
+    $ref: "#/components/schemas/HyperReference"
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  IsProgrammed:
+    type: boolean
+  Category:
+    $ref: "#/components/schemas/VirtualButtonCategory"
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - ButtonNumber
+  - IsProgrammed

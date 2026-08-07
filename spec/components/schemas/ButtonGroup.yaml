@@ -1,7 +1,11 @@
 # `required` trimmed: firmware marks StopIfMoving non-pointer, but it's
-# absent on all 16 observed button groups (both platforms, via the expanded
-# button-group route -- see ButtonGroupExpanded.yaml). Relaxed to optional;
-# href, SortOrder, and ProgrammingType (16/16 each) stay required.
+# absent on all 16 observed button groups from the device family's expanded
+# button-group route (see ButtonGroupExpanded.yaml). The buttongroup family's
+# own /buttongroup route adds 51 more observed button groups (both
+# platforms): StopIfMoving is populated on 19/51 of those (Caseta only,
+# always "Disabled" -- see StopIfMovingEnabledState.yaml) but still absent
+# on the rest, so the relaxation still holds. href, SortOrder, and
+# ProgrammingType (51/51 each, across both routes) stay required.
 type: object
 properties:
   href:
@@ -21,15 +25,11 @@ properties:
     minimum: 0
     maximum: 4294967295
   StopIfMoving:
-    type: string
-    description: "TODO(enum): members of StopIfMovingEnabledState were not recovered
-      from the firmware extraction"
+    $ref: "#/components/schemas/StopIfMovingEnabledState"
   Category:
     $ref: "#/components/schemas/ButtonGroupCategory"
   ProgrammingType:
-    type: string
-    description: "TODO(enum): members of ProgrammingType were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/ProgrammingType"
 required:
   - href
   - SortOrder

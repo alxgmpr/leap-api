@@ -1,0 +1,102 @@
+# Refined from _generated/buttongroup.yaml. One deviation from a straight
+# copy:
+#
+# GET /buttongroup: x-leap-body-type and the 200 schema were changed from
+# `ButtonGroup` (singular) to `ButtonGroups` (a new array schema). Same
+# class of extraction mislabel Task 10 found for GET /zone. Caseta
+# v01.123's actual 200 response is `{"ButtonGroups": [...]}`. RA3 v03.247
+# returns 204 NoContent on this route (per this task's instructions'
+# useful-context note, a real platform divergence, not a capture error).
+/buttongroup:
+  get:
+    operationId: getButtonGroup
+    tags:
+      - buttongroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ButtonGroups
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ButtonGroups"
+    summary: List all button groups
+/buttongroup/{buttongroupId}:
+  get:
+    operationId: getButtonGroupID
+    tags:
+      - buttongroup
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ButtonGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ButtonGroup"
+    summary: Read button group
+  put:
+    operationId: updateButtonGroupID
+    tags:
+      - buttongroup
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ButtonGroup
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ButtonGroup"
+    summary: Update button group
+  parameters:
+    - name: buttongroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/buttongroup/{buttongroupId}/affectedzone:
+  post:
+    operationId: createButtonGroupIDAffectedZone
+    tags:
+      - buttongroup
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getButtonGroupIDAffectedZone
+    tags:
+      - buttongroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List zones affected by button group
+  parameters:
+    - name: buttongroupId
+      in: path
+      required: true
+      schema:
+        type: string
+/buttongroup/{buttongroupId}/button:
+  get:
+    operationId: getButtonGroupIDButton
+    tags:
+      - buttongroup
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List buttons in button group
+  parameters:
+    - name: buttongroupId
+      in: path
+      required: true
+      schema:
+        type: string
