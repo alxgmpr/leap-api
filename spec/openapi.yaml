@@ -1,0 +1,52 @@
+openapi: 3.1.0
+info:
+  title: Lutron LEAP API
+  version: "0.1.0"
+  summary: Unofficial reference for the Lutron Extensible Application Protocol.
+  description: |
+    LEAP is **not HTTP**. It is newline-delimited JSON over a single persistent
+    mutual-TLS socket on port 8081. Each message is an envelope:
+
+    ```json
+    {
+      "CommuniqueType": "ReadRequest",
+      "Header": { "Url": "/zone/1/status", "ClientTag": "1" },
+      "Body": {}
+    }
+    ```
+
+    Responses echo `ClientTag` and carry `Header.StatusCode`, which uses
+    HTTP-style strings such as `200 OK` and `400 BadRequest`. That deliberate
+    resemblance is what makes an OpenAPI description a close fit.
+
+    This document maps LEAP onto OpenAPI as follows:
+
+    | LEAP | OpenAPI |
+    | --- | --- |
+    | `Header.Url` | path |
+    | `ReadRequest` | `get` |
+    | `CreateRequest` | `post` |
+    | `UpdateRequest` | `put` |
+    | `DeleteRequest` | `delete` |
+    | `SubscribeRequest` | `get` with `x-leap-subscribable` |
+    | `Header.StatusCode` | response keys |
+    | `Body` | request and response content |
+
+    Schemas are derived from a firmware extraction of a RadioRA3 processor and
+    validated against response bodies captured from live hardware. See
+    `docs/mapping.md` for the full account.
+
+    Not an official Lutron document.
+servers:
+  - url: leaps://{host}:8081
+    description: >-
+      Processor or bridge. The scheme is deliberately not http — see
+      docs/protocol.md for the real transport.
+    variables:
+      host:
+        default: 192.168.1.10
+        description: Processor IP address or hostname.
+tags: []
+paths: {}
+components:
+  schemas: {}
