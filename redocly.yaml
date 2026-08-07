@@ -1,0 +1,50 @@
+# Lint ruleset for the LEAP OpenAPI reference.
+#
+# This is a reverse-engineered protocol reference, not a public REST API
+# under active design. It extends Redocly's stock "recommended" ruleset and
+# then deliberately relaxes only the handful of rules that assume a public,
+# OpenAPI-managed HTTP API surface. Every relaxation below is commented with
+# why it does not apply here — this is not a blanket-disable to force a
+# green build.
+#
+# Rules that are NOT touched, and must stay at "recommended" error level:
+#   - struct                        (structural / schema validity of the document)
+#   - no-identical-paths            (caught the {id}/{xid} collisions; must never regress)
+#   - no-unresolved-refs            (a dangling $ref breaks the document)
+#   - operation-operationId-unique  (duplicate operationIds break codegen/tooling)
+#   - path-declaration-must-exist   (a {param} in a path must be declared)
+extends:
+  - recommended
+
+rules:
+  # LEAP authenticates at the transport layer via mutual TLS (see
+  # docs/protocol.md, "Mutual TLS and certificate provisioning") — both
+  # client and server present certificates during the LEAP TLS handshake on
+  # port 8081. There is no in-band credential (API key, bearer token,
+  # OAuth flow) for an OpenAPI `security` scheme to describe: the transport
+  # itself is the authentication. Requiring `security:` on every operation
+  # would force fabricating a scheme that doesn't exist on the wire.
+  security-defined: off
+
+  # LEAP responses carry an HTTP-style status string in `Header.StatusCode`
+  # (e.g. "200 OK", "404 NotFound") but error shapes are uniform across all
+  # operations — there is no per-operation error schema to document. That
+  # uniform shape and the observed status codes are documented once in
+  # docs/protocol.md ("Status codes") rather than duplicated as a 4xx
+  # response object on every one of the ~200 operations in this spec. Each
+  # operation here intentionally documents only its 200 (success) shape.
+  operation-4xx-response: off
+
+  # Some operations originate from the legacy hand-written source spec
+  # (vendor/legacy-spec.yaml) and never had a summary for that path.
+  # Inventing summary text we have no evidence for would be fabricating
+  # protocol documentation. Left at "warn" (not "off") so newly authored
+  # operations are still nudged to include one.
+  operation-summary: warn
+
+  # Cosmetic metadata with no bearing on protocol correctness for an
+  # internal reference document — there is no license to declare and the
+  # tag descriptions (auto-derived from path prefixes in tools/bundle.ts)
+  # are self-explanatory.
+  info-license: off
+  tag-description: off

@@ -1,5 +1,6 @@
 node_modules/
 dist/
+site/
 raw/
 *.local.json
 .DS_Store
