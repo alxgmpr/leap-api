@@ -1,0 +1,62 @@
+# Copied from spec/paths/_generated/networkinterface.yaml with no
+# deviations -- both routes already resolved a correct response type, and
+# neither has any 200 fixture coverage in either platform's probe corpus
+# (the bare `/networkinterface` route and every `/device/{id}/
+# networkinterface` route return 400 BadRequest in both fixtures), so there
+# is nothing to triage.
+/networkinterface/{networkinterfaceId}:
+  get:
+    operationId: getNetworkInterfaceID
+    tags:
+      - networkinterface
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: NetworkInterface
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetworkInterface"
+    summary: Read network interface
+  put:
+    operationId: updateNetworkInterfaceID
+    tags:
+      - networkinterface
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: NetworkInterface
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetworkInterface"
+    summary: Update network interface
+  parameters:
+    - name: networkinterfaceId
+      in: path
+      required: true
+      schema:
+        type: string
+/networkinterface/{networkinterfaceId}/status:
+  get:
+    operationId: getNetworkInterfaceIDStatus
+    tags:
+      - networkinterface
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: NetworkInterfaceStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NetworkInterfaceStatus"
+    summary: Get network interface status
+  parameters:
+    - name: networkinterfaceId
+      in: path
+      required: true
+      schema:
+        type: string
