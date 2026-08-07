@@ -1,0 +1,25 @@
+# `required` trimmed: firmware marks LinkNumber non-pointer, but it's absent
+# on all 4 observed Link objects nested inside Device.OwnedLinks (both
+# platforms), while present on both directly-fetched /link/{linkId} Links
+# (RA3). Relaxed to optional; LinkType (present on all 6 observed Links,
+# nested and direct) stays required.
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  LinkType:
+    type: string
+    description: "TODO(enum): members of LinkType were not recovered from the
+      firmware extraction"
+  LinkNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  ClearConnectTypeXLinkProperties:
+    $ref: "#/components/schemas/ClearConnectTypeXLinkProperties"
+  RFProperties:
+    $ref: "#/components/schemas/RFProperties"
+required:
+  - LinkType

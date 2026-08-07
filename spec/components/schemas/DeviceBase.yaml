@@ -1,0 +1,13 @@
+type: object
+properties:
+  Name:
+    type: string
+  DeviceType:
+    type: string
+  AssociatedArea:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedControlStation:
+    $ref: "#/components/schemas/AssociatedControlStation"
+required:
+  - Name
+  - DeviceType

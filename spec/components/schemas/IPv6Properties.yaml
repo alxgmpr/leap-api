@@ -1,0 +1,6 @@
+type: object
+properties:
+  UniqueLocalUnicastAddresses:
+    type: array
+    items:
+      type: string

@@ -1,0 +1,8 @@
+type: object
+properties:
+  Firmware:
+    $ref: "#/components/schemas/Firmware"
+  UploadedToDevice:
+    $ref: "#/components/schemas/Firmware"
+  AvailableForUpload:
+    $ref: "#/components/schemas/Firmware"

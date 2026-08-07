@@ -1,0 +1,6 @@
+# Hand-authored: the wire body of the probe-derived
+# `/device/{deviceId}/buttongroup/expanded` route (see spec/paths/device.yaml).
+# Confirmed 200 OK with body key `ButtonGroupsExpanded` on RA3 v03.247.
+type: array
+items:
+  $ref: "#/components/schemas/ButtonGroupExpanded"

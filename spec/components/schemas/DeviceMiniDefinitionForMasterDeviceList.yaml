@@ -1,0 +1,18 @@
+# `required` trimmed: firmware marks SerialNumber non-pointer, but it's
+# absent on 1 of 80 observed devices embedding this type (flattened into
+# Device -- see Device.yaml), an RA3 device in "Unaddressed" AddressedState
+# (/device/3681). Relaxed to optional.
+type: object
+properties:
+  href:
+    type: string
+  SerialNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  NetworkInterfaces:
+    type: array
+    items:
+      $ref: "#/components/schemas/NetworkInterfaceSmallDefinition"
+  IPL:
+    $ref: "#/components/schemas/IPL"

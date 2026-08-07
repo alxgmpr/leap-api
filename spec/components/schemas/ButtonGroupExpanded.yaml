@@ -1,0 +1,21 @@
+# Refined from _generated/ButtonGroupExpanded.yaml. FLATTENED: `ButtonGroup`
+# is a named field whose Go type shares its field name -- an anonymous
+# embed, same class of bug as ZoneExpandedStatus (Task 10) and Device (this
+# task). Captured `ButtonGroupsExpanded` items (16 observed, both platforms,
+# via /device/{deviceId}/buttongroup/expanded) never have a "ButtonGroup"
+# key; its fields (href, Parent, SortOrder, Category, ProgrammingType, ...)
+# appear directly at the top level alongside a `Buttons` array of full
+# Button objects (not the href-only Buttons that plain ButtonGroup carries).
+# Restructured as `allOf` against ButtonGroup, with `Buttons` overridden to
+# the full-object array. `Buttons` is required: present on all 16 observed
+# items.
+type: object
+allOf:
+  - $ref: "#/components/schemas/ButtonGroup"
+properties:
+  Buttons:
+    type: array
+    items:
+      $ref: "#/components/schemas/Button"
+required:
+  - Buttons

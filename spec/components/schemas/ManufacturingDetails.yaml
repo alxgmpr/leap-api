@@ -1,0 +1,11 @@
+type: object
+properties:
+  Timestamp:
+    $ref: "#/components/schemas/Timestamp"
+  Facility:
+    type: string
+  DateCode:
+    type: string
+required:
+  - Facility
+  - DateCode

@@ -1,0 +1,27 @@
+# `required` trimmed: firmware marks ConfigurationStateRevision non-pointer,
+# but the only observed Database object (nested inside a Device, RA3
+# /database/@Project) omits it. Sample size is 1 (Database is not itself a
+# directly-fetched route in this family), but a genuine 200 body is enough
+# to falsify "always present". Relaxed to optional.
+type: object
+properties:
+  href:
+    type: string
+  Type:
+    type: string
+    description: "TODO(enum): members of DatabaseType were not recovered from the
+      firmware extraction"
+  Version:
+    $ref: "#/components/schemas/DatabaseVersion"
+  TransferGUID:
+    type: string
+  ConfigurationStateRevision:
+    type: string
+  UnsynchronizedChanges:
+    $ref: "#/components/schemas/UnsynchronizedChanges"
+  InstalledOnDevices:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+required:
+  - Type

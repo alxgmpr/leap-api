@@ -1,0 +1,395 @@
+# Refined from spec/paths/_generated/device.yaml. Deviations from a
+# straight copy, all decided and recorded in the Task 12a report:
+#
+# 1. GET /device: x-leap-body-type and the 200 schema were changed from
+#    `Device` (singular) to `Devices` (a new array schema). Same class of
+#    extraction mislabel Task 10 found for GET /zone -- the extraction
+#    recorded the collection route's MessageBodyType as the singular item
+#    type, but Caseta v01.123's actual 200 response (RA3 returns 204 on the
+#    bare collection route, so unconfirmed there) is `{"Devices": [...]}`.
+#
+# 2. /device/status and /device/{deviceId}/buttongroup/expanded are
+#    HAND-AUTHORED, not copied. `/device/status` is entirely absent from
+#    _generated/device.yaml (the route-table extraction concatenates
+#    collection paths, so it would need a literal `/devicestatus` segment
+#    that doesn't exist in the corpus at all). `/device/{deviceId}/
+#    buttongroup/expanded` IS present in _generated/device.yaml but under
+#    the mangled key `/device/{deviceId}/buttongroupexpanded` (concatenated,
+#    no slash) -- the real wire URL has a slash. Captured traffic is
+#    authoritative for both: RA3 v03.247 and Caseta v01.123 both confirm
+#    `/device/status` 200 OK (body key `DeviceStatuses`; also seen 204 on
+#    RA3 and 200 on Caseta, platform-dependent) and `/device/{deviceId}/
+#    buttongroup/expanded` 200 OK on RA3 (body key `ButtonGroupsExpanded`;
+#    204 on both platforms for devices without button groups, 404 on RA3 for
+#    a stale id). The mangled generated form
+#    (`/device/{deviceId}/buttongroupexpanded`) is excluded from this file
+#    so it never reaches the bundle.
+/device:
+  post:
+    operationId: createDevice
+    tags:
+      - device
+    x-leap-communique-type: CreateRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    summary: Create device
+  get:
+    operationId: getDevice
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Devices
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Devices"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Device"
+    summary: List all devices
+/device/status:
+  # HAND-AUTHORED (probe-derived): absent from _generated/device.yaml. The
+  # firmware route-table extraction records collection paths concatenated
+  # (e.g. it would need a literal `/devicestatus` segment); the real wire
+  # URL is `/device/status`. Confirmed 200 OK with body key `DeviceStatuses`
+  # on Caseta v01.123; RA3 v03.247 returns 204 NoContent for the same route
+  # (no devices with reportable status at probe time, not a route failure).
+  get:
+    operationId: getDeviceStatus
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DeviceStatuses
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceStatuses"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/DeviceStatus"
+    summary: List all device statuses
+/device/{deviceId}:
+  delete:
+    operationId: deleteDeviceID
+    tags:
+      - device
+    x-leap-communique-type: DeleteRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    summary: Delete device
+  get:
+    operationId: getDeviceID
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Device"
+    summary: Read device
+  put:
+    operationId: updateDeviceID
+    tags:
+      - device
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: Device
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Device"
+    summary: Update device
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/buttongroup:
+  get:
+    operationId: getDeviceIDButtonGroup
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List button groups on device
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/buttongroup/expanded:
+  # HAND-AUTHORED (probe-derived): _generated/device.yaml has this same
+  # operation under `/device/{deviceId}/buttongroupexpanded` -- the firmware
+  # route table concatenates the `buttongroup` and `expanded` segments
+  # instead of the real wire URL's `/`. Confirmed 200 OK with body key
+  # `ButtonGroupsExpanded` on RA3 v03.247 (also 204/404 on other device
+  # ids, and 204 on Caseta v01.123 across all probed ids -- Caseta's
+  # probed devices have no button groups, not a route failure). The wire
+  # form (`buttongroup/expanded`) is used here and the mangled generated
+  # path is dropped.
+  get:
+    operationId: getDeviceIDButtonGroupExpanded
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ButtonGroupsExpanded
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ButtonGroupsExpanded"
+    summary: List expanded button groups on device
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/cci:
+  get:
+    operationId: getDeviceIDCCI
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List CCIs on device
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/ledsettings:
+  get:
+    operationId: getDeviceIDLEDSettings
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get device LED settings
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/linknode/{linknodeId}:
+  get:
+    operationId: getDeviceIDLinkNodeID
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get device link node
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: linknodeId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/linknode/{linknodeId}/sentby:
+  post:
+    operationId: createDeviceIDLinkNodeIDSentBy
+    tags:
+      - device
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: linknodeId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/logger:
+  get:
+    operationId: getDeviceIDLogger
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DeviceLogger
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceLogger"
+    summary: Get device logger
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/loggerstatus:
+  get:
+    operationId: getDeviceIDLoggerStatus
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DeviceLoggerStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceLoggerStatus"
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/query:
+  delete:
+    operationId: deleteDeviceIDQuery
+    tags:
+      - device
+    x-leap-communique-type: DeleteRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/repeatabledevicerules:
+  get:
+    operationId: getDeviceIDRepeatableDeviceRules
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Get repeatable device rules
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/status:
+  get:
+    operationId: getDeviceIDStatus
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: DeviceStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceStatus"
+    summary: Get device status
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/temperaturesensors:
+  get:
+    operationId: getDeviceIDTemperatureSensors
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/{deviceId}/zonecontrollers:
+  get:
+    operationId: getDeviceIDZoneControllers
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/device/query:
+  get:
+    operationId: getDeviceQuery
+    tags:
+      - device
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

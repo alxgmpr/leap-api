@@ -1,0 +1,6 @@
+type: object
+properties:
+  Occupancy:
+    $ref: "#/components/schemas/WiredSensorSubDetails"
+  Daylight:
+    $ref: "#/components/schemas/WiredSensorSubDetails"

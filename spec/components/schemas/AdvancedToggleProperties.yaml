@@ -1,0 +1,6 @@
+type: object
+properties:
+  PrimaryPreset:
+    $ref: "#/components/schemas/HyperReference"
+  SecondaryPreset:
+    $ref: "#/components/schemas/HyperReference"

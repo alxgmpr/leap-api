@@ -1,0 +1,4 @@
+type: object
+properties:
+  Occupancy:
+    $ref: "#/components/schemas/OccupancySensorHeard"

@@ -1,0 +1,8 @@
+# Hand-authored: GET /device's collection response. The firmware extraction
+# recorded getDevice's MessageBodyType as `Device` (singular); captured
+# Caseta v01.123 traffic (RA3 v03.247 returns 204 on the bare collection
+# route, so unconfirmed there) shows the wire body is `{"Devices": [...]}`.
+# Same class of mislabel Task 10 found and fixed for GET /zone -> Zones.
+type: array
+items:
+  $ref: "#/components/schemas/Device"

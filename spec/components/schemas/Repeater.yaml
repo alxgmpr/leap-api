@@ -1,0 +1,12 @@
+type: object
+properties:
+  RepeatsAllDevices:
+    type: boolean
+  RepeatableDeviceRules:
+    $ref: "#/components/schemas/HyperReference"
+  SentByDevices:
+    type: array
+    items:
+      $ref: "#/components/schemas/AssociatedResource"
+required:
+  - RepeatsAllDevices

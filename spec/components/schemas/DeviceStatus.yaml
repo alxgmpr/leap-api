@@ -1,0 +1,36 @@
+# `required` dropped entirely: the firmware marks ConfigurationTransferStatus,
+# Availability, and StatusAccuracy all non-pointer, but none are universal
+# across 56 observed device statuses (both platforms). ConfigurationTransferStatus
+# is absent on 1/56 (/device/435/status, RA3), Availability on 1/56
+# (/device/1/status, Caseta), and StatusAccuracy on 25/56 -- entirely absent on
+# every Caseta status (0/24) and present on all but one RA3 status (31/32).
+type: object
+properties:
+  href:
+    type: string
+  Device:
+    $ref: "#/components/schemas/HyperReference"
+  UnconfiguredSensors:
+    $ref: "#/components/schemas/UnconfiguredSensors"
+  FailedTransfers:
+    $ref: "#/components/schemas/FailedTransfers"
+  ConfigurationTransferStatus:
+    type: string
+    description: "TODO(enum): members of ConfigurationTransferStatus were not
+      recovered from the firmware extraction"
+  SensorHeard:
+    $ref: "#/components/schemas/SensorHeard"
+  DeviceHeard:
+    $ref: "#/components/schemas/DeviceHeard"
+  Availability:
+    type: string
+    description: "TODO(enum): members of Availability were not recovered from the
+      firmware extraction"
+  BatteryStatus:
+    $ref: "#/components/schemas/BatteryStatus"
+  StatusAccuracy:
+    type: string
+    description: "TODO(enum): members of StatusAccuracy were not recovered from the
+      firmware extraction"
+  FirmwareUpdateStatus:
+    $ref: "#/components/schemas/DeviceFirmwareUpdateStatus"

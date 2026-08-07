@@ -1,0 +1,26 @@
+# `required` trimmed: firmware marks Direction non-pointer, but it's absent
+# on all 54 observed ProgrammingModel objects (nested inside Buttons, both
+# platforms). Relaxed to optional; ProgrammingModelType (54/54) stays
+# required.
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Direction:
+    type: string
+    description: "TODO(enum): members of RaiseLowerDirection were not recovered from
+      the firmware extraction"
+  ProgrammingModelType:
+    type: string
+    description: "TODO(enum): members of ProgrammingModelType were not recovered
+      from the firmware extraction"
+  Preset:
+    $ref: "#/components/schemas/HyperReference"
+  DualActionProperties:
+    $ref: "#/components/schemas/DualActionProperties"
+  AdvancedToggleProperties:
+    $ref: "#/components/schemas/AdvancedToggleProperties"
+required:
+  - ProgrammingModelType

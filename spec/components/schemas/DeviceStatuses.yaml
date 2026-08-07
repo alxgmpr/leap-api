@@ -1,0 +1,6 @@
+# Hand-authored: the wire body of the probe-derived `/device/status` route
+# (see spec/paths/device.yaml). Confirmed 200 OK with body key
+# `DeviceStatuses` on Caseta v01.123.
+type: array
+items:
+  $ref: "#/components/schemas/DeviceStatus"
