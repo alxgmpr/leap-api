@@ -1,0 +1,6 @@
+type: object
+properties:
+  DownloadFrom:
+    $ref: "#/components/schemas/DownloadFrom"
+  FilePackageDestination:
+    $ref: "#/components/schemas/FilePackageDestination"

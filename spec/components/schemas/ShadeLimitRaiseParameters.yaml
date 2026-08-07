@@ -1,0 +1,8 @@
+type: object
+properties:
+  Action:
+    type: string
+    description: "TODO(enum): members of ShadeLimitAction were not recovered from
+      the firmware extraction"
+required:
+  - Action

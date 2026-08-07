@@ -1,0 +1,10 @@
+type: object
+properties:
+  Protocol:
+    type: string
+    description: "TODO(enum): members of TransferProtocol were not recovered from
+      the firmware extraction"
+  S3Parameters:
+    $ref: "#/components/schemas/S3Parameters"
+required:
+  - Protocol

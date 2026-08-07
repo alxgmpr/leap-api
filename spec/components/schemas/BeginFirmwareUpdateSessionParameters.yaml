@@ -1,0 +1,4 @@
+type: object
+properties:
+  HTTPSParameters:
+    $ref: "#/components/schemas/HTTPSParameters"

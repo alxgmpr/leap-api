@@ -1,0 +1,14 @@
+type: object
+properties:
+  SystemType:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  DeviceClass:
+    $ref: "#/components/schemas/DeviceClass"
+  FormFactor:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  IPv6Properties:
+    $ref: "#/components/schemas/IPv6Properties"

@@ -1,0 +1,210 @@
+type: object
+description: |
+  The single flat command body sent to every `*/commandprocessor` endpoint,
+  discriminated by `CommandType`. This is NOT a `oneOf` union: an earlier
+  design draft modelled it that way from app RE tables listing ~13 zone
+  commands, but the firmware struct (this schema, copied unmodified from
+  the generator's staging output apart from re-pointing `CommandType` at the
+  populated `CommandType` enum schema below) disproves it -- one Go struct,
+  57 fields, a required `CommandType` plus 56 optional fields (54 of them
+  `*Parameters` shapes, one generic `Parameter` array, one
+  `GenerateLogPackageSession`). A client sets `CommandType` and populates
+  the one matching field; the rest are absent.
+
+  No captured traffic exists for any command processor (the firmware route
+  extraction has zero `commandprocessor` routes -- this whole write surface
+  is hand-authored from app reverse engineering; see `docs/mapping.md`).
+  That makes this table the only fidelity check available, so gaps are
+  marked "not established" rather than guessed. See `CommandType.yaml` for
+  full source citations and the list of names deliberately excluded from
+  the enum.
+
+  ## CommandType -> parameter field
+
+  | CommandType | Parameter field | Established by |
+  |---|---|---|
+  | `GoToDimmedLevel` | `DimmedLevelParameters` | api-discovery.md Zone Commands table |
+  | `GoToSwitchedLevel` | `SwitchedLevelParameters` | api-discovery.md Zone Commands table |
+  | `GoToShadeLevel` | `ShadeLevelParameters` | api-discovery.md Zone Commands table |
+  | `GoToShadeLevelWithTilt` | `ShadeWithTiltLevelParameters` | api-discovery.md Zone Commands table |
+  | `GoToShadeLevelWithTiltWhenClosed` | `ShadeWithTiltWhenClosedLevelParameters` | api-discovery.md Zone Commands table |
+  | `GoToTilt` | `TiltParameters` | api-discovery.md Zone Commands table |
+  | `GoToSpectrumTuningLevel` | `SpectrumTuningLevelParameters` | api-discovery.md Zone Commands table |
+  | `GoToWhiteTuningLevel` | `WhiteTuningLevelParameters` | api-discovery.md Zone Commands table |
+  | `GoToWarmDim` | `WarmDimParameters` | api-discovery.md Zone Commands table |
+  | `GoToMixedLevel` | `MixedLevelParameters` | api-discovery.md Zone Commands table |
+  | `Raise` | (none) | api-discovery.md Zone Commands table -- explicitly no parameters |
+  | `Lower` | (none) | api-discovery.md Zone Commands table -- explicitly no parameters |
+  | `Stop` | (none) | api-discovery.md Zone Commands table -- explicitly no parameters |
+  | `AddressDevice` | `AddressDeviceParameters` | api-discovery.md Device Commands table + full envelope example |
+  | `UnaddressDevice` | `UnaddressDeviceParameters` | api-discovery.md Device Commands table |
+  | `StartIdentify` | `IdentifyParameters` | api-discovery.md Device Commands table (marked optional there) |
+  | `StopIdentify` | `IdentifyParameters` | api-discovery.md Device Commands table (marked optional there) |
+  | `CloudProvision` | (none) | api-discovery.md Device Commands table + explicit "bare command type" example |
+  | `CacheDeviceHeard` | `CacheDeviceHeardParameters` | api-discovery.md Link Commands table |
+  | `RequestBeginUnassociatedDeviceDiscovery` | `RequestBeginUnassociatedDeviceDiscoveryParameters` | api-discovery.md Link Commands table |
+  | `ApplyNow` | `ApplyNowParameters` | api-discovery.md "ApplyDatabaseCommand" section, explicit |
+  | `BeginTransferSession` | `BeginTransferSessionParameters` (schema `DatabaseTransferSessionCreate`) | api-discovery.md "BeginTransferSessionCommand" section, explicit |
+  | `PressAndRelease` | (none) | index.md System Actions -- captured Caseta v01.123 response body has no parameters key (also validated by this repo's own `/system/action` fixture -- see `commandprocessor.yaml` and `system.yaml`) |
+  | `SystemStatusUpdate` | not established | api-discovery.md names the CommandType; no Parameters column or matching field name given |
+  | `GoToGroupLightingLevel` | not established | index.md Non-Zone Command Classes table; candidate field `GroupLightingLevelParameters` exists but no source ties them together |
+  | `EditDayNightMode` | not established | index.md Non-Zone Command Classes table; candidate field `EditDayNightModeParameters` exists but no source ties them together |
+  | `EditNaturalShowRamp` | not established | index.md Non-Zone Command Classes table; candidate field `EditNaturalShowRampParameters` exists but no source ties them together |
+  | `GenerateLogPackage` | not established | index.md Non-Zone Command Classes table; two candidate fields exist (`GenerateLogPackageParameters`, `GenerateLogPackageSession`) and which one this populates is unclear |
+  | `Filter` | not established | index.md Non-Zone Command Classes table; candidate field `FilterParameters` exists but no source ties them together, and this CommandType's owning endpoint is itself unclear |
+  | `DeviceDiscovery` | not established | index.md Non-Zone Command Classes table; no candidate field name matches |
+  | `TestHighEndTrim` | not established | index.md Non-Zone Command Classes table (TuningSettingsCommand row); candidate field `TuningSettingsParameters` is generic/shared, not confirmed |
+  | `TestLowEndTrim` | not established | index.md Non-Zone Command Classes table (TuningSettingsCommand row); candidate field `TuningSettingsParameters` is generic/shared, not confirmed |
+  | `GoToFanSpeed` | not established | index.md Zone Commands (Fan) section; candidate field `FanSpeedParameters` exists but no source ties them together |
+  | `GoToBrightnessLevel` | not established | index.md Zone Commands (Spectrum/Ketra) section; no candidate field name matches |
+  | `GoToVibrancyLevel` | not established | index.md Zone Commands (Spectrum/Ketra) section; no candidate field name matches |
+  | `EnableAutoVibrancy` | not established | index.md Zone Commands (Spectrum/Ketra) section; no candidate field name matches |
+  | `GoToCurveDimming` | not established | index.md Zone Commands (Spectrum/Ketra) section; no candidate field name matches |
+  | `GoToNaturalShow` | not established | index.md Zone Commands (Spectrum/Ketra) section; distinct from `EditNaturalShowRamp`, no candidate field name matches |
+  | `StopIfMoving` | not established | index.md Zone Commands (Shade) section; no candidate field name matches |
+
+  ## Firmware-confirmed fields with no source-confirmed CommandType
+
+  These 29 `*Parameters` fields (plus the generic `Parameter` array and
+  `GenerateLogPackageSession`) exist in the firmware struct but no source
+  document names a CommandType string that populates them: `ShadeLimitRaiseParameters`,
+  `ShadeLimitLowerLiftParameters`, `ShadeLimitRaiseLiftParameters`,
+  `ShadeLimitLowerTiltParameters`, `ShadeLimitRaiseTiltParameters`,
+  `ShadeLimitLowerParameters` (candidates for the Android APK's shade-limit
+  `*CommandBody` classes -- see `CommandType.yaml` for why those aren't used
+  to guess a value), `CCOLevelParameters`, `ReceptacleLevelParameters`
+  (candidates for the excluded `CCOZoneGotoLevelCommand`/
+  `ReceptacleZoneGotoLevelCommand` iOS RE names), `GoToSceneParameters`
+  (candidate for the unconfirmed `GoToScene`), `ExtractPairedDevicesParameters`,
+  `RSSIDiscoveryParameters`, `RequestDeviceHeardParameters`,
+  `EMailLogsParameters`, `OccupancyGroupsAssociationsParameters`,
+  `BACnetInstanceStrategyParameters`, `LookupResourceParameters`,
+  `SunriseSunsetTimesParameters`, `RetransferConfigurationParameters`,
+  `GenerateProfileParameters`, `SetLoggingLevelParameters`,
+  `VerifyWiFiPasskeyParameters`, `GenerateCustomerLogPackageParameters`,
+  `SetSortOrderParameters`, `PersonDetectedParameters`,
+  `PerformDatabaseBackupParameters`, `BeginFirmwareUpdateSessionParameters`,
+  `EnableDaliSniffingParameters`, `BeginOccupancyTestModeParameters`,
+  `EnableDataShippingRuleParameters`, `DisableDataShippingRuleParameters`,
+  `Parameter`, `GenerateLogPackageSession`.
+properties:
+  CommandType:
+    $ref: "#/components/schemas/CommandType"
+  Parameter:
+    type: array
+    items:
+      $ref: "#/components/schemas/Parameter"
+  DimmedLevelParameters:
+    $ref: "#/components/schemas/DimmedLevelParameters"
+  SwitchedLevelParameters:
+    $ref: "#/components/schemas/SwitchedLevelParameters"
+  FanSpeedParameters:
+    $ref: "#/components/schemas/FanSpeedParameters"
+  ShadeLevelParameters:
+    $ref: "#/components/schemas/ShadeLevelParameters"
+  ShadeWithTiltLevelParameters:
+    $ref: "#/components/schemas/ShadeWithTiltLevelParameters"
+  ShadeWithTiltWhenClosedLevelParameters:
+    $ref: "#/components/schemas/ShadeWithTiltWhenClosedLevelParameters"
+  ShadeLimitRaiseParameters:
+    $ref: "#/components/schemas/ShadeLimitRaiseParameters"
+  ShadeLimitLowerLiftParameters:
+    $ref: "#/components/schemas/ShadeLimitLowerLiftParameters"
+  ShadeLimitRaiseLiftParameters:
+    $ref: "#/components/schemas/ShadeLimitRaiseLiftParameters"
+  ShadeLimitLowerTiltParameters:
+    $ref: "#/components/schemas/ShadeLimitLowerTiltParameters"
+  ShadeLimitRaiseTiltParameters:
+    $ref: "#/components/schemas/ShadeLimitRaiseTiltParameters"
+  SpectrumTuningLevelParameters:
+    $ref: "#/components/schemas/SpectrumTuningLevelParameters"
+  WhiteTuningLevelParameters:
+    $ref: "#/components/schemas/WhiteTuningLevelParameters"
+  WarmDimParameters:
+    $ref: "#/components/schemas/WarmDimParameters"
+  ShadeLimitLowerParameters:
+    $ref: "#/components/schemas/ShadeLimitLowerParameters"
+  CCOLevelParameters:
+    $ref: "#/components/schemas/CCOLevelParameters"
+  ReceptacleLevelParameters:
+    $ref: "#/components/schemas/ReceptacleLevelParameters"
+  MixedLevelParameters:
+    $ref: "#/components/schemas/MixedLevelParameters"
+  GroupLightingLevelParameters:
+    $ref: "#/components/schemas/GroupLightingLevelParameters"
+  ExtractPairedDevicesParameters:
+    $ref: "#/components/schemas/ExtractPairedDevicesParameters"
+  RSSIDiscoveryParameters:
+    $ref: "#/components/schemas/RSSIDiscoveryParameters"
+  RequestDeviceHeardParameters:
+    $ref: "#/components/schemas/RequestDeviceHeardParameters"
+  CacheDeviceHeardParameters:
+    $ref: "#/components/schemas/CacheDeviceHeardParameters"
+  RequestBeginUnassociatedDeviceDiscoveryParameters:
+    $ref: "#/components/schemas/RequestBeginUnassociatedDeviceDiscoveryParameters"
+  EMailLogsParameters:
+    $ref: "#/components/schemas/EMailLogsParameters"
+  IdentifyParameters:
+    $ref: "#/components/schemas/IdentifyParameters"
+  TuningSettingsParameters:
+    $ref: "#/components/schemas/TuningSettingsUpdate"
+  OccupancyGroupsAssociationsParameters:
+    $ref: "#/components/schemas/OccupancyGroupsAssociationsParameters"
+  BACnetInstanceStrategyParameters:
+    $ref: "#/components/schemas/BACnetInstanceStrategyParameters"
+  LookupResourceParameters:
+    type: array
+    items:
+      $ref: "#/components/schemas/LookupResourceParameter"
+  SunriseSunsetTimesParameters:
+    $ref: "#/components/schemas/SunriseSunsetTimesParameters"
+  RetransferConfigurationParameters:
+    $ref: "#/components/schemas/RetransferConfigurationParameters"
+  GenerateProfileParameters:
+    $ref: "#/components/schemas/GenerateProfileParameters"
+  GenerateLogPackageParameters:
+    $ref: "#/components/schemas/GenerateLogPackageParameters"
+  GenerateLogPackageSession:
+    $ref: "#/components/schemas/GenerateLogPackageSession"
+  SetLoggingLevelParameters:
+    $ref: "#/components/schemas/SetLoggingLevelParameters"
+  FilterParameters:
+    $ref: "#/components/schemas/FilterParameters"
+  TiltParameters:
+    $ref: "#/components/schemas/TiltParameters"
+  VerifyWiFiPasskeyParameters:
+    $ref: "#/components/schemas/VerifyWiFiPasskeyParameters"
+  GenerateCustomerLogPackageParameters:
+    $ref: "#/components/schemas/GenerateCustomerLogPackageParameters"
+  SetSortOrderParameters:
+    $ref: "#/components/schemas/SetSortOrderParameters"
+  PersonDetectedParameters:
+    $ref: "#/components/schemas/PersonDetectedParameters"
+  PerformDatabaseBackupParameters:
+    $ref: "#/components/schemas/PerformDatabaseBackupParameters"
+  BeginTransferSessionParameters:
+    $ref: "#/components/schemas/DatabaseTransferSessionCreate"
+  ApplyNowParameters:
+    $ref: "#/components/schemas/ApplyNowParameters"
+  GoToSceneParameters:
+    $ref: "#/components/schemas/GoToSceneParameters"
+  AddressDeviceParameters:
+    $ref: "#/components/schemas/AddressDeviceParameters"
+  UnaddressDeviceParameters:
+    $ref: "#/components/schemas/UnaddressDeviceParameters"
+  BeginFirmwareUpdateSessionParameters:
+    $ref: "#/components/schemas/BeginFirmwareUpdateSessionParameters"
+  EnableDaliSniffingParameters:
+    $ref: "#/components/schemas/EnableDaliSniffingParameters"
+  BeginOccupancyTestModeParameters:
+    $ref: "#/components/schemas/BeginOccupancyTestModeParameters"
+  EnableDataShippingRuleParameters:
+    $ref: "#/components/schemas/EnableDataShippingRuleParameters"
+  DisableDataShippingRuleParameters:
+    $ref: "#/components/schemas/DisableDataShippingRuleParameters"
+  EditNaturalShowRampParameters:
+    $ref: "#/components/schemas/EditNaturalShowRampParameters"
+  EditDayNightModeParameters:
+    $ref: "#/components/schemas/EditDayNightModeParameters"
+required:
+  - CommandType

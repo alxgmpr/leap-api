@@ -1,0 +1,16 @@
+type: object
+properties:
+  Level:
+    type: number
+  ColorTuningStatus:
+    $ref: "#/components/schemas/ColorTuningStatus"
+  VibrancyStatus:
+    $ref: "#/components/schemas/VibrancyStatus"
+  FadeTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+  DelayTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S

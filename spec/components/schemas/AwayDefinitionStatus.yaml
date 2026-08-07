@@ -1,0 +1,15 @@
+type: object
+properties:
+  href:
+    type: string
+  EnabledState:
+    type: string
+    description: "TODO(enum): members of SystemAwayEnabledState were not recovered
+      from the firmware extraction"
+  ActiveState:
+    type: string
+    description: "TODO(enum): members of SystemAwayActiveState were not recovered
+      from the firmware extraction"
+required:
+  - EnabledState
+  - ActiveState

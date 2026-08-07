@@ -1,0 +1,14 @@
+type: object
+properties:
+  IncludeProcessorFiles:
+    type: boolean
+  UploadTo:
+    $ref: "#/components/schemas/UploadTo"
+  IncludeLocalFiles:
+    type: boolean
+  ProcessorFilesIncluded:
+    $ref: "#/components/schemas/ProcessorFilesIncluded"
+  DeviceFilesIncluded:
+    $ref: "#/components/schemas/DeviceFilesIncluded"
+  Encryption:
+    $ref: "#/components/schemas/Encryption"

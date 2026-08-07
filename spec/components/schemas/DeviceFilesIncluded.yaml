@@ -1,0 +1,14 @@
+type: object
+properties:
+  LinkParameters:
+    type: array
+    items:
+      $ref: "#/components/schemas/LinkParameters"
+  DeviceFilters:
+    type: array
+    items:
+      $ref: "#/components/schemas/DeviceLogFilter"
+  EventLogs:
+    type: string
+    description: "TODO(enum): members of EventLogHistory were not recovered from the
+      firmware extraction"

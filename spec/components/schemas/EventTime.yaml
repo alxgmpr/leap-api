@@ -1,0 +1,19 @@
+type: object
+properties:
+  TimeType:
+    type: string
+    description: "TODO(enum): members of EventTimeType were not recovered from the
+      firmware extraction"
+  FixedTime:
+    $ref: "#/components/schemas/FixedTime"
+  AstronomicEventType:
+    type: string
+    description: "TODO(enum): members of AstronomicEventType were not recovered from
+      the firmware extraction"
+  AstronomicTimeOffset:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+required:
+  - TimeType
+  - AstronomicEventType

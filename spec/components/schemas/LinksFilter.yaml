@@ -1,0 +1,4 @@
+type: object
+properties:
+  ContainsItem:
+    $ref: "#/components/schemas/LinkFilter"

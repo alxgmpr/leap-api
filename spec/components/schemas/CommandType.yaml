@@ -1,0 +1,108 @@
+type: string
+description: |
+  Discriminator for `Command` (see `Command`'s description for the full
+  CommandType-to-parameter-field mapping). One of the 118 enums the firmware
+  extraction could not recover (`Command.CommandType` shipped as an open
+  `leapobj.CommandType` string with no member list attached) -- see the Task
+  4 report. Members below were recovered from app reverse engineering, not
+  captured traffic, with one exception (`PressAndRelease`, confirmed via a
+  live Caseta probe response body). **Observed-not-exhaustive**: unlisted
+  values are possible, and several command families documented in the
+  sources are deliberately excluded here rather than guessed -- see below.
+
+  Sources, cited per member in `Command`'s description:
+  - `api-discovery.md` -- decompiled from the Android APK, `com.lutron.lsb`
+    v26.1.0.4 (jadx). Confirms `@JsonClassDiscriminator("CommandType")`, i.e.
+    these are the literal wire discriminator strings, not internal class
+    names.
+  - `index.md`, "Route Reference (from iOS App Binary RE)" section --
+    decompiled from Lutron iOS app v26.0.0 (`com.lutron.lsb`, build 8; the
+    source document's own package identifier, despite the "iOS" heading).
+  - `index.md`, "System Actions" section -- one live-captured Caseta v01.123
+    response body (`PressAndRelease`), not app RE.
+
+  Deliberately NOT included, to avoid inventing values from a name's shape:
+  - The Android APK's `*CommandBody` wrapper class names for zone shade-limit
+    calibration and tuning (`EnterShadeLimitSetModeCommandBody`,
+    `ExitShadeLimitSetModeCommandBody`, `ShadeLimitLowerLiftCommandBody`,
+    `ShadeLimitRaiseLiftCommandBody`, `ShadeLimitSaveClosedLiftCommandBody`,
+    `ShadeLimitSaveOpenLiftCommandBody`, `TestCloseLimitCommandBody`,
+    `TestOpenLimitCommandBody`, `CommandTuningSettingsBody`). Stripping the
+    `CommandBody` suffix to guess a CommandType is exactly the kind of
+    name-shape inference this task was told to avoid -- and it's
+    demonstrably unreliable here: the same source's Device-family body
+    class `AssignmentCommandBody` corresponds to CommandType `AddressDevice`
+    and `UnassignmentCommandBody` to `UnaddressDevice`, neither a suffix
+    match. The zone and loadcontroller command processors are known (from
+    this same table) to accept commands wrapped in these classes; the exact
+    wire strings are not established.
+  - iOS RE bullet items ending in the literal suffix `Command`
+    (`ShadeLimitCommand`, `CCOZoneGotoLevelCommand`,
+    `ReceptacleZoneGotoLevelCommand`) -- inconsistent with every confirmed
+    CommandType's naming (plain PascalCase verb phrase, never
+    `*Command`-suffixed), read as informal class/selector paraphrases in the
+    source prose rather than literal wire values. CCO and receptacle zone
+    commands are real (the firmware struct has `CCOLevelParameters` and
+    `ReceptacleLevelParameters` fields), but their CommandType strings are
+    not established.
+  - `GoToScene`: no source states this string. It is inferred only from the
+    Request Creator class name `GoToSceneRequestCreator` and the firmware
+    field `GoToSceneParameters` existing -- and RequestCreator-name
+    stripping is independently shown unreliable elsewhere in the same list
+    (`DimmedLevelRequestCreator` strips to `DimmedLevel`, not the confirmed
+    `GoToDimmedLevel`).
+  - The iOS RE table's `IdentifyCommand` sub-commands are written as bare
+    "Start, Stop (flash LED)" -- read as a paraphrase of the Android table's
+    confirmed `StartIdentify`/`StopIdentify`, not two additional members.
+  - Vague endpoint-only mentions with no named value ("DayNightMode
+    commands", "NaturalShow commands", "PresetAssignment commands" in
+    api-discovery.md's Other Command Endpoints table).
+enum:
+  # api-discovery.md, Android APK RE, "Zone Commands" table
+  - GoToDimmedLevel
+  - GoToSwitchedLevel
+  - GoToShadeLevel
+  - GoToShadeLevelWithTilt
+  - GoToShadeLevelWithTiltWhenClosed
+  - GoToTilt
+  - GoToSpectrumTuningLevel
+  - GoToWhiteTuningLevel
+  - GoToWarmDim
+  - GoToMixedLevel
+  - Raise
+  - Lower
+  - Stop
+  # api-discovery.md, Android APK RE, "Device Commands" table
+  - AddressDevice
+  - UnaddressDevice
+  - StartIdentify
+  - StopIdentify
+  - CloudProvision
+  # api-discovery.md, Android APK RE, "Link Commands" table
+  - CacheDeviceHeard
+  - RequestBeginUnassociatedDeviceDiscovery
+  # api-discovery.md, Android APK RE, "Other Command Endpoints" table /
+  # "ApplyDatabaseCommand" and "BeginTransferSessionCommand" sections
+  - ApplyNow
+  - BeginTransferSession
+  # api-discovery.md, Android APK RE, "Other Command Endpoints" table
+  - SystemStatusUpdate
+  # index.md, iOS app RE, "Non-Zone Command Classes" table (Sub-commands column)
+  - GoToGroupLightingLevel
+  - EditDayNightMode
+  - GenerateLogPackage
+  - EditNaturalShowRamp
+  - Filter
+  - DeviceDiscovery
+  - TestHighEndTrim
+  - TestLowEndTrim
+  # index.md, iOS app RE, "Zone Commands (via /zone/{id}/commandprocessor)" section
+  - GoToFanSpeed
+  - GoToBrightnessLevel
+  - GoToVibrancyLevel
+  - EnableAutoVibrancy
+  - GoToCurveDimming
+  - GoToNaturalShow
+  - StopIfMoving
+  # index.md, "System Actions" section -- captured Caseta v01.123 response body
+  - PressAndRelease

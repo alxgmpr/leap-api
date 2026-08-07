@@ -1,0 +1,306 @@
+# HAND-AUTHORED end to end (Task 12D). The firmware route-table extraction
+# has zero commandprocessor routes at all (`grep` for "command" across all
+# 410 returns nothing) -- reads only. Every path in this file, and the
+# `Command` schema (and its 106-schema transitive closure, copied unmodified
+# from `_generated/`) it references, comes from app reverse engineering
+# rather than the firmware extraction:
+#
+#   - api-discovery.md -- decompiled from the Android APK, com.lutron.lsb
+#     v26.1.0.4 (jadx). This has explicit "CommandType | Parameters |
+#     Description" tables for several command families.
+#   - index.md, "Route Reference (from iOS App Binary RE)" section --
+#     decompiled from Lutron iOS app v26.0.0 (com.lutron.lsb, build 8).
+#
+# No captured traffic exists for any of these nine paths (the fixtures were
+# gathered by probing read-only ReadRequest/Subscribe routes; a CreateRequest
+# that actually executes a command was never sent during probing). That
+# means these paths are permanently a `specWithoutFixture` entry in
+# `npm run coverage`, by design -- not a gap to chase.
+#
+# Every operation shares the same shape: `x-leap-communique-type:
+# CreateRequest`, a requestBody of `$ref: Command`, and no confirmed 200
+# response schema (no source -- app RE or captured traffic -- documents
+# what a command processor's CreateResponse body looks like, so none is
+# asserted here rather than invented).
+#
+# See Command.yaml's description for the full CommandType-to-parameter-field
+# table and its source citations, and CommandType.yaml for why several
+# app-RE-mentioned names were deliberately excluded from the enum.
+/zone/{zoneId}/commandprocessor:
+  post:
+    operationId: createZoneIDCommandProcessor
+    tags:
+      - zone
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a command to a zone. Confirmed accepted CommandTypes (api-discovery.md
+      Zone Commands table, Android APK RE): `GoToDimmedLevel`,
+      `GoToSwitchedLevel`, `GoToShadeLevel`, `GoToShadeLevelWithTilt`,
+      `GoToShadeLevelWithTiltWhenClosed`, `GoToTilt`, `GoToSpectrumTuningLevel`,
+      `GoToWhiteTuningLevel`, `GoToWarmDim`, `GoToMixedLevel`, `Raise`,
+      `Lower`, `Stop`.
+
+      The same source's "Command Surfaces" section also lists this endpoint's
+      accepted body-wrapper classes as including `ZoneControlCommandBody`,
+      `CommandTuningSettingsBody`, `EnterShadeLimitSetModeCommandBody`,
+      `ExitShadeLimitSetModeCommandBody`, `ShadeLimitLowerLiftCommandBody`,
+      `ShadeLimitRaiseLiftCommandBody`, `ShadeLimitSaveClosedLiftCommandBody`,
+      `ShadeLimitSaveOpenLiftCommandBody`, `TestCloseLimitCommandBody`,
+      `TestOpenLimitCommandBody` -- confirming the zone processor also does
+      shade-limit calibration and tuning, but the literal CommandType wire
+      strings for those are not established (see `CommandType.yaml`).
+
+      index.md's iOS-RE "Zone Commands" section additionally names
+      `GoToFanSpeed`, `GoToBrightnessLevel`, `GoToVibrancyLevel`,
+      `EnableAutoVibrancy`, `GoToCurveDimming`, `GoToNaturalShow`, and
+      `StopIfMoving` as zone commands, and describes (without giving a clean
+      literal string) CCO and receptacle level commands -- not established
+      as confirmed wire values; see `CommandType.yaml` for why.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send zone command
+  parameters:
+    - name: zoneId
+      in: path
+      required: true
+      description: |
+        Zone identifier. Accepts either the numeric integration id or the
+        resource XID string -- see `/zone/{zoneId}` in zone.yaml.
+      schema:
+        type: string
+/area/{areaId}/commandprocessor:
+  post:
+    operationId: createAreaIDCommandProcessor
+    tags:
+      - area
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a command to an area. Confirmed accepted CommandType (index.md
+      Non-Zone Command Classes table, iOS app RE): `GoToGroupLightingLevel`
+      (sets all zones in the area at once). The exact parameter field it
+      populates is not established -- see `Command.yaml`.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send area command
+  parameters:
+    - name: areaId
+      in: path
+      required: true
+      description: |
+        Area identifier. Accepts either the numeric integration id or the
+        resource XID string -- see `/area/{areaId}` in area.yaml.
+      schema:
+        type: string
+/device/{deviceId}/commandprocessor:
+  post:
+    operationId: createDeviceIDCommandProcessor
+    tags:
+      - device
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a command to a device. Confirmed accepted CommandTypes
+      (api-discovery.md Device Commands table, Android APK RE):
+      `AddressDevice` (pair device -- see leap-ccx-addressing.md),
+      `UnaddressDevice` (un-pair device), `StartIdentify` / `StopIdentify`
+      (blink/stop blinking device LEDs), `CloudProvision` (trigger cloud
+      enrollment).
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send device command
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      schema:
+        type: string
+/link/{linkId}/commandprocessor:
+  post:
+    operationId: createLinkIDCommandProcessor
+    tags:
+      - link
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a command to a link (radio). Confirmed accepted CommandTypes
+      (api-discovery.md Link Commands table, Android APK RE):
+      `CacheDeviceHeard` (report a device found via BLE -- the LEAP-side
+      pairing mechanism), `RequestBeginUnassociatedDeviceDiscovery` (scan for
+      un-paired devices).
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send link command
+  parameters:
+    - name: linkId
+      in: path
+      required: true
+      schema:
+        type: string
+/loadcontroller/{loadcontrollerId}/commandprocessor:
+  post:
+    operationId: createLoadControllerIDCommandProcessor
+    tags:
+      - loadcontroller
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a command to a load controller (the physical load, distinct from
+      the zone that logically controls it). Confirmed accepted CommandTypes
+      (api-discovery.md LoadController Commands table, Android APK RE):
+      `GoToDimmedLevel`, `StartIdentify` / `StopIdentify`. The same source's
+      "Command Surfaces" section also lists `CommandTuningSettingsBody`
+      among this endpoint's accepted body-wrapper classes, but (as for the
+      zone processor) the literal CommandType wire string for tuning
+      commands is not established.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send load controller command
+  parameters:
+    - name: loadcontrollerId
+      in: path
+      required: true
+      schema:
+        type: string
+/naturalshow/{naturalshowId}/commandprocessor:
+  post:
+    operationId: createNaturalShowIDCommandProcessor
+    tags:
+      - naturalshow
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a command to a natural light show. Confirmed accepted CommandType
+      (index.md Non-Zone Command Classes table, iOS app RE):
+      `EditNaturalShowRamp`. The exact parameter field it populates is not
+      established -- see `Command.yaml`. (Distinct from `GoToNaturalShow`,
+      which index.md documents as a *zone* command that selects a show, not
+      a command sent to this endpoint.)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send natural show command
+  parameters:
+    - name: naturalshowId
+      in: path
+      required: true
+      schema:
+        type: string
+/database/commandprocessor:
+  post:
+    operationId: createDatabaseCommandProcessor
+    tags:
+      - database
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a database command. Confirmed accepted CommandTypes
+      (api-discovery.md Other Command Endpoints table + the "ApplyDatabaseCommand"
+      and "BeginTransferSessionCommand" sections, Android APK RE): `ApplyNow`
+      (populates `ApplyNowParameters`, which in turn carries
+      `EndDeviceTransferParameters` -- triggers immediate application of
+      programming changes) and `BeginTransferSession` (populates
+      `BeginTransferSessionParameters`, polymorphic: a `Download` variant
+      with a `DownloadFrom` model, or a `FilePackage` variant with a
+      `FilePackageDestination` model).
+
+      Path note: api-discovery.md's own "Other Command Endpoints" table
+      gives this route as `/database/{id}/commandprocessor` (parameterized),
+      while index.md's "Command Processor Endpoints" table gives it as
+      `/database/commandprocessor` (bare) -- the two app-RE sources
+      disagree. This task's brief specifies the bare form; that is what is
+      written here.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send database command
+/daynightmode/commandprocessor:
+  post:
+    operationId: createDayNightModeCommandProcessor
+    tags:
+      - daynightmode
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a day/night mode command. api-discovery.md's Other Command
+      Endpoints table only vaguely names this endpoint's accepted commands as
+      "DayNightMode commands"; index.md's Non-Zone Command Classes table (iOS
+      app RE) gives the specific CommandType `EditDayNightMode`. The exact
+      parameter field it populates is not established -- see `Command.yaml`.
+
+      Path note: api-discovery.md gives this route as
+      `/daynightmode/{id}/commandprocessor` (parameterized), while index.md
+      gives it as `/daynightmode/commandprocessor` (bare) -- same source
+      disagreement as `/database/commandprocessor` above. This task's brief
+      specifies the bare form; that is what is written here.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send day/night mode command
+/system/commandprocessor:
+  post:
+    operationId: createSystemCommandProcessor
+    tags:
+      - system
+    x-leap-communique-type: CreateRequest
+    description: |
+      Send a system-level command. Confirmed accepted CommandType
+      (api-discovery.md Other Command Endpoints table, Android APK RE):
+      `SystemStatusUpdate`. The exact parameter field it populates is not
+      established -- see `Command.yaml`.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send system command

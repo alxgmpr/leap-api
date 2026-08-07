@@ -1,0 +1,10 @@
+type: object
+properties:
+  Level:
+    type: number
+  Tilt:
+    type: number
+  DelayTime:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S

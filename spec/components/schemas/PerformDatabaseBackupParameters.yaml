@@ -1,0 +1,6 @@
+type: object
+properties:
+  UploadTo:
+    $ref: "#/components/schemas/UploadTo"
+  FilePackage:
+    $ref: "#/components/schemas/FilePackage"

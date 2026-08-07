@@ -1,0 +1,9 @@
+type: object
+properties:
+  ProfileName:
+    type: string
+  Debug:
+    type: integer
+required:
+  - ProfileName
+  - Debug

@@ -1,0 +1,6 @@
+type: object
+properties:
+  Day:
+    $ref: "#/components/schemas/DayNightModePropertyModify"
+  Night:
+    $ref: "#/components/schemas/DayNightModePropertyModify"

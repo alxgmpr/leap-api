@@ -1,0 +1,15 @@
+type: object
+properties:
+  Type:
+    type: string
+    description: "TODO(enum): members of DoType were not recovered from the firmware
+      extraction"
+  Resource:
+    $ref: "#/components/schemas/HyperReference"
+  Command:
+    $ref: "#/components/schemas/Command"
+  AwayStatus:
+    $ref: "#/components/schemas/AwayDefinitionStatus"
+required:
+  - Type
+  - Resource

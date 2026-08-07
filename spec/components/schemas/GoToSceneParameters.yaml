@@ -1,0 +1,4 @@
+type: object
+properties:
+  CurrentScene:
+    $ref: "#/components/schemas/HyperReference"

@@ -1,0 +1,10 @@
+type: object
+properties:
+  OnReboot:
+    type: boolean
+  AfterDuration:
+    type: string
+    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+required:
+  - OnReboot

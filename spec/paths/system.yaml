@@ -12,18 +12,19 @@
 #    four (see each path's inline comment for platform-specific status
 #    codes).
 #
-# 2. /system/action is DELIBERATELY OMITTED, not hand-authored, even though
-#    it is one of the seven probe-derived paths this task was instructed to
-#    hand-author. Caseta v01.123 confirms 200 OK with body key `Actions`
-#    (RA3 v03.247 returns 400 BadRequest for the same route). Rendering it
-#    would require the `Action` schema, whose `Statements[].Do` field
-#    (`DoStmt`) `$ref`s `Command` -- the 57-property, 105-schema-closure
-#    type Task 10 and Task 12a both explicitly declined to copy, and which
-#    this task's instructions (established item 6) say to stop and ask
-#    about rather than pull in unilaterally. Leaving /system/action out of
-#    this file means it stays an honest `probedNotInSpec` gap (reported by
-#    `npm run coverage`) rather than a silently-dropped or falsely-modeled
-#    path. See the Task 12b report's "Blocked" section.
+# 2. /system/action is HAND-AUTHORED (probe-derived), added by Task 12D.
+#    Earlier tasks (12a, 12b) deliberately left it out: rendering it needs
+#    the `Action` schema, whose `Statements[].Do` field (`DoStmt`) `$ref`s
+#    `Command` -- the 57-property, 106-schema-closure type those tasks
+#    explicitly declined to copy unilaterally. Task 12D is the first task
+#    to hand-author a commandprocessor path, so it copied `Command`'s
+#    closure (and, separately, `Action`'s closure -- `Action` ->
+#    `Statement` -> `DoStmt` -> `Command`, which Command's own closure walk
+#    does not reach since Command doesn't reference Action back) and
+#    unblocks this path per that plan. Confirmed 200 OK with body key
+#    `Actions` on Caseta v01.123 (two `Action` objects, each a
+#    `PressAndRelease` command to a virtual button); RA3 v03.247 returns 400
+#    BadRequest for the same route (Caseta-only feature).
 /system:
   get:
     operationId: getSystem
@@ -75,6 +76,23 @@
             schema:
               $ref: "#/components/schemas/AwayDefinitions"
     summary: List away definitions
+/system/action:
+  # HAND-AUTHORED (probe-derived), Task 12D. See the file-level comment at
+  # the top of this file for why this was deferred from earlier tasks.
+  get:
+    operationId: getSystemAction
+    tags:
+      - system
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Actions
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Actions"
+    summary: List system actions
 /system/action/intruder/{intruderId}:
   get:
     operationId: getSystemActionIntruderID

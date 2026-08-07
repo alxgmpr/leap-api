@@ -1,0 +1,14 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+    description: "TODO(enum): members of ActionName were not recovered from the
+      firmware extraction"
+  Statements:
+    type: array
+    items:
+      $ref: "#/components/schemas/Statement"
+required:
+  - Name

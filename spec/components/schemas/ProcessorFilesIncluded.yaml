@@ -1,0 +1,21 @@
+type: object
+properties:
+  FirmwareRevs:
+    type: boolean
+  DeviceConnectivityStatus:
+    type: boolean
+  EventLogs:
+    type: boolean
+  IntegrationLogs:
+    type: boolean
+  NetworkConnectivityLogs:
+    type: boolean
+  RemoteAccessStatus:
+    type: boolean
+required:
+  - FirmwareRevs
+  - DeviceConnectivityStatus
+  - EventLogs
+  - IntegrationLogs
+  - NetworkConnectivityLogs
+  - RemoteAccessStatus

@@ -1,0 +1,6 @@
+type: object
+properties:
+  Resources:
+    type: array
+    items:
+      $ref: "#/components/schemas/SortOrderResource"

@@ -1,0 +1,8 @@
+type: object
+properties:
+  HasButtons:
+    type: boolean
+  Where:
+    $ref: "#/components/schemas/IfExp"
+required:
+  - HasButtons

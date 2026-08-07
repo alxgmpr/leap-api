@@ -1,0 +1,24 @@
+type: object
+properties:
+  DimmedLevelParameters:
+    $ref: "#/components/schemas/DimmedLevelParameters"
+  SwitchedLevelParameters:
+    $ref: "#/components/schemas/SwitchedLevelParameters"
+  CCOLevelParameters:
+    $ref: "#/components/schemas/CCOLevelParameters"
+  ReceptacleLevelParameters:
+    $ref: "#/components/schemas/ReceptacleLevelParameters"
+  SpectrumTuningLevelParameters:
+    $ref: "#/components/schemas/SpectrumTuningLevelParameters"
+  WhiteTuningLevelParameters:
+    $ref: "#/components/schemas/WhiteTuningLevelParameters"
+  FanSpeedParameters:
+    $ref: "#/components/schemas/FanSpeedParameters"
+  ShadeLevelParameters:
+    $ref: "#/components/schemas/ShadeLevelParameters"
+  ShadeWithTiltLevelParameters:
+    $ref: "#/components/schemas/ShadeWithTiltLevelParameters"
+  ShadeWithTiltWhenClosedLevelParameters:
+    $ref: "#/components/schemas/ShadeWithTiltWhenClosedLevelParameters"
+  TiltParameters:
+    $ref: "#/components/schemas/TiltParameters"
