@@ -1,0 +1,69 @@
+# Refined from _generated/Area.yaml. `required` was trimmed: the firmware
+# extraction marks XID and PersistentID non-pointer (always present), but
+# captured traffic disagrees between platforms. RA3 v03.247: all 12 observed
+# areas have XID, 0/12 have PersistentID. Caseta v01.123: 0/25 have XID,
+# 0/25 have PersistentID. Neither field is universal on either platform, so
+# both are relaxed to optional; only `Name`, present on all 37, stays
+# required.
+type: object
+properties:
+  href:
+    type: string
+  XID:
+    type: string
+  PersistentID:
+    type: string
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  BACnetID:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Category:
+    $ref: "#/components/schemas/AreaCategory"
+  AssociatedDevices:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedShadeGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedOccupancyGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  ZoneTypeGroups:
+    type: array
+    items:
+      $ref: "#/components/schemas/ZoneTypeGroupAbridged"
+  LoadShedding:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancySettings:
+    $ref: "#/components/schemas/HyperReference"
+  OccupancySensorSettings:
+    $ref: "#/components/schemas/HyperReference"
+  DaylightingGainSettings:
+    $ref: "#/components/schemas/HyperReference"
+  VirtualButtons:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  AssociatedControlStations:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  IsLeaf:
+    type: boolean
+required:
+  - Name

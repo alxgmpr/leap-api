@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  LoadSheddingAllowed:
+    type: boolean
+required:
+  - LoadSheddingAllowed
