@@ -1,0 +1,8 @@
+# Hand-authored: GET /facade's collection response. The firmware extraction
+# recorded getFacade's MessageBodyType as `Facade` (singular); captured
+# Caseta v01.123 traffic (200 OK, 8 instances) shows the wire body is
+# `{"Facades": [...]}`. RA3 v03.247 returns 204 NoContent on this route.
+# Same class of mislabel Task 10 found for GET /zone -> Zones.
+type: array
+items:
+  $ref: "#/components/schemas/Facade"

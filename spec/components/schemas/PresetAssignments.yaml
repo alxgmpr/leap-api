@@ -1,0 +1,14 @@
+# Hand-authored: GET /presetassignment's collection response. One of this
+# task's five explicitly-briefed probe-derived paths -- the firmware
+# extraction only recovered `/presetassignment/deprecated` (a genuinely
+# distinct route, left in _generated/presetassignment.yaml as TODO(response))
+# and a separately-tagged `/allpresetassignmentsforpresetashref` route (see
+# _generated/allpresetassignmentsforpresetashref.yaml, left in staging --
+# its operationId and TODO(response) state suggest a per-preset filtered
+# listing, not proven to be this same bare collection route, so it was not
+# treated as this route's mangled form). Captured traffic confirms the real
+# wire URL is the plain `/presetassignment`, body key `PresetAssignments`.
+# 200 OK on Caseta v01.123; 204 NoContent on RA3 v03.247.
+type: array
+items:
+  $ref: "#/components/schemas/PresetAssignment"

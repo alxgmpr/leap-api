@@ -1,0 +1,36 @@
+# Refined from _generated/presetassignment.yaml. One HAND-AUTHORED path
+# added:
+#
+# - /presetassignment: body key `PresetAssignments`. One of this task's
+#   five explicitly-briefed probe-derived paths. 200 OK on Caseta v01.123
+#   (46 instances); 204 NoContent on RA3 v03.247.
+#
+# /presetassignment/deprecated is copied unchanged (a genuinely distinct
+# route per its operationId, not this route's mangled form -- see
+# PresetAssignments.yaml). No fixture coverage exists for it (never probed
+# with 200 in either fixture), so it stays TODO(response).
+/presetassignment:
+  get:
+    operationId: getPresetAssignment
+    tags:
+      - presetassignment
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: PresetAssignments
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PresetAssignments"
+    summary: List all preset assignments
+/presetassignment/deprecated:
+  get:
+    operationId: getPresetAssignmentDeprecated
+    tags:
+      - presetassignment
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success

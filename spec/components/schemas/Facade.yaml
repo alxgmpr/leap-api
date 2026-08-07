@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  FacingDirection:
+    $ref: "#/components/schemas/FacingDirection"
+  AssociatedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/HyperReference"
+required:
+  - FacingDirection

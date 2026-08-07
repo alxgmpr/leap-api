@@ -1,0 +1,47 @@
+# Refined from _generated/facade.yaml. One deviation from a straight copy:
+#
+# GET /facade: x-leap-body-type and the 200 schema were changed from
+# `Facade` (singular) to `Facades` (a new array schema). Same class of
+# extraction mislabel Task 10 found for GET /zone. Caseta v01.123's actual
+# 200 response is `{"Facades": [...]}` (8 instances). RA3 v03.247 returns
+# 204 NoContent on this route.
+#
+# /facade/{facadeId} has no fixture coverage in either platform (both
+# probed only via the /zone/{zoneId}/facade sub-route, which is a distinct,
+# always-400 route in this corpus), so it's left as generated.
+/facade:
+  get:
+    operationId: getFacade
+    tags:
+      - facade
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Facades
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Facades"
+    summary: List facades
+/facade/{facadeId}:
+  get:
+    operationId: getFacadeID
+    tags:
+      - facade
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Facade
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Facade"
+    summary: Read facade
+  parameters:
+    - name: facadeId
+      in: path
+      required: true
+      schema:
+        type: string

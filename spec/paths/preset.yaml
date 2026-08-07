@@ -1,0 +1,610 @@
+# Copied verbatim from _generated/preset.yaml. No deviation: /preset/{presetId}
+# already had a correctly recovered response type (Preset), and every other
+# route in this family (the bare /preset collection and all 25
+# /preset/{presetId}/*assignment sub-routes) returns 400 BadRequest on
+# every probed instance in both fixtures -- no 200 fixture evidence exists
+# anywhere in this family beyond the single per-id GET, so nothing else
+# could be hand-authored or triaged.
+/preset/{presetId}:
+  get:
+    operationId: getPresetID
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Preset
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Preset"
+    summary: Read preset
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/areasceneassignment:
+  post:
+    operationId: createPresetIDAreaSceneAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/ccolevelassignment:
+  post:
+    operationId: createPresetIDCCOLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDCCOLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/colortuninglevelassignment:
+  post:
+    operationId: createPresetIDColorTuningLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/dimmedlevelassignment:
+  post:
+    operationId: createPresetIDDimmedLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: Create dimmed level assignment
+  get:
+    operationId: getPresetIDDimmedLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+    summary: List dimmed level assignments
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/fanspeedassignment:
+  post:
+    operationId: createPresetIDFanSpeedAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDFanSpeedAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/favoritecycleassignment:
+  post:
+    operationId: createPresetIDFavoriteCycleAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDFavoriteCycleAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/nexttrackassignment:
+  post:
+    operationId: createPresetIDNextTrackAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDNextTrackAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/occupancysensorsettingsassignment:
+  post:
+    operationId: createPresetIDOccupancySensorSettingsAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDOccupancySensorSettingsAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/occupancysettingsassignment:
+  post:
+    operationId: createPresetIDOccupancySettingsAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDOccupancySettingsAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/pauseassignment:
+  post:
+    operationId: createPresetIDPauseAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDPauseAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/playpausetoggleassignment:
+  post:
+    operationId: createPresetIDPlayPauseToggleAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDPlayPauseToggleAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/raiselowerassignment:
+  post:
+    operationId: createPresetIDRaiseLowerAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDRaiseLowerAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/receptaclelevelassignment:
+  post:
+    operationId: createPresetIDReceptacleLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDReceptacleLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/shadelevelassignment:
+  post:
+    operationId: createPresetIDShadeLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDShadeLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/shadelevelwithtiltassignment:
+  post:
+    operationId: createPresetIDShadeLevelWithTiltAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDShadeLevelWithTiltAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/shadelevelwithtiltwhenclosedassignment:
+  post:
+    operationId: createPresetIDShadeLevelWithTiltWhenClosedAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDShadeLevelWithTiltWhenClosedAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/sonosplayassignment:
+  post:
+    operationId: createPresetIDSonosPlayAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDSonosPlayAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/spectrumtuninglevelassignment:
+  post:
+    operationId: createPresetIDSpectrumTuningLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/startemergencyassignment:
+  post:
+    operationId: createPresetIDStartEmergencyAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDStartEmergencyAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/startsequenceassignment:
+  post:
+    operationId: createPresetIDStartSequenceAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDStartSequenceAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/stopemergencyassignment:
+  post:
+    operationId: createPresetIDStopEmergencyAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDStopEmergencyAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/switchedlevelassignment:
+  post:
+    operationId: createPresetIDSwitchedLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDSwitchedLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/tiltassignment:
+  post:
+    operationId: createPresetIDTiltAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  get:
+    operationId: getPresetIDTiltAssignment
+    tags:
+      - preset
+    x-leap-communique-type: ReadRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/warmdimassignment:
+  post:
+    operationId: createPresetIDWarmDimAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
+/preset/{presetId}/whitetuninglevelassignment:
+  post:
+    operationId: createPresetIDWhiteTuningLevelAssignment
+    tags:
+      - preset
+    x-leap-communique-type: CreateRequest
+    description: "TODO(response): no responseType recovered from the firmware extraction"
+    responses:
+      "200":
+        description: Success
+  parameters:
+    - name: presetId
+      in: path
+      required: true
+      schema:
+        type: string
