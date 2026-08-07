@@ -86,12 +86,26 @@ export function routeToPathItem(route: Route): {
   }
 
   // SUBSCRIBE annotates the read operation rather than adding one of its own.
-  if (route.verbs.includes("SUBSCRIBE") && item.get) {
-    (item.get as Record<string, unknown>)["x-leap-subscribable"] = true;
+  //
+  // 7 routes are SUBSCRIBE-without-GET, and 5 of those carry a responseType.
+  // They are pure notification channels: a ReadRequest does not work, but a
+  // subscriber does receive bodies of that type. Annotating the path item
+  // itself keeps that fact in the document instead of discarding it.
+  if (route.verbs.includes("SUBSCRIBE")) {
+    const target = (item.get ?? item) as Record<string, unknown>;
+    target["x-leap-subscribable"] = true;
+    if (route.responseType) {
+      target["x-leap-event-schema"] = {
+        $ref: `#/components/schemas/${route.responseType}`,
+      };
+    }
   }
 
   const params = pathParameters(path);
-  if (params.length > 0 && Object.keys(item).length > 0) {
+  // Only emit parameters if there is at least one real HTTP operation
+  const hasOperation =
+    "get" in item || "post" in item || "put" in item || "delete" in item;
+  if (params.length > 0 && hasOperation) {
     item.parameters = params;
   }
 

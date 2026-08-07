@@ -71,7 +71,76 @@ describe("routeToPathItem", () => {
       verbs: ["SUBSCRIBE"],
       handlers: {},
     });
-    assert.deepEqual(Object.keys(item), []);
+    assert.equal(
+      (item as Record<string, unknown>)["x-leap-subscribable"],
+      true,
+    );
+    assert.ok(!("get" in item), "should not create a get operation");
+    assert.ok(!("post" in item), "should not create operations");
+    assert.ok(!("put" in item), "should not create operations");
+    assert.ok(!("delete" in item), "should not create operations");
+  });
+
+  test("SUBSCRIBE-only route WITH responseType puts x-leap-subscribable and x-leap-event-schema on path item", () => {
+    const { item } = routeToPathItem({
+      ident: "TimeclockStatus",
+      path: "/timeclockstatus",
+      verbs: ["SUBSCRIBE"],
+      handlers: {},
+      responseType: "TimeclockStatus",
+    });
+    assert.equal(
+      (item as Record<string, unknown>)["x-leap-subscribable"],
+      true,
+    );
+    const eventSchema = (item as Record<string, unknown>)[
+      "x-leap-event-schema"
+    ] as Record<string, unknown>;
+    assert.equal(eventSchema.$ref, "#/components/schemas/TimeclockStatus");
+    assert.ok(!("get" in item), "should not create a get operation");
+    assert.ok(
+      !("parameters" in item),
+      "should not emit parameters for subscribe-only route",
+    );
+  });
+
+  test("GET+SUBSCRIBE route puts both markers on the get operation", () => {
+    const { item } = routeToPathItem({
+      ident: "ZoneStatus",
+      path: "/zone/status",
+      verbs: ["GET", "SUBSCRIBE"],
+      handlers: {},
+      responseType: "ZoneStatuses",
+    });
+    const get = item.get as Record<string, unknown>;
+    assert.equal(get["x-leap-subscribable"], true);
+    const eventSchema = get["x-leap-event-schema"] as Record<string, unknown>;
+    assert.equal(eventSchema.$ref, "#/components/schemas/ZoneStatuses");
+    assert.ok(
+      !("x-leap-subscribable" in item),
+      "marker should be on get, not path item",
+    );
+    assert.ok(
+      !("x-leap-event-schema" in item),
+      "event schema should be on get, not path item",
+    );
+  });
+
+  test("SUBSCRIBE-only route with NO responseType gets x-leap-subscribable but no x-leap-event-schema", () => {
+    const { item } = routeToPathItem({
+      ident: "Mystery",
+      path: "/mystery",
+      verbs: ["SUBSCRIBE"],
+      handlers: {},
+    });
+    assert.equal(
+      (item as Record<string, unknown>)["x-leap-subscribable"],
+      true,
+    );
+    assert.ok(
+      !("x-leap-event-schema" in item),
+      "should not have event schema without responseType",
+    );
   });
 
   test("responseType becomes a 200 ref plus x-leap-body-type", () => {
