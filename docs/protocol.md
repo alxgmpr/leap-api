@@ -1,0 +1,222 @@
+# The LEAP wire protocol
+
+LEAP (Lutron Extensible Application Protocol) is not HTTP. This document
+describes the actual transport and framing, independent of how this
+specification maps it onto OpenAPI (see `docs/mapping.md` for that mapping).
+
+Sources are cited inline. `$SRC` refers to `~/lutron-protocols`, a separate,
+read-only repository holding the firmware extraction and probe captures this
+specification is built from — principally `$SRC/docs/protocols/leap/index.md`,
+`$SRC/docs/protocols/leap/api-discovery.md`,
+`$SRC/docs/protocols/leap/server-internals.md`,
+`$SRC/docs/reference/leap-api-spec.yaml` (a firmware-derived route index, `14
+communique types` per its own `info.description`), and `$SRC/lib/leap-client.ts`
+(a working client implementation).
+
+## The envelope
+
+Every message, in both directions, is a single JSON object with three
+top-level keys:
+
+```json
+{
+  "CommuniqueType": "ReadRequest",
+  "Header": {
+    "Url": "/zone/1/status",
+    "ClientTag": "1",
+    "StatusCode": "200 OK",
+    "MessageBodyType": "ZoneStatus"
+  },
+  "Body": { }
+}
+```
+
+- **`CommuniqueType`** — what kind of message this is. See "The 14
+  CommuniqueTypes" below.
+- **`Header.Url`** — the LEAP path the message concerns, e.g. `/zone/1/status`.
+  On a response this echoes the request's URL.
+- **`Header.ClientTag`** — a client-chosen opaque string used to correlate a
+  response with the request that produced it. See "Framing and correlation"
+  below.
+- **`Header.StatusCode`** — present on responses. A literal HTTP-style string,
+  e.g. `"200 OK"` or `"400 BadRequest"`. See "Status codes" below.
+- **`Header.MessageBodyType`** — the name of the schema `Body` conforms to,
+  e.g. `"ZoneStatus"`. This is what `x-leap-body-type` in the OpenAPI document
+  records for each operation (`docs/mapping.md`).
+- **`Body`** — present on requests that carry a payload (`CreateRequest`,
+  `UpdateRequest`) and on most responses. Absent on `204 NoContent` and on
+  bodyless requests like `ReadRequest`.
+
+## Framing
+
+LEAP frames are newline-delimited JSON (NDJSON) over a single, persistent
+socket. There is no length prefix and no multiplexed-stream framing beyond
+"one JSON object per line" — `$SRC/lib/leap-client.ts`'s `handleData` buffers
+incoming bytes, splits on `\n`, and parses each complete line independently:
+
+```ts
+private handleData(data: string): void {
+  this.buffer += data;
+  const lines = this.buffer.split("\n");
+  this.buffer = lines.pop()!; // last element may be a partial line
+
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    try {
+      const resp = JSON.parse(line);
+      // ...
+    } catch {}
+  }
+}
+```
+
+A client opens one TLS socket to port 8081 and reuses it for every request for
+the life of the session — there is no per-request connection, and no HTTP-style
+request/response pairing at the transport layer. All correlation is done at
+the application layer via `ClientTag`.
+
+### `ClientTag` correlation
+
+A client generates a tag per outbound request (`$SRC/lib/leap-client.ts` uses
+a simple incrementing counter, `lt-1`, `lt-2`, ...) and stores it against a
+pending-request record. When a frame arrives:
+
+- If its `Header.ClientTag` matches a pending request, that request's promise
+  resolves with the frame — this is a normal reply.
+- If its `ClientTag` does not match any pending request (including frames with
+  no `ClientTag` at all), it is routed to the event handler as an **unsolicited
+  push** — most commonly a subscription notification.
+
+```ts
+const tag = resp.Header?.ClientTag;
+
+// Match by ClientTag if present
+if (tag && this.pendingRequests.has(tag)) {
+  const pending = this.pendingRequests.get(tag)!;
+  this.pendingRequests.delete(tag);
+  pending.resolve(resp);
+  continue;
+}
+
+// Unsolicited message — pass to event handler
+if (this.onEvent) {
+  this.onEvent(resp);
+}
+```
+
+This is the load-bearing mechanism for subscriptions: a client sends one
+`SubscribeRequest` (tagged) and gets back one `SubscribeResponse` (same tag,
+carrying the initial state), after which the processor pushes further frames
+for that resource on its own schedule, with no further request from the
+client. See `docs/subscriptions.md` for the full lifecycle, including an open
+question about whether those later pushes reuse the original tag — the
+sources available to this project do not settle it, and that document says so
+explicitly rather than guessing.
+
+## The 14 CommuniqueTypes
+
+`$SRC/docs/reference/leap-api-spec.yaml`, a firmware-derived route index,
+states in its own `info.description`: "384 endpoint handlers, 773 object
+types, 14 communique types," and lists all 14 by name. `$SRC/docs/protocols/leap/index.md`'s
+"Protocol Basics" section lists only 12 of them (omitting `ExceptionResponse`
+and `CommandResponse`); the firmware-derived list is used here as the complete
+set:
+
+| CommuniqueType | Direction | Purpose |
+|---|---|---|
+| `ReadRequest` | client → server | Fetch a resource. Maps to `GET`. |
+| `ReadResponse` | server → client | Reply to a `ReadRequest`. |
+| `CreateRequest` | client → server | Create a resource or send a command (every `*/commandprocessor` endpoint is a `CreateRequest`). Maps to `POST`. |
+| `CreateResponse` | server → client | Reply to a `CreateRequest`. |
+| `UpdateRequest` | client → server | Modify an existing resource. Maps to `PUT`. |
+| `UpdateResponse` | server → client | Reply to an `UpdateRequest`. |
+| `DeleteRequest` | client → server | Remove a resource. Maps to `DELETE`. |
+| `DeleteResponse` | server → client | Reply to a `DeleteRequest`. |
+| `SubscribeRequest` | client → server | Start a subscription on a resource. |
+| `SubscribeResponse` | server → client | Reply to a `SubscribeRequest`, carrying the initial state. |
+| `UnsubscribeRequest` | client → server | End a subscription. |
+| `UnsubscribeResponse` | server → client | Reply to an `UnsubscribeRequest`. |
+| `ExceptionResponse` | server → client | An error reply distinct from a normal response with an error `StatusCode`. Named in the firmware's own communique-type count; no capture in this project's corpus shows one on the wire, so its exact shape is not established here. |
+| `CommandResponse` | server → client | Named in the firmware's own communique-type count. Whether this is used interchangeably with `CreateResponse` for command-processor replies, or is a distinct reply type, is not established from the sources available to this project — no command-processor response body was captured (see `docs/mapping.md`'s Commands section for why: the firmware route extraction has zero `commandprocessor` routes, so this whole write surface is documented from app RE, not captured traffic). |
+
+Unsolicited subscription pushes are not a distinct `CommuniqueType` in this
+list — they arrive with the same `CommuniqueType`/`Header`/`Body` shape as any
+other frame (in practice, carrying the resource's status type), distinguished
+only by `ClientTag` not matching a pending request (see "Framing" above).
+
+## Status codes
+
+`Header.StatusCode` deliberately mimics HTTP status line text — literal
+strings like `"200 OK"`, not bare numeric codes. This is the detail that makes
+an OpenAPI representation a good fit rather than a forced one (see
+`docs/mapping.md`).
+
+Counts below are observed across this project's probe sweeps of RA3 (1,124
+endpoints) and Caseta (963 endpoints) — 2,087 total probed requests, tallied
+in this project's design document:
+
+| Status | Count observed | Notes |
+|---|---|---|
+| `400 BadRequest` | 1,310 | By far the most common response — an unsupported or malformed request. |
+| `200 OK` | 439 | |
+| `204 NoContent` | 183 | Valid request, empty result (e.g. an empty list, or a feature not configured on this system). |
+| `404 NotFound` | 117 | The resource type is recognized but the specific instance does not exist. |
+| `500 InternalServerError` | 32 | Observed on RA3 for `/device/{id}/ledsettings` — the field exists in the firmware but is broken on that platform. |
+| `405 MethodNotAllowed` | 6 | The path exists but not for the verb used — e.g. `ReadRequest /zone` on RA3, which lacks a flat zone-list endpoint (see `docs/platforms.md`). |
+| `502 Bad Gateway` | 0 (not observed) | Listed in `$SRC/docs/reference/leap-api-spec.yaml`'s firmware-derived `StatusCodes` note as a code the server emits, but no request in either probe sweep triggered it. |
+| `504 Gateway Timeout` | 0 (not observed) | Same source and same caveat as `502` above. |
+
+`502` and `504` are included here because they are named in the firmware's own
+list of status codes it can emit, not because any capture in this project's
+corpus shows one — that gap is stated explicitly rather than silently omitted.
+
+## Transports
+
+LEAP is one protocol among several the processor speaks, all sharing the same
+JSON-envelope design but on different ports with different client-limit and
+authentication rules. Source: `$SRC/docs/reference/leap-api-spec.yaml`'s
+"Transport configuration" comment block, itself derived from the firmware
+binary:
+
+| Transport | Port | Notes |
+|---|---|---|
+| LEAP (TLS) | TCP 8081 | The subject of this specification. Mutual TLS. 10 clients max, 600-second idle timeout. |
+| LEAP (plaintext) | TCP 8080 | Localhost only — not reachable from the network. |
+| LAP | TCP 8083 | Mutual TLS. 25 integrators max. "LAP" is also used elsewhere in the source material as an abbreviation for "Lutron Authentication Protocol" describing the unauthenticated pairing handshake (see "Mutual TLS and certificate provisioning" below); whether that pairing flow and this TCP 8083 transport are the same thing is not established in the available sources, and this document does not assume they are. |
+| HAP | TCP 4548 | HomeKit Accessory Protocol bridging. 20 clients max. |
+| McLEAP | UDP multicast, `239.255.255.255:2647` | 4,000-byte maximum datagram. This resolves a question `$SRC/docs/protocols/leap/index.md` leaves open — it calls the purpose of UDP:2647 "unknown," observing only that the RA3 `/server` endpoint advertises a `UDP` port `2647` endpoint alongside the TLS `8081` one. The firmware-derived spec names the protocol (McLEAP) and its parameters; what McLEAP is used for beyond that (e.g. discovery, keepalive) is not established here. |
+
+## Mutual TLS and certificate provisioning
+
+The LEAP TLS transport (port 8081) uses mutual TLS: both client and server
+present X.509 certificates, and the server only accepts connections from
+clients whose certificate it trusts. `$SRC/docs/protocols/leap/api-discovery.md`
+("Certificate & Security Architecture," decompiled from the Android app,
+`com.lutron.lsb` v26.1.0.4) describes how a client obtains a certificate
+during initial pairing, before it has one:
+
+1. Connect to the bridge on the LEAP port without a client certificate.
+2. Send `ReadRequest /certificate/root` (unauthenticated — this is the one
+   endpoint reachable before pairing).
+3. Receive `Body.Certificate.Certificate`, a PEM-encoded X.509 root
+   certificate: the bridge's own self-signed CA, generated per bridge
+   instance.
+4. Generate an EC keypair (secp256r1) and a CSR.
+5. Send the CSR to a `/pair` endpoint.
+6. Receive a signed client certificate.
+7. Store both the root certificate and the client certificate for all future
+   mTLS connections.
+
+Once paired, `/certificate/root` returns `400` — RA3 was observed returning
+this because the connection is already authenticated via mTLS, and the
+endpoint is believed to be available only on the unauthenticated listener used
+during setup.
+
+TLS configuration observed from the app: TLS 1.2 exclusively (no TLS 1.3),
+mutual authentication, EC keys on the secp256r1 curve signed with
+SHA256withECDSA, with RSA-2048 used for legacy/Caseta pairing paths.
+
+This project's own test fixtures connect using pre-provisioned per-processor
+certificate bundles (see `config.example.json` in `$SRC`) rather than
+performing this pairing flow live. See `docs/discovery.md` for how a client
+locates a processor to pair with in the first place.
