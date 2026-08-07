@@ -1,0 +1,31 @@
+type: object
+description: |
+  Named field on NLOTime whose Go type shares the field name
+  (`TimeclockEventBase`). Every observed NLOTime instance (Caseta v01.123,
+  via /system/naturallightoptimization) has these fields sitting flat on
+  NLOTime rather than nested under a `TimeclockEventBase` key -- the same
+  anonymous-embed promotion class already fixed for ZoneExpandedStatus
+  (Task 10), Device/ButtonGroupExpanded/LinkNodeExpanded (Task 12a). See
+  NLOTime.yaml, which flattens this schema via `allOf` rather than
+  referencing it as a nested property.
+properties:
+  AstronomicEventType:
+    $ref: "#/components/schemas/AstronomicEventType"
+  AstronomicTimeOffset:
+    type: string
+    description: |
+      Firmware's generated pattern (`^P(?:\d+D)?(?:T...)?$`, ISO 8601
+      duration) rejected the observed value: both StartTime and EndTime on
+      the single probed NaturalLightOptimization (Caseta v01.123, via
+      /system/naturallightoptimization) carry the literal string `"0"`, not
+      an ISO 8601 duration. Widened to accept that bare-zero form alongside
+      the original pattern -- consistent with a Duration marshaller that
+      special-cases the zero value rather than emitting `PT0S`. Hardware
+      wins; a non-zero offset's true wire form is unconfirmed (unobserved
+      in either fixture).
+    pattern: ^(0|P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?)$
+    example: PT2S
+  TimeOfDay:
+    $ref: "#/components/schemas/FixedTime"
+required:
+  - AstronomicEventType

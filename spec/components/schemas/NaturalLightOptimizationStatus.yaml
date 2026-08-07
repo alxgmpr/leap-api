@@ -1,0 +1,20 @@
+type: object
+description: |
+  Firmware marks `ActiveState` non-pointer (always present), but the single
+  observed instance (Caseta v01.123, via
+  /system/naturallightoptimization/status) omits it -- relaxed to optional
+  on hardware evidence (RA3 returns 204 on this route, so unconfirmed
+  there).
+properties:
+  href:
+    type: string
+  NaturalLightOptimization:
+    $ref: "#/components/schemas/HyperReference"
+  EnabledState:
+    $ref: "#/components/schemas/EnabledState"
+  ActiveState:
+    type: string
+    description: "TODO(enum): members of ActiveState were not recovered from the
+      firmware extraction"
+required:
+  - EnabledState

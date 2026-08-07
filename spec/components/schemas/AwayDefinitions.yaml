@@ -1,0 +1,10 @@
+# Hand-authored: the wire body of the probe-derived `/system/away` route
+# (see spec/paths/system.yaml). The firmware route-table extraction
+# concatenates collection paths (would need a literal `/systemaway`
+# segment, which is what _generated/systemaway.yaml records); the real wire
+# URL is `/system/away`. Confirmed 200 OK with body key `AwayDefinitions`
+# on Caseta v01.123 (RA3 v03.247 returns 204 NoContent -- no away
+# definitions configured at probe time, not a route failure).
+type: array
+items:
+  $ref: "#/components/schemas/AwayDefinition"

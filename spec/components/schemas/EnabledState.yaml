@@ -1,0 +1,12 @@
+type: string
+description: |
+  Enabled/disabled toggle. The firmware extraction did not recover the full
+  enum (multiple properties across the API -- Server.EnableState,
+  NaturalLightOptimizationStatus.EnabledState, and others -- reference this
+  same named type as an open string); members below were recovered from
+  Server.EnableState (RA3 v03.247, Caseta v01.123) and
+  NaturalLightOptimizationStatus.EnabledState (Caseta v01.123). Unlisted
+  values are possible.
+enum:
+  - Enabled
+  - Disabled

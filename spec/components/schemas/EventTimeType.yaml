@@ -1,0 +1,13 @@
+type: string
+description: |
+  Discriminator for how a scheduled event's time is determined. The firmware
+  extraction did not recover the full enum (StartAndEndTime.SystemAwayEventType
+  and NLOTime.NaturalLightOptimizationEventType both reference this same named
+  type as an open string, despite the differing property names); members
+  below were recovered from StartAndEndTime.SystemAwayEventType (Caseta
+  v01.123, via /system/away) and NLOTime.NaturalLightOptimizationEventType
+  (Caseta v01.123, via /system/naturallightoptimization). Unlisted values are
+  possible.
+enum:
+  - FixedTime
+  - Astronomic

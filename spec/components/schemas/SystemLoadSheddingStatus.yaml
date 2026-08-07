@@ -1,0 +1,10 @@
+type: object
+properties:
+  href:
+    type: string
+  State:
+    $ref: "#/components/schemas/SystemLoadSheddingState"
+  SystemLoadShedding:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - State

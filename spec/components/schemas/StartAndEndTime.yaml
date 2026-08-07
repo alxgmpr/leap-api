@@ -1,0 +1,9 @@
+type: object
+properties:
+  SystemAwayEventType:
+    $ref: "#/components/schemas/EventTimeType"
+  TimeOfDay:
+    $ref: "#/components/schemas/FixedTime"
+required:
+  - SystemAwayEventType
+  - TimeOfDay

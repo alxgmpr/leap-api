@@ -1,0 +1,9 @@
+# Hand-authored: the wire body of the probe-derived
+# `/system/naturallightoptimization/status` route (see
+# spec/paths/system.yaml). Entirely absent from _generated/system.yaml.
+# Confirmed 200 OK with body key `NaturalLightOptimizationStatuses` on
+# Caseta v01.123 (RA3 v03.247 returns 204 NoContent -- none configured at
+# probe time, not a route failure).
+type: array
+items:
+  $ref: "#/components/schemas/NaturalLightOptimizationStatus"

@@ -1,0 +1,17 @@
+type: object
+properties:
+  href:
+    type: string
+  TimeZone:
+    type: string
+  Latitude:
+    type: number
+  Longitude:
+    type: number
+  Date:
+    $ref: "#/components/schemas/Date"
+  Time:
+    $ref: "#/components/schemas/Time"
+required:
+  - href
+  - TimeZone

@@ -1,0 +1,18 @@
+type: object
+properties:
+  Day:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Month:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Year:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - Day
+  - Month
+  - Year

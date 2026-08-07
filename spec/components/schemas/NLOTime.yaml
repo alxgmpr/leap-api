@@ -1,0 +1,18 @@
+# FLATTENED (not copied verbatim from _generated/NLOTime.yaml). The generated
+# schema nested TimeclockEventBase's fields under a `TimeclockEventBase` key.
+# Every observed NLOTime instance (both StartTime and EndTime, Caseta
+# v01.123, via /system/naturallightoptimization) has AstronomicEventType and
+# AstronomicTimeOffset sitting flat alongside NaturalLightOptimizationEventType
+# -- `TimeclockEventBase` is a Go anonymous embed whose field name equals its
+# type name, promoted flat onto the wire body, the same class of bug fixed
+# for ZoneExpandedStatus (Task 10) and Device/ButtonGroupExpanded/
+# LinkNodeExpanded (Task 12a). Confirmed from fixture evidence, not inferred
+# from the name==type shape alone.
+allOf:
+  - $ref: "#/components/schemas/TimeclockEventBase"
+  - type: object
+    properties:
+      NaturalLightOptimizationEventType:
+        $ref: "#/components/schemas/EventTimeType"
+    required:
+      - NaturalLightOptimizationEventType

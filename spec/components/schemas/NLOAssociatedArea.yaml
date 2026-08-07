@@ -1,0 +1,12 @@
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  AffectedZones:
+    type: array
+    items:
+      $ref: "#/components/schemas/LocalZoneAssociation"
+required:
+  - Name

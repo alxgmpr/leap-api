@@ -1,0 +1,9 @@
+type: string
+description: |
+  Sunrise/sunset anchor for an astronomic-scheduled event. The firmware
+  extraction did not recover the full enum; members below were recovered
+  from TimeclockEventBase.AstronomicEventType observed on Caseta v01.123
+  (via /system/naturallightoptimization). Unlisted values are possible.
+enum:
+  - Sunrise
+  - Sunset
