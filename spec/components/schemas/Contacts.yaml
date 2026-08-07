@@ -1,0 +1,10 @@
+# Hand-authored: the wire body of the probe-derived `/project/contactinfo`
+# route (see spec/paths/project.yaml). Entirely absent from
+# _generated/project.yaml -- the generated file has a `/project/contact`
+# path (singular, no `info` suffix) with no recovered response type; the
+# real wire URL is `/project/contactinfo`. Confirmed 200 OK with body key
+# `Contacts` on RA3 v03.247; Caseta v01.123 returns 204 NoContent for the
+# same route (no contacts configured at probe time, not a route failure).
+type: array
+items:
+  $ref: "#/components/schemas/Contact"
