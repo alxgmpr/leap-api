@@ -3,7 +3,12 @@ import test, { describe } from "node:test";
 import { parseGoStruct } from "../lib/go-struct-parser.ts";
 import { mapFieldType, structToSchema, wireKey } from "../lib/go-to-schema.ts";
 
-const defined = new Set(["Zone", "ZoneCategory", "HyperReference", "Parameter"]);
+const defined = new Set([
+  "Zone",
+  "ZoneCategory",
+  "HyperReference",
+  "Parameter",
+]);
 
 describe("wireKey", () => {
   test("Href is the only lowercased key", () => {
@@ -63,10 +68,13 @@ describe("mapFieldType", () => {
   });
 
   test("wraps arrays", () => {
-    assert.deepEqual(mapFieldType(f("leapobj.Parameter", false, true), defined), {
-      type: "array",
-      items: { $ref: "#/components/schemas/Parameter" },
-    });
+    assert.deepEqual(
+      mapFieldType(f("leapobj.Parameter", false, true), defined),
+      {
+        type: "array",
+        items: { $ref: "#/components/schemas/Parameter" },
+      },
+    );
   });
 });
 
