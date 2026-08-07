@@ -41,6 +41,12 @@ describe("mapFieldType", () => {
     assert.equal(s.type, "string");
     assert.equal(s.example, "PT2S");
     assert.ok(typeof s.pattern === "string");
+    // Verify the pattern is valid and matches ISO 8601 durations
+    const regex = new RegExp(String(s.pattern));
+    assert.ok(regex.test("PT2S"));
+    assert.ok(regex.test("PT0.25S"));
+    assert.ok(regex.test("PT30S"));
+    assert.ok(!regex.test("garbage"));
   });
 
   test("maps json.RawMessage to an unconstrained schema", () => {
@@ -87,6 +93,24 @@ describe("structToSchema", () => {
           "type leapobj.Zone struct {",
           "    HyperReference leapobj.HyperReference",
           "    Name       string",
+          "}",
+        ].join("\n"),
+      ),
+      defined,
+    );
+    const props = s.properties as Record<string, JsonSchemaLike>;
+    assert.deepEqual(props.href, { type: "string" });
+    assert.ok(!("HyperReference" in props));
+  });
+
+  test("flattens a pointer embedded HyperReference to an href string", () => {
+    const s = structToSchema(
+      parseGoStruct(
+        "Result",
+        [
+          "type leapobj.Result struct {",
+          "    HyperReference *leapobj.HyperReference",
+          "    UUID       uint32",
           "}",
         ].join("\n"),
       ),

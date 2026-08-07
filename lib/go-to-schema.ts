@@ -69,8 +69,9 @@ function baseSchema(goType: string, definedTypes: Set<string>): JsonSchema {
 /**
  * Map a parsed struct to a JSON Schema object.
  *
- * An embedded non-pointer `HyperReference` flattens to a single `href` string,
- * matching the wire format. A `*HyperReference` field stays a nested object.
+ * Any embedded field named `HyperReference` flattens to a single `href` string,
+ * matching the wire format (Go's encoding/json promotes embeds whether value or pointer).
+ * Other fields stay nested per their type.
  */
 export function structToSchema(
   s: GoStruct,
@@ -100,7 +101,6 @@ function isEmbeddedHyperReference(field: GoField): boolean {
   return (
     field.name === "HyperReference" &&
     field.type === `${LEAPOBJ}HyperReference` &&
-    !field.optional &&
     !field.array
   );
 }
