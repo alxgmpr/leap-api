@@ -21,6 +21,23 @@ describe("templatePath", () => {
     assert.equal(templatePath("/zone/status"), "/zone/status");
     assert.equal(templatePath("/server"), "/server");
   });
+
+  test("leaves non-numeric segments alone — they may be literal sub-resources, not ids", () => {
+    // Explicit test to pin safe behavior and reject shape-based XIDs.
+    // If a path contains /something/numeric, we template the numeric.
+    // If a path contains /something/nonNumeric, we leave it alone.
+    // We do NOT guess that non-numeric segments are XIDs, because that
+    // would mangle /zone/status to /zone/{zoneXid}, which is wrong.
+    assert.equal(templatePath("/zone/status"), "/zone/status");
+    assert.equal(
+      templatePath("/system/loadshedding/status"),
+      "/system/loadshedding/status",
+    );
+    assert.equal(
+      templatePath("/device/435/status"),
+      "/device/{deviceId}/status",
+    );
+  });
 });
 
 describe("buildMatrix", () => {

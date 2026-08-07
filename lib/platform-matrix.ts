@@ -5,13 +5,27 @@ const NOT_PROBED = "not probed";
 /**
  * Collapse a concrete probed path to the same template shape `gen-paths`
  * produces, so probe results can be matched to generated operations.
+ *
+ * LIMITATION: This function templates numeric segments only. `disambiguatePath`
+ * distinguishes {id} from {xid}, producing {zoneXid} for XID-keyed routes, but
+ * templatePath only recognizes numeric ids and appends Id, so a concrete
+ * XID-keyed probe (e.g., /zone/someString) would produce /zone/{zoneId} and
+ * never join to its generated {zoneXid} counterpart.
+ *
+ * This gap is currently SAFE because no captured probe uses an XID. A shape-based
+ * heuristic (treating non-numeric segments as XIDs) is deliberately rejected
+ * because it would mangle literal sub-resource segments: /zone/status would
+ * wrongly become /zone/{zoneXid} instead of staying /zone/status.
+ *
+ * If XID-keyed probes are ever captured, the caller would need to supply
+ * route context rather than trying to infer it from the string alone.
  */
 export function templatePath(concretePath: string): string {
   const segments = concretePath.split("/");
   return segments
     .map((seg, i) => {
       if (!/^\d+$/.test(seg)) return seg;
-      const owner = segments[i - 1] ?? "resource";
+      const owner = segments[i - 1] ?? "resource"; // unreachable: segments[0] is always empty string for absolute paths
       return `{${owner}Id}`;
     })
     .join("/");
