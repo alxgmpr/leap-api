@@ -6,7 +6,9 @@ describe("redactValue", () => {
   test("redacts IPv4 addresses", () => {
     // Placeholder numbering depends on call order across the suite, so assert
     // the shape rather than a specific index.
-    assert.match(String(redactValue("192.0.2.133")), /^<ipv4-\d+>$/);
+    // 192.0.2.0/24 is IANA-reserved for documentation (RFC 5737) — not a
+    // real device address.
+    assert.match(String(redactValue("192.0.2.10")), /^<ipv4-\d+>$/);
   });
 
   test("redacts IPv6 addresses", () => {
@@ -25,8 +27,8 @@ describe("redactValue", () => {
   });
 
   test("is stable — the same input maps to the same placeholder", () => {
-    const a = redactValue("192.0.2.133");
-    const b = redactValue("192.0.2.133");
+    const a = redactValue("192.0.2.10");
+    const b = redactValue("192.0.2.10");
     assert.equal(a, b);
   });
 
@@ -67,7 +69,7 @@ describe("redactTree", () => {
   });
 
   test("preserves structure — key sets are unchanged", () => {
-    const input = { A: "10.0.0.1", B: { C: 1 } };
+    const input = { A: "192.0.2.5", B: { C: 1 } };
     const out = redactTree(input) as Record<string, unknown>;
     assert.deepEqual(Object.keys(out), ["A", "B"]);
     assert.deepEqual(Object.keys(out.B as object), ["C"]);
@@ -77,6 +79,7 @@ describe("redactTree", () => {
   // installer contact record nests the real name under Name.Display, which
   // the plain SENSITIVE_STRING_KEYS check on "Name" misses because the
   // value at that level is an object, not a string.
+  // (Test input is a synthetic name, not the real value found in the data.)
   test("redacts a personal name nested under Name.Display", () => {
     const out = redactTree({
       Name: { Display: "Jane Doe" },
@@ -86,10 +89,11 @@ describe("redactTree", () => {
 
   // Found in real data: contact records use the keys "Phone" and "Email"
   // (not "PhoneNumber"/"EmailAddress" from the brief's baseline list).
+  // (Test input is a synthetic email, not the real value found in the data.)
   test("redacts Phone and Email keys", () => {
     const out = redactTree({
       Phone: "5555555555",
-      Email: "redacted@example.com",
+      Email: "jane@example.com",
     }) as { Phone: string; Email: string };
     assert.match(out.Phone, /^<phone-\d+>$/);
     assert.match(out.Email, /^<email-\d+>$/);
@@ -117,22 +121,26 @@ describe("redactTree", () => {
   // Found in real data: NetworkMasterKey and ExtendedPANID are Zigbee
   // network credentials (base64), not shaped like an IP/MAC/GUID, so the
   // pattern-only scalar check misses them entirely.
+  // (Test inputs are synthetic base64 strings, not the real network
+  // credentials found in the data — redaction here is by key name, not by
+  // shape, so any string of the right type exercises the same path.)
   test("redacts NetworkMasterKey and ExtendedPANID", () => {
     const out = redactTree({
-      NetworkMasterKey: "PURGED_ZIGBEE_KEY==",
-      ExtendedPANID: "PURGED_PANID=",
+      NetworkMasterKey: "AAECAwQFBgcICQoLDA0ODw==",
+      ExtendedPANID: "EBESExQVFhcY",
     }) as { NetworkMasterKey: string; ExtendedPANID: string };
     assert.match(out.NetworkMasterKey, /^<networkkey-\d+>$/);
     assert.match(out.ExtendedPANID, /^<panid-\d+>$/);
   });
 
   // Found in real data: HomeKitProperties.BridgeAccessory.SerialNumber is a
-  // hex string like "10005000000E8" — too short to match the 32+ char GUID
-  // pattern, so the "zero out numbers, else pattern-match" rule let it
-  // through unredacted.
+  // hex-ish string too short to match the 32+ char GUID pattern, so the
+  // "zero out numbers, else pattern-match" rule let it through unredacted.
+  // (Test input is a synthetic same-shaped serial, not the real device
+  // serial found in the data.)
   test("redacts a non-numeric SerialNumber string", () => {
     const out = redactTree({
-      SerialNumber: "10005000000E8",
+      SerialNumber: "AB12CD34EF56",
     }) as { SerialNumber: string };
     assert.match(out.SerialNumber, /^<serial-\d+>$/);
   });

@@ -121,10 +121,11 @@ export function redactTree<T>(tree: T): T {
           out[key] = 0;
         } else if (typeof value === "string") {
           // Found in real data: HomeKitProperties.BridgeAccessory.SerialNumber
-          // is a short hex string ("10005000000E8") that doesn't match the
-          // 32+ char GUID pattern, so pattern-only matching missed it. Any
-          // non-numeric value under a zeroed-numeric key is still sensitive
-          // and gets its own stable placeholder rather than passing through.
+          // is a short hex-ish string (e.g. "AB12CD34EF56") that doesn't
+          // match the 32+ char GUID pattern, so pattern-only matching missed
+          // it. Any non-numeric value under a zeroed-numeric key is still
+          // sensitive and gets its own stable placeholder rather than
+          // passing through.
           out[key] = placeholder(
             key === "SerialNumber" ? "serial" : "coord",
             value,
