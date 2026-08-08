@@ -1,17 +1,53 @@
-# Refined from spec/paths/_generated/area.yaml. One deviation from a
-# straight copy, decided and recorded per the Task 10 precedent
-# (spec/paths/zone.yaml):
+# Refined from spec/paths/_generated/area.yaml. Two deviations from a
+# straight copy:
 #
-# /area/{areaId} and /area/{areaXid} are MERGED. OpenAPI forbids two paths
-# differing only in parameter name (redocly's no-identical-paths); in LEAP
-# an area is addressable by either its numeric integration id or its XID
-# string, so dropping one silently would lose a real access path. Merged
-# into one `/area/{areaId}` path whose parameter description documents both
-# accepted forms, keeping the union of operations (the `{areaId}` variant
-# carried a `put` and subscribability/event-schema/summary that the
-# `{areaXid}` variant lacked for the shared `get` operation, so that is the
-# definition kept).
+# 1. /area/{areaId} and /area/{areaXid} are MERGED, decided and recorded per
+#    the Task 10 precedent (spec/paths/zone.yaml). OpenAPI forbids two paths
+#    differing only in parameter name (redocly's no-identical-paths); in
+#    LEAP an area is addressable by either its numeric integration id or its
+#    XID string, so dropping one silently would lose a real access path.
+#    Merged into one `/area/{areaId}` path whose parameter description
+#    documents both accepted forms, keeping the union of operations (the
+#    `{areaId}` variant carried a `put` and subscribability/event-schema/
+#    summary that the `{areaXid}` variant lacked for the shared `get`
+#    operation, so that is the definition kept).
+#
+# 2. GET /area was HAND-AUTHORED and added -- absent from the generated
+#    corpus because vendor/leap-routes.json records `/area`'s verbs as only
+#    CREATE+SUBSCRIBE, no GET. Captured traffic on both RA3 and Caseta shows
+#    `GET /area` returns `200 OK` with a real body (`{"Areas": [...]}`) --
+#    see Areas.yaml. docs/platforms.md tells RA3 readers to start device
+#    discovery by enumerating `/area`; without this operation that
+#    documented starting point did not exist in the spec. `x-leap-
+#    subscribable`/`x-leap-event-schema` moved from the path item onto this
+#    `get` operation to match the convention used for every other bare
+#    collection route with a GET (`/device`, `/zone`, `/virtualbutton`) --
+#    see docs/mapping.md, which previously cited `/area` as the one
+#    no-GET exception to that convention; that carve-out no longer applies.
 /area:
+  get:
+    operationId: getArea
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Area
+    description: >-
+      `x-leap-body-type` is `Area` (singular) because that is the only
+      responseType the firmware ever associated with the `Area` identifier --
+      the extraction recorded no GET route for `/area` at all (CREATE and
+      SUBSCRIBE only). Captured traffic shows the real response is a `Areas`
+      array; see `Areas.yaml`.
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Areas"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/Area"
+    summary: List all areas
   post:
     operationId: createArea
     tags:
@@ -26,9 +62,6 @@
             schema:
               $ref: "#/components/schemas/Area"
     summary: Create area
-  x-leap-subscribable: true
-  x-leap-event-schema:
-    $ref: "#/components/schemas/Area"
 /area/daylightinggainsettings:
   get:
     operationId: getAreaDaylightingGainSettings
@@ -138,10 +171,22 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Zones
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.247 returns `200 OK` with body key
+      `Zones` for 11 of 12 areas (the twelfth, `/area/3`, is a parent
+      grouping area with no zones of its own -- `204 NoContent`). Caseta
+      v01.123 returns `204 NoContent` on every area (Caseta uses flat
+      `/zone`/`/device` lists rather than RA3's area-walk navigation -- see
+      docs/platforms.md).
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zones"
     summary: List zones in area
   parameters:
     - name: areaId

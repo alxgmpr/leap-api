@@ -1,0 +1,13 @@
+# Hand-authored: GET /area's collection response. The firmware route-table
+# extraction (vendor/leap-routes.json) records the `/area` route as
+# CREATE+SUBSCRIBE only -- no GET verb at all, and no responseType for one.
+# That is itself a mislabel: captured traffic shows `GET /area` returns
+# `200 OK` with a real body on BOTH platforms (RA3 v03.247: 12 areas;
+# Caseta v01.123: 25 areas), wrapped as `{"Areas": [...]}`. Same class of
+# defect docs/mapping.md's "Collection GETs and the singular/plural defect"
+# section describes for `/zone`, `/device`, `/service`, and others, except
+# here the extraction dropped the GET route entirely rather than mislabeling
+# its body type -- see spec/paths/area.yaml for the added operation.
+type: array
+items:
+  $ref: "#/components/schemas/Area"

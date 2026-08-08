@@ -126,10 +126,13 @@ rather than to every operation like the three above — see
 `docs/subscriptions.md` for the full lifecycle account these support:
 
 - **`x-leap-subscribable`** — `true` on any operation that also accepts a
-  `SubscribeRequest`. It sits on the `get` operation when one exists; on the
-  one route with no `GET` at all (`/area`, reachable only via `POST` and
-  `SUBSCRIBE`), it sits on the path item itself, as a sibling of `post`. 19
-  routes carry this marker in the finished specification.
+  `SubscribeRequest`. It sits on the `get` operation (the convention this
+  document also uses for `/area`, even though the firmware route table
+  records no `GET` verb for it at all — see `spec/paths/area.yaml`'s
+  hand-authored `GET /area`); the fallback of placing it on the path item
+  itself is for a route with no `GET` operation in the finished
+  specification at all, which does not currently occur. 19 routes carry this
+  marker in the finished specification.
 - **`x-leap-event-schema`** — a `$ref` to the schema of the frames the
   processor pushes on that subscription once it is active (an unsolicited
   push, in `docs/subscriptions.md`'s terms). It sits in the same place as

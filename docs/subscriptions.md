@@ -124,7 +124,7 @@ console.log([...new Set(subs)].sort().join("\n"));
 
 | Path | Subscribed via | Notes |
 |---|---|---|
-| `/area` | `POST` (no `GET` exists for this path — the subscribable marker sits on the path item) | Area creation notifications. |
+| `/area` | `GET` | Area creation notifications. `GET /area` is a hand-authored, probe-derived operation (see `docs/mapping.md`) — the firmware route table records no `GET` verb for `/area` at all, only `CREATE`+`SUBSCRIBE`. |
 | `/area/{areaId}` | `GET` | |
 | `/area/{areaId}/occupancysensorsettings` | `GET` | |
 | `/area/{areaId}/status` | `GET` | |
