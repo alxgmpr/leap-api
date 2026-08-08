@@ -1,15 +1,19 @@
-# HAND-AUTHORED end to end (Task 12D). The firmware route-table extraction
-# has zero commandprocessor routes at all (`grep` for "command" across all
-# 410 returns nothing) -- reads only. Every path in this file, and the
+# HAND-AUTHORED end to end. The firmware route-table extraction has zero
+# commandprocessor routes at all (`grep` for "command" across all 410
+# returns nothing) -- reads only. Every path in this file, and the
 # `Command` schema (and its 106-schema transitive closure, copied unmodified
 # from `_generated/`) it references, comes from app reverse engineering
-# rather than the firmware extraction:
+# rather than the firmware extraction. Both sources below live in the
+# separate `lutron-protocols` repository this project was built against,
+# under `docs/protocols/leap/`, not in this repository:
 #
-#   - api-discovery.md -- decompiled from the Android APK, com.lutron.lsb
-#     v26.1.0.4 (jadx). This has explicit "CommandType | Parameters |
-#     Description" tables for several command families.
-#   - index.md, "Route Reference (from iOS App Binary RE)" section --
-#     decompiled from Lutron iOS app v26.0.0 (com.lutron.lsb, build 8).
+#   - api-discovery.md (`lutron-protocols` docs/protocols/leap/api-discovery.md)
+#     -- decompiled from the Android APK, com.lutron.lsb v26.1.0.4 (jadx).
+#     This has explicit "CommandType | Parameters | Description" tables for
+#     several command families.
+#   - index.md (`lutron-protocols` docs/protocols/leap/index.md), "Route
+#     Reference (from iOS App Binary RE)" section -- decompiled from Lutron
+#     iOS app v26.0.0 (com.lutron.lsb, build 8).
 #
 # No captured traffic exists for any of these ten paths (the fixtures were
 # gathered by probing read-only ReadRequest/Subscribe routes; a CreateRequest
@@ -38,7 +42,8 @@
       - zone
     x-leap-communique-type: CreateRequest
     description: |
-      Send a command to a zone. Confirmed accepted CommandTypes (api-discovery.md
+      Send a command to a zone. Confirmed accepted CommandTypes
+      (api-discovery.md, `lutron-protocols` docs/protocols/leap/api-discovery.md,
       Zone Commands table, Android APK RE): `GoToDimmedLevel`,
       `GoToSwitchedLevel`, `GoToShadeLevel`, `GoToShadeLevelWithTilt`,
       `GoToShadeLevelWithTiltWhenClosed`, `GoToTilt`, `GoToSpectrumTuningLevel`,
@@ -87,8 +92,9 @@
       - area
     x-leap-communique-type: CreateRequest
     description: |
-      Send a command to an area. Confirmed accepted CommandType (index.md
-      Non-Zone Command Classes table, iOS app RE): `GoToGroupLightingLevel`
+      Send a command to an area. Confirmed accepted CommandType (index.md,
+      `lutron-protocols` docs/protocols/leap/index.md, Non-Zone Command
+      Classes table, iOS app RE): `GoToGroupLightingLevel`
       (sets all zones in the area at once). The exact parameter field it
       populates is not established -- see `Command.yaml`.
     requestBody:
@@ -118,7 +124,8 @@
     x-leap-communique-type: CreateRequest
     description: |
       Send a command to a device. Confirmed accepted CommandTypes
-      (api-discovery.md Device Commands table, Android APK RE):
+      (api-discovery.md, `lutron-protocols` docs/protocols/leap/api-discovery.md,
+      Device Commands table, Android APK RE):
       `AddressDevice` (pair device -- see leap-ccx-addressing.md),
       `UnaddressDevice` (un-pair device), `StartIdentify` / `StopIdentify`
       (blink/stop blinking device LEDs), `CloudProvision` (trigger cloud
@@ -147,7 +154,8 @@
     x-leap-communique-type: CreateRequest
     description: |
       Send a command to a link (radio). Confirmed accepted CommandTypes
-      (api-discovery.md Link Commands table, Android APK RE):
+      (api-discovery.md, `lutron-protocols` docs/protocols/leap/api-discovery.md,
+      Link Commands table, Android APK RE):
       `CacheDeviceHeard` (report a device found via BLE -- the LEAP-side
       pairing mechanism), `RequestBeginUnassociatedDeviceDiscovery` (scan for
       un-paired devices).
@@ -176,7 +184,8 @@
     description: |
       Send a command to a load controller (the physical load, distinct from
       the zone that logically controls it). Confirmed accepted CommandTypes
-      (api-discovery.md LoadController Commands table, Android APK RE):
+      (api-discovery.md, `lutron-protocols` docs/protocols/leap/api-discovery.md,
+      LoadController Commands table, Android APK RE):
       `GoToDimmedLevel`, `StartIdentify` / `StopIdentify`. The same source's
       "Command Surfaces" section also lists `CommandTuningSettingsBody`
       among this endpoint's accepted body-wrapper classes, but (as for the
@@ -206,7 +215,8 @@
     x-leap-communique-type: CreateRequest
     description: |
       Send a command to a natural light show. Confirmed accepted CommandType
-      (index.md Non-Zone Command Classes table, iOS app RE):
+      (index.md, `lutron-protocols` docs/protocols/leap/index.md, Non-Zone
+      Command Classes table, iOS app RE):
       `EditNaturalShowRamp`. The exact parameter field it populates is not
       established -- see `Command.yaml`. (Distinct from `GoToNaturalShow`,
       which index.md documents as a *zone* command that selects a show, not
@@ -235,8 +245,9 @@
     x-leap-communique-type: CreateRequest
     description: |
       Send a database command. Confirmed accepted CommandTypes
-      (api-discovery.md Other Command Endpoints table + the "ApplyDatabaseCommand"
-      and "BeginTransferSessionCommand" sections, Android APK RE): `ApplyNow`
+      (api-discovery.md, `lutron-protocols` docs/protocols/leap/api-discovery.md,
+      Other Command Endpoints table + the "ApplyDatabaseCommand" and
+      "BeginTransferSessionCommand" sections, Android APK RE): `ApplyNow`
       (populates `ApplyNowParameters`, which in turn carries
       `EndDeviceTransferParameters` -- triggers immediate application of
       programming changes) and `BeginTransferSession` (populates
@@ -248,8 +259,10 @@
       gives this route as `/database/{id}/commandprocessor` (parameterized),
       while index.md's "Command Processor Endpoints" table gives it as
       `/database/commandprocessor` (bare) -- the two app-RE sources
-      disagree. This task's brief specifies the bare form; that is what is
-      written here.
+      disagree, and neither is captured traffic (no commandprocessor route
+      was ever captured), so this cannot be independently adjudicated from
+      evidence alone. The bare form is what is written here; a client
+      encountering `404` on it should also try the parameterized form.
     requestBody:
       required: true
       content:
@@ -267,17 +280,21 @@
       - daynightmode
     x-leap-communique-type: CreateRequest
     description: |
-      Send a day/night mode command. api-discovery.md's Other Command
-      Endpoints table only vaguely names this endpoint's accepted commands as
-      "DayNightMode commands"; index.md's Non-Zone Command Classes table (iOS
-      app RE) gives the specific CommandType `EditDayNightMode`. The exact
-      parameter field it populates is not established -- see `Command.yaml`.
+      Send a day/night mode command. api-discovery.md's (`lutron-protocols`
+      docs/protocols/leap/api-discovery.md) Other Command Endpoints table
+      only vaguely names this endpoint's accepted commands as "DayNightMode
+      commands"; index.md's (`lutron-protocols` docs/protocols/leap/index.md)
+      Non-Zone Command Classes table (iOS app RE) gives the specific
+      CommandType `EditDayNightMode`. The exact parameter field it
+      populates is not established -- see `Command.yaml`.
 
       Path note: api-discovery.md gives this route as
       `/daynightmode/{id}/commandprocessor` (parameterized), while index.md
       gives it as `/daynightmode/commandprocessor` (bare) -- same source
-      disagreement as `/database/commandprocessor` above. This task's brief
-      specifies the bare form; that is what is written here.
+      disagreement, and same lack of captured traffic to adjudicate it, as
+      `/database/commandprocessor` above. The bare form is what is written
+      here; a client encountering `404` on it should also try the
+      parameterized form.
     requestBody:
       required: true
       content:
@@ -296,8 +313,8 @@
     x-leap-communique-type: CreateRequest
     description: |
       Send a system-level command. Confirmed accepted CommandType
-      (api-discovery.md Other Command Endpoints table, Android APK RE):
-      `SystemStatusUpdate`. The exact parameter field it populates is not
+      (api-discovery.md, `lutron-protocols` docs/protocols/leap/api-discovery.md,
+      Other Command Endpoints table, Android APK RE): `SystemStatusUpdate`. The exact parameter field it populates is not
       established -- see `Command.yaml`.
     requestBody:
       required: true

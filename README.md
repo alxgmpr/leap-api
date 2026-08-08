@@ -138,8 +138,16 @@ staging output — regenerating them does not touch the hand-refined files in
 
 ## How to run the tests
 
+`dist/openapi.yaml` is gitignored and not checked in, but several test
+files (`test/bundle.test.ts`, `test/conformance.test.ts`,
+`test/check-coverage.test.ts`) read it directly. **Run `npm run bundle`
+before `npm test`** — on a fresh clone, skipping it fails those tests with
+`ENOENT: no such file or directory, open 'dist/openapi.yaml'`, not a real
+test failure.
+
 ```bash
-npm test         # node --import tsx --test, node:test + node:assert/strict
+npm run bundle    # merge spec/ into dist/openapi.yaml -- required before npm test
+npm test          # node --import tsx --test, node:test + node:assert/strict
 npm run lint      # biome check .
 npm run typecheck # tsc --noEmit
 ```

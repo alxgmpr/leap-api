@@ -3,6 +3,10 @@ info:
   title: Lutron LEAP API
   version: "0.1.0"
   summary: Unofficial reference for the Lutron Extensible Application Protocol.
+  license:
+    name: CC BY 4.0 (documentation only -- unofficial, not endorsed by or
+      affiliated with Lutron Electronics)
+    identifier: CC-BY-4.0
   description: |
     LEAP is **not HTTP**. It is newline-delimited JSON over a single persistent
     mutual-TLS socket on port 8081. Each message is an envelope:

@@ -6,10 +6,10 @@
 # 1. FLATTENED: `DeviceBase` and `DeviceMiniDefinitionForMasterDeviceList`
 #    are named fields whose Go type shares their field name -- an anonymous
 #    embed, same class of bug as ZoneExpandedStatus. Captured `/device/{id}`
-#    bodies (80 observed across both platforms) never have a "DeviceBase" or
-#    "DeviceMiniDefinitionForMasterDeviceList" key; their fields (Name,
-#    DeviceType, AssociatedArea, AssociatedControlStation from DeviceBase;
-#    href, SerialNumber, NetworkInterfaces, IPL from
+#    bodies (56 distinct devices observed across both platforms) never have
+#    a "DeviceBase" or "DeviceMiniDefinitionForMasterDeviceList" key; their
+#    fields (Name, DeviceType, AssociatedArea, AssociatedControlStation
+#    from DeviceBase; href, SerialNumber, NetworkInterfaces, IPL from
 #    DeviceMiniDefinitionForMasterDeviceList) appear directly at the top
 #    level alongside Device's own properties. Restructured as `allOf`
 #    against both, so the union of their fields plus Device's own is
@@ -17,10 +17,13 @@
 #
 # 2. `required` trimmed: the firmware marks ProductReference,
 #    DaylightCalibrationType, EngravingKit, and IsThisDevice non-pointer,
-#    but none are close to universal across 80 observed devices
-#    (ProductReference 0/80, DaylightCalibrationType 0/80, EngravingKit
-#    6/80, IsThisDevice 4/80). All four relaxed to optional. `ModelNumber`
-#    (80/80) and `AddressedState` (80/80) stay required.
+#    but none are close to universal across the 56 distinct devices
+#    observed at `GET /device/{id}` (ProductReference 0/56,
+#    DaylightCalibrationType 0/56, EngravingKit 3/56, IsThisDevice 2/56 --
+#    the two devices where IsThisDevice is true are, unsurprisingly, the
+#    processor identifying itself: RA3 /device/435 and Caseta /device/1).
+#    All four relaxed to optional. `ModelNumber` (56/56) and
+#    `AddressedState` (56/56) stay required.
 type: object
 allOf:
   - $ref: "#/components/schemas/DeviceBase"

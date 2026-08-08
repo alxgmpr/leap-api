@@ -141,8 +141,8 @@ console.log([...new Set(subs)].sort().join("\n"));
 | `/virtualbutton` | `GET` | |
 | `/zone` | `GET` | |
 | `/zone/{zoneId}` | `GET` | |
-| `/zone/{zoneId}/status` | `GET` | Hand-authored path. |
-| `/zone/status` | `GET` | Hand-authored path. |
+| `/zone/{zoneId}/status` | `GET` | A firmware-recovered route (`vendor/leap-routes.json`: `/zone/{id}/status`, verbs `GET`/`SUBSCRIBE`/`UPDATE`), not hand-authored. |
+| `/zone/status` | `GET` | Hand-authored path — the bare collection-status route is absent from the firmware extraction in any form (mangled or otherwise); see the mangled-path defect in `docs/mapping.md`. |
 
 App reverse engineering (`$SRC/docs/protocols/leap/api-discovery.md`,
 "Subscriptions the App Uses") separately lists 11 resource types the Lutron

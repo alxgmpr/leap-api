@@ -16,8 +16,11 @@ description: |
   is hand-authored from app reverse engineering; see `docs/mapping.md`).
   That makes this table the only fidelity check available, so gaps are
   marked "not established" rather than guessed. See `CommandType.yaml` for
-  full source citations and the list of names deliberately excluded from
-  the enum.
+  full source citations (including what `api-discovery.md` and `index.md`,
+  cited bare in the table below, actually are: two files in the separate
+  `lutron-protocols` source repository this project was built against,
+  under `docs/protocols/leap/`, not in this repository) and the list of
+  names deliberately excluded from the enum.
 
   ## CommandType -> parameter field
 

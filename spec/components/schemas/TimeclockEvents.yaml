@@ -2,9 +2,9 @@
 # route-table extraction only recovered /timeclockevent/{timeclockeventId}
 # and its query/paging variants; the bare collection route
 # `/timeclockevent` is entirely absent from _generated/timeclockevent.yaml
-# (no mangled form either -- confirmed real, per this task's instructions).
-# Captured traffic shows the wire body is `{"TimeclockEvents": [...]}`. 200
-# OK on RA3 v03.247; 204 NoContent on Caseta v01.123.
+# -- not present in any form, mangled or otherwise, and confirmed real by
+# captured traffic, which shows the wire body is `{"TimeclockEvents":
+# [...]}`. 200 OK on RA3 v03.247; 204 NoContent on Caseta v01.123.
 type: array
 items:
   $ref: "#/components/schemas/TimeclockEvent"

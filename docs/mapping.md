@@ -166,12 +166,21 @@ probe-confirmed collection GETs (`/button`, `/buttongroup`, `/device`,
 It cannot be fixed by adjusting the code generator, because the underlying
 cause is structural: the firmware's own type definitions (`leap-types.json`,
 636 Go struct definitions recovered from the binary) contain **no plural
-types at all**. The plural wrapper is a wire-only convention the firmware
-itself never models as a named type. Every collection response schema in this
-specification (`Zones`, `Devices`, and so on) is therefore hand-authored —
-`type: array, items: { $ref: <Singular> }` — rather than generated, with a
-description on each recording the mislabel and which platform's captured
-traffic confirmed the correction.
+collection-wrapper types** — no type whose definition is a bare array of a
+singular type (`type: array, items: { $ref: <Singular> }`), the shape a
+`Zones` or `Devices` schema needs. This is narrower than "no plural types at
+all": the extraction does have a handful of plural-*named* types
+(`UnconfiguredSensors`, `TimeclockEventRules`, `OccupancyAggregationRules`,
+`RepeatableDeviceRules`), but every one of them is an object wrapping a
+named `Rules`/`Occupancy` array field inside it, not a bare array alias --
+none of them are the collection-wrapper shape a `Zones`/`Devices`-style
+schema needs, and none of them help recover the missing wrapper types this
+section is about. The plural collection wrapper is a wire-only convention
+the firmware itself never models with that shape. Every collection response
+schema in this specification (`Zones`, `Devices`, and so on) is therefore
+hand-authored — `type: array, items: { $ref: <Singular> }` — rather than
+generated, with a description on each recording the mislabel and which
+platform's captured traffic confirmed the correction.
 
 ## Mangled collection and reordered paths
 

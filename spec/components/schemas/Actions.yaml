@@ -7,6 +7,7 @@ description: |
   Hand-authored from captured Caseta v01.123 traffic (200 OK, two `Action`
   objects observed, each a `PressAndRelease` command to a virtual button --
   see `Command.yaml`); RA3 v03.247 returns 400 BadRequest for the same
-  route (Caseta-only feature per index.md's "Caseta-Only Features" section).
+  route (Caseta-only feature per index.md's -- `lutron-protocols`
+  docs/protocols/leap/index.md -- "Caseta-Only Features" section).
 items:
   $ref: "#/components/schemas/Action"

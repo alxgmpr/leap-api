@@ -3,21 +3,27 @@ description: |
   Discriminator for `Command` (see `Command`'s description for the full
   CommandType-to-parameter-field mapping). One of the 118 enums the firmware
   extraction could not recover (`Command.CommandType` shipped as an open
-  `leapobj.CommandType` string with no member list attached) -- see the Task
-  4 report. Members below were recovered from app reverse engineering, not
-  captured traffic, with one exception (`PressAndRelease`, confirmed via a
-  live Caseta probe response body). **Observed-not-exhaustive**: unlisted
-  values are possible, and several command families documented in the
-  sources are deliberately excluded here rather than guessed -- see below.
+  `leapobj.CommandType` string with no member list attached), because no
+  member list survives extraction for an enum the firmware itself only
+  represents as an open string. Members below were recovered from app
+  reverse engineering, not captured traffic, with one exception
+  (`PressAndRelease`, confirmed via a live Caseta probe response body).
+  **Observed-not-exhaustive**: unlisted values are possible, and several
+  command families documented in the sources are deliberately excluded here
+  rather than guessed -- see below.
 
-  Sources, cited per member in `Command`'s description:
-  - `api-discovery.md` -- decompiled from the Android APK, `com.lutron.lsb`
-    v26.1.0.4 (jadx). Confirms `@JsonClassDiscriminator("CommandType")`, i.e.
-    these are the literal wire discriminator strings, not internal class
-    names.
-  - `index.md`, "Route Reference (from iOS App Binary RE)" section --
-    decompiled from Lutron iOS app v26.0.0 (`com.lutron.lsb`, build 8; the
-    source document's own package identifier, despite the "iOS" heading).
+  Sources, cited per member in `Command`'s description as `api-discovery.md`
+  and `index.md` (both live in the separate `lutron-protocols` source
+  repository this project was built against, under
+  `docs/protocols/leap/`, not in this repository):
+  - `api-discovery.md` (`lutron-protocols` `docs/protocols/leap/api-discovery.md`)
+    -- decompiled from the Android APK, `com.lutron.lsb` v26.1.0.4 (jadx).
+    Confirms `@JsonClassDiscriminator("CommandType")`, i.e. these are the
+    literal wire discriminator strings, not internal class names.
+  - `index.md` (`lutron-protocols` `docs/protocols/leap/index.md`), "Route
+    Reference (from iOS App Binary RE)" section -- decompiled from Lutron
+    iOS app v26.0.0 (`com.lutron.lsb`, build 8; the source document's own
+    package identifier, despite the "iOS" heading).
   - `index.md`, "System Actions" section -- one live-captured Caseta v01.123
     response body (`PressAndRelease`), not app RE.
 

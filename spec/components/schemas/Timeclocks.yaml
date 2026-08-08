@@ -1,10 +1,9 @@
 # Hand-authored: GET /timeclock's collection response. The firmware
 # route-table extraction only recovered /timeclock/{timeclockId} (a
-# per-resource route); the bare collection route
-# `/timeclock` is entirely absent from _generated/timeclock.yaml (no
-# mangled form either -- confirmed real, per this task's instructions).
-# Captured traffic (both platforms, 200 OK) shows the wire body is
-# `{"Timeclocks": [...]}`.
+# per-resource route); the bare collection route `/timeclock` is entirely
+# absent from _generated/timeclock.yaml -- not present in any form, mangled
+# or otherwise, and confirmed real by captured traffic (both platforms,
+# 200 OK), which shows the wire body is `{"Timeclocks": [...]}`.
 type: array
 items:
   $ref: "#/components/schemas/Timeclock"
