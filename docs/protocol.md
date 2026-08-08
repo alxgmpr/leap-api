@@ -40,12 +40,38 @@ top-level keys:
   below.
 - **`Header.StatusCode`** — present on responses. A literal HTTP-style string,
   e.g. `"200 OK"` or `"400 BadRequest"`. See "Status codes" below.
-- **`Header.MessageBodyType`** — the name of the schema `Body` conforms to,
-  e.g. `"ZoneStatus"`. This is what `x-leap-body-type` in the OpenAPI document
-  records for each operation (`docs/mapping.md`).
+- **`Header.MessageBodyType`** — the name of the schema that `Body`'s
+  **payload is wrapped under**, e.g. `"ZoneStatus"`. This is what
+  `x-leap-body-type` in the OpenAPI document records for each operation
+  (`docs/mapping.md`).
 - **`Body`** — present on requests that carry a payload (`CreateRequest`,
   `UpdateRequest`) and on most responses. Absent on `204 NoContent` and on
   bodyless requests like `ReadRequest`.
+
+### `Body` is a wrapper, not the payload — read this before writing a client
+
+`Body` does **not** contain the payload directly. It contains a single key,
+named by `Header.MessageBodyType`, whose value is the actual payload:
+
+```json
+"Body": { "ZoneStatus": { "href": "/zone/518/status", "Level": 100 } }
+```
+
+Every schema in this specification (`spec/components/schemas/`) describes
+the **unwrapped payload** — the value of that one key (`{ "href":
+"/zone/518/status", "Level": 100 }` above), not the `{"ZoneStatus": {...}}`
+envelope around it. A client that parses `Body` itself as the payload object
+will fail on every response, because every response actually looks like
+`{"<MessageBodyType>": <payload>}`.
+
+This is confirmed against every response captured in this project's probe
+corpus: of 439 captured `200 OK` bodies, 438 have exactly this
+single-key-wrapper shape. The one exception is RA3's `GET /button`, which
+returns a bare `{}` (no buttons to report at probe time — an empty object
+has no key to wrap, wrapped or not). `test/conformance.test.ts` unwraps the
+one key before validating any body against its schema, for exactly this
+reason. See `docs/mapping.md`'s "The `Body` wrapper" section for the
+OpenAPI-mapping consequences of this rule.
 
 ## Framing
 

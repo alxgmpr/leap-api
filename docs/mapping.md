@@ -31,6 +31,31 @@ supports subscribing carries `x-leap-subscribable: true` as a sibling of its
 path item directly). See `docs/subscriptions.md` for the full lifecycle this
 represents.
 
+## The `Body` wrapper
+
+The `Body` row above ("`Body` → `requestBody` / response `content`") elides
+one critical detail: **`Body` is a wrapper, not the payload.** On the wire,
+`Body` always contains exactly one key — the `Header.MessageBodyType` string
+— whose value is the actual payload:
+
+```json
+"Body": { "ZoneStatus": { "href": "/zone/518/status", "Level": 100 } }
+```
+
+**Every schema in `spec/components/schemas/` describes the unwrapped
+payload** (`{"href": "/zone/518/status", "Level": 100}` above), never the
+`{"<MessageBodyType>": <payload>}` envelope around it. This is confirmed for
+438 of the 439 `200 OK` bodies captured in this project's probe corpus — the
+one exception, RA3's `GET /button`, returns a bare `{}`, which has no key to
+unwrap. `test/conformance.test.ts` implements this rule directly: it reads
+the one key off each captured `Body`, validates that key's value against the
+operation's response schema, and validates the bare `{}` case as-is (no key
+to unwrap). See `docs/protocol.md` for the full envelope account.
+
+This is the single most important fact for implementing a client from this
+document: a reader who parses `Body` itself as the payload will get a
+validation or type error on every single response.
+
 ## Why `leaps://` is the server scheme
 
 `spec/openapi.yaml`'s `servers` entry is:

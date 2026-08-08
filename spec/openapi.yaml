@@ -19,6 +19,18 @@ info:
     HTTP-style strings such as `200 OK` and `400 BadRequest`. That deliberate
     resemblance is what makes an OpenAPI description a close fit.
 
+    **`Body` is a wrapper, not the payload.** `Body` always contains exactly
+    one key, named by `Header.MessageBodyType`, whose value is the actual
+    payload — e.g. a `ZoneStatus` response body is
+    `{"ZoneStatus": {"href": "/zone/518/status", "Level": 100, ...}}`, not
+    `{"href": "/zone/518/status", "Level": 100, ...}` directly. **Every
+    schema in this document describes the unwrapped payload** (the value
+    under that one key), not the wrapper around it. This holds for 438 of
+    the 439 `200 OK` bodies captured for this project (the one exception,
+    RA3's `GET /button`, returns a bare `{}` with nothing to wrap). A client
+    that treats `Body` itself as the payload will fail on every response.
+    See `docs/protocol.md` and `docs/mapping.md` for the full account.
+
     This document maps LEAP onto OpenAPI as follows:
 
     | LEAP | OpenAPI |
