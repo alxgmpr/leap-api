@@ -71,10 +71,25 @@ const SENSITIVE_STRING_ARRAY_KEYS = new Set(["FullyQualifiedName"]);
 
 // Order matters: a MAC address also matches the loose IPv6 shape, so it must
 // be tested first.
+//
+// The IPv6 pattern also matched H:MM:SS / MM:SS time-of-day and duration
+// shapes (e.g. CountdownTimer.Timeout: "1:00:00"), which are digits-only
+// and colon-delimited just like a hex IPv6 group sequence -- 8
+// CountdownTimer.Timeout values on Caseta were wrongly rewritten to
+// <ipv6-N> before this fix. The negative lookahead excludes exactly that
+// clock/duration shape (1-2 digit leading field, then 1-2 groups of exactly
+// two digits in 00-59) while still matching real IPv6 addresses, which
+// either contain a hex letter, have more than 3 groups, or aren't
+// two-digit-padded -- confirmed against the one genuine IPv6 address in
+// this project's corpus (an 8-group address under
+// NetworkInterfaces[].IPv6Properties.UniqueLocalUnicastAddresses).
 const PATTERNS: [RegExp, string][] = [
   [/^\d{1,3}(\.\d{1,3}){3}$/, "ipv4"],
   [/^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$/, "mac"],
-  [/^[0-9a-fA-F]{1,4}(:[0-9a-fA-F]{0,4}){2,7}$/, "ipv6"],
+  [
+    /^(?!\d{1,2}(?::[0-5]\d){1,2}$)[0-9a-fA-F]{1,4}(:[0-9a-fA-F]{0,4}){2,7}$/,
+    "ipv6",
+  ],
   [
     /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
     "guid",

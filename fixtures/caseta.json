@@ -4413,7 +4413,7 @@
     "body": {
       "CountdownTimer": {
         "href": "/countdowntimer/8",
-        "Timeout": "<ipv6-2>",
+        "Timeout": "1:00:00",
         "EnabledState": "Enabled",
         "AssociatedZone": {
           "href": "/zone/6"
@@ -4525,7 +4525,7 @@
     "body": {
       "CountdownTimer": {
         "href": "/countdowntimer/18",
-        "Timeout": "<ipv6-3>",
+        "Timeout": "4:00:00",
         "EnabledState": "Enabled",
         "AssociatedZone": {
           "href": "/zone/10"
@@ -4654,7 +4654,7 @@
     "body": {
       "CountdownTimer": {
         "href": "/countdowntimer/17",
-        "Timeout": "<ipv6-3>",
+        "Timeout": "4:00:00",
         "EnabledState": "Enabled",
         "AssociatedZone": {
           "href": "/zone/12"
@@ -4895,7 +4895,7 @@
     "body": {
       "CountdownTimer": {
         "href": "/countdowntimer/15",
-        "Timeout": "<ipv6-4>",
+        "Timeout": "2:00:00",
         "EnabledState": "Enabled",
         "AssociatedZone": {
           "href": "/zone/20"
@@ -5024,7 +5024,7 @@
     "body": {
       "CountdownTimer": {
         "href": "/countdowntimer/23",
-        "Timeout": "<ipv6-5>",
+        "Timeout": "3:00:00",
         "EnabledState": "Enabled",
         "AssociatedZone": {
           "href": "/zone/21"
@@ -5136,7 +5136,7 @@
     "body": {
       "CountdownTimer": {
         "href": "/countdowntimer/7",
-        "Timeout": "<ipv6-4>",
+        "Timeout": "2:00:00",
         "EnabledState": "Enabled",
         "AssociatedZone": {
           "href": "/zone/22"
@@ -5500,7 +5500,7 @@
     "body": {
       "CountdownTimer": {
         "href": "/countdowntimer/14",
-        "Timeout": "<ipv6-4>",
+        "Timeout": "2:00:00",
         "EnabledState": "Enabled",
         "AssociatedZone": {
           "href": "/zone/41"
@@ -5640,7 +5640,7 @@
     "body": {
       "CountdownTimer": {
         "href": "/countdowntimer/16",
-        "Timeout": "<ipv6-3>",
+        "Timeout": "4:00:00",
         "EnabledState": "Enabled",
         "AssociatedZone": {
           "href": "/zone/42"

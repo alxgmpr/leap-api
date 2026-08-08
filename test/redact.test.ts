@@ -16,6 +16,24 @@ describe("redactValue", () => {
     assert.match(out, /^<ipv6-\d+>$/);
   });
 
+  test("redacts a full 8-group IPv6 address", () => {
+    // Shape of the one genuine IPv6 address in this project's corpus
+    // (NetworkInterfaces[].IPv6Properties.UniqueLocalUnicastAddresses).
+    const out = String(redactValue("fd00:1234:5678:9abc:def0:1234:5678:9abc"));
+    assert.match(out, /^<ipv6-\d+>$/);
+  });
+
+  // Found during an adversarial leak sweep: the loose IPv6 pattern also
+  // matched H:MM:SS / MM:SS duration and time-of-day shapes, since both are
+  // digits-only and colon-delimited. CountdownTimer.Timeout values like
+  // "1:00:00" were wrongly rewritten to <ipv6-N> before this fix.
+  test("does not redact H:MM:SS or MM:SS duration shapes as IPv6", () => {
+    assert.equal(redactValue("1:00:00"), "1:00:00");
+    assert.equal(redactValue("15:00"), "15:00");
+    assert.equal(redactValue("30:00"), "30:00");
+    assert.equal(redactValue("4:00:00"), "4:00:00");
+  });
+
   test("redacts MAC addresses", () => {
     const out = String(redactValue("a0:b1:c2:d3:e4:f5"));
     assert.match(out, /^<mac-\d+>$/);
