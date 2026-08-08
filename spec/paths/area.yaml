@@ -141,11 +141,13 @@
     x-leap-body-type: ControlStations
     description: >-
       No responseType recovered from the firmware extraction. Captured
-      traffic resolves it: RA3 v03.247 returns `200 OK` with body key
-      `ControlStations` for 9 of 11 non-root areas (the root grouping area
-      `/area/3`, and `/area/1256`, which has no control stations, both
-      return `204 NoContent`). Caseta v01.123 returns `204 NoContent` on
-      every area (see docs/platforms.md).
+      traffic resolves it: RA3 v03.247 probes 12 areas (1 root grouping
+      area, `/area/3`, plus 11 non-root); of the 11 non-root areas, 10
+      return `200 OK` with body key `ControlStations` and 1
+      (`/area/1256`, which has no control stations) returns
+      `204 NoContent`. The root area also returns `204 NoContent`. Caseta
+      v01.123 returns `204 NoContent` on every area (see
+      docs/platforms.md).
     responses:
       "200":
         description: Success

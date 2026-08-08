@@ -1,6 +1,10 @@
 # HAND-AUTHORED end to end. The firmware route-table extraction has zero
-# commandprocessor routes at all (`grep` for "command" across all 410
-# returns nothing) -- reads only. Every path in this file, and the
+# commandprocessor routes at all, in any verb (`grep` for "command" across
+# all 410 returns nothing) -- this is narrower than "the extraction is
+# read-only in general": it isn't (51 CREATE, 90 UPDATE, 44 DELETE verbs
+# are recovered elsewhere in vendor/leap-routes.json, mapped throughout
+# this specification by lib/route-to-path.ts -- see docs/mapping.md). The
+# gap is specific to command processors. Every path in this file, and the
 # `Command` schema (and its 106-schema transitive closure, copied unmodified
 # from `_generated/`) it references, comes from app reverse engineering
 # rather than the firmware extraction. Both sources below live in the

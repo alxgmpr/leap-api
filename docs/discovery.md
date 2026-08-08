@@ -11,8 +11,10 @@ Lutron processors and bridges advertise themselves via mDNS/Bonjour under the
 service type `_lutron._tcp`
 (`$SRC/docs/protocols/leap/index.md`, "Protocol Basics"). A live RA3
 processor's `/service/homekit` endpoint independently confirms the same
-Bonjour identity from the device side: it reports a `BonjourServiceName` of
-`"Lutron Processor"`.
+Bonjour identity from the device side: it reports a non-empty
+`BonjourServiceName` (redacted as `<name-N>` in this project's fixtures,
+since it may be user-customizable per installation — see
+`fixtures/ra3.json`'s `HomeKitProperties.BonjourServiceName`).
 
 To enumerate every Lutron device advertising on the local network:
 

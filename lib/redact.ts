@@ -61,7 +61,7 @@ const ZEROED_NUMERIC_KEYS = new Set(["SerialNumber", "Latitude", "Longitude"]);
 
 /**
  * Keys whose values are arrays of sensitive strings. Found in real data:
- * `FullyQualifiedName: ["Guest Bedroom", "Tessera Sconce"]` duplicates the
+ * `FullyQualifiedName` (e.g. `["<room>", "<device>"]`) duplicates the
  * same room/device names that the "Name" key redacts elsewhere in the tree,
  * so each element must be redacted individually — reusing the "name"
  * placeholder pool keeps cross-references (Name vs. FullyQualifiedName for

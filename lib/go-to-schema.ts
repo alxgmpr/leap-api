@@ -11,27 +11,45 @@ export function wireKey(goFieldName: string): string {
 }
 
 /**
- * ISO 8601 duration, the form LEAP uses for FadeTime and DelayTime
- * (api-discovery.md, decompiled Android APK: explicit "FadeTime/DelayTime:
- * ISO 8601 extended duration" with literal examples "PT2S", "PT0S").
+ * ISO 8601 duration -- the mapping this generator uses for every
+ * `lutcommon.Timespan` field, but NOT the form every such field actually
+ * uses on the wire. Evidence, laid out plainly because it points two
+ * directions at once:
+ *
+ * - The only evidence FOR the ISO 8601 form is app RE, not captured
+ *   traffic: api-discovery.md (decompiled Android APK) states
+ *   "FadeTime/DelayTime: ISO 8601 extended duration" with literal examples
+ *   "PT2S", "PT0S". FadeTime/DelayTime are request-body-only fields
+ *   (`DimmedLevelParameters` and siblings), and no CreateRequest/
+ *   UpdateRequest body was ever captured during probing (see
+ *   docs/mapping.md's "Why the command surface is hand-authored" section),
+ *   so this claim has never been checked against real traffic for the
+ *   fields it's actually about.
+ * - Every `lutcommon.Timespan` field this project HAS captured traffic for
+ *   contradicts it. `Timestamp.Utc` ("0", "-7:00:00") and
+ *   `TimeclockEventBase.AstronomicTimeOffset` ("0") are corrected locally
+ *   in their own refined schema files (Timestamp.yaml,
+ *   TimeclockEventBase.yaml). `CountdownTimer.Timeout` is also
+ *   `lutcommon.Timespan` and has 11 captured Caseta values across
+ *   `/zone/{id}/countdowntimer` (200 OK): "1:00:00", "4:00:00" x3,
+ *   "2:00:00" x3, "3:00:00", "15:00" x2, "30:00" -- clock-format durations,
+ *   not one of them ISO 8601 shaped. `CountdownTimer` is not yet refined
+ *   (still only in `_generated/`), so this is not a shipped defect today,
+ *   but whoever refines it next should not assume this pattern is right
+ *   for `Timeout` -- fix it the same way `Timestamp.Utc` was fixed, not by
+ *   trusting this default.
+ *
+ * In short: zero captured `lutcommon.Timespan` value anywhere in this
+ * project's corpus is ISO 8601 shaped. This pattern is kept as the
+ * generator default only because it is the sole evidence available for
+ * FadeTime/DelayTime specifically (never contradicted because never
+ * captured) -- not because it is confirmed correct, and not because it is
+ * even the majority shape among fields this project can actually check.
  *
  * The `(?=.*\d)` lookahead requires at least one digit somewhere after `P`,
  * so the degenerate forms `P` and `PT` (all components absent) are
  * rejected -- neither is a valid ISO 8601 duration, but the un-anchored
  * version of this pattern accepted both.
- *
- * NOT every `lutcommon.Timespan`-typed field on the wire actually uses this
- * format: `Timestamp.Utc` and `TimeclockEventBase.AstronomicTimeOffset` are
- * also `lutcommon.Timespan` in the firmware but are UTC-offset values
- * ("0", "-7:00:00"), not durations -- confirmed against captured traffic on
- * both platforms. Those two are corrected locally in their own refined
- * schema files (Timestamp.yaml, TimeclockEventBase.yaml) rather than here,
- * because FadeTime/DelayTime-class fields have their own, separate
- * evidence (above) for the ISO 8601 form, and no captured traffic exists to
- * contradict it for them -- no CreateRequest/UpdateRequest body was ever
- * captured (see docs/mapping.md's "Why the command surface is
- * hand-authored" section), so this generator default is left as the best
- * available evidence-backed mapping for the fields it's actually right for.
  */
 const TIMESPAN_PATTERN =
   "^P(?=.*\\d)(?:\\d+D)?(?:T(?:\\d+H)?(?:\\d+M)?(?:\\d+(?:\\.\\d+)?S)?)?$";

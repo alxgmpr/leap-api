@@ -17,8 +17,10 @@ describe("redactValue", () => {
   });
 
   test("redacts a full 8-group IPv6 address", () => {
-    // Shape of the one genuine IPv6 address in this project's corpus
-    // (NetworkInterfaces[].IPv6Properties.UniqueLocalUnicastAddresses).
+    // Synthetic 8-group address, same shape as the one genuine IPv6
+    // address in this project's corpus
+    // (NetworkInterfaces[].IPv6Properties.UniqueLocalUnicastAddresses) --
+    // not that value itself.
     const out = String(redactValue("fd00:1234:5678:9abc:def0:1234:5678:9abc"));
     assert.match(out, /^<ipv6-\d+>$/);
   });
@@ -107,10 +109,11 @@ describe("redactTree", () => {
 
   // Found in real data: contact records use the keys "Phone" and "Email"
   // (not "PhoneNumber"/"EmailAddress" from the brief's baseline list).
-  // (Test input is a synthetic email, not the real value found in the data.)
+  // (Test inputs are a synthetic phone number and email, not the real
+  // values found in the data.)
   test("redacts Phone and Email keys", () => {
     const out = redactTree({
-      Phone: "5555555555",
+      Phone: "5555550142",
       Email: "jane@example.com",
     }) as { Phone: string; Email: string };
     assert.match(out.Phone, /^<phone-\d+>$/);
@@ -121,10 +124,14 @@ describe("redactTree", () => {
   // strings that duplicates information the "Name" key redacts elsewhere.
   // Each element must be redacted individually, using the same stable
   // "name" placeholder pool so cross-references with Name fields survive.
+  // (Test inputs are synthetic room/device names, not the real values found
+  // in the data.)
   test("redacts each string in a FullyQualifiedName array", () => {
-    const viaName = redactTree({ Name: "Guest Bedroom" }) as { Name: string };
+    const viaName = redactTree({ Name: "Marlowe Bedroom" }) as {
+      Name: string;
+    };
     const out = redactTree({
-      FullyQualifiedName: ["Guest Bedroom", "Tessera Sconce"],
+      FullyQualifiedName: ["Marlowe Bedroom", "Tessera Light"],
     }) as { FullyQualifiedName: string[] };
     assert.match(out.FullyQualifiedName[0] as string, /^<name-\d+>$/);
     assert.match(out.FullyQualifiedName[1] as string, /^<name-\d+>$/);

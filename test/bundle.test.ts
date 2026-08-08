@@ -63,8 +63,8 @@ describe("bundled spec", () => {
     for (const [path, item] of Object.entries(
       doc.paths as Record<string, Record<string, unknown>>,
     )) {
-      // Path-item-level extensions (e.g. the /area path item, which has no
-      // GET) must never carry platform data either.
+      // Path-item-level extensions (e.g. the commandprocessor paths, which
+      // have no GET) must never carry platform data either.
       assert.ok(
         !("x-leap-platforms" in item),
         `x-leap-platforms injected at path-item level for ${path}`,

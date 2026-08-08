@@ -69,7 +69,15 @@ route and finds nothing here cannot tell "this route does not exist" from
   routes — see `docs/mapping.md`). The other 150 generated families were
   never touched.
 - **Schemas.** The firmware extraction recovered 636 struct definitions.
-  300 of those 636 (47%) ship in `spec/components/schemas/`; the rest sit
+  `spec/components/schemas/` ships 300 schemas total, but those two numbers
+  don't reconcile 1:1 — 250 of the 300 (39% of the 636 generated) were
+  hand-refined from a generated counterpart of the same name; the other 50
+  have no generated counterpart at all (hand-authored collection wrappers
+  like `Zones`/`Devices`/`Areas`, and hand-authored enums like
+  `CommandType`/`ServiceType`/`EnabledState` — none of these were ever
+  struct definitions the firmware extraction could produce, since, per
+  `docs/mapping.md`, the firmware defines no plural collection-wrapper
+  types at all). The remaining 386 of the 636 generated schemas (61%) sit
   untouched in `spec/components/schemas/_generated/`.
 
 None of this is a defect to be silently patched over — hand-refining a
@@ -78,7 +86,7 @@ schema or path family is real, evidence-checked work (cross-referencing
 observed), and this project has done it for the paths and schemas that
 were reachable, probe-confirmed, or otherwise worth the verification cost.
 It has not attempted a straight, unverified copy of the other 233
-routes/336 schemas, because an unverified copy would carry exactly the
+routes/386 schemas, because an unverified copy would carry exactly the
 false confidence this document works to avoid elsewhere. Run
 `npm run coverage` for the live, generated version of these numbers
 (`probedNotInSpec`/`specWithoutFixture`), which additionally tracks
@@ -102,8 +110,10 @@ extraction.
    `fixtures/caseta.json`. These are the corpus every generated schema is
    checked against.
 4. **Hand-refine** a subset of the generated paths and schemas — 21 of 170
-   generated path families, 300 of 636 generated schemas as of this writing
-   (see "What is and is not covered" above) — into `spec/paths/` and
+   generated path families, 250 of 636 generated schemas as of this writing
+   (see "What is and is not covered" above; `spec/components/schemas/`
+   ships 50 more hand-authored schemas beyond those 250, with no generated
+   counterpart to refine from) — into `spec/paths/` and
    `spec/components/schemas/`: correcting the firmware extraction's
    systematic defects (mangled collection paths, singular/plural
    `MessageBodyType` mislabeling, anonymous-embed fields the generator
