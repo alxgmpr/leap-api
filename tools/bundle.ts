@@ -51,11 +51,23 @@ for (const [platform, path] of [
 }
 const matrix = Object.keys(probes).length > 0 ? buildMatrix(probes) : {};
 
+// Explicit allow-list of HTTP methods to prevent injecting into vendor extensions
+const HTTP_METHODS = new Set([
+  "get",
+  "post",
+  "put",
+  "delete",
+  "patch",
+  "head",
+  "options",
+  "trace",
+]);
+
 for (const [path, item] of Object.entries(doc.paths)) {
   const status = matrix[path];
   if (!status || !item || typeof item !== "object") continue;
   for (const [method, op] of Object.entries(item)) {
-    if (method === "parameters" || !op || typeof op !== "object") continue;
+    if (!HTTP_METHODS.has(method) || !op || typeof op !== "object") continue;
     const operation = op as Record<string, unknown>;
     operation["x-leap-platforms"] = status;
     const existing =
