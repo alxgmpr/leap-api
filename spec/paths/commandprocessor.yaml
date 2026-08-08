@@ -11,11 +11,16 @@
 #   - index.md, "Route Reference (from iOS App Binary RE)" section --
 #     decompiled from Lutron iOS app v26.0.0 (com.lutron.lsb, build 8).
 #
-# No captured traffic exists for any of these nine paths (the fixtures were
+# No captured traffic exists for any of these ten paths (the fixtures were
 # gathered by probing read-only ReadRequest/Subscribe routes; a CreateRequest
 # that actually executes a command was never sent during probing). That
 # means these paths are permanently a `specWithoutFixture` entry in
-# `npm run coverage`, by design -- not a gap to chase.
+# `npm run coverage`, by design -- not a gap to chase. One of the ten,
+# `/virtualbutton/{virtualbuttonId}/commandprocessor`, is corroborated more
+# strongly than the rest even so: it is not just app-RE, it is the literal
+# `href` of a `Resource` named inside a captured 200 response body
+# (`fixtures/caseta.json`, `/system/action`) -- see that path's own comment
+# below.
 #
 # Every operation shares the same shape: `x-leap-communique-type:
 # CreateRequest`, a requestBody of `$ref: Command`, and no confirmed 200
@@ -304,3 +309,41 @@
       "200":
         description: Success
     summary: Send system command
+/virtualbutton/{virtualbuttonId}/commandprocessor:
+  post:
+    operationId: createVirtualButtonIDCommandProcessor
+    tags:
+      - virtualbutton
+    x-leap-communique-type: CreateRequest
+    description: |
+      Fire a virtual button (press-and-release), the mechanism Caseta uses to
+      trigger a scene. Confirmed CommandType: `PressAndRelease` (also
+      confirmed for `/system/action`'s System Actions -- see
+      `CommandType.yaml`).
+
+      Unlike the other nine `commandprocessor` paths in this file, this one
+      is not purely app-RE: a captured Caseta v01.123 response
+      (`fixtures/caseta.json`, `GET /system/action`) names this exact path
+      as the `href` of a `Command`-type `Statement.Do.Resource`, wrapping a
+      `Command` with `CommandType: "PressAndRelease"` and no other fields --
+      confirming both the path and that this CommandType takes no
+      parameters. No response body from the command processor itself was
+      captured (the fixture is `/system/action`'s own body, which merely
+      references this path; probing never sent a CreateRequest here), so
+      the same "no asserted 200 schema" rule applies as the other nine.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Command"
+    responses:
+      "200":
+        description: Success
+    summary: Send virtual button command
+  parameters:
+    - name: virtualbuttonId
+      in: path
+      required: true
+      schema:
+        type: string

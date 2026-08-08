@@ -244,10 +244,11 @@ elsewhere in `vendor/leap-routes.json`, and `lib/route-to-path.ts` maps all
 of them to `post`/`put`/`delete` operations throughout this specification.
 The gap is narrower and specific to command processors: the extraction never
 recovered a single `commandprocessor` route, in any verb, for any resource.
-That means the entire command surface documented here — the 9 `commandprocessor` paths
+That means the entire command surface documented here — the 10 `commandprocessor` paths
 (`zone`, `area`, `device`, `link`, `loadcontroller`, `naturalshow`,
-`database`, `daynightmode`, `system`), the `Command` schema's field list, and
-the `CommandType` enum's 39 members — is hand-authored from Android and iOS
+`database`, `daynightmode`, `system`, `virtualbutton`), the `Command`
+schema's field list, and the `CommandType` enum's 39 members — is
+hand-authored from Android and iOS
 app reverse engineering (`api-discovery.md`, decompiled from
 `com.lutron.lsb` v26.1.0.4; and `index.md`'s "Route Reference (from iOS App
 Binary RE)" section, decompiled from the iOS app v26.0.0, itself packaged
