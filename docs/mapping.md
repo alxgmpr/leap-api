@@ -237,11 +237,14 @@ themselves).
 
 The firmware route extraction — 410 routes recovered from the processor
 binary — contains **zero** `commandprocessor` routes. (`grep` for "command"
-across the full extraction returns nothing.) The extraction is a read-only
-surface: it never observed a single `CreateRequest` to any command processor,
-because the binary's route table only records read-path (`GET`/`SUBSCRIBE`)
-handlers in a form the extraction tooling could recover. That means the
-entire command surface documented here — the 9 `commandprocessor` paths
+across the full extraction returns nothing.) This is not because the route
+table only records read-path handlers in general — it doesn't: 51 `CREATE`,
+90 `UPDATE`, and 44 `DELETE` verbs with named handlers are recovered
+elsewhere in `vendor/leap-routes.json`, and `lib/route-to-path.ts` maps all
+of them to `post`/`put`/`delete` operations throughout this specification.
+The gap is narrower and specific to command processors: the extraction never
+recovered a single `commandprocessor` route, in any verb, for any resource.
+That means the entire command surface documented here — the 9 `commandprocessor` paths
 (`zone`, `area`, `device`, `link`, `loadcontroller`, `naturalshow`,
 `database`, `daynightmode`, `system`), the `Command` schema's field list, and
 the `CommandType` enum's 39 members — is hand-authored from Android and iOS
