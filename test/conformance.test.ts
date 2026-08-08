@@ -19,6 +19,24 @@ const doc = parse(readFileSync("dist/openapi.yaml", "utf8")) as {
 const ajv = new Ajv({ strict: false, allErrors: true });
 addFormats(ajv);
 
+// The real floor on this suite's usefulness: how many fixture bodies were
+// actually validated against a schema, not how many fixtures exist.
+// `cases.length > 100` (the prior floor) counts fixtures with a 200 status
+// and a body -- it does not require that a schema was found for the path,
+// so stripping `content` from every 200 response in the bundle silently
+// drops this suite from 449 tests to 93, all passing, exit 0. Track the
+// number of cases that actually reached `ajv.compile`/`validate` below and
+// assert against it directly instead.
+//
+// 369 as of this writing (verified against dist/openapi.yaml + the
+// committed fixtures). When intentionally adding response schema coverage
+// (a new path, a resolved TODO(response), a new hand-authored collection
+// schema), this number goes up -- update the constant below to match and
+// note why in the commit. If it goes down, that is a coverage regression;
+// investigate before updating the constant.
+const EXPECTED_MATCHED_CASES = 369;
+let matchedCases = 0;
+
 /** The 200-response schema ref for a path, if the spec declares one. */
 function schemaRefFor(path: string): string | undefined {
   const get = doc.paths[path]?.get;
@@ -56,6 +74,7 @@ for (const platform of ["ra3", "caseta"] as const) {
       const schema = resolve(ref);
       if (!schema) continue;
 
+      matchedCases++;
       test(`${platform} ${concrete} matches ${ref}`, () => {
         // The probe body wraps the payload in its MessageBodyType key.
         // A body with zero keys (a literal `{}`, e.g. RA3's /button when it
@@ -79,3 +98,16 @@ for (const platform of ["ra3", "caseta"] as const) {
     }
   });
 }
+
+// Registered after both platform describe blocks above have finished
+// building their test lists (node:test collects synchronously), so
+// matchedCases is final by the time this runs.
+test("matched conformance cases have not silently dropped", () => {
+  assert.equal(
+    matchedCases,
+    EXPECTED_MATCHED_CASES,
+    `expected ${EXPECTED_MATCHED_CASES} matched conformance cases, got ${matchedCases} -- ` +
+      "if this dropped, a schema or response ref went missing; if it rose " +
+      "on purpose, update EXPECTED_MATCHED_CASES above",
+  );
+});
