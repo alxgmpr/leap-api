@@ -8,7 +8,7 @@ Caseta bridges, Vive systems, and their companion apps use over TLS port
 ## What this is
 
 A single, browsable, hand-refined OpenAPI document (`spec/`, bundling to
-`dist/openapi.yaml`) covering 204 paths and 285 component schemas, built from
+`dist/openapi.yaml`) covering 205 paths and 300 component schemas, built from
 two independent sources cross-checked against each other:
 
 - A **firmware extraction** — 410 route identifiers and 636 response struct
@@ -45,6 +45,46 @@ This document says explicitly, throughout, wherever something is inferred
 rather than confirmed — look for "not established" and similar language in
 schema and path descriptions.
 
+## What is and is not covered
+
+This is a partial specification, not a hand-refined copy of everything the
+firmware extraction and probe sweeps recovered. So a reader who looks up a
+route and finds nothing here cannot tell "this route does not exist" from
+"this route exists but has not been written up" without the numbers below.
+
+- **Paths.** The firmware route extraction recovered 410 distinct route
+  templates. 233 of those 410 (57%) are **absent from the bundled
+  specification** — present only in `spec/paths/_generated/` (staging,
+  never bundled — see `tools/bundle.ts`), not in `spec/paths/`. The
+  remaining 177 firmware routes are covered by the 205 bundled paths (some
+  bundled paths merge two firmware routes — id/xid pairs, see
+  `docs/mapping.md` — and a few bundled paths, like the ten
+  `commandprocessor` routes, have no firmware route at all).
+- **Path families.** `spec/paths/_generated/` holds 170 generated path
+  family files, one per top-level resource the extraction recovered.
+  `spec/paths/` (the hand-refined tree the bundle actually reads) holds 21
+  files: 20 refined from a generated family, plus one
+  (`commandprocessor.yaml`) hand-authored from scratch with no generated
+  counterpart at all (the extraction recovered zero `commandprocessor`
+  routes — see `docs/mapping.md`). The other 150 generated families were
+  never touched.
+- **Schemas.** The firmware extraction recovered 636 struct definitions.
+  300 of those 636 (47%) ship in `spec/components/schemas/`; the rest sit
+  untouched in `spec/components/schemas/_generated/`.
+
+None of this is a defect to be silently patched over — hand-refining a
+schema or path family is real, evidence-checked work (cross-referencing
+`fixtures/`, correcting mislabels, trimming `required` to what is actually
+observed), and this project has done it for the paths and schemas that
+were reachable, probe-confirmed, or otherwise worth the verification cost.
+It has not attempted a straight, unverified copy of the other 233
+routes/336 schemas, because an unverified copy would carry exactly the
+false confidence this document works to avoid elsewhere. Run
+`npm run coverage` for the live, generated version of these numbers
+(`probedNotInSpec`/`specWithoutFixture`), which additionally tracks
+coverage against the captured fixtures rather than just the firmware
+extraction.
+
 ## How it was built
 
 1. **Vendor firmware extraction data** (`vendor/`) — Go route and type
@@ -61,14 +101,17 @@ schema and path descriptions.
    serial numbers, and other identifying data, into `fixtures/ra3.json` and
    `fixtures/caseta.json`. These are the corpus every generated schema is
    checked against.
-4. **Hand-refine** every generated path and schema family into `spec/paths/`
-   and `spec/components/schemas/` — correcting the firmware extraction's two
-   systematic defects (mangled collection paths, and singular/plural
-   `MessageBodyType` mislabeling — see `docs/mapping.md`), hand-authoring the
-   entire command-processor write surface (which the firmware extraction does
-   not cover at all — zero `commandprocessor` routes in 410), and recovering
-   enum members from probe data and app reverse engineering wherever the
-   firmware left a type open-ended.
+4. **Hand-refine** a subset of the generated paths and schemas — 21 of 170
+   generated path families, 300 of 636 generated schemas as of this writing
+   (see "What is and is not covered" above) — into `spec/paths/` and
+   `spec/components/schemas/`: correcting the firmware extraction's
+   systematic defects (mangled collection paths, singular/plural
+   `MessageBodyType` mislabeling, anonymous-embed fields the generator
+   leaves nested instead of flattened — see `docs/mapping.md`),
+   hand-authoring the entire command-processor write surface (which the
+   firmware extraction does not cover at all — zero `commandprocessor`
+   routes in 410), and recovering enum members from probe data and app
+   reverse engineering wherever the firmware left a type open-ended.
 5. **Bundle** (`npm run bundle`) — merge the hand-refined tree onto
    `spec/openapi.yaml`, inject `x-leap-platforms` availability tables (built
    from `lib/platform-matrix.ts` against the committed fixtures) into every
