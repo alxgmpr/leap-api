@@ -1,0 +1,39 @@
+# Straight copy from _generated/BACnetSettings.yaml -- dependency of
+# BACnetProperties.yaml, flattened into it via `allOf` (see that file's
+# comment). Matches the one captured instance (RA3 v03.247, via /service)
+# field-for-field: Enabled, NetworkNumber, Port, BBMDIPAddress, BBMDTTL,
+# InstanceStrategy all present; DeviceInstance (optional in the firmware)
+# not observed.
+type: object
+properties:
+  Enabled:
+    type: boolean
+  NetworkNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  DeviceInstance:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Port:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  BBMDIPAddress:
+    type: string
+  BBMDTTL:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  InstanceStrategy:
+    type: string
+    description: "TODO(enum): members of BACnetInstanceStrategy were not recovered
+      from the firmware extraction"
+required:
+  - Enabled
+  - NetworkNumber
+  - Port
+  - BBMDIPAddress
+  - BBMDTTL
+  - InstanceStrategy

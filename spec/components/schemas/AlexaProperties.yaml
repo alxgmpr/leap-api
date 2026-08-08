@@ -1,0 +1,13 @@
+# Straight copy from _generated/AlexaProperties.yaml -- matches captured
+# traffic exactly. Observed on both platforms as the flat `AlexaProperties`
+# key on a `/service` array entry with `Type: "Alexa"` (RA3 v03.247: both
+# `Configuration` and `DataSummary`; Caseta v01.123: `DataSummary` only,
+# consistent with both fields already being optional here). See
+# Service.yaml for how this and its sibling `*Properties` schemas are wired
+# up.
+type: object
+properties:
+  Configuration:
+    $ref: "#/components/schemas/HyperReference"
+  DataSummary:
+    $ref: "#/components/schemas/HyperReference"

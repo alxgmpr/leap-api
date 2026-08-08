@@ -1,0 +1,25 @@
+# Refined from _generated/BACnetProperties.yaml. FLATTENED: `BACnetSettings`
+# is a named field whose Go type shares the field name (`BACnetSettings
+# *leapobj.BACnetSettings`) -- an anonymous embed, same class of bug already
+# fixed for Device.yaml (DeviceBase/DeviceMiniDefinitionForMasterDeviceList)
+# and TimeclockEventBase (flattened into NLOTime). The one captured
+# instance (RA3 v03.247, via /service, the array entry with `Type:
+# "BACnet"`) confirms it: `BACnetSettings`'s fields (Enabled, NetworkNumber,
+# Port, BBMDIPAddress, BBMDTTL, InstanceStrategy) sit directly on the flat
+# `BACnetProperties` object alongside `Settings`, `Instances`, and
+# `NetworkSettings` -- there is no nested `"BACnetSettings"` key on the
+# wire. Restructured as `allOf` against `BACnetSettings`, matching the
+# Device.yaml precedent. `DefaultSettings` (optional in the firmware) was
+# not observed in the one captured instance.
+type: object
+allOf:
+  - $ref: "#/components/schemas/BACnetSettings"
+properties:
+  Settings:
+    $ref: "#/components/schemas/HyperReference"
+  DefaultSettings:
+    $ref: "#/components/schemas/HyperReference"
+  Instances:
+    $ref: "#/components/schemas/HyperReference"
+  NetworkSettings:
+    $ref: "#/components/schemas/HyperReference"

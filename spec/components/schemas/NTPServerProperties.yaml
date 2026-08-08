@@ -1,0 +1,19 @@
+# Straight copy from _generated/NTPServerProperties.yaml -- matches the one
+# captured instance exactly. Observed on RA3 v03.247, via /service, as the
+# flat `NTPServerProperties` key on the array entry with
+# `Type: "NTPServer"`: `{"PropertiesType": "Static", "Endpoints": [{"href":
+# "/service/ntpserver/1", "Endpoint": "time.iot.lutron.io"}]}`. Not observed
+# on Caseta (no `/service/ntpserver` entry in that capture). See
+# Service.yaml.
+type: object
+properties:
+  PropertiesType:
+    type: string
+    description: "TODO(enum): members of NTPServerPropertiesType were not recovered
+      from the firmware extraction"
+  Endpoints:
+    type: array
+    items:
+      $ref: "#/components/schemas/NTPServerEndpoint"
+required:
+  - PropertiesType

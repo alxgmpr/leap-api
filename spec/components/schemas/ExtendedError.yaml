@@ -1,0 +1,13 @@
+# Straight copy from _generated/ExtendedError.yaml -- dependency of
+# ErrorDetails.yaml, itself a dependency of HomeKitProperties.Errors.
+# Unconfirmed against captured traffic: `Errors` was never present on
+# either platform's observed HomeKitProperties (no HomeKit error state was
+# captured). Shipped anyway, matching the pattern used elsewhere in this
+# specification for firmware-defined types with no wire example -- the
+# alternative is a dangling $ref.
+type: object
+properties:
+  ExtendedErrorCode:
+    type: integer
+required:
+  - ExtendedErrorCode

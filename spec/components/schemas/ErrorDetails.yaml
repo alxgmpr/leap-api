@@ -1,0 +1,18 @@
+# Straight copy from _generated/ErrorDetails.yaml -- dependency of
+# HomeKitProperties.Errors. Unconfirmed against captured traffic: see
+# ExtendedError.yaml.
+type: object
+properties:
+  ErrorCode:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Details:
+    type: string
+  ExtendedErrors:
+    type: array
+    items:
+      $ref: "#/components/schemas/ExtendedError"
+required:
+  - ErrorCode
+  - Details

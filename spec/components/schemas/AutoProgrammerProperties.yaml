@@ -1,0 +1,16 @@
+# HAND-AUTHORED end to end -- no `AutoProgrammerProperties` type exists
+# anywhere in the firmware extraction (vendor/leap-types.json), unlike its
+# six siblings (AlexaProperties, GoogleHomeProperties, BACnetProperties,
+# HomeKitProperties, IFTTTProperties, NTPServerProperties), which all have
+# named firmware types. The service itself is real and observed on the
+# wire: Caseta v01.123, via /service, the array entry with `Type:
+# "AutoProgrammer"` carries a flat `AutoProgrammerProperties` key:
+# `{"EnabledState": "Enabled"}`. Not observed on RA3 (no `/service/autoprog`
+# entry in that capture). `EnabledState` is typed against the existing
+# `EnabledState` schema (`Enabled`/`Disabled`, observed-not-exhaustive) by
+# value match, not firmware type identity, since no firmware type exists to
+# confirm it against.
+type: object
+properties:
+  EnabledState:
+    $ref: "#/components/schemas/EnabledState"

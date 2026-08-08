@@ -1,0 +1,12 @@
+# Straight copy from _generated/NTPServerEndpoint.yaml -- dependency of
+# NTPServerProperties.yaml. Matches the one captured instance (RA3 v03.247,
+# via /service: {"href": "/service/ntpserver/1", "Endpoint":
+# "time.iot.lutron.io"}).
+type: object
+properties:
+  href:
+    type: string
+  Endpoint:
+    type: string
+required:
+  - Endpoint

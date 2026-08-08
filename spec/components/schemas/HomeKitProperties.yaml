@@ -1,0 +1,30 @@
+# Refined from _generated/HomeKitProperties.yaml. `required` trimmed: the
+# firmware marks DeviceID non-pointer, but it is 0/2 on captured traffic
+# (RA3 v03.247 and Caseta v01.123, both via /service) -- neither observed
+# instance of the flat `HomeKitProperties` key (on the array entry with
+# `Type: "HomeKit"`) has a `DeviceID` field. Relaxed to optional.
+# `BonjourServiceName` and `MaxAssociations`, both observed 2/2, stay
+# required as the firmware marks them.
+type: object
+properties:
+  Configuration:
+    $ref: "#/components/schemas/HyperReference"
+  DataSummary:
+    $ref: "#/components/schemas/HyperReference"
+  DeviceID:
+    type: string
+  BonjourServiceName:
+    type: string
+  BridgeAccessory:
+    $ref: "#/components/schemas/HomeKitBridgeAccessory"
+  MaxAssociations:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  Errors:
+    type: array
+    items:
+      $ref: "#/components/schemas/ErrorDetails"
+required:
+  - BonjourServiceName
+  - MaxAssociations

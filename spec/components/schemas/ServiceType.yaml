@@ -1,0 +1,25 @@
+# HAND-AUTHORED enum -- the firmware types `Service.Type` as a bare `string`
+# (vendor/leap-types.json: `type leapobj.Service struct { ... Type string
+# ... }`, no named enum type at all), so there is nothing for the generator
+# to recover members from. Members below are every `Type` value observed on
+# either platform's captured `/service` collection (RA3 v03.247: Alexa,
+# GoogleHome, BACnet, HomeKit, IFTTT, NTPServer; Caseta v01.123: Sonos,
+# HomeKit, Alexa, GoogleHome, AutoProgrammer, IFTTT). Union across both
+# platforms is 8 distinct values. **Observed-not-exhaustive**: a service
+# type not in this list is possible and must still validate (see
+# Service.yaml, which does not set `additionalProperties: false`).
+type: string
+description: |
+  Discriminator for `Service.Type`, naming which `*Properties` field (if
+  any) is populated on the same object -- see `Service.yaml`.
+  Observed-not-exhaustive: recovered from captured traffic, not a firmware
+  enum (the firmware types this field as a bare `string`).
+enum:
+  - Alexa
+  - GoogleHome
+  - BACnet
+  - HomeKit
+  - IFTTT
+  - Sonos
+  - NTPServer
+  - AutoProgrammer

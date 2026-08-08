@@ -5,18 +5,39 @@ description: |
   literal `Body` key. Instead, type-specific properties sit flat on the
   object under their own keys (`AlexaProperties`, `GoogleHomeProperties`,
   `BACnetProperties`, `HomeKitProperties`, `IFTTTProperties`,
-  `AutoProgrammerProperties`, observed across both platforms) -- the same
-  per-`Type` discriminated-property pattern the design doc describes for
-  `Command`, just not modeled as a generic catch-all field on the wire.
-  Relaxed `Body` to optional on hardware evidence; its untyped `{}` schema
-  already permits any shape it might legitimately take, and the
-  type-specific properties validate as unvalidated additional properties
-  (this schema does not set `additionalProperties: false`).
+  `NTPServerProperties`, `AutoProgrammerProperties` -- one per `Type`,
+  observed across both platforms; `Sonos`, the eighth observed `Type`, has
+  no properties key at all in either capture) -- the same per-`Type`
+  discriminated-property pattern the design doc describes for `Command`,
+  just not modeled as a generic catch-all field on the wire. Relaxed `Body`
+  to optional on hardware evidence; its untyped `{}` schema already permits
+  any shape it might legitimately take.
+
+  Each `*Properties` field is modeled explicitly below rather than left as
+  unvalidated additional properties, now that all seven have their own
+  schemas (six from named firmware types; `AutoProgrammerProperties` is
+  hand-authored -- see its own file). This schema does not set
+  `additionalProperties: false`, so a `Type` this specification does not
+  yet know about still validates.
 properties:
   href:
     type: string
   Type:
-    type: string
+    $ref: "#/components/schemas/ServiceType"
   Body: {}
+  AlexaProperties:
+    $ref: "#/components/schemas/AlexaProperties"
+  GoogleHomeProperties:
+    $ref: "#/components/schemas/GoogleHomeProperties"
+  BACnetProperties:
+    $ref: "#/components/schemas/BACnetProperties"
+  HomeKitProperties:
+    $ref: "#/components/schemas/HomeKitProperties"
+  IFTTTProperties:
+    $ref: "#/components/schemas/IFTTTProperties"
+  NTPServerProperties:
+    $ref: "#/components/schemas/NTPServerProperties"
+  AutoProgrammerProperties:
+    $ref: "#/components/schemas/AutoProgrammerProperties"
 required:
   - Type
