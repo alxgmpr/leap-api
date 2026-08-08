@@ -93,12 +93,18 @@ Three vendor extensions carry information OpenAPI has no native slot for:
   labels the body type with the singular struct name (e.g. `Zone`) while the
   wire body key is plural (`Zones`). See "Collection GETs and the
   singular/plural defect" below.
-- **`x-leap-platforms`** — observed `Header.StatusCode` per platform for this
-  operation, e.g. `{ra3: "405 MethodNotAllowed", caseta: "200 OK"}`. A
-  platform that was never probed for a given path reads `"not probed"`
-  rather than being omitted, so a reader can tell "confirmed to reject this"
-  apart from "nobody tried it." See `docs/platforms.md` for the full
-  cross-platform account this feeds.
+- **`x-leap-platforms`** — observed `Header.StatusCode` per platform for a
+  `ReadRequest` on this operation's URL, e.g. `{ra3: "405 MethodNotAllowed",
+  caseta: "200 OK"}`. **It reflects `ReadRequest` probes only.** The probe
+  sweeps that produced `fixtures/ra3.json` and `fixtures/caseta.json` never
+  sent a `CreateRequest`, `UpdateRequest`, or `DeleteRequest` — every probed
+  status is what a `GET` got back. Accordingly, `tools/bundle.ts` injects
+  this extension (and the rendered table below it) only onto each path's
+  `get` operation, never onto `post`/`put`/`delete`. A platform that was
+  never probed for a given path reads `"not probed"` rather than being
+  omitted, so a reader can tell "confirmed to reject this" apart from
+  "nobody tried it." See `docs/platforms.md` for the full cross-platform
+  account this feeds.
 
 ### Why they are mirrored into descriptions
 

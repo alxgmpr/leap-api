@@ -41,9 +41,16 @@ describe("bundled spec", () => {
     );
   });
 
-  test("injected platform data only appears under HTTP method keys, not path-item extensions", () => {
-    const httpMethods = new Set([
-      "get",
+  test("injected platform data only appears under `get`, never other HTTP methods or path-item extensions", () => {
+    // The probe sweeps that produced x-leap-platforms only ever sent
+    // ReadRequest (GET). Injecting that data onto post/put/delete would
+    // mislabel write operations with a status that was actually the
+    // response to a GET on the same URL -- see docs/mapping.md's
+    // x-leap-platforms section. The only correct invariant is "get only",
+    // not merely "some HTTP method" (the previous version of this test
+    // accepted injection under post/put/delete as long as it was under an
+    // operation object, which is exactly the bug this test should catch).
+    const otherHttpMethods = new Set([
       "post",
       "put",
       "delete",
@@ -53,52 +60,31 @@ describe("bundled spec", () => {
       "trace",
     ]);
 
-    const walk = (node: unknown, path: string[]): void => {
-      if (Array.isArray(node)) {
-        for (let idx = 0; idx < node.length; idx++)
-          walk(node[idx], [...path, `[${idx}]`]);
-        return;
-      }
-      if (node && typeof node === "object") {
-        const obj = node as Record<string, unknown>;
+    for (const [path, item] of Object.entries(
+      doc.paths as Record<string, Record<string, unknown>>,
+    )) {
+      // Path-item-level extensions (e.g. the /area path item, which has no
+      // GET) must never carry platform data either.
+      assert.ok(
+        !("x-leap-platforms" in item),
+        `x-leap-platforms injected at path-item level for ${path}`,
+      );
 
-        // Check if this looks like a path item (has operation-like keys or parameters)
-        const keys = Object.keys(obj);
-        const hasHttpMethods = keys.some((k) => httpMethods.has(k));
-        const hasParameters = keys.includes("parameters");
-        const hasExtensions = keys.some((k) => k.startsWith("x-"));
-
-        if ((hasHttpMethods || hasParameters) && hasExtensions) {
-          // This is a path item; check that injected data only appears under HTTP methods
-          for (const [k, v] of Object.entries(obj)) {
-            if (k.startsWith("x-")) {
-              // This is an extension at path-item level
-              // It should NOT have x-leap-platforms or a description with platform table
-              if (v && typeof v === "object") {
-                const ext = v as Record<string, unknown>;
-                assert.ok(
-                  !("x-leap-platforms" in ext),
-                  `x-leap-platforms injected into path-item extension ${k} at ${path.join(".")}`,
-                );
-                // description might be a string in extensions (e.g., in x-leap-event-schema)
-                // If it has our platform table marker, that's wrong
-                if (typeof ext.description === "string") {
-                  assert.ok(
-                    !ext.description.includes("Platform availability"),
-                    `platform table description injected into path-item extension ${k} at ${path.join(".")}`,
-                  );
-                }
-              }
-            }
-          }
-        }
-
-        for (const [k, v] of Object.entries(obj)) {
-          walk(v, [...path, k]);
+      for (const method of otherHttpMethods) {
+        const op = item[method];
+        if (!op || typeof op !== "object") continue;
+        const operation = op as Record<string, unknown>;
+        assert.ok(
+          !("x-leap-platforms" in operation),
+          `x-leap-platforms injected into ${method} ${path}`,
+        );
+        if (typeof operation.description === "string") {
+          assert.ok(
+            !operation.description.includes("Platform availability"),
+            `platform table description injected into ${method} ${path}`,
+          );
         }
       }
-    };
-
-    walk(doc, ["paths"]);
+    }
   });
 });

@@ -41,6 +41,17 @@ for (const file of readRefined(PATHS_DIR)) {
 
 // Inject platform availability into operation descriptions so it renders in
 // tools that hide x-* extensions.
+//
+// The probe sweeps that produced fixtures/{ra3,caseta}.json only ever sent
+// ReadRequest (see lib/platform-matrix.ts's buildMatrix, which folds concrete
+// probed paths into this matrix). That status therefore describes what a GET
+// gets back -- it says nothing about what a POST/PUT/DELETE on the same URL
+// would do. Injecting it into every HTTP method previously mislabeled write
+// operations: e.g. POST /zone/{zoneId}/commandprocessor was shown as "400
+// BadRequest on both platforms", but that 400 was the ReadRequest probe's
+// response, not a CreateRequest's -- no CreateRequest was ever sent to a
+// commandprocessor path (spec/paths/commandprocessor.yaml's own note).
+// Restricted to `get` only, the one verb the probes actually exercised.
 const probes: Record<string, Record<string, { status: string }>> = {};
 for (const [platform, path] of [
   ["ra3", "fixtures/ra3.json"],
@@ -51,31 +62,18 @@ for (const [platform, path] of [
 }
 const matrix = Object.keys(probes).length > 0 ? buildMatrix(probes) : {};
 
-// Explicit allow-list of HTTP methods to prevent injecting into vendor extensions
-const HTTP_METHODS = new Set([
-  "get",
-  "post",
-  "put",
-  "delete",
-  "patch",
-  "head",
-  "options",
-  "trace",
-]);
-
 for (const [path, item] of Object.entries(doc.paths)) {
   const status = matrix[path];
   if (!status || !item || typeof item !== "object") continue;
-  for (const [method, op] of Object.entries(item)) {
-    if (!HTTP_METHODS.has(method) || !op || typeof op !== "object") continue;
-    const operation = op as Record<string, unknown>;
-    operation["x-leap-platforms"] = status;
-    const existing =
-      typeof operation.description === "string"
-        ? `${operation.description}\n\n`
-        : "";
-    operation.description = `${existing}${renderMatrixTable(status)}`;
-  }
+  const get = (item as Record<string, unknown>).get;
+  if (!get || typeof get !== "object") continue;
+  const operation = get as Record<string, unknown>;
+  operation["x-leap-platforms"] = status;
+  const existing =
+    typeof operation.description === "string"
+      ? `${operation.description}\n\n`
+      : "";
+  operation.description = `${existing}${renderMatrixTable(status)}`;
 }
 
 doc.tags = [
