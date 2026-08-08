@@ -4,3 +4,6 @@ site/
 raw/
 *.local.json
 .DS_Store
+
+# SDD process workspace (also covered by global gitignore)
+.superpowers/
