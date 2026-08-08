@@ -6,7 +6,7 @@ properties:
     maximum: 4294967295
   TimeOutDuration:
     type: string
-    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    pattern: ^P(?=.*\d)(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
     example: PT2S
   ConnectedObjectNumber:
     type: integer

@@ -1,3 +1,29 @@
+# Refined from _generated/Timestamp.yaml. Two deviations, both from
+# captured-traffic evidence:
+#
+# 1. RENAMED: the firmware field is `UTC` (Go: `UTC *lutcommon.Timespan`),
+#    but every observed instance on the wire (8 occurrences, both
+#    platforms: RA3 v03.247 and Caseta v01.123, e.g. via
+#    /project/masterdevicelist/devices' FirmwareImage.Installed) uses the
+#    key `Utc`, not `UTC`. `wireKey` in lib/go-to-schema.ts only
+#    special-cases `Href`->`href`; it has no rule that would produce this
+#    lowercase-tail form from `UTC`, so this is a per-field wire mismatch,
+#    not a generator bug to fix broadly.
+#
+# 2. PATTERN CHANGED: the generator maps every `lutcommon.Timespan` field to
+#    an ISO 8601 duration pattern (`^P...$`, e.g. `PT2S`) -- right for
+#    FadeTime/DelayTime-class fields (see lib/go-to-schema.ts's
+#    TIMESPAN_PATTERN comment), but wrong here. Every observed `Utc` value
+#    is a UTC offset, not a duration: `"0"` and `"-7:00:00"`, neither of
+#    which starts with `P`. `-7:00:00` also resolves an "unconfirmed" note
+#    left in TimeclockEventBase.yaml about what a non-zero
+#    `lutcommon.Timespan`-as-offset looks like on the wire when it isn't the
+#    literal zero case: `[-]H:MM:SS`, not `PT-7H`. Widened to accept that
+#    shape (optionally negative, colon-delimited hours:minutes:seconds) or
+#    the bare-zero form, dropping the ISO 8601 pattern entirely for this
+#    field -- unlike `AstronomicTimeOffset`, no observed `Utc` value is ever
+#    ISO 8601 shaped, so there is no case for keeping it as a fallback
+#    alternative here.
 type: object
 properties:
   Year:
@@ -24,10 +50,16 @@ properties:
     type: integer
     minimum: 0
     maximum: 255
-  UTC:
+  Utc:
     type: string
-    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
-    example: PT2S
+    description: |
+      A UTC offset, not an ISO 8601 duration despite the firmware's
+      `lutcommon.Timespan` type (shared with genuine duration fields like
+      `DimmedLevelParameters.FadeTime`). Observed forms (RA3 v03.247 and
+      Caseta v01.123): the literal zero `"0"`, and signed
+      hours:minutes:seconds, e.g. `"-7:00:00"`.
+    pattern: ^(0|-?\d{1,2}:[0-5]\d:[0-5]\d)$
+    example: "-7:00:00"
 required:
   - Year
   - Month

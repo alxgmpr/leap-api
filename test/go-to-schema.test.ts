@@ -47,6 +47,10 @@ describe("mapFieldType", () => {
     assert.ok(regex.test("PT0.25S"));
     assert.ok(regex.test("PT30S"));
     assert.ok(!regex.test("garbage"));
+    // Degenerate forms with no components at all are not valid ISO 8601
+    // durations and must be rejected.
+    assert.ok(!regex.test("P"));
+    assert.ok(!regex.test("PT"));
   });
 
   test("maps json.RawMessage to an unconstrained schema", () => {

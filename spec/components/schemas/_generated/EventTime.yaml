@@ -12,7 +12,7 @@ properties:
       the firmware extraction"
   AstronomicTimeOffset:
     type: string
-    pattern: ^P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    pattern: ^P(?=.*\d)(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
     example: PT2S
 required:
   - TimeType

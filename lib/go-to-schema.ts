@@ -10,9 +10,31 @@ export function wireKey(goFieldName: string): string {
   return goFieldName === "Href" ? "href" : goFieldName;
 }
 
-/** ISO 8601 duration, the form LEAP uses for FadeTime and DelayTime. */
+/**
+ * ISO 8601 duration, the form LEAP uses for FadeTime and DelayTime
+ * (api-discovery.md, decompiled Android APK: explicit "FadeTime/DelayTime:
+ * ISO 8601 extended duration" with literal examples "PT2S", "PT0S").
+ *
+ * The `(?=.*\d)` lookahead requires at least one digit somewhere after `P`,
+ * so the degenerate forms `P` and `PT` (all components absent) are
+ * rejected -- neither is a valid ISO 8601 duration, but the un-anchored
+ * version of this pattern accepted both.
+ *
+ * NOT every `lutcommon.Timespan`-typed field on the wire actually uses this
+ * format: `Timestamp.Utc` and `TimeclockEventBase.AstronomicTimeOffset` are
+ * also `lutcommon.Timespan` in the firmware but are UTC-offset values
+ * ("0", "-7:00:00"), not durations -- confirmed against captured traffic on
+ * both platforms. Those two are corrected locally in their own refined
+ * schema files (Timestamp.yaml, TimeclockEventBase.yaml) rather than here,
+ * because FadeTime/DelayTime-class fields have their own, separate
+ * evidence (above) for the ISO 8601 form, and no captured traffic exists to
+ * contradict it for them -- no CreateRequest/UpdateRequest body was ever
+ * captured (see docs/mapping.md's "Why the command surface is
+ * hand-authored" section), so this generator default is left as the best
+ * available evidence-backed mapping for the fields it's actually right for.
+ */
 const TIMESPAN_PATTERN =
-  "^P(?:\\d+D)?(?:T(?:\\d+H)?(?:\\d+M)?(?:\\d+(?:\\.\\d+)?S)?)?$";
+  "^P(?=.*\\d)(?:\\d+D)?(?:T(?:\\d+H)?(?:\\d+M)?(?:\\d+(?:\\.\\d+)?S)?)?$";
 
 const PRIMITIVES: Record<string, JsonSchema> = {
   bool: { type: "boolean" },
