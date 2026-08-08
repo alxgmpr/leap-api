@@ -32,6 +32,7 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:
@@ -45,7 +46,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run bundle && npm run build:site
+      # enablement:true lets the workflow turn Pages on itself, so a fresh
+      # clone or a new fork does not need the repo setting flipped by hand.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
