@@ -138,10 +138,20 @@
     tags:
       - device
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: ButtonGroups
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: body key `ButtonGroups` on both platforms (RA3
+      v03.247: 16 of 32 probed devices return `200 OK`, the rest `204
+      NoContent` or `404 NotFound` for devices with no button groups;
+      Caseta v01.123: 10 of 24 probed devices return `200 OK`).
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ButtonGroups"
     summary: List button groups on device
   parameters:
     - name: deviceId

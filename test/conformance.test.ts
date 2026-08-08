@@ -28,13 +28,13 @@ addFormats(ajv);
 // number of cases that actually reached `ajv.compile`/`validate` below and
 // assert against it directly instead.
 //
-// 369 as of this writing (verified against dist/openapi.yaml + the
+// 406 as of this writing (verified against dist/openapi.yaml + the
 // committed fixtures). When intentionally adding response schema coverage
 // (a new path, a resolved TODO(response), a new hand-authored collection
 // schema), this number goes up -- update the constant below to match and
 // note why in the commit. If it goes down, that is a coverage regression;
 // investigate before updating the constant.
-const EXPECTED_MATCHED_CASES = 369;
+const EXPECTED_MATCHED_CASES = 406;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

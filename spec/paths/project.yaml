@@ -91,10 +91,21 @@
     tags:
       - project
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Devices
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.247 returns `200 OK` with body key
+      `Devices` (an array of every device in the project, the same shape as
+      `GET /device`'s collection response); Caseta v01.123 returns
+      `204 NoContent`.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Devices"
+    summary: List all devices in the master device list
 /project/masterdevicelist:
   get:
     operationId: getProjectMasterDevicelist

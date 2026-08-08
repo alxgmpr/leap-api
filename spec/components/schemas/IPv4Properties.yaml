@@ -1,3 +1,13 @@
+# Refined from _generated/IPv4Properties.yaml. `required` trimmed: the
+# firmware marks IP, SubnetMask, Gateway, DNS1, DNS2, and DNS3 non-pointer,
+# but the one observed instance in this project's corpus (RA3 v03.247, via
+# /project/masterdevicelist/devices, Type "DHCP") has none of them -- just
+# `Type`. Discovered when wiring up GET /project/masterdevicelist/devices'
+# response schema (Devices -> Device -> ... -> IPv4Properties) surfaced the
+# first captured traffic ever validated against this schema. Consistent
+# with a DHCP-configured interface simply not reporting the fields a static
+# configuration would carry; relaxed all six to optional pending a captured
+# static-IP instance. Only `Type`, the sole field observed, stays required.
 type: object
 properties:
   Type:
@@ -18,9 +28,3 @@ properties:
     type: string
 required:
   - Type
-  - IP
-  - SubnetMask
-  - Gateway
-  - DNS1
-  - DNS2
-  - DNS3
