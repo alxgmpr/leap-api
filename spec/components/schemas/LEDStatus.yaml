@@ -1,0 +1,16 @@
+type: object
+description: |
+  `State` was an unresolved open string in the firmware-extracted form (no
+  enum members recovered); Task 8's sweep fixtures confirmed two values
+  (`On`/`Off`) across 8 LEDs, so `State` now `$ref`s the hand-authored
+  `LEDState` enum instead of staying an open string. See `LEDState.yaml`
+  for the fixture citation and the "unlisted values possible" caveat.
+properties:
+  href:
+    type: string
+  LED:
+    $ref: "#/components/schemas/HyperReference"
+  State:
+    $ref: "#/components/schemas/LEDState"
+required:
+  - State

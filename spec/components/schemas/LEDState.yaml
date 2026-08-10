@@ -1,0 +1,10 @@
+type: string
+description: |
+  The firmware extraction did not recover the full enum; members below are
+  every value observed across 8 probe-confirmed LEDs on a single processor
+  during Task 8's sweep campaign (`fixtures/sweep-read.json`,
+  `fixtures/sweep-write.json`). Unlisted values are possible -- no
+  flashing/blinking state was observed, but that does not rule one out.
+enum:
+  - "On"
+  - "Off"

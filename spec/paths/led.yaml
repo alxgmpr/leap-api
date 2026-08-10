@@ -1,0 +1,71 @@
+# Refined from spec/paths/_generated/led.yaml. Both operations were
+# TODO(response) in the generated form (no responseType recovered from the
+# firmware extraction); Task 8's sweep fixtures
+# (`fixtures/sweep-read.json`, `fixtures/sweep-write.json`, 8 LEDs probed on
+# a single processor) resolve both bodies directly:
+#
+# - GET /led/{ledId}: body key `LED`, `{href, Parent}` -- matches
+#   _generated/schemas/LED.yaml's shape exactly, copied unchanged.
+# - GET/PUT /led/{ledId}/status: body key `LEDStatus`. Both verbs return the
+#   identical shape (the PUT response mirrors the resource's new state, the
+#   same convention already established for `/zone/{zoneId}/status` and
+#   `/clientsetting`) -- no separate `LEDStatusUpdate` response schema, per
+#   that convention. `State`'s unresolved-enum marker is resolved on the
+#   `LEDStatus`/`LEDState` schemas themselves (see `LEDState.yaml`), not
+#   here.
+/led/{ledId}:
+  get:
+    operationId: getLedID
+    tags:
+      - led
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LED
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LED"
+    summary: Read LED
+  parameters:
+    - name: ledId
+      in: path
+      required: true
+      schema:
+        type: string
+/led/{ledId}/status:
+  get:
+    operationId: getLedIDStatus
+    tags:
+      - led
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: LEDStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LEDStatus"
+    summary: Get LED status
+  put:
+    operationId: updateLedIDStatus
+    tags:
+      - led
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: LEDStatus
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LEDStatus"
+    summary: Set LED status
+  parameters:
+    - name: ledId
+      in: path
+      required: true
+      schema:
+        type: string
