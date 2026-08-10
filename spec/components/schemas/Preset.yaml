@@ -7,8 +7,11 @@
 # ever requested a `/preset/{presetId}` URL or any of its `*assignment`
 # sub-routes, so for those the campaign corpora are silent, not refusing.
 #
-# The two coverage-blind spec probes did ask, 218 preset URLs each across 29
-# templates, and what they got back is mostly not a refusal either. On the
+# The two coverage-blind spec probes did ask: 208 `/preset*` URLs each across
+# 26 templates -- 8 `/preset/{presetId}` plus 8 for each of its 25
+# `*assignment` sub-routes, and notably not the bare `/preset` collection,
+# which neither spec probe requested. What they got back is mostly not a
+# refusal either. On the
 # 25 `/preset/{presetId}/*assignment` sub-routes (8 preset ids each, 200
 # requests per probe): RA3 v03.249 answers `404 NotFound` x192 and `204
 # NoContent` x8; Caseta v01.123 answers `204 NoContent` x160, `405
@@ -19,7 +22,7 @@
 # narrower and is the one that matters here: **no `*assignment` sub-route has
 # ever returned a 200 on either platform.**
 #
-# The bare `/preset/{presetId}` route is where the coverage came from: Caseta
+# The `/preset/{presetId}` route itself is where the coverage came from: Caseta
 # v01.123 answers `200 OK` on all 8 preset ids the probe requested, RA3
 # v03.249 `404 NotFound` on all 8, and the programmingmodel family added 9
 # more Preset objects through /programmingmodel/{programmingmodelId}/preset.
