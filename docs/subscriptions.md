@@ -18,10 +18,10 @@ Everything in this document about *pushed* frames comes from one capture:
 before its findings, because the findings are specific and the scope is
 narrow.
 
-A single LEAP connection to **one RA3 processor** — the same
-previously-unswept second unit behind `fixtures/sweep-read.json`,
-`fixtures/sweep-write.json` and `fixtures/subscriptions.json` (see
-`docs/platforms.md`, and `tools/redact.ts`'s `PUSH_PROBE_DIR` comment) — in
+A single LEAP connection to **one RA3 processor** — the same target as the
+sweep corpora `fixtures/sweep-read.json`, `fixtures/sweep-write.json` and
+`fixtures/subscriptions.json` (see `docs/platforms.md`, and
+`tools/redact.ts`'s `PUSH_PROBE_DIR` comment) — in
 **one installation**, on **one run** kept open for 26 seconds. The capture's own
 `note` describes the shape: `"single connection: subscribe, level change,
 hold, restore"`. Two subscriptions were opened, one dimmer zone

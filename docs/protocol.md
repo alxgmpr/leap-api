@@ -225,9 +225,9 @@ corpus shows one — that gap is stated explicitly rather than silently omitted.
 ### `102 Processing` — an interim acknowledgement, not a terminal status
 
 Not part of the RA3/Caseta counts above, and observed on a separate,
-single-processor sweep (Task 8's probe campaign against a second,
-previously-unswept RA3 unit, masked throughout this project's public
-fixtures — see `docs/platforms.md`): 5 of that sweep's 206 probed paths, all
+single-processor sweep (Task 8's probe campaign against an RA3 processor at
+a host masked throughout this project's public fixtures — see
+`docs/platforms.md`): 5 of that sweep's 206 probed paths, all
 `ReadRequest /firmwareimage/{firmwareimageId}`, initially came back
 `102 Processing` with a null body instead of a terminal status.
 

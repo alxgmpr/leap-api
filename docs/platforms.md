@@ -36,22 +36,32 @@ notes, not as evidence for this document. Bringing either platform into the
 conformance corpus this specification is validated against would require new
 capture work, which is out of scope here.
 
-## A second RA3 unit, and what its refusals show
+## A second RA3 corpus, and what its refusals show
 
-Task 8's probe campaign targeted two configured processors, both masked
-throughout this project's public fixtures and this document: the same RA3
-unit behind `fixtures/ra3.json`, and a second, previously-unswept RA3 unit.
-**The first was unreachable for the entire campaign** (no response on TCP
-8081, no ARP entry); every sweep capture in this project
-(`fixtures/sweep-read.json`, `fixtures/sweep-write.json`,
-`fixtures/subscriptions.json`, `fixtures/late-frames.json`) is against the
-second unit instead. This is not an ambiguity about which platform was
-reached: the swept unit is confirmed a genuine RA3 processor by its own
-`GET /clientsetting` response (`ClientMajorVersion: 3`, an `Admin` session —
-see `fixtures/sweep-read.json`), independent of, and a different physical
-unit from, the one behind `fixtures/ra3.json`.
+Task 8's probe campaign reached a configured RA3 processor at a host masked
+throughout this project's public fixtures and this document; every sweep
+capture in this project (`fixtures/sweep-read.json`,
+`fixtures/sweep-write.json`, `fixtures/subscriptions.json`,
+`fixtures/late-frames.json`) comes from it. It is confirmed a genuine RA3
+processor by its own `GET /clientsetting` response
+(`ClientMajorVersion: 3`, `ClientMinorVersion: 249`, on an `Admin` session
+— see `fixtures/sweep-read.json`).
 
-Of the 206 routes this campaign probed against it — the firmware's own
+**This document describes corpora, not processor counts.** What the committed
+fixtures establish is that the sweep and the later coverage-blind probe read
+a *different firmware build* from the original RA3 capture — `03.249` on
+`fixtures/spec-read.json`'s `/server` against `03.247` on
+`fixtures/ra3.json`'s, five months apart — while reporting the *same
+project*: `/project` returns the same `MasterDeviceList` (`/device/435`) and
+the same `Contacts` (`/contactinfo/102`) in both, and every zone, device and
+area id in `fixtures/sweep-read.json` also appears in `fixtures/ra3.json`
+under the same identifiers. Whether that is a second physical processor or
+the original one at a later firmware build is **not determined by anything
+this repository publishes**, and nothing in this document depends on the
+answer: the finding below is about what a live processor refuses, not about
+how many processors were asked.
+
+Of the 206 routes this campaign probed — the firmware's own
 route table, minus routes this specification already documents (so the
 sweep would surface only genuinely new ground) — **119 (58%) came back
 `400 BadRequest`, body `{"Message": "This request is not supported"}`, a
@@ -72,9 +82,10 @@ behavior diverge, not a failure of the probe methodology — see
 `docs/mapping.md` for how this specification's own paths are derived from
 that same route table, and why probe confirmation (not extraction
 presence alone) is what this project treats as evidence a route is
-actually live. The conclusion in this section was drawn from one unit, so
-"this processor is configured differently" remained a live alternative
-explanation for it; the next section closes that off with a second platform.
+actually live. The conclusion in this section was drawn from one RA3
+corpus, so "this processor is configured differently" remained a live
+alternative explanation for it; the next section closes that off with a
+second platform.
 
 ## The coverage-blind probe, and what two platforms' refusals show
 
@@ -89,9 +100,9 @@ what the sweep had already covered and replays the specification's **own**
 path list — every URL this document declares — against a live unit,
 recording status and body for each. It has now been run twice:
 
-| Corpus | Unit | URLs | Statuses |
+| Corpus | Target | URLs | Statuses |
 |---|---|---|---|
-| `fixtures/spec-read.json` | RA3 v03.247, the same second unit the sweep reached | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
+| `fixtures/spec-read.json` | RA3 v03.249 (`/server` `ProtocolVersion`) — the same firmware build and project the sweep corpora report | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
 | `fixtures/spec-read-caseta.json` | Caseta v01.123 (`L-BDG2-WH`), a bridge re-paired after a factory reset | 848 | 104 × `200`, 195 × `204`, 191 × `400`, 317 × `404`, 38 × `405`, 3 × `500` |
 
 Both are `{path: {status, body}}` probe sets in `captures.json`, so the
@@ -143,12 +154,13 @@ console.log("Caseta refuses, RA3 200:", rows.filter(([, s]) => ref(s.caseta) && 
 
 **What this establishes.** 95% of the routes one platform's firmware declines
 to serve, the *other platform's completely different firmware* also declines
-to serve. The section above concluded from a single RA3 unit that presence in
-the firmware-extracted route table does not imply a live implementation; that
-was a claim about one device, and a per-unit configuration difference was a
-live alternative explanation for it. It no longer is. Two units, two product
-lines, two firmware builds, two households, and the same 56 routes refused by
-both: the refusals track the route rather than the installation.
+to serve. The section above concluded from a single RA3 corpus that presence
+in the firmware-extracted route table does not imply a live implementation;
+that was a claim about one device, and a per-installation configuration
+difference was a live alternative explanation for it. It no longer is. Two
+devices, two product lines, two firmware builds, two households, and the same
+56 routes refused by both: the refusals track the route rather than the
+installation.
 
 **What it does not establish.** This is still two devices. The Caseta bridge
 in particular is nearly unconfigured — one device (the bridge itself) and one
