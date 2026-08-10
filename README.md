@@ -17,8 +17,8 @@ two independent sources cross-checked against each other:
 - **Live probing** of real RA3 and Caseta hardware, as the source of truth for
   which routes actually respond, with what status, and with what body —
   including catching and correcting two systematic defects in the firmware
-  extraction itself (see `docs/mapping.md`). Three campaigns, 3,250 requests
-  in all:
+  extraction itself (see `docs/mapping.md`). Four campaigns, 4,098 requests
+  in all, across four devices:
   - 2,087 requests against the first RA3 unit and a Caseta bridge (1,124 and
     963 — `fixtures/ra3.json`, `fixtures/caseta.json`).
   - 277 requests in a later, single-processor sweep of a second,
@@ -28,6 +28,12 @@ two independent sources cross-checked against each other:
     864-URL, coverage-blind probe of the specification's *own* path list
     (`fixtures/spec-read.json`), plus a 22-request subscription-push probe
     (`fixtures/push-probe.json`, see `docs/subscriptions.md`).
+  - 848 requests replaying that same coverage-blind path list against a
+    *second Caseta bridge* (`fixtures/spec-read-caseta.json`) — the first
+    Caseta data since the original campaign, and what lets
+    `docs/platforms.md` test the route-refusal finding across two product
+    lines rather than one unit. That bridge is nearly unconfigured, so read
+    its absences with the caveat that document spells out.
 
 Alongside the specification, five narrative documents cover everything an
 OpenAPI document cannot express on its own:
@@ -37,7 +43,7 @@ OpenAPI document cannot express on its own:
 | `docs/protocol.md` | The real wire protocol: envelope, NDJSON framing, `ClientTag` correlation, all 14 `CommuniqueType`s, status codes, every transport (not just LEAP TLS 8081), and mutual TLS. |
 | `docs/mapping.md` | The full LEAP-to-OpenAPI mapping: the verb table, the `leaps://` scheme, the five `x-leap-*` vendor extensions, and the flat 57-field `Command` model with its full `CommandType`-to-field pairing table. |
 | `docs/subscriptions.md` | The subscription lifecycle; the `ClientTag` question on pushed frames, now answered by a live push probe against a single RA3 processor (`fixtures/push-probe.json`) — pushes reuse the originating `SubscribeRequest`'s tag, arrive as `ReadResponse` a couple hundred milliseconds after the write, and carry field-level deltas rather than snapshots, all kept explicitly distinct from the separate asynchronous-*response* tag reuse in `docs/protocol.md`; and the 19 routes this specification marks `x-leap-subscribable`, with each route's live probe result — of which only 6 are confirmed to accept a subscription on hardware, 7 are refused by the same processor, and 6 are untested or inconclusive — and the correction that per-zone status is not subscribable, the collection `/zone/status` is. |
-| `docs/platforms.md` | Where RA3, Caseta, Vive, and the cloud proxy diverge — a generated table of every path where RA3 and Caseta disagree, RA3's area-walk navigation vs. Caseta's flat lists, why every schema in this specification is RA3-derived, and a second RA3 unit's probe sweep showing that firmware route-table presence does not imply a live implementation. |
+| `docs/platforms.md` | Where RA3, Caseta, Vive, and the cloud proxy diverge — a generated table of every path where RA3 and Caseta disagree, RA3's area-walk navigation vs. Caseta's flat lists, why every schema in this specification is RA3-derived, a second RA3 unit's probe sweep showing that firmware route-table presence does not imply a live implementation, and the two-platform test of that finding — over the 187 paths the coverage-blind prober reached on both an RA3 processor and a Caseta bridge, RA3 refuses 59 and Caseta refuses 56 of the same 59. |
 | `docs/discovery.md` | mDNS discovery (`_lutron._tcp`, its TXT record fields), and how a client obtains a certificate to pair with each platform. |
 
 ## What this is not
@@ -98,7 +104,11 @@ route and finds nothing here cannot tell "this route does not exist" from
   longer an enum — live traffic from a second processor falsified it as a
   closed set (it returned a `Type` this specification did not list), so it
   is now a documented-open `string` with its observed values retained as
-  documentation rather than as an assertion. Five of the 61 are new:
+  documentation rather than as an assertion. `ServerType`, falsified the same
+  way by the Caseta bridge, was *appended* to instead — the firmware types
+  `Server.Type` as a real named enum and `Service.Type` as a bare `string`,
+  which is the whole of the difference; both files argue it out in their
+  descriptions. Five of the 61 are new:
   `Availability`, `BatteryLevelState`, `LinkType`, `SwitchedLevel` and
   `NetworkConfigurationType`, shared enums whose firmware types the
   extraction referenced but never defined, recovered from probe data in the
@@ -118,7 +128,7 @@ false confidence this document works to avoid elsewhere. Run
 (`probedNotInSpec`/`specWithoutFixture`), which additionally tracks
 coverage against the captured fixtures rather than just the firmware
 extraction. At the time of writing it reports `probedNotInSpec: 0`,
-`specWithoutFixture: 130`, `todoEnums: 73`, `todoResponses: 167`.
+`specWithoutFixture: 116`, `todoEnums: 73`, `todoResponses: 167`.
 
 **What `specWithoutFixture` does and does not mean.** It counts bundled
 paths with no `200` response in `fixtures/`, and until recently that was
@@ -129,11 +139,17 @@ systematically never asked about: of the 155 paths then reported, 152 had
 never been sent to any processor at all — not sent and refused, never
 sent. The coverage-blind probe in `fixtures/spec-read.json` was run to fix
 exactly that, replaying all 864 of the specification's own URLs against a
-second RA3 unit; it closed 25, leaving 130. Of those 130, 107 *have* now
-been sent and answered with something other than `200`: 54 drew a
-`400 BadRequest` refusal, 42 a `404` for an instance that does not exist on
-that unit, 10 a `204`, and 3 a `405` (these overlap — a path probed on more
-than one platform can appear under more than one status; see
+second RA3 unit; it closed 25, leaving 130. Replaying the same list against
+a Caseta bridge (`fixtures/spec-read-caseta.json`) closed 14 more, leaving
+**116** — and those 14 are a fair illustration of what a second platform
+buys: `/zone/tuningsettings`, `/area/{areaId}/occupancysettings` and its
+daylighting/occupancy-sensor neighbours, `/preset/{presetId}`,
+`/virtualbutton/{virtualbuttonId}` — paths RA3 refuses or leaves empty and
+Caseta answers with real data. Of the 116 that remain, 93 *have* now been
+sent and answered with something other than `200`: 54 drew a
+`400 BadRequest` refusal, 34 a `404` for an instance that does not exist on
+the unit asked, 26 a `204`, and 6 a `405` (these overlap — a path probed on
+more than one platform can appear under more than one status; see
 `docs/platforms.md`). Only 23 have still never been sent. So the
 number now means largely "asked and not answered `200`", but it is still a
 "not yet evidenced" count rather than a "hardware refused it" count, and
@@ -156,8 +172,9 @@ the two should not be conflated.
    `fixtures/ra3.json`, `fixtures/caseta.json`, and, from a later,
    single-processor probe sweep of a second RA3 unit,
    `fixtures/sweep-read.json` and `fixtures/sweep-write.json`, and, from the
-   coverage-blind replay of the specification's own path list against that
-   same unit, `fixtures/spec-read.json` — five manifest entries in all, plus
+   coverage-blind replay of the specification's own path list, against that
+   same unit and against a Caseta bridge, `fixtures/spec-read.json` and
+   `fixtures/spec-read-caseta.json` — six manifest entries in all, plus
    three non-`{path: {status, body}}` artifacts outside that manifest:
    `fixtures/subscriptions.json` (a subscribe-attempt log),
    `fixtures/late-frames.json` (asynchronous-response evidence — see
