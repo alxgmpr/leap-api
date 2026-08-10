@@ -171,13 +171,14 @@ set:
 | `UnsubscribeRequest` | client → server | End a subscription. |
 | `UnsubscribeResponse` | server → client | Reply to an `UnsubscribeRequest`. |
 | `ExceptionResponse` | server → client | An error reply distinct from a normal response with an error `StatusCode`. Named in the firmware's own communique-type count; no capture in this project's corpus shows one on the wire, so its exact shape is not established here. |
-| `CommandResponse` | server → client | Named in the firmware's own communique-type count. Whether this is used interchangeably with `CreateResponse` for command-processor replies, or is a distinct reply type, is not established from the sources available to this project — no command-processor response body was captured (see `docs/mapping.md`'s Commands section for why: the firmware route extraction has zero `commandprocessor` routes, so this whole write surface is documented from app RE, not captured traffic). |
+| `CommandResponse` | server → client | Named in the firmware's own communique-type count, and never seen on the wire in this project's corpus. The one captured command-processor exchange answered as `CreateResponse`: `fixtures/push-probe.json` `seq` 20 and 24, two `CreateRequest`s to `/zone/4664/commandprocessor`, both replied to with `CommuniqueType: CreateResponse`, `StatusCode: 201 Created`, `MessageBodyType: OneZoneStatus` and a `ZoneStatus` body. That narrows the question without closing it — one processor, one route, two frames say nothing about whether `CommandResponse` is used elsewhere, or is a distinct reply type this corpus never provoked. See `docs/mapping.md`'s Commands section for why the rest of the write surface is app RE rather than captured traffic. |
 
 Unsolicited subscription pushes are not a distinct `CommuniqueType` in this
 list — they arrive with the same `CommuniqueType`/`Header`/`Body` shape as any
 other frame, distinguished by the client only by `ClientTag` not matching a
-pending request (see "Framing" above). Every push captured in
-`fixtures/push-probe.json` takes the same concrete form:
+pending request (see "Framing" above). All five pushes captured in
+`fixtures/push-probe.json` take the same shape; one of the five verbatim
+(`seq` 21):
 
 ```json
 {
@@ -190,6 +191,11 @@ pending request (see "Framing" above). Every push captured in
   }
 }
 ```
+
+The other four differ only in the fields that identify the subscription:
+one more on `/zone/status` with `lt-18` and `MultipleZoneStatus` (`seq` 25),
+and three on `/area/1340/status` with `lt-19` and `OneAreaStatus` (`seq` 22,
+23 and 26). All five are `ReadResponse` / `200 OK`.
 
 That is, **`ReadResponse` — not `SubscribeResponse`** — with `200 OK`, the
 subscribed URL echoed back, and the subscription's own tag. `Body` carries

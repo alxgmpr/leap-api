@@ -275,12 +275,25 @@ app reverse engineering (`api-discovery.md`, decompiled from
 `com.lutron.lsb` v26.1.0.4; and `index.md`'s "Route Reference (from iOS App
 Binary RE)" section, decompiled from the iOS app v26.0.0, itself packaged
 under the same `com.lutron.lsb` identifier), not from captured traffic or the
-firmware binary. No command-processor `CreateRequest` was ever sent during
-probing (probing only exercised read-only routes), so there is no captured
-wire example of a full command envelope succeeding, and no captured example
-of what a command processor's success response body looks like — each
-`commandprocessor` path's `200` response in this specification is
-deliberately left without an asserted schema rather than inventing one.
+firmware binary. The read-only probe sweeps sent no command-processor
+`CreateRequest` at all, so none of the probe-set corpora in `captures.json`
+contains one.
+
+One command exchange *was* captured, outside those corpora: the
+subscription push probe (`fixtures/push-probe.json`) sent two
+`CreateRequest`s to `/zone/4664/commandprocessor` to drive a dimmer
+0% → 50% → 0%, and logged both replies —
+`CommuniqueType: CreateResponse`, `StatusCode: 201 Created`,
+`MessageBodyType: OneZoneStatus`, body
+`{"ZoneStatus": {"href": "/zone/4664/status", "Level": 50, ...}}` (`seq` 20
+and 24). That is the whole of this project's captured command traffic: one
+processor, one route, one `CommandType`. It is enough to give
+`/zone/{zoneId}/commandprocessor` a `201` response with a `ZoneStatus`
+schema, and not enough to say anything about the other nine paths, whose
+`200` responses are still deliberately left without an asserted schema
+rather than inventing one. See `docs/subscriptions.md` for the full frame
+log and `docs/protocol.md` for what the observed `CreateResponse` does and
+does not settle about `CommandResponse`.
 
 ### `CommandType` → parameter field
 
