@@ -45,21 +45,39 @@ const SWEEP_PROBE_SET_PATTERN = /^\d{1,3}(?:\.\d{1,3}){3}-(read|write)\.json$/;
 const SWEEP_FRAME_LOG_PATTERN =
   /^\d{1,3}(?:\.\d{1,3}){3}-(subscribe|late-frames)\.json$/;
 
-// The coverage-blind spec probe: a later, much broader read-only pass over
-// the same single processor the sweep above reached, filed in its own
-// capture directory with a `<ip>-spec-read.json` filename shape. Its address
-// is deliberately never written here or anywhere else in this public repo,
-// in code, comments, or log output -- see maskFilename, applied to every
+// The coverage-blind spec probe: a broad read-only replay of this
+// specification's own path list, filed in its own capture directory with a
+// `<ip>-spec-read.json` filename shape. Every address involved is
+// deliberately never written here or anywhere else in this public repo, in
+// code, comments, or log output -- see maskFilename, applied to every
 // filename this tool prints.
 //
-// This capture DOES contain `/server`, unlike the sweep, so classify() runs
-// on it -- and that is exactly why it must not be used. The processor
-// reports an "03." series ProtocolVersion, which LABEL_BY_SERIES maps to
-// "ra3", a label the original campaign's capture already owns; content
-// classification would resolve two capture files to one manifest label and
-// abort the whole run. Labeling is therefore by filename SUFFIX (the capture
-// phase), the same approach SWEEP_DIR documents, and sufficient for the same
-// reason: every file in this directory came from the same single host.
+// This directory now holds captures from TWO DIFFERENT HOSTS on two
+// different platforms: the RA3 processor the Task 8 sweep reached, and a
+// Caseta bridge probed later with the same coverage-blind prober. That
+// breaks both single-signal labeling schemes used elsewhere in this file, in
+// opposite directions:
+//
+//   - Filename suffix alone (what SWEEP_DIR uses, and what this directory
+//     used while it held one host) now resolves BOTH files to "spec-read".
+//     The suffix names the capture PHASE, and both hosts were probed in the
+//     same phase; the assumption that made suffix-labeling sufficient there
+//     -- every file in the directory came from one host -- no longer holds
+//     here.
+//   - classify() alone (what SOURCE_DIRS uses) resolves them to "ra3" and
+//     "caseta", both of which the original campaign's captures already own.
+//     Content classification would put two capture files under one manifest
+//     label and abort the run -- the same collision the previous version of
+//     this comment recorded for the RA3 file, which the Caseta file now
+//     reproduces on the other label.
+//
+// Neither signal is sufficient alone; together they are. The label is
+// `<phase>-<platform>`, phase from the filename suffix and platform from
+// classify() reading `/server`'s ProtocolVersion series. Both captures
+// contain `/server`, so classify() resolves for both, and a capture it
+// cannot classify is a hard error rather than a silent skip -- an
+// unclassifiable file here would otherwise vanish from the fixture set
+// without failing anything.
 const SPEC_PROBE_DIR = "/Users/alex/lutron-protocols/data/spec-probe";
 const SPEC_PROBE_PATTERN = /^\d{1,3}(?:\.\d{1,3}){3}-(spec-read)\.json$/;
 
@@ -151,14 +169,24 @@ for (const file of readdirSync(SWEEP_DIR)) {
   byLabel.set(label, bucket);
 }
 
-// Spec-probe captures: labeled by filename phase suffix for the reason the
-// SPEC_PROBE_DIR comment above spells out (classify() would collide with the
-// "ra3" label), not because `/server` is missing from them.
+// Spec-probe captures: labeled `<phase>-<platform>`, combining the filename
+// phase suffix with classify()'s content-based platform, for the reason the
+// SPEC_PROBE_DIR comment above spells out (this directory holds two hosts on
+// two platforms, and neither signal alone separates them without colliding).
 for (const file of readdirSync(SPEC_PROBE_DIR).sort()) {
   const match = SPEC_PROBE_PATTERN.exec(file);
   if (!match) continue;
-  const label = match[1] as string;
+  const phase = match[1] as string;
   const probes = readProbeSet(SPEC_PROBE_DIR, file);
+  const platform = classify(probes);
+  if (!platform) {
+    throw new Error(
+      `redact: spec-probe capture ${maskFilename(file)} could not be ` +
+        "classified by its /server ProtocolVersion; refusing to skip it " +
+        "silently. Add its series to LABEL_BY_SERIES.",
+    );
+  }
+  const label = `${phase}-${platform}`;
   const bucket = byLabel.get(label) ?? [];
   bucket.push({ dir: SPEC_PROBE_DIR, file, probes });
   byLabel.set(label, bucket);

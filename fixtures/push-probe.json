@@ -757,7 +757,7 @@
           {
             "href": "/zone/5656",
             "XID": "<xid-126>",
-            "Name": "<name-226>",
+            "Name": "<name-228>",
             "AvailableControlTypes": [
               "Dimmed"
             ],
@@ -788,7 +788,7 @@
           {
             "href": "/zone/11346",
             "XID": "<xid-128>",
-            "Name": "<name-227>",
+            "Name": "<name-229>",
             "AvailableControlTypes": [
               "Dimmed"
             ],
@@ -873,7 +873,7 @@
           {
             "href": "/zone/4042",
             "XID": "<xid-129>",
-            "Name": "<name-228>",
+            "Name": "<name-230>",
             "AvailableControlTypes": [
               "Dimmed"
             ],
@@ -890,7 +890,7 @@
           {
             "href": "/zone/10000",
             "XID": "<xid-130>",
-            "Name": "<name-229>",
+            "Name": "<name-231>",
             "Category": {
               "Type": "ExhaustFan",
               "IsLight": false
@@ -904,7 +904,7 @@
           {
             "href": "/zone/10470",
             "XID": "<xid-131>",
-            "Name": "<name-230>",
+            "Name": "<name-232>",
             "AvailableControlTypes": [
               "Dimmed"
             ],
@@ -941,7 +941,7 @@
           {
             "href": "/zone/6712",
             "XID": "<xid-132>",
-            "Name": "<name-226>",
+            "Name": "<name-228>",
             "AvailableControlTypes": [
               "Dimmed"
             ],
@@ -1111,7 +1111,7 @@
           {
             "href": "/zone/13008",
             "XID": "<xid-134>",
-            "Name": "<name-231>",
+            "Name": "<name-233>",
             "AvailableControlTypes": [
               "Dimmed"
             ],
@@ -1165,7 +1165,7 @@
           {
             "href": "/zone/10508",
             "XID": "<xid-135>",
-            "Name": "<name-232>",
+            "Name": "<name-234>",
             "AvailableControlTypes": [
               "Dimmed"
             ],
