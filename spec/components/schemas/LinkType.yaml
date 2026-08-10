@@ -33,7 +33,7 @@ description: |
     Three further LinkNodes come from direct
     /device/{deviceId}/linknode/{linknodeId} fetches -- `RF` 1 and
     `ClearConnectTypeX` 1 on RA3 v03.249, `RF` 1 on the Caseta spec probe.
-    That route gained a declared response schema in the device family, so
+    That route gained a declared response schema in the linknode family, so
     conformance now validates all three.
 
   `ClearConnectTypeX` is absent from Caseta because that platform's link

@@ -16,12 +16,24 @@
 #    `leapobj.Ping` struct it was refined from -- the route table connects
 #    neither, recording `responseType: null`.
 #
-#    The remaining five markers in this file are untouched, and for two
-#    different reasons. Four are on /server/leap/* pairing routes: both spec
-#    probes asked /server/leap/integrator/pairing and /server/leap/pairing
-#    and got `400 BadRequest` from each, while /server/leap/pairing/{id} was
-#    never requested by any corpus at all. The fifth is the `put` on
-#    /server/ipl -- only ReadRequests were sent there.
+#    The remaining five markers in this file are untouched, and the reason
+#    differs per marker. Every probe in this project sends only ReadRequests,
+#    so the three states are "read and refused", "never requested", and "the
+#    path was read but the marked operation is not a read":
+#
+#      - `getServerLEAPIntegratorPairing` (GET /server/leap/integrator/pairing)
+#        was asked and refused: `400 BadRequest`, body `{"Message": "This
+#        request is not supported"}`, on both spec probes. A genuine read
+#        refusal, and the only one of the five.
+#      - `getServerLEAPPairingID` and `updateServerLEAPPairingID`
+#        (/server/leap/pairing/{id}) were never requested by any corpus.
+#      - `createServerLEAPPairing` (POST /server/leap/pairing) has had only
+#        ReadRequests sent to its path -- that path carries no `get` here, so
+#        the `400` the probes got is a read of a create-only route and says
+#        nothing about what a `CreateRequest` would return. Same standard as
+#        the fifth marker, the `put` on /server/ipl: a `get`'s response is not
+#        evidence for another verb on the same path (spec/paths/zone.yaml
+#        states the rule).
 /server:
   get:
     operationId: getServer

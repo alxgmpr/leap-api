@@ -1,12 +1,28 @@
 # Copied verbatim, and still unrelaxed -- but no longer for want of
-# evidence. The original note said this type had zero fixture coverage,
-# which was true of the two campaign corpora: bare /preset returns 400
-# BadRequest on both, and every /preset/{presetId}/*assignment sub-route was
-# refused. The coverage-blind spec probe against Caseta v01.123 changed that:
-# it returns 200 OK on 8 /preset/{presetId} URLs, and the programmingmodel
-# family added 9 more Preset objects through
-# /programmingmodel/{programmingmodelId}/preset. RA3 v03.249 returns 404 on
-# all 8 preset ids it requested.
+# evidence. The original note said this type had zero fixture coverage. That
+# was true of the two campaign corpora, and the reason is that they barely
+# asked: each contains exactly three preset-ish URLs -- `/preset` (`400
+# BadRequest` on both), `/presetassignment`, and
+# `/fadefighterproperties/programmingmodel/preset` (`400` on both). Neither
+# ever requested a `/preset/{presetId}` URL or any of its `*assignment`
+# sub-routes, so for those the campaign corpora are silent, not refusing.
+#
+# The two coverage-blind spec probes did ask, 218 preset URLs each across 29
+# templates, and what they got back is mostly not a refusal either. On the
+# 25 `/preset/{presetId}/*assignment` sub-routes (8 preset ids each, 200
+# requests per probe): RA3 v03.249 answers `404 NotFound` x192 and `204
+# NoContent` x8; Caseta v01.123 answers `204 NoContent` x160, `405
+# MethodNotAllowed` x32 and `404 NotFound` x8. A `204` is the route working
+# with nothing to report, which this project distinguishes carefully from
+# the `400 BadRequest` + `{"Message": "This request is not supported"}`
+# refusal (see docs/platforms.md). The point the count actually supports is
+# narrower and is the one that matters here: **no `*assignment` sub-route has
+# ever returned a 200 on either platform.**
+#
+# The bare `/preset/{presetId}` route is where the coverage came from: Caseta
+# v01.123 answers `200 OK` on all 8 preset ids the probe requested, RA3
+# v03.249 `404 NotFound` on all 8, and the programmingmodel family added 9
+# more Preset objects through /programmingmodel/{programmingmodelId}/preset.
 #
 # What the evidence shows is thin but consistent: 17 Preset occurrences, 10
 # distinct by `href` (the two routes overlap -- the same preset is reachable

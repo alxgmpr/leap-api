@@ -23,13 +23,13 @@ description: |
 
   **The whole evidence base for this schema is one object.** Only the two
   coverage-blind spec probes ever requested any `/area/*daylightinggainsettings`
-  URL, and exactly one of the 27 requests each sent returned a body: Caseta
-  v01.123's `/area/2/daylightinggainsettings`
-  (`fixtures/spec-read-caseta.json`). The same object is also the sole
-  element of that bridge's `/area/daylightinggainsettings` collection --
-  byte-identical, so it is one object seen through two routes, not two
-  observations of two objects. RA3 v03.249 answers the collection route
-  `204 NoContent` and every per-area route `404 NotFound`
+  URL, 9 requests each -- the collection route plus 8 area ids. Two of
+  Caseta v01.123's 9 came back with a body (`fixtures/spec-read-caseta.json`),
+  and they carry the same object: `/area/2/daylightinggainsettings`, and the
+  `/area/daylightinggainsettings` collection whose sole element is
+  byte-identical to it. **Two bodies, one object** -- seen through two
+  routes, not two observations of two objects. RA3 v03.249 answers the
+  collection route `204 NoContent` and all 8 per-area requests `404 NotFound`
   (`fixtures/spec-read.json`); the original RA3 and Caseta campaign corpora
   and the sweep corpora never requested these URLs at all.
 
