@@ -10,7 +10,7 @@ than RA3.
 | Platform | Source coverage in this project |
 |---|---|
 | RA3 / HWQS | Deep. Firmware extraction (410 routes, 636 struct definitions) plus 1,124 endpoints probed live on firmware v03.247. |
-| Caseta / RA2 Select | Probe only — a full 963-endpoint sweep, no firmware extraction. Exposes device-configuration endpoints RA3 does not (see below). |
+| Caseta / RA2 Select | Probe only, two bridges, no firmware extraction — a full 963-endpoint sweep of a configured bridge, plus an 848-URL coverage-blind probe of a second, nearly-empty one (see "The coverage-blind probe" below). Exposes device-configuration endpoints RA3 does not (see below). |
 | Vive | Thin. Represented in this project's source data only by `leap-vive.json`, a 5.5&nbsp;KB dump that is summary-shaped (built by a dump tool's own output format) rather than path-keyed probe data — see "Vive" below for why that matters. |
 | Cloud LEAP proxy | Thin. App reverse engineering only; no live probing was performed against it. |
 
@@ -72,7 +72,111 @@ behavior diverge, not a failure of the probe methodology — see
 `docs/mapping.md` for how this specification's own paths are derived from
 that same route table, and why probe confirmation (not extraction
 presence alone) is what this project treats as evidence a route is
-actually live.
+actually live. The conclusion in this section was drawn from one unit, so
+"this processor is configured differently" remained a live alternative
+explanation for it; the next section closes that off with a second platform.
+
+## The coverage-blind probe, and what two platforms' refusals show
+
+The sweep above deliberately skipped every route this specification already
+documents, so it could only ever answer "what is out there that we have not
+written up". It could not answer the obvious follow-up: **are the routes it
+found refused because the firmware never implements them, or because that
+one processor does not?**
+
+A later, *coverage-blind* probe was built to answer exactly that. It ignores
+what the sweep had already covered and replays the specification's **own**
+path list — every URL this document declares — against a live unit,
+recording status and body for each. It has now been run twice:
+
+| Corpus | Unit | URLs | Statuses |
+|---|---|---|---|
+| `fixtures/spec-read.json` | RA3 v03.247, the same second unit the sweep reached | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
+| `fixtures/spec-read-caseta.json` | Caseta v01.123 (`L-BDG2-WH`), a bridge re-paired after a factory reset | 848 | 104 × `200`, 195 × `204`, 191 × `400`, 317 × `404`, 38 × `405`, 3 × `500` |
+
+Both are `{path: {status, body}}` probe sets in `captures.json`, so the
+conformance suite validates their bodies against this specification's schemas
+like any other corpus. `ServiceType.yaml`, `ServerType.yaml`,
+`Organization.yaml` and `LoadController.yaml` all cite one of them as the
+evidence for a firmware-derived assertion that hardware falsified.
+
+### The two-platform refusal test
+
+Collapsing every concrete probed path to a template (each `/\d+/` segment to
+`/{id}`) and, where several concrete instances collapse to one template,
+keeping the most successful observed status — the same rule
+`lib/platform-matrix.ts` uses, and the ranking among *non*-`200` statuses
+turns out not to matter here: three different tie-break orders give the same
+counts — **187 templates were probed on both platforms.** Of those:
+
+- **RA3 refuses 59** with `400 BadRequest` or `405 MethodNotAllowed`.
+- **Caseta refuses 56 of those same 59** (54 × `400`, 2 × `405`).
+- **2 are refused by RA3 and work on Caseta**: `/zone` and
+  `/zone/tuningsettings` — both already-known flat-collection and
+  zone-tuning divergences, covered in the two sections below.
+- The remaining 1 is `/system/action`, which Caseta answers `204 NoContent`
+  — neither a refusal nor data. See the caveat below for why.
+- Going the other way, **3 work on RA3 and are refused by Caseta**:
+  `/project/masterdevicelist`, `/server/ipl`, and
+  `/system/loadshedding/status`.
+
+Reproduce from the committed fixtures with:
+
+```
+node --import tsx -e '
+import { readFileSync } from "node:fs";
+import { buildMatrix } from "./lib/platform-matrix.ts";
+const m = buildMatrix({
+  ra3: JSON.parse(readFileSync("fixtures/spec-read.json", "utf8")),
+  caseta: JSON.parse(readFileSync("fixtures/spec-read-caseta.json", "utf8")),
+});
+const rows = Object.entries(m).filter(([, s]) => s.ra3 !== "not probed" && s.caseta !== "not probed");
+const ref = (s) => s.startsWith("400") || s.startsWith("405");
+const ra3Ref = rows.filter(([, s]) => ref(s.ra3));
+console.log("probed on both:", rows.length);
+console.log("RA3 refuses:", ra3Ref.length);
+console.log("  Caseta also refuses:", ra3Ref.filter(([, s]) => ref(s.caseta)).length);
+console.log("  Caseta 200:", ra3Ref.filter(([, s]) => s.caseta.startsWith("200")).map(([p]) => p));
+console.log("Caseta refuses, RA3 200:", rows.filter(([, s]) => ref(s.caseta) && s.ra3.startsWith("200")).map(([p]) => p));
+'
+```
+
+**What this establishes.** 95% of the routes one platform's firmware declines
+to serve, the *other platform's completely different firmware* also declines
+to serve. The section above concluded from a single RA3 unit that presence in
+the firmware-extracted route table does not imply a live implementation; that
+was a claim about one device, and a per-unit configuration difference was a
+live alternative explanation for it. It no longer is. Two units, two product
+lines, two firmware builds, two households, and the same 56 routes refused by
+both: the refusals track the route rather than the installation.
+
+**What it does not establish.** This is still two devices. The Caseta bridge
+in particular is nearly unconfigured — one device (the bridge itself) and one
+zone — so a `404` from it is very often a statement that nothing of that kind
+exists on *this* bridge, not that the platform lacks the concept. That is why
+this comparison is drawn on `400`/`405` refusals and not on the 317 `404`s,
+which are the status most contaminated by an empty installation. Refusals are
+the server declining to serve a route at all; `404` is the server serving the
+route and finding nothing.
+
+**And a worked example of that caveat.** `/system/action` is listed in the
+divergence table below as Caseta `200 OK` — a Caseta-only automation feature,
+recorded from the fully configured bridge of the original campaign. The
+nearly-empty bridge answers `204 NoContent` on the same route. Nothing about
+the platform changed; the second bridge simply has no automation rules
+configured. Read every Caseta absence in this document with that in mind.
+
+### One more platform-wide difference this probe surfaced
+
+**Caseta emits no `XID` on any object, on any route.** Across all five probe
+corpora: 0 of 92 zones, 0 of 144 devices and 0 of 50 areas on the original
+Caseta capture, and 0 of everything on the second bridge — while RA3 returns
+one on areas, zones, control stations and load controllers. The cross-reference
+identifier `docs/mapping.md` describes as an alternative addressing key for
+several routes appears to be an RA3-family concept. This falsified
+`LoadController`'s firmware-derived `required: XID` (see
+`LoadController.yaml`); `ControlStation` still requires it, because no Caseta
+capture returns a control station at all and so nothing has falsified it.
 
 ## RA3 vs. Caseta: two different navigation models
 
@@ -194,3 +298,10 @@ navigation-model differences already covered above:
 
 This table is regenerated by re-running the command above whenever the
 fixtures change; it should never be hand-edited to add or remove a row.
+
+It is built from the **original campaign's** two corpora only, and stays that
+way deliberately: those are the two fully configured systems this project has
+probed, and mixing in the nearly-empty second bridge would turn "Caseta does
+not serve this" rows into "this bridge has none of those configured" rows
+without saying so. The coverage-blind corpora are compared separately, on
+refusals rather than on `404`s, under "The two-platform refusal test" above.

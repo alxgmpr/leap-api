@@ -6,8 +6,10 @@ description: |
   object under their own keys (`AlexaProperties`, `GoogleHomeProperties`,
   `BACnetProperties`, `HomeKitProperties`, `IFTTTProperties`,
   `NTPServerProperties`, `AutoProgrammerProperties` -- one per `Type`,
-  observed across both platforms; `Sonos`, the eighth observed `Type`, has
-  no properties key at all in either capture) -- the same per-`Type`
+  observed across both platforms; `Sonos` and `Cloud`, the two remaining
+  observed `Type` values, have no properties key at all in any capture --
+  `Cloud` appears only on the second RA3 unit's `/service`, as
+  `{"href": "/service/cloud", "Type": "Cloud"}`) -- the same per-`Type`
   discriminated-property pattern the design doc describes for `Command`,
   just not modeled as a generic catch-all field on the wire. Relaxed `Body`
   to optional on hardware evidence; its untyped `{}` schema already permits

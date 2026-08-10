@@ -8,7 +8,14 @@ properties:
     type: array
     items:
       type: string
-      description: "TODO(enum): members of LinkOperatingMode were not recovered from
-        the firmware extraction"
+      description: |
+        TODO(enum): members of LinkOperatingMode were not recovered from the
+        firmware extraction, and hardware has produced exactly one:
+        `Normal`, 5 observations covering every link on both platforms
+        (/link/{439,437,1}/status). Every probed link was operating
+        normally; a mode named `Normal` exists to contrast with modes this
+        corpus never provoked.
+      x-observed-values:
+        - Normal
 required:
   - Link

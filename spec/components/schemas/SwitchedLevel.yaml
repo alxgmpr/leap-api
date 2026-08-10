@@ -1,0 +1,34 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.SwitchedLevel`,
+# referenced but never defined by the extraction. Nine fields carry it;
+# ZoneStatus.SwitchedLevel and SwitchedLevelParameters.SwitchedLevel are
+# typed against this schema, the other seven (OccupancySettingsAction,
+# SwitchedLevelAssignment, SwitchedEmergencyProperties and its Update,
+# ZoneStatusNotLevelValueFilter, ZoneTypeGroupStatus,
+# LoadSheddingGoalDetails.Switched) have no hand-refined schema yet.
+#
+# Members are quoted: unquoted On/Off are booleans under YAML 1.1, and these
+# are the strings the wire sends. Same treatment as LEDState.yaml.
+type: string
+description: |
+  Binary level of a switched zone. The firmware extraction did not recover
+  the full enum; the members below are every value observed on the wire, and
+  unlisted values are possible.
+
+  Observed on ZoneStatus.SwitchedLevel (and, through the allOf,
+  ZoneExpandedStatus): `Off` 19 (Caseta v01.123 14, RA3 v03.247 unit 2 5),
+  `On` 3 (2 / 1), via /zone/status, /zone/{zoneId}/status and their expanded
+  forms. `fixtures/push-probe.json` shows both members again in pushed
+  MultipleZoneStatus frames. RA3 unit 1's capture has no switched zones at
+  all.
+
+  SwitchedLevelParameters.SwitchedLevel is typed here on firmware type
+  identity; it is command-parameter input, so no corpus observes it
+  directly.
+
+  A two-member set is what the concept suggests, but this is still recorded
+  as a lower bound: the sibling level types on the same status object
+  (CCOLevel, ReceptacleLevel, FanSpeed) each have at most one observed value
+  and remain open strings for exactly that reason.
+enum:
+  - "On"
+  - "Off"

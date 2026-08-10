@@ -45,6 +45,60 @@ const SWEEP_PROBE_SET_PATTERN = /^\d{1,3}(?:\.\d{1,3}){3}-(read|write)\.json$/;
 const SWEEP_FRAME_LOG_PATTERN =
   /^\d{1,3}(?:\.\d{1,3}){3}-(subscribe|late-frames)\.json$/;
 
+// The coverage-blind spec probe: a broad read-only replay of this
+// specification's own path list, filed in its own capture directory with a
+// `<ip>-spec-read.json` filename shape. Every address involved is
+// deliberately never written here or anywhere else in this public repo, in
+// code, comments, or log output -- see maskFilename, applied to every
+// filename this tool prints.
+//
+// This directory now holds captures from TWO DIFFERENT HOSTS on two
+// different platforms: the RA3 processor the Task 8 sweep reached, and a
+// Caseta bridge probed later with the same coverage-blind prober. That
+// breaks both single-signal labeling schemes used elsewhere in this file, in
+// opposite directions:
+//
+//   - Filename suffix alone (what SWEEP_DIR uses, and what this directory
+//     used while it held one host) now resolves BOTH files to "spec-read".
+//     The suffix names the capture PHASE, and both hosts were probed in the
+//     same phase; the assumption that made suffix-labeling sufficient there
+//     -- every file in the directory came from one host -- no longer holds
+//     here.
+//   - classify() alone (what SOURCE_DIRS uses) resolves them to "ra3" and
+//     "caseta", both of which the original campaign's captures already own.
+//     Content classification would put two capture files under one manifest
+//     label and abort the run -- the same collision the previous version of
+//     this comment recorded for the RA3 file, which the Caseta file now
+//     reproduces on the other label.
+//
+// Neither signal is sufficient alone; together they are. The label is
+// `<phase>-<platform>`, phase from the filename suffix and platform from
+// classify() reading `/server`'s ProtocolVersion series. Both captures
+// contain `/server`, so classify() resolves for both, and a capture it
+// cannot classify is a hard error rather than a silent skip -- an
+// unclassifiable file here would otherwise vanish from the fixture set
+// without failing anything.
+const SPEC_PROBE_DIR = "/Users/alex/lutron-protocols/data/spec-probe";
+const SPEC_PROBE_PATTERN = /^\d{1,3}(?:\.\d{1,3}){3}-(spec-read)\.json$/;
+
+// Push-behaviour probe: a single-connection experiment (subscribe, change a
+// level, hold, restore) against the same processor, filed in the general
+// captures directory. Like the subscribe and late-frames logs it is an
+// ordered-frame record, not a `{path: {status, body}}` probe set, so it gets
+// the same treatment they do at the bottom of this file: redacted through
+// redactTree and written directly, and deliberately never given an entry in
+// captures.json.
+//
+// The pattern pins the run's timestamp the same way SOURCE_DIRS pins its
+// campaign date: the directory holds several runs of this experiment and
+// only this one is the committed evidence. A run timestamp identifies a
+// capture, not a device; the IP in the filename is the identifying part, and
+// it is masked in every message this tool prints.
+const PUSH_PROBE_DIR = "/Users/alex/lutron-protocols/data/captures";
+const PUSH_PROBE_PATTERN =
+  /^leap-push-probe-\d{1,3}(?:\.\d{1,3}){3}-2026-08-10T03-05-52-625Z\.json$/;
+const PUSH_PROBE_FIXTURE = "fixtures/push-probe.json";
+
 // Maps the LEAP server's ProtocolVersion series (from `/server`) to the
 // manifest label it corresponds to. This is protocol knowledge, not device
 // identity, so it is safe to hard-code here.
@@ -115,6 +169,29 @@ for (const file of readdirSync(SWEEP_DIR)) {
   byLabel.set(label, bucket);
 }
 
+// Spec-probe captures: labeled `<phase>-<platform>`, combining the filename
+// phase suffix with classify()'s content-based platform, for the reason the
+// SPEC_PROBE_DIR comment above spells out (this directory holds two hosts on
+// two platforms, and neither signal alone separates them without colliding).
+for (const file of readdirSync(SPEC_PROBE_DIR).sort()) {
+  const match = SPEC_PROBE_PATTERN.exec(file);
+  if (!match) continue;
+  const phase = match[1] as string;
+  const probes = readProbeSet(SPEC_PROBE_DIR, file);
+  const platform = classify(probes);
+  if (!platform) {
+    throw new Error(
+      `redact: spec-probe capture ${maskFilename(file)} could not be ` +
+        "classified by its /server ProtocolVersion; refusing to skip it " +
+        "silently. Add its series to LABEL_BY_SERIES.",
+    );
+  }
+  const label = `${phase}-${platform}`;
+  const bucket = byLabel.get(label) ?? [];
+  bucket.push({ dir: SPEC_PROBE_DIR, file, probes });
+  byLabel.set(label, bucket);
+}
+
 // Resolve every manifest entry before writing anything, so a bad mapping
 // fails loudly and never emits a partial fixture set.
 const resolved: { to: string; probes: ProbeSet }[] = [];
@@ -167,5 +244,37 @@ for (const file of readdirSync(SWEEP_DIR)) {
   writeFileSync(to, `${JSON.stringify(redacted, null, 2)}\n`, "utf8");
   console.log(
     `${to}: ${Array.isArray(redacted) ? redacted.length : "?"} frames`,
+  );
+}
+
+// Push-behaviour probe (see PUSH_PROBE_PATTERN above): same discipline as
+// the frame logs immediately above -- redacted through the same redactTree,
+// written directly, never added to captures.json, and required to resolve to
+// exactly one source file or fail loudly rather than emit ambiguous
+// evidence. Its frames live under a `frames` key rather than at the top
+// level, so the count is read from there.
+const pushProbeFiles = readdirSync(PUSH_PROBE_DIR)
+  .filter((f) => PUSH_PROBE_PATTERN.test(f))
+  .sort();
+
+if (pushProbeFiles.length !== 1) {
+  const found = pushProbeFiles.map(maskFilename).join(", ");
+  throw new Error(
+    `redact: push-probe capture (-> ${PUSH_PROBE_FIXTURE}) resolved to ` +
+      `${pushProbeFiles.length} file(s)${found ? ` (${found})` : ""}; ` +
+      "expected exactly 1. Refusing to emit ambiguous evidence.",
+  );
+}
+
+for (const file of pushProbeFiles) {
+  const log = JSON.parse(readFileSync(`${PUSH_PROBE_DIR}/${file}`, "utf8"));
+  const redacted = redactTree(log) as { frames?: unknown[] };
+  writeFileSync(
+    PUSH_PROBE_FIXTURE,
+    `${JSON.stringify(redacted, null, 2)}\n`,
+    "utf8",
+  );
+  console.log(
+    `${PUSH_PROBE_FIXTURE}: ${redacted.frames?.length ?? "?"} frames`,
   );
 }

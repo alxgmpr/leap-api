@@ -4,6 +4,11 @@
 # is absent on 1/56 (/device/435/status, RA3), Availability on 1/56
 # (/device/1/status, Caseta), and StatusAccuracy on 25/56 -- entirely absent on
 # every Caseta status (0/24) and present on all but one RA3 status (31/32).
+#
+# `Availability` points at the shared Availability schema (firmware type
+# `leapobj.Availability`, shared with ZoneStatus.Availability): 85
+# observations here, `Unknown` 83 and `Available` 2. ConfigurationTransferStatus
+# and StatusAccuracy keep their TODO(enum) markers -- see those descriptions.
 type: object
 properties:
   href:
@@ -16,21 +21,32 @@ properties:
     $ref: "#/components/schemas/FailedTransfers"
   ConfigurationTransferStatus:
     type: string
-    description: "TODO(enum): members of ConfigurationTransferStatus were not
-      recovered from the firmware extraction"
+    description: |
+      TODO(enum): members of ConfigurationTransferStatus were not recovered
+      from the firmware extraction, and hardware has produced exactly one:
+      `NotRequired`, 85 observations across both platforms and all three
+      read corpora. Every probed system was already in sync; whatever this
+      field reports mid-transfer was never captured, so the set stays open.
+    x-observed-values:
+      - NotRequired
   SensorHeard:
     $ref: "#/components/schemas/SensorHeard"
   DeviceHeard:
     $ref: "#/components/schemas/DeviceHeard"
   Availability:
-    type: string
-    description: "TODO(enum): members of Availability were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/Availability"
   BatteryStatus:
     $ref: "#/components/schemas/BatteryStatus"
   StatusAccuracy:
     type: string
-    description: "TODO(enum): members of StatusAccuracy were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of StatusAccuracy were not recovered from the
+      firmware extraction, and hardware has produced exactly one: `Good`,
+      37 observations (RA3 v03.247 unit 1 31, RA3 unit 2 6; absent from
+      every Caseta device status). Same firmware type as
+      ZoneStatus.StatusAccuracy, which adds 136 more observations of the
+      same single value -- see that field for why one value is not a set.
+    x-observed-values:
+      - Good
   FirmwareUpdateStatus:
     $ref: "#/components/schemas/DeviceFirmwareUpdateStatus"

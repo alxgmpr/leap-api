@@ -10,9 +10,31 @@ description: |
   `SingleSceneRaiseProgrammingModel`, `DualActionProgrammingModel`), via
   /programmingmodel and /device/{deviceId}/buttongroup/expanded. Unlisted
   values are possible.
+
+  `SimpleConditionalProgrammingModel` is the sixth member, and it is the
+  first one this enum learned by being falsified rather than by being
+  extended before the fact: the coverage-blind spec probe (RA3 v03.247)
+  returned it on two distinct buttons -- `/button/498` (fetched directly,
+  and again inside `/buttongroup/493/button`; the same body also appears in
+  the sweep-write corpus) and `/button/1568` (inside
+  `/buttongroup/1609/button`) -- 3 occurrences out of 43
+  `ProgrammingModelType` values in that corpus. It appears in neither the
+  earlier RA3 corpus nor Caseta v01.123, but that is a coverage artifact,
+  not a platform difference: the earlier RA3 sweep never reached a
+  per-button route at all (its `/button` collection returns a bare `{}`,
+  and it probed no `/button/{buttonId}`), so it had no opportunity to see
+  this value.
+
+  This is a real firmware enum whose members the extraction failed to
+  recover, so it stays closed here and grows as observation forces it --
+  taking the observed set as a lower bound, exactly as the paragraph above
+  says. A seventh member turning up in a future capture is expected, and
+  should be added the same way rather than treated as a reason to open the
+  field.
 enum:
   - AdvancedToggleProgrammingModel
   - SingleActionProgrammingModel
   - SingleSceneLowerProgrammingModel
   - SingleSceneRaiseProgrammingModel
   - DualActionProgrammingModel
+  - SimpleConditionalProgrammingModel

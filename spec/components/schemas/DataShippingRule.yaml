@@ -1,3 +1,8 @@
+# `EnabledState` points at the shared EnabledState schema on firmware type
+# identity (`leapobj.DataShippingRule.EnabledState` is `leapobj.EnabledState`).
+# /datashipping* is never probed with a 200 in any corpus, so this field has
+# zero direct coverage; the members come from the shared type -- see
+# EnabledState.yaml.
 type: object
 properties:
   href:
@@ -5,9 +10,7 @@ properties:
   RuleName:
     type: string
   EnabledState:
-    type: string
-    description: "TODO(enum): members of EnabledState were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/EnabledState"
 required:
   - RuleName
   - EnabledState

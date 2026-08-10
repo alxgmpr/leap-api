@@ -2,7 +2,15 @@ type: object
 properties:
   Frequency:
     type: string
-    description: "TODO(enum): members of Frequency were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of Frequency were not recovered from the firmware
+      extraction, and hardware has produced exactly one: `434`, once, on
+      Caseta v01.123 via /link/1/associatedlinknode/expanded. This is a
+      radio band in MHz, and Lutron's Clear Connect radios are
+      region-specific -- 434 is the value this one North American unit
+      reports, not the vocabulary of the type. Closing on it would reject
+      hardware sold elsewhere.
+    x-observed-values:
+      - 434
 required:
   - Frequency

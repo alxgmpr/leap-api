@@ -2,8 +2,12 @@ type: object
 properties:
   FanSpeed:
     type: string
-    description: "TODO(enum): members of FanSpeed were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of FanSpeed were not recovered from the firmware
+      extraction. This is command-parameter input and no corpus observes it
+      directly; the only value ever seen for this firmware type
+      (`leapobj.FanSpeed`) is `High`, on ZoneStatus.FanSpeed -- one fan,
+      one moment. See ZoneStatus.yaml.
   DelayTime:
     type: string
     pattern: ^P(?=.*\d)(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$

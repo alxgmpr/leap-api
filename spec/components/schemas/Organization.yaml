@@ -1,4 +1,21 @@
 type: object
+description: |
+  The installer's business contact record, nested on `Contact` -- see
+  `Contact.yaml`, which relaxed its own `Email`/`PrimaryPhone` on the same
+  kind of evidence.
+
+  Firmware marks all four fields non-pointer (always present), but Caseta
+  v01.123 omits `AccountNumber`: its single installer record
+  (`fixtures/spec-read-caseta.json`, /project/contactinfo) carries `Name`,
+  `Phone` and `Email` and nothing else. Both RA3 v03.247 units carry all
+  four. Relaxed to optional on that observed absence -- three observations
+  in all, and the only platform disagreement among them is this field.
+
+  The direction of the inference matters and is the same one `LoadController`
+  records: an observed absence falsifies a non-pointer `required`, while
+  presence on a small sample is not evidence for one. `Name`, `Phone` and
+  `Email` stay required because no capture has omitted them, not because
+  three records prove they cannot be.
 properties:
   Name:
     type: string
@@ -12,4 +29,3 @@ required:
   - Name
   - Phone
   - Email
-  - AccountNumber

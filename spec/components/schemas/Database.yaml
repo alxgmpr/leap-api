@@ -9,8 +9,15 @@ properties:
     type: string
   Type:
     type: string
-    description: "TODO(enum): members of DatabaseType were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of DatabaseType were not recovered from the
+      firmware extraction, and hardware has produced exactly one: `Project`,
+      4 observations (both RA3 units, nested inside a Device via
+      /project/masterdevicelist/devices and /device/435). A processor that
+      distinguishes database *types* plainly has more than one; the probes
+      only ever reach the project database.
+    x-observed-values:
+      - Project
   Version:
     $ref: "#/components/schemas/DatabaseVersion"
   TransferGUID:

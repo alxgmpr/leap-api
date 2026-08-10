@@ -1,104 +1,698 @@
 {
+  "/area/32": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/32",
+        "XID": "<xid-26>",
+        "Name": "<name-8>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/518"
+          },
+          {
+            "href": "/zone/546"
+          },
+          {
+            "href": "/zone/574"
+          },
+          {
+            "href": "/zone/3663"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/481"
+          },
+          {
+            "href": "/controlstation/559"
+          },
+          {
+            "href": "/controlstation/692"
+          },
+          {
+            "href": "/controlstation/3645"
+          },
+          {
+            "href": "/controlstation/9426"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/912": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/912",
+        "XID": "<xid-27>",
+        "Name": "<name-66>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/988"
+          },
+          {
+            "href": "/zone/1129"
+          },
+          {
+            "href": "/zone/4005"
+          },
+          {
+            "href": "/zone/4901"
+          },
+          {
+            "href": "/zone/5222"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/973"
+          },
+          {
+            "href": "/controlstation/1018"
+          },
+          {
+            "href": "/controlstation/1089"
+          },
+          {
+            "href": "/controlstation/3987"
+          },
+          {
+            "href": "/controlstation/5837"
+          },
+          {
+            "href": "/controlstation/5942"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1220": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1220",
+        "XID": "<xid-29>",
+        "Name": "<name-11>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/1743"
+          },
+          {
+            "href": "/zone/4274"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/1727"
+          },
+          {
+            "href": "/controlstation/4265"
+          },
+          {
+            "href": "/controlstation/4289"
+          },
+          {
+            "href": "/controlstation/10827"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1316": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1316",
+        "XID": "<xid-34>",
+        "Name": "<name-16>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/2127"
+          },
+          {
+            "href": "/zone/2448"
+          },
+          {
+            "href": "/zone/2520"
+          },
+          {
+            "href": "/zone/13008"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/2074"
+          },
+          {
+            "href": "/controlstation/2382"
+          },
+          {
+            "href": "/controlstation/2511"
+          },
+          {
+            "href": "/controlstation/8278"
+          },
+          {
+            "href": "/controlstation/13050"
+          },
+          {
+            "href": "/controlstation/13106"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1304": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1304",
+        "XID": "<xid-33>",
+        "Name": "<name-15>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/2154"
+          },
+          {
+            "href": "/zone/2202"
+          },
+          {
+            "href": "/zone/3025"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/2136"
+          },
+          {
+            "href": "/controlstation/3010"
+          },
+          {
+            "href": "/controlstation/4178"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1208": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1208",
+        "XID": "<xid-28>",
+        "Name": "<name-10>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/1512"
+          },
+          {
+            "href": "/zone/3978"
+          },
+          {
+            "href": "/zone/11113"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/1494"
+          },
+          {
+            "href": "/controlstation/2605"
+          },
+          {
+            "href": "/controlstation/4155"
+          },
+          {
+            "href": "/controlstation/5036"
+          },
+          {
+            "href": "/controlstation/5419"
+          },
+          {
+            "href": "/controlstation/11127"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1232": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1232",
+        "XID": "<xid-30>",
+        "Name": "<name-12>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/1878"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/1801"
+          },
+          {
+            "href": "/controlstation/12755"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1280": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1280",
+        "XID": "<xid-32>",
+        "Name": "<name-14>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/1931"
+          },
+          {
+            "href": "/zone/1956"
+          },
+          {
+            "href": "/zone/1982"
+          },
+          {
+            "href": "/zone/4042"
+          },
+          {
+            "href": "/zone/10000"
+          },
+          {
+            "href": "/zone/10470"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/1892"
+          },
+          {
+            "href": "/controlstation/2655"
+          },
+          {
+            "href": "/controlstation/4112"
+          },
+          {
+            "href": "/controlstation/5835"
+          },
+          {
+            "href": "/controlstation/9991"
+          },
+          {
+            "href": "/controlstation/10551"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/buttongroup/493": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "Updates are only supported on ProgrammingType: Column picos"
+    }
+  },
+  "/buttongroup/567": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "Updates are only supported on ProgrammingType: Column picos"
+    }
+  },
+  "/buttongroup/697": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "Updates are only supported on ProgrammingType: Column picos"
+    }
+  },
+  "/buttongroup/1023": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "Updates are only supported on ProgrammingType: Column picos"
+    }
+  },
+  "/buttongroup/1101": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "Updates are only supported on ProgrammingType: Column picos"
+    }
+  },
+  "/buttongroup/1609": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "Updates are only supported on ProgrammingType: Column picos"
+    }
+  },
+  "/button/494": {
+    "status": "200 OK",
+    "body": {
+      "Button": {
+        "href": "/button/494",
+        "ButtonNumber": 1,
+        "ProgrammingModel": {
+          "href": "/programmingmodel/4723",
+          "ProgrammingModelType": "AdvancedToggleProgrammingModel"
+        },
+        "Parent": {
+          "href": "/buttongroup/493"
+        },
+        "Name": "<name-52>",
+        "Engraving": {
+          "Text": "<text-1>"
+        },
+        "AssociatedLED": {
+          "href": "/led/490"
+        }
+      }
+    }
+  },
+  "/button/498": {
+    "status": "200 OK",
+    "body": {
+      "Button": {
+        "href": "/button/498",
+        "ButtonNumber": 2,
+        "ProgrammingModel": {
+          "href": "/programmingmodel/12486",
+          "ProgrammingModelType": "SimpleConditionalProgrammingModel"
+        },
+        "Parent": {
+          "href": "/buttongroup/493"
+        },
+        "Name": "<name-53>",
+        "Engraving": {
+          "Text": "<text-2>"
+        },
+        "AssociatedLED": {
+          "href": "/led/491"
+        }
+      }
+    }
+  },
+  "/button/502": {
+    "status": "200 OK",
+    "body": {
+      "Button": {
+        "href": "/button/502",
+        "ButtonNumber": 3,
+        "ProgrammingModel": {
+          "href": "/programmingmodel/503",
+          "ProgrammingModelType": "AdvancedToggleProgrammingModel"
+        },
+        "Parent": {
+          "href": "/buttongroup/493"
+        },
+        "Name": "<name-54>",
+        "Engraving": {
+          "Text": "<text-33>"
+        },
+        "AssociatedLED": {
+          "href": "/led/492"
+        }
+      }
+    }
+  },
+  "/button/506": {
+    "status": "200 OK",
+    "body": {
+      "Button": {
+        "href": "/button/506",
+        "ButtonNumber": 18,
+        "Parent": {
+          "href": "/buttongroup/493"
+        },
+        "Name": "<name-55>",
+        "Engraving": {
+          "Text": "<text-4>"
+        }
+      }
+    }
+  },
+  "/button/508": {
+    "status": "200 OK",
+    "body": {
+      "Button": {
+        "href": "/button/508",
+        "ButtonNumber": 19,
+        "Parent": {
+          "href": "/buttongroup/493"
+        },
+        "Name": "<name-56>",
+        "Engraving": {
+          "Text": "<text-5>"
+        }
+      }
+    }
+  },
+  "/button/568": {
+    "status": "200 OK",
+    "body": {
+      "Button": {
+        "href": "/button/568",
+        "ButtonNumber": 0,
+        "ProgrammingModel": {
+          "href": "/programmingmodel/569",
+          "ProgrammingModelType": "AdvancedToggleProgrammingModel"
+        },
+        "Parent": {
+          "href": "/buttongroup/567"
+        },
+        "Name": "<name-57>"
+      }
+    }
+  },
+  "/button/698": {
+    "status": "200 OK",
+    "body": {
+      "Button": {
+        "href": "/button/698",
+        "ButtonNumber": 1,
+        "ProgrammingModel": {
+          "href": "/programmingmodel/699",
+          "ProgrammingModelType": "SingleActionProgrammingModel"
+        },
+        "Parent": {
+          "href": "/buttongroup/697"
+        },
+        "Name": "<name-52>",
+        "Engraving": {
+          "Text": "<text-6>"
+        }
+      }
+    }
+  },
   "/clientsetting": {
     "status": "400 BadRequest",
     "body": {
       "Message": "ClientMinorVersion is not modifiable"
     }
   },
-  "/led/490/status": {
+  "/controlstation/559": {
     "status": "200 OK",
     "body": {
-      "LEDStatus": {
-        "href": "/led/490/status",
-        "LED": {
-          "href": "/led/490"
+      "ControlStation": {
+        "href": "/controlstation/559",
+        "XID": "<xid-2>",
+        "Name": "<name-26>",
+        "AssociatedArea": {
+          "href": "/area/32"
         },
-        "State": "On"
+        "SortOrder": 1,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/561",
+              "DeviceType": "PlugInDimmer",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
       }
     }
   },
-  "/led/491/status": {
+  "/controlstation/973": {
     "status": "200 OK",
     "body": {
-      "LEDStatus": {
-        "href": "/led/491/status",
-        "LED": {
-          "href": "/led/491"
+      "ControlStation": {
+        "href": "/controlstation/973",
+        "XID": "<xid-3>",
+        "Name": "<name-26>",
+        "AssociatedArea": {
+          "href": "/area/912"
         },
-        "State": "Off"
+        "SortOrder": 0,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/975",
+              "DeviceType": "PlugInDimmer",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
       }
     }
   },
-  "/led/492/status": {
+  "/controlstation/1727": {
     "status": "200 OK",
     "body": {
-      "LEDStatus": {
-        "href": "/led/492/status",
-        "LED": {
-          "href": "/led/492"
+      "ControlStation": {
+        "href": "/controlstation/1727",
+        "XID": "<xid-4>",
+        "Name": "<name-39>",
+        "AssociatedArea": {
+          "href": "/area/1220"
         },
-        "State": "Off"
+        "SortOrder": 0,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/1729",
+              "DeviceType": "PlugInDimmer",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
       }
     }
   },
-  "/led/1098/status": {
+  "/controlstation/692": {
     "status": "200 OK",
     "body": {
-      "LEDStatus": {
-        "href": "/led/1098/status",
-        "LED": {
-          "href": "/led/1098"
+      "ControlStation": {
+        "href": "/controlstation/692",
+        "XID": "<xid-5>",
+        "Name": "<name-27>",
+        "AssociatedArea": {
+          "href": "/area/32"
         },
-        "State": "Off"
+        "SortOrder": 2,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/694",
+              "DeviceType": "Pico4Button",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
       }
     }
   },
-  "/led/1099/status": {
+  "/controlstation/1018": {
     "status": "200 OK",
     "body": {
-      "LEDStatus": {
-        "href": "/led/1099/status",
-        "LED": {
-          "href": "/led/1099"
+      "ControlStation": {
+        "href": "/controlstation/1018",
+        "XID": "<xid-6>",
+        "Name": "<name-28>",
+        "AssociatedArea": {
+          "href": "/area/912"
         },
-        "State": "Off"
+        "SortOrder": 1,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/1020",
+              "DeviceType": "Pico4Button",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
       }
     }
   },
-  "/led/1100/status": {
+  "/controlstation/2511": {
     "status": "200 OK",
     "body": {
-      "LEDStatus": {
-        "href": "/led/1100/status",
-        "LED": {
-          "href": "/led/1100"
+      "ControlStation": {
+        "href": "/controlstation/2511",
+        "XID": "<xid-7>",
+        "Name": "<name-47>",
+        "AssociatedArea": {
+          "href": "/area/1316"
         },
-        "State": "Off"
+        "SortOrder": 2,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/2513",
+              "DeviceType": "PowPakCCO",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
       }
     }
   },
-  "/led/1564/status": {
+  "/controlstation/3010": {
     "status": "200 OK",
     "body": {
-      "LEDStatus": {
-        "href": "/led/1564/status",
-        "LED": {
-          "href": "/led/1564"
+      "ControlStation": {
+        "href": "/controlstation/3010",
+        "XID": "<xid-8>",
+        "Name": "<name-43>",
+        "AssociatedArea": {
+          "href": "/area/1304"
         },
-        "State": "On"
+        "SortOrder": 1,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/3012",
+              "DeviceType": "PlugInDimmer",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
       }
     }
   },
-  "/led/1565/status": {
-    "status": "200 OK",
+  "/device/435": {
+    "status": "405 MethodNotAllowed",
     "body": {
-      "LEDStatus": {
-        "href": "/led/1565/status",
-        "LED": {
-          "href": "/led/1565"
-        },
-        "State": "Off"
-      }
+      "Message": "This request is not supported"
     }
   }
 }

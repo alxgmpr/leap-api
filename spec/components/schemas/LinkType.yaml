@@ -1,0 +1,28 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.LinkType`,
+# referenced but never defined by the extraction. Three fields carry it:
+# Link.LinkType and LinkNode.LinkType (both typed against this schema, and
+# so LinkNodeExpanded too, which is an allOf against LinkNode), plus
+# LinkNodeStatus.LinkType, which has no hand-refined schema.
+type: string
+description: |
+  Which radio a link (or a node on it) speaks. The firmware extraction did
+  not recover the full enum; the members below are every value observed on
+  the wire, and unlisted values are possible -- Lutron ships radios these
+  two captured platforms do not use.
+
+  Both members are well covered and both platforms agree on the vocabulary:
+
+  - `Link.LinkType` (via /link, /link/{linkId}, and nested in
+    Device.OwnedLinks): `RF` 11 (RA3 v03.247 unit 1 4, Caseta v01.123 3, RA3
+    unit 2 4), `ClearConnectTypeX` 8 (4 / 0 / 4).
+  - `LinkNode.LinkType` (via /link/{linkId}/associatedlinknode and its
+    /expanded form): `RF` 44, `ClearConnectTypeX` 58 on the RA3 units; the
+    Caseta capture reaches only the expanded route, contributing 24 more
+    `RF`.
+
+  `ClearConnectTypeX` is absent from Caseta because that platform's link
+  inventory is a single `RF` link (/link/1), not because the value is
+  RA3-only -- the type is one enum shared by both.
+enum:
+  - RF
+  - ClearConnectTypeX

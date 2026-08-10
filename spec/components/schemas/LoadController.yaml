@@ -1,17 +1,35 @@
 type: object
 description: |
-  `required` is unchanged from the firmware extraction: all 8 probe-confirmed
-  load controllers (`fixtures/sweep-read.json`,
-  `/zone/{zoneId}/associatedloadcontroller`) carry every field this schema
-  requires, including the one `LoadControllerType: Unknown` instance, which
+  `required` follows the firmware extraction except for `XID`, which Caseta
+  falsified. Every one of the 17 RA3 v03.247 load controllers observed
+  (`fixtures/sweep-read.json` and `fixtures/spec-read.json`,
+  `/zone/{zoneId}/associatedloadcontroller`) carries every field this schema
+  requires, including the `LoadControllerType: Unknown` instance, which
   omits both type-specific properties objects but still carries `XID`,
   `Name`, `Parent`, `LoadControllerType`, `OutputNumber`, and
   `AssociatedDevice`. `LoadControllerType`'s enum is resolved (see
   `LoadControllerType.yaml`); `AssociatedLoad`/`AssociatedZone` were present
-  on all 8 samples too but stay optional, matching the firmware
+  on all RA3 samples too but stay optional, matching the firmware
   extraction -- presence on a small sample is not evidence of a `required`
   firmware field being wrongly marked optional, only the reverse (an
   observed absence) would be.
+
+  **`XID` is that reverse case, and it is a platform difference rather than
+  a per-object one.** The single Caseta v01.123 load controller
+  (`fixtures/spec-read-caseta.json`, /zone/2/associatedloadcontroller) omits
+  `XID` while carrying every other required field. That is not a quirk of
+  one object: across all five probe corpora, no Caseta response of any kind
+  carries an `XID` -- 0 of 92 zones, 0 of 144 devices, 0 of 50 areas on the
+  original Caseta capture, and 0 of everything on this second bridge --
+  while RA3 emits one on areas, zones, control stations and load
+  controllers. Caseta appears not to assign the cross-reference identifier
+  at all. Firmware marks it non-pointer, hardware omits it on a whole
+  platform, so it is optional here.
+
+  `ControlStation` and `AssociatedControlStation` also mark `XID` required
+  and are deliberately left alone: no Caseta capture returns a control
+  station at all, so nothing has falsified them, and relaxing them on
+  suspicion would assert an absence this corpus has not observed.
 properties:
   href:
     type: string
@@ -42,7 +60,6 @@ properties:
   DimmedLoadControllerProperties:
     $ref: "#/components/schemas/DimmedLoadControllerProperties"
 required:
-  - XID
   - Name
   - Parent
   - LoadControllerType

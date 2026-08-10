@@ -1,0 +1,2070 @@
+{
+  "host": "<ipv4-2>",
+  "zone": 4664,
+  "startedAt": "2026-08-10T03:05:26.175Z",
+  "note": "single connection: subscribe, level change, hold, restore",
+  "zoneName": "<name-94>",
+  "originalLevel": 0,
+  "targetLevel": 50,
+  "areaId": 1340,
+  "subscriptions": [
+    {
+      "url": "/zone/status",
+      "tag": "lt-18",
+      "status": "200 OK",
+      "communiqueType": "SubscribeResponse"
+    },
+    {
+      "url": "/area/1340/status",
+      "tag": "lt-19",
+      "status": "200 OK",
+      "communiqueType": "SubscribeResponse"
+    }
+  ],
+  "commandTag": "lt-20",
+  "commandStatus": "201 Created",
+  "levelChangeSentAtMs": 3621,
+  "frames": [
+    {
+      "seq": 1,
+      "atIso": "2026-08-10T03:05:26.418Z",
+      "atMs": 29,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /zone/4664",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "OneZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/zone/4664",
+        "ClientTag": "lt-1"
+      },
+      "body": {
+        "Zone": {
+          "href": "/zone/4664",
+          "XID": "<xid-125>",
+          "Name": "<name-94>",
+          "AvailableControlTypes": [
+            "Dimmed"
+          ],
+          "Category": {
+            "Type": "",
+            "IsLight": true
+          },
+          "AssociatedArea": {
+            "href": "/area/1340"
+          },
+          "SortOrder": 0,
+          "ControlType": "Dimmed"
+        }
+      }
+    },
+    {
+      "seq": 2,
+      "atIso": "2026-08-10T03:05:26.443Z",
+      "atMs": 54,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /zone/4664/status",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "OneZoneStatus",
+        "StatusCode": "200 OK",
+        "Url": "/zone/4664/status",
+        "ClientTag": "lt-2"
+      },
+      "body": {
+        "ZoneStatus": {
+          "href": "/zone/4664/status",
+          "Level": 0,
+          "Zone": {
+            "href": "/zone/4664"
+          },
+          "StatusAccuracy": "Good",
+          "ZoneLockState": "Unlocked"
+        }
+      }
+    },
+    {
+      "seq": 3,
+      "atIso": "2026-08-10T03:05:26.467Z",
+      "atMs": 78,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleAreaDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area",
+        "ClientTag": "lt-3"
+      },
+      "body": {
+        "Areas": [
+          {
+            "href": "/area/3",
+            "XID": "<xid-25>",
+            "Name": "<name-1>",
+            "SortOrder": 0,
+            "IsLeaf": false
+          },
+          {
+            "href": "/area/32",
+            "XID": "<xid-26>",
+            "Name": "<name-8>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 3,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/912",
+            "XID": "<xid-27>",
+            "Name": "<name-66>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 4,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1208",
+            "XID": "<xid-28>",
+            "Name": "<name-10>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 6,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1220",
+            "XID": "<xid-29>",
+            "Name": "<name-11>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 7,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1232",
+            "XID": "<xid-30>",
+            "Name": "<name-12>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 13,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1244",
+            "XID": "<xid-72>",
+            "Name": "<name-82>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 16,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1256",
+            "XID": "<xid-31>",
+            "Name": "<name-13>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 17,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1268",
+            "XID": "<xid-73>",
+            "Name": "<name-75>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 14,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1280",
+            "XID": "<xid-32>",
+            "Name": "<name-14>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 0,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1292",
+            "XID": "<xid-74>",
+            "Name": "<name-77>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 5,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1304",
+            "XID": "<xid-33>",
+            "Name": "<name-15>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 10,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1316",
+            "XID": "<xid-34>",
+            "Name": "<name-16>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 11,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1328",
+            "XID": "<xid-35>",
+            "Name": "<name-17>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 12,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1340",
+            "XID": "<xid-75>",
+            "Name": "<name-197>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 15,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1352",
+            "XID": "<xid-76>",
+            "Name": "<name-85>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 2,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/1617",
+            "XID": "<xid-36>",
+            "Name": "<name-18>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 8,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/13719",
+            "XID": "<xid-77>",
+            "Name": "<name-198>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 1,
+            "IsLeaf": true
+          },
+          {
+            "href": "/area/13735",
+            "XID": "<xid-78>",
+            "Name": "<name-93>",
+            "Parent": {
+              "href": "/area/3"
+            },
+            "SortOrder": 9,
+            "IsLeaf": true
+          }
+        ]
+      }
+    },
+    {
+      "seq": 4,
+      "atIso": "2026-08-10T03:05:26.489Z",
+      "atMs": 100,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/32/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/32/associatedzone",
+        "ClientTag": "lt-4"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/518",
+            "XID": "<xid-37>",
+            "Name": "<name-19>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/32"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/546",
+            "XID": "<xid-38>",
+            "Name": "<name-20>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/32"
+            },
+            "SortOrder": 1,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/574",
+            "XID": "<xid-39>",
+            "Name": "<name-21>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/32"
+            },
+            "SortOrder": 2,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/3663",
+            "XID": "<xid-40>",
+            "Name": "<name-38>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/32"
+            },
+            "SortOrder": 3,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 5,
+      "atIso": "2026-08-10T03:05:26.523Z",
+      "atMs": 134,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/912/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/912/associatedzone",
+        "ClientTag": "lt-5"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/988",
+            "XID": "<xid-42>",
+            "Name": "<name-21>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/912"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/1129",
+            "XID": "<xid-43>",
+            "Name": "<name-19>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/912"
+            },
+            "SortOrder": 1,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/4005",
+            "XID": "<xid-94>",
+            "Name": "<name-38>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/912"
+            },
+            "SortOrder": 2,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/4901",
+            "XID": "<xid-95>",
+            "Name": "<name-223>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/912"
+            },
+            "SortOrder": 4,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/5222",
+            "XID": "<xid-96>",
+            "Name": "<name-224>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/912"
+            },
+            "SortOrder": 3,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "atIso": "2026-08-10T03:05:26.552Z",
+      "atMs": 163,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1208/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1208/associatedzone",
+        "ClientTag": "lt-6"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/1512",
+            "XID": "<xid-44>",
+            "Name": "<name-29>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1208"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/3978",
+            "XID": "<xid-97>",
+            "Name": "<name-225>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1208"
+            },
+            "SortOrder": 1,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/11113",
+            "XID": "<xid-98>",
+            "Name": "<name-224>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1208"
+            },
+            "SortOrder": 2,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 7,
+      "atIso": "2026-08-10T03:05:26.583Z",
+      "atMs": 194,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1220/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1220/associatedzone",
+        "ClientTag": "lt-7"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/1743",
+            "XID": "<xid-46>",
+            "Name": "<name-19>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1220"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/4274",
+            "XID": "<xid-99>",
+            "Name": "<name-67>",
+            "Category": {
+              "Type": "ExhaustFan",
+              "IsLight": false
+            },
+            "AssociatedArea": {
+              "href": "/area/1220"
+            },
+            "SortOrder": 1,
+            "ControlType": "Switched"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 8,
+      "atIso": "2026-08-10T03:05:26.612Z",
+      "atMs": 223,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1232/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1232/associatedzone",
+        "ClientTag": "lt-8"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/1878",
+            "XID": "<xid-47>",
+            "Name": "<name-29>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1232"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 9,
+      "atIso": "2026-08-10T03:05:26.642Z",
+      "atMs": 253,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1244/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1244/associatedzone",
+        "ClientTag": "lt-9"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/6552",
+            "XID": "<xid-100>",
+            "Name": "<name-19>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1244"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 10,
+      "atIso": "2026-08-10T03:05:26.677Z",
+      "atMs": 288,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1256/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1256/associatedzone",
+        "ClientTag": "lt-10"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/1840",
+            "XID": "<xid-48>",
+            "Name": "<name-34>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1256"
+            },
+            "SortOrder": 1,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/2307",
+            "XID": "<xid-49>",
+            "Name": "<name-35>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1256"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 11,
+      "atIso": "2026-08-10T03:05:26.712Z",
+      "atMs": 323,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1268/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1268/associatedzone",
+        "ClientTag": "lt-11"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/5656",
+            "XID": "<xid-126>",
+            "Name": "<name-228>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1268"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/5682",
+            "XID": "<xid-127>",
+            "Name": "<name-74>",
+            "Category": {
+              "Type": "ExhaustFan",
+              "IsLight": false
+            },
+            "AssociatedArea": {
+              "href": "/area/1268"
+            },
+            "SortOrder": 1,
+            "ControlType": "Switched"
+          },
+          {
+            "href": "/zone/11346",
+            "XID": "<xid-128>",
+            "Name": "<name-229>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1268"
+            },
+            "SortOrder": 2,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 12,
+      "atIso": "2026-08-10T03:05:26.748Z",
+      "atMs": 359,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1280/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1280/associatedzone",
+        "ClientTag": "lt-12"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/1931",
+            "XID": "<xid-50>",
+            "Name": "<name-36>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1280"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/1956",
+            "XID": "<xid-51>",
+            "Name": "<name-29>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1280"
+            },
+            "SortOrder": 1,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/1982",
+            "XID": "<xid-52>",
+            "Name": "<name-37>",
+            "Category": {
+              "Type": "CeilingFan",
+              "IsLight": false
+            },
+            "AssociatedArea": {
+              "href": "/area/1280"
+            },
+            "SortOrder": 2,
+            "ControlType": "FanSpeed"
+          },
+          {
+            "href": "/zone/4042",
+            "XID": "<xid-129>",
+            "Name": "<name-230>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1280"
+            },
+            "SortOrder": 3,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/10000",
+            "XID": "<xid-130>",
+            "Name": "<name-231>",
+            "Category": {
+              "Type": "ExhaustFan",
+              "IsLight": false
+            },
+            "AssociatedArea": {
+              "href": "/area/1280"
+            },
+            "SortOrder": 5,
+            "ControlType": "Switched"
+          },
+          {
+            "href": "/zone/10470",
+            "XID": "<xid-131>",
+            "Name": "<name-232>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1280"
+            },
+            "SortOrder": 4,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 13,
+      "atIso": "2026-08-10T03:05:26.781Z",
+      "atMs": 392,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1292/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1292/associatedzone",
+        "ClientTag": "lt-13"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/6712",
+            "XID": "<xid-132>",
+            "Name": "<name-228>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1292"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/6730",
+            "XID": "<xid-133>",
+            "Name": "<name-74>",
+            "Category": {
+              "Type": "ExhaustFan",
+              "IsLight": false
+            },
+            "AssociatedArea": {
+              "href": "/area/1292"
+            },
+            "SortOrder": 1,
+            "ControlType": "Switched"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 14,
+      "atIso": "2026-08-10T03:05:26.812Z",
+      "atMs": 423,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1304/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1304/associatedzone",
+        "ClientTag": "lt-14"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/2154",
+            "XID": "<xid-54>",
+            "Name": "<name-29>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1304"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/2202",
+            "XID": "<xid-55>",
+            "Name": "<name-41>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1304"
+            },
+            "SortOrder": 1,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/3025",
+            "XID": "<xid-56>",
+            "Name": "<name-42>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1304"
+            },
+            "SortOrder": 2,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 15,
+      "atIso": "2026-08-10T03:05:26.845Z",
+      "atMs": 456,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1316/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1316/associatedzone",
+        "ClientTag": "lt-15"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/2127",
+            "XID": "<xid-57>",
+            "Name": "<name-29>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1316"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/2448",
+            "XID": "<xid-59>",
+            "Name": "<name-44>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1316"
+            },
+            "SortOrder": 1,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/2520",
+            "XID": "<xid-60>",
+            "Name": "<name-45>",
+            "Category": {
+              "Type": "",
+              "IsLight": false
+            },
+            "AssociatedArea": {
+              "href": "/area/1316"
+            },
+            "SortOrder": 2,
+            "ControlType": "CCO"
+          },
+          {
+            "href": "/zone/13008",
+            "XID": "<xid-134>",
+            "Name": "<name-233>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1316"
+            },
+            "SortOrder": 3,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 16,
+      "atIso": "2026-08-10T03:05:26.878Z",
+      "atMs": 489,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1328/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1328/associatedzone",
+        "ClientTag": "lt-16"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/2065",
+            "XID": "<xid-61>",
+            "Name": "<name-48>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1328"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/10508",
+            "XID": "<xid-135>",
+            "Name": "<name-234>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1328"
+            },
+            "SortOrder": 1,
+            "ControlType": "Dimmed"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 17,
+      "atIso": "2026-08-10T03:05:26.911Z",
+      "atMs": 522,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /area/1340/associatedzone",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneDefinition",
+        "StatusCode": "200 OK",
+        "Url": "/area/1340/associatedzone",
+        "ClientTag": "lt-17"
+      },
+      "body": {
+        "Zones": [
+          {
+            "href": "/zone/4664",
+            "XID": "<xid-125>",
+            "Name": "<name-94>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1340"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          },
+          {
+            "href": "/zone/6570",
+            "XID": "<xid-136>",
+            "Name": "<name-70>",
+            "Category": {
+              "Type": "OtherAmbient",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1340"
+            },
+            "SortOrder": 1,
+            "ControlType": "Switched"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 18,
+      "atIso": "2026-08-10T03:05:26.999Z",
+      "atMs": 610,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "SubscribeRequest /zone/status",
+      "deliveredToOnEvent": false,
+      "communiqueType": "SubscribeResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneStatus",
+        "StatusCode": "200 OK",
+        "Url": "/zone/status",
+        "ClientTag": "lt-18"
+      },
+      "body": {
+        "ZoneStatuses": [
+          {
+            "href": "/zone/518/status",
+            "Level": 75,
+            "Zone": {
+              "href": "/zone/518"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/546/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/546"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/574/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/574"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/988/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/988"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1129/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/1129"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1512/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/1512"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1594/status",
+            "Level": 1,
+            "Zone": {
+              "href": "/zone/1594"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1743/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/1743"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1840/status",
+            "Level": 75,
+            "Zone": {
+              "href": "/zone/1840"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1878/status",
+            "Level": 1,
+            "Zone": {
+              "href": "/zone/1878"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1931/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/1931"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1956/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/1956"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/1982/status",
+            "FanSpeed": "High",
+            "Zone": {
+              "href": "/zone/1982"
+            },
+            "StatusAccuracy": "Good"
+          },
+          {
+            "href": "/zone/2017/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/2017"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/2065/status",
+            "Level": 1,
+            "Zone": {
+              "href": "/zone/2065"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/2127/status",
+            "Level": 1,
+            "Zone": {
+              "href": "/zone/2127"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/2154/status",
+            "Level": 1,
+            "Zone": {
+              "href": "/zone/2154"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/2202/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/2202"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/2307/status",
+            "Level": 75,
+            "Zone": {
+              "href": "/zone/2307"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/2448/status",
+            "Level": 1,
+            "Zone": {
+              "href": "/zone/2448"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/2520/status",
+            "CCOLevel": "Open",
+            "Zone": {
+              "href": "/zone/2520"
+            },
+            "StatusAccuracy": "Good"
+          },
+          {
+            "href": "/zone/3025/status",
+            "Level": 10,
+            "Zone": {
+              "href": "/zone/3025"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/3663/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/3663"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/3978/status",
+            "Level": 100,
+            "Zone": {
+              "href": "/zone/3978"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/4005/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4005"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/4042/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4042"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/4247/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4247"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/4274/status",
+            "Level": 0,
+            "SwitchedLevel": "Off",
+            "Zone": {
+              "href": "/zone/4274"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/4639/status",
+            "Level": 1,
+            "Zone": {
+              "href": "/zone/4639"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/4664/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/4901/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4901"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/5222/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/5222"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/5656/status",
+            "Level": 50,
+            "Zone": {
+              "href": "/zone/5656"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/5682/status",
+            "Level": 0,
+            "SwitchedLevel": "Off",
+            "Zone": {
+              "href": "/zone/5682"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/5763/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/5763"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/5788/status",
+            "Level": 0,
+            "SwitchedLevel": "Off",
+            "Zone": {
+              "href": "/zone/5788"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/6552/status",
+            "Level": 100,
+            "Zone": {
+              "href": "/zone/6552"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/6570/status",
+            "Level": 0,
+            "SwitchedLevel": "Off",
+            "Zone": {
+              "href": "/zone/6570"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/6712/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/6712"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/6730/status",
+            "Level": 0,
+            "SwitchedLevel": "Off",
+            "Zone": {
+              "href": "/zone/6730"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/10000/status",
+            "Level": 100,
+            "SwitchedLevel": "On",
+            "Zone": {
+              "href": "/zone/10000"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/10470/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/10470"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/10508/status",
+            "Level": 10,
+            "Zone": {
+              "href": "/zone/10508"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/11113/status",
+            "Level": 100,
+            "Zone": {
+              "href": "/zone/11113"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/11346/status",
+            "Level": 50,
+            "Zone": {
+              "href": "/zone/11346"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          },
+          {
+            "href": "/zone/13008/status",
+            "Level": 1,
+            "Zone": {
+              "href": "/zone/13008"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 19,
+      "atIso": "2026-08-10T03:05:27.008Z",
+      "atMs": 619,
+      "msAfterLevelChange": null,
+      "classification": "response",
+      "matchedRequest": "SubscribeRequest /area/1340/status",
+      "deliveredToOnEvent": false,
+      "communiqueType": "SubscribeResponse",
+      "header": {
+        "MessageBodyType": "OneAreaStatus",
+        "StatusCode": "200 OK",
+        "Url": "/area/1340/status",
+        "ClientTag": "lt-19"
+      },
+      "body": {
+        "AreaStatus": {
+          "href": "/area/1340/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1344"
+          }
+        }
+      }
+    },
+    {
+      "seq": 20,
+      "atIso": "2026-08-10T03:05:30.051Z",
+      "atMs": 3662,
+      "msAfterLevelChange": 41,
+      "classification": "response",
+      "matchedRequest": "CreateRequest /zone/4664/commandprocessor",
+      "deliveredToOnEvent": false,
+      "communiqueType": "CreateResponse",
+      "header": {
+        "MessageBodyType": "OneZoneStatus",
+        "StatusCode": "201 Created",
+        "Url": "/zone/4664/commandprocessor",
+        "ClientTag": "lt-20"
+      },
+      "body": {
+        "ZoneStatus": {
+          "href": "/zone/4664/status",
+          "Level": 50,
+          "Zone": {
+            "href": "/zone/4664"
+          },
+          "StatusAccuracy": "Good",
+          "Availability": "Available"
+        }
+      }
+    },
+    {
+      "seq": 21,
+      "atIso": "2026-08-10T03:05:30.234Z",
+      "atMs": 3845,
+      "msAfterLevelChange": 224,
+      "classification": "push-on-request-tag",
+      "matchedRequest": "SubscribeRequest /zone/status",
+      "deliveredToOnEvent": true,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneStatus",
+        "StatusCode": "200 OK",
+        "Url": "/zone/status",
+        "ClientTag": "lt-18"
+      },
+      "body": {
+        "ZoneStatuses": [
+          {
+            "href": "/zone/4664/status",
+            "Level": 50,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "atIso": "2026-08-10T03:05:30.429Z",
+      "atMs": 4040,
+      "msAfterLevelChange": 419,
+      "classification": "push-on-request-tag",
+      "matchedRequest": "SubscribeRequest /area/1340/status",
+      "deliveredToOnEvent": true,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "OneAreaStatus",
+        "StatusCode": "200 OK",
+        "Url": "/area/1340/status",
+        "ClientTag": "lt-19"
+      },
+      "body": {
+        "AreaStatus": {
+          "href": "/area/1340/status",
+          "CurrentScene": null
+        }
+      }
+    },
+    {
+      "seq": 23,
+      "atIso": "2026-08-10T03:05:39.631Z",
+      "atMs": 13242,
+      "msAfterLevelChange": 9621,
+      "classification": "push-on-request-tag",
+      "matchedRequest": "SubscribeRequest /area/1340/status",
+      "deliveredToOnEvent": true,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "OneAreaStatus",
+        "StatusCode": "200 OK",
+        "Url": "/area/1340/status",
+        "ClientTag": "lt-19"
+      },
+      "body": {
+        "AreaStatus": {
+          "href": "/area/1340/status",
+          "InstantaneousPower": 6,
+          "InstantaneousMaxPower": 10
+        }
+      }
+    },
+    {
+      "seq": 24,
+      "atIso": "2026-08-10T03:05:50.096Z",
+      "atMs": 23707,
+      "msAfterLevelChange": 20086,
+      "classification": "response",
+      "matchedRequest": "CreateRequest /zone/4664/commandprocessor",
+      "deliveredToOnEvent": false,
+      "communiqueType": "CreateResponse",
+      "header": {
+        "MessageBodyType": "OneZoneStatus",
+        "StatusCode": "201 Created",
+        "Url": "/zone/4664/commandprocessor",
+        "ClientTag": "lt-21"
+      },
+      "body": {
+        "ZoneStatus": {
+          "href": "/zone/4664/status",
+          "Level": 0,
+          "Zone": {
+            "href": "/zone/4664"
+          },
+          "StatusAccuracy": "Good",
+          "Availability": "Available"
+        }
+      }
+    },
+    {
+      "seq": 25,
+      "atIso": "2026-08-10T03:05:50.241Z",
+      "atMs": 23852,
+      "msAfterLevelChange": 20231,
+      "classification": "push-on-request-tag",
+      "matchedRequest": "SubscribeRequest /zone/status",
+      "deliveredToOnEvent": true,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "MultipleZoneStatus",
+        "StatusCode": "200 OK",
+        "Url": "/zone/status",
+        "ClientTag": "lt-18"
+      },
+      "body": {
+        "ZoneStatuses": [
+          {
+            "href": "/zone/4664/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 26,
+      "atIso": "2026-08-10T03:05:50.434Z",
+      "atMs": 24045,
+      "msAfterLevelChange": 20424,
+      "classification": "push-on-request-tag",
+      "matchedRequest": "SubscribeRequest /area/1340/status",
+      "deliveredToOnEvent": true,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "OneAreaStatus",
+        "StatusCode": "200 OK",
+        "Url": "/area/1340/status",
+        "ClientTag": "lt-19"
+      },
+      "body": {
+        "AreaStatus": {
+          "href": "/area/1340/status",
+          "CurrentScene": {
+            "href": "/areascene/1344"
+          }
+        }
+      }
+    },
+    {
+      "seq": 27,
+      "atIso": "2026-08-10T03:05:52.624Z",
+      "atMs": 26235,
+      "msAfterLevelChange": 22614,
+      "classification": "response",
+      "matchedRequest": "ReadRequest /zone/4664/status",
+      "deliveredToOnEvent": false,
+      "communiqueType": "ReadResponse",
+      "header": {
+        "MessageBodyType": "OneZoneStatus",
+        "StatusCode": "200 OK",
+        "Url": "/zone/4664/status",
+        "ClientTag": "lt-22"
+      },
+      "body": {
+        "ZoneStatus": {
+          "href": "/zone/4664/status",
+          "Level": 0,
+          "Zone": {
+            "href": "/zone/4664"
+          },
+          "StatusAccuracy": "Good",
+          "ZoneLockState": "Unlocked"
+        }
+      }
+    }
+  ],
+  "restore": {
+    "attempted": true,
+    "verifiedLevel": 0,
+    "ok": true,
+    "originalLevel": 0
+  },
+  "finishedAt": "2026-08-10T03:05:52.625Z",
+  "sentRequests": [
+    {
+      "tag": "lt-1",
+      "communiqueType": "ReadRequest",
+      "url": "/zone/4664",
+      "sentAtMs": 0,
+      "answeredAtMs": 30
+    },
+    {
+      "tag": "lt-2",
+      "communiqueType": "ReadRequest",
+      "url": "/zone/4664/status",
+      "sentAtMs": 30,
+      "answeredAtMs": 55
+    },
+    {
+      "tag": "lt-3",
+      "communiqueType": "ReadRequest",
+      "url": "/area",
+      "sentAtMs": 55,
+      "answeredAtMs": 78
+    },
+    {
+      "tag": "lt-4",
+      "communiqueType": "ReadRequest",
+      "url": "/area/32/associatedzone",
+      "sentAtMs": 78,
+      "answeredAtMs": 101
+    },
+    {
+      "tag": "lt-5",
+      "communiqueType": "ReadRequest",
+      "url": "/area/912/associatedzone",
+      "sentAtMs": 101,
+      "answeredAtMs": 138
+    },
+    {
+      "tag": "lt-6",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1208/associatedzone",
+      "sentAtMs": 138,
+      "answeredAtMs": 164
+    },
+    {
+      "tag": "lt-7",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1220/associatedzone",
+      "sentAtMs": 164,
+      "answeredAtMs": 194
+    },
+    {
+      "tag": "lt-8",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1232/associatedzone",
+      "sentAtMs": 194,
+      "answeredAtMs": 223
+    },
+    {
+      "tag": "lt-9",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1244/associatedzone",
+      "sentAtMs": 223,
+      "answeredAtMs": 254
+    },
+    {
+      "tag": "lt-10",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1256/associatedzone",
+      "sentAtMs": 254,
+      "answeredAtMs": 288
+    },
+    {
+      "tag": "lt-11",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1268/associatedzone",
+      "sentAtMs": 288,
+      "answeredAtMs": 323
+    },
+    {
+      "tag": "lt-12",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1280/associatedzone",
+      "sentAtMs": 323,
+      "answeredAtMs": 359
+    },
+    {
+      "tag": "lt-13",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1292/associatedzone",
+      "sentAtMs": 359,
+      "answeredAtMs": 392
+    },
+    {
+      "tag": "lt-14",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1304/associatedzone",
+      "sentAtMs": 392,
+      "answeredAtMs": 423
+    },
+    {
+      "tag": "lt-15",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1316/associatedzone",
+      "sentAtMs": 423,
+      "answeredAtMs": 456
+    },
+    {
+      "tag": "lt-16",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1328/associatedzone",
+      "sentAtMs": 456,
+      "answeredAtMs": 489
+    },
+    {
+      "tag": "lt-17",
+      "communiqueType": "ReadRequest",
+      "url": "/area/1340/associatedzone",
+      "sentAtMs": 489,
+      "answeredAtMs": 522
+    },
+    {
+      "tag": "lt-18",
+      "communiqueType": "SubscribeRequest",
+      "url": "/zone/status",
+      "sentAtMs": 522,
+      "answeredAtMs": 610
+    },
+    {
+      "tag": "lt-19",
+      "communiqueType": "SubscribeRequest",
+      "url": "/area/1340/status",
+      "sentAtMs": 610,
+      "answeredAtMs": 619
+    },
+    {
+      "tag": "lt-20",
+      "communiqueType": "CreateRequest",
+      "url": "/zone/4664/commandprocessor",
+      "sentAtMs": 3621,
+      "answeredAtMs": 3662
+    },
+    {
+      "tag": "lt-21",
+      "communiqueType": "CreateRequest",
+      "url": "/zone/4664/commandprocessor",
+      "sentAtMs": 23664,
+      "answeredAtMs": 23707
+    },
+    {
+      "tag": "lt-22",
+      "communiqueType": "ReadRequest",
+      "url": "/zone/4664/status",
+      "sentAtMs": 26208,
+      "answeredAtMs": 26235
+    }
+  ]
+}

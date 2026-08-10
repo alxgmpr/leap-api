@@ -1,36 +1,79 @@
-# Refined from _generated/TimeclockEvent.yaml. Two deviations, both decided
-# from fixture evidence (2 observed TimeclockEvent objects, both RA3
-# v03.247, via /timeclockevent -- hand-authored, see timeclockevent.yaml
-# and timeclock.yaml):
+# Refined from _generated/TimeclockEvent.yaml. Three deviations, all decided
+# from fixture evidence -- originally 2 observed TimeclockEvent objects (RA3
+# v03.247, via /timeclockevent), now 7 (the coverage-blind spec probe added
+# 5 more from a second RA3 unit's 3 timeclocks, fetched both as a collection
+# and individually via /timeclockevent/{timeclockeventId}) -- hand-authored,
+# see timeclockevent.yaml and timeclock.yaml:
 #
 # 1. FLATTENED `TimeclockEventBase` and `WeeklyRecurrence`, both named
 #    fields whose Go type shares the field name -- anonymous embeds, same
 #    class of bug as ZoneExpandedStatus (Task 10), Device/ButtonGroupExpanded/
 #    LinkNodeExpanded (Task 12a), and NLOTime (Task 12b, which flattened
-#    this same TimeclockEventBase type for a different parent schema). Both
+#    this same TimeclockEventBase type for a different parent schema). All 7
 #    observed TimeclockEvent objects have TimeclockEventBase's fields
-#    (AstronomicEventType, AstronomicTimeOffset) and WeeklyRecurrence's
-#    fields (Sunday..Saturday) sitting flat at the top level, never nested
-#    under a "TimeclockEventBase" or "WeeklyRecurrence" key. Restructured as
-#    `allOf` against both, following NLOTime.yaml's precedent of not
-#    overriding TimeclockEventBase's own `required: [AstronomicEventType]`
-#    (both observed instances are Astronomic-scheduled and do carry it; a
-#    non-Astronomic TimeclockEvent's shape is unconfirmed in either
-#    fixture).
+#    (AstronomicEventType, AstronomicTimeOffset, TimeOfDay) and
+#    WeeklyRecurrence's fields (Sunday..Saturday) sitting flat at the top
+#    level, never nested under a "TimeclockEventBase" or "WeeklyRecurrence"
+#    key. Restructured as `allOf` against both.
 #
 # 2. `required` trimmed: firmware marks GlobalID, Dates,
 #    AnnuallyReoccurringDates, ExceptionDates, and
 #    AnnuallyReoccurringExceptionDates non-pointer, but none are present on
-#    either of the 2 observed instances (0/2 each) -- relaxed to optional.
-#    Name, ScheduleType, TimeclockEventType (2/2 each) stay required.
+#    any observed instance (0/7 each) -- relaxed to optional. Name,
+#    ScheduleType, TimeclockEventType (7/7 each) stay required.
+#
+# 3. The astronomic fields' dependency on TimeclockEventType is expressed
+#    as an `if`/`then`, not relaxed away -- recorded in the schema-level
+#    `description` below rather than here, because it is a rule a reader of
+#    the rendered document needs, not just a maintenance note.
 #
 # `ScheduleType` and `TimeclockEventType` point at shared enum schemas
 # (ScheduleType.yaml, EventTimeType.yaml) recovered from this and other
 # tasks' fixture evidence -- see those files' descriptions.
 type: object
+description: |
+  `TimeclockEventType` discriminates which timing fields the event carries,
+  and the specification states that as a conditional rather than as a flat
+  `required` list.
+
+  `TimeclockEventBase` marks `AstronomicEventType` non-pointer, so the
+  generated schema required it on every TimeclockEvent. The coverage-blind
+  spec probe falsified that with `/timeclockevent/6924` (RA3): a
+  `TimeclockEventType: "FixedTime"` event carrying `TimeOfDay: {"Hour": 7,
+  "Minute": 0}` and neither astronomic field. Its absence there is correct,
+  not a firmware/hardware disagreement about the field -- an event anchored
+  to a wall-clock time has no sunrise/sunset anchor to report.
+
+  So rather than relax `required` and assert nothing, the real constraint
+  is expressed with OpenAPI 3.1's `if`/`then` (3.1 schemas are JSON Schema
+  2020-12, so the applicator keywords are available): when
+  `TimeclockEventType` is `Astronomic`, both `AstronomicEventType` and
+  `AstronomicTimeOffset` are required. That holds on 6/6 observed
+  astronomic events -- `/timeclockevent/{651,676}` on the first RA3 unit
+  and `/timeclockevent/{6931,6938,6945,10083}` on the second -- and is
+  vacuously satisfied by the one observed `FixedTime` event. The `if`
+  itself requires `TimeclockEventType`, so an event that somehow omitted
+  the discriminator is not silently held to the astronomic rule; the
+  top-level `required` already rejects that case.
+
+  No converse rule is asserted for `FixedTime`. `TimeOfDay` was present on
+  the single observed `FixedTime` event, but firmware types it
+  `*leapobj.FixedTime` (a pointer, i.e. optional) and n=1 is not a base to
+  contradict that -- firmware and hardware agree it is optional, so it
+  stays optional.
 allOf:
   - $ref: "#/components/schemas/TimeclockEventBase"
   - $ref: "#/components/schemas/WeeklyRecurrence"
+if:
+  properties:
+    TimeclockEventType:
+      const: Astronomic
+  required:
+    - TimeclockEventType
+then:
+  required:
+    - AstronomicEventType
+    - AstronomicTimeOffset
 properties:
   href:
     type: string

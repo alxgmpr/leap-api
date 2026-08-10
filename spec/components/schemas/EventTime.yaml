@@ -1,15 +1,27 @@
+# Both enum fields point at the shared schemas their firmware types name --
+# `leapobj.EventTime.TimeType` is `leapobj.EventTimeType` and
+# `leapobj.EventTime.AstronomicEventType` is `leapobj.AstronomicEventType`,
+# the same two types already recovered from TimeclockEvent, NLOTime and
+# StartAndEndTime. EventTime itself is never populated in any corpus (no
+# probed route returns one), so this is type identity carrying members in,
+# exactly as OccGroupTime.EventType was resolved.
+#
+# Not touched here, and worth a later look: this schema requires
+# `AstronomicEventType` unconditionally, the same assertion
+# TimeclockEventBase had to give up when the spec probe returned a
+# `FixedTime` event carrying neither astronomic field. EventTime holds its
+# own discriminator (`TimeType`), so the `if`/`then` treatment those parents
+# got would apply directly here -- but with zero observed EventTime
+# instances there is no evidence to act on, and relaxing a `required` on
+# nothing is not an improvement.
 type: object
 properties:
   TimeType:
-    type: string
-    description: "TODO(enum): members of EventTimeType were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/EventTimeType"
   FixedTime:
     $ref: "#/components/schemas/FixedTime"
   AstronomicEventType:
-    type: string
-    description: "TODO(enum): members of AstronomicEventType were not recovered from
-      the firmware extraction"
+    $ref: "#/components/schemas/AstronomicEventType"
   AstronomicTimeOffset:
     type: string
     pattern: ^P(?=.*\d)(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$

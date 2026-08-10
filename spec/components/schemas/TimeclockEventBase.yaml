@@ -1,31 +1,68 @@
 type: object
 description: |
-  Named field on NLOTime whose Go type shares the field name
-  (`TimeclockEventBase`). Every observed NLOTime instance (Caseta v01.123,
-  via /system/naturallightoptimization) has these fields sitting flat on
-  NLOTime rather than nested under a `TimeclockEventBase` key -- the same
+  Named field on NLOTime, TimeclockEvent and OccGroupTime whose Go type
+  shares the field name (`TimeclockEventBase`). Every observed NLOTime
+  instance (Caseta v01.123, via /system/naturallightoptimization) and every
+  observed TimeclockEvent (RA3, via /timeclockevent and
+  /timeclockevent/{timeclockeventId}) has these fields sitting flat on the
+  parent rather than nested under a `TimeclockEventBase` key -- the same
   anonymous-embed promotion class already fixed for ZoneExpandedStatus
   (Task 10), Device/ButtonGroupExpanded/LinkNodeExpanded (Task 12a). See
-  NLOTime.yaml, which flattens this schema via `allOf` rather than
-  referencing it as a nested property.
+  NLOTime.yaml and TimeclockEvent.yaml, which flatten this schema via
+  `allOf` rather than referencing it as a nested property. OccGroupTime
+  leaves it nested -- no fixture has ever populated that type, so there is
+  no wire evidence either way (see OccGroupTime.yaml).
+
+  **`AstronomicEventType` is no longer unconditionally required here.**
+  Firmware marks it non-pointer, and it held through every capture until
+  the coverage-blind spec probe returned `/timeclockevent/6924` (RA3), a
+  `TimeclockEventType: "FixedTime"` event that carries `TimeOfDay` and
+  neither astronomic field. That is not a firmware/hardware disagreement
+  about whether the field exists -- it is this schema being the wrong place
+  to state the rule. The astronomic fields are required *when the event is
+  astronomic*, and this base type does not carry the discriminator that
+  says so: each embedding parent names it differently
+  (`TimeclockEvent.TimeclockEventType`,
+  `NLOTime.NaturalLightOptimizationEventType`, `OccGroupTime.EventType`,
+  all typed `leapobj.EventTimeType`). The dependency is therefore expressed
+  as an OpenAPI 3.1 `if`/`then` in each parent, against that parent's own
+  discriminator, rather than relaxed away here -- see those three files.
+  Anything embedding this type without such a conditional asserts nothing
+  about the astronomic fields, which is the honest position for a parent
+  whose discriminator is unknown.
 properties:
   AstronomicEventType:
     $ref: "#/components/schemas/AstronomicEventType"
   AstronomicTimeOffset:
     type: string
     description: |
-      Firmware's generated pattern (`^P(?:\d+D)?(?:T...)?$`, ISO 8601
-      duration) rejected the observed value: both StartTime and EndTime on
-      the single probed NaturalLightOptimization (Caseta v01.123, via
-      /system/naturallightoptimization) carry the literal string `"0"`, not
-      an ISO 8601 duration. Widened to accept that bare-zero form alongside
-      the original pattern -- consistent with a Duration marshaller that
-      special-cases the zero value rather than emitting `PT0S`. Hardware
-      wins; a non-zero offset's true wire form is unconfirmed (unobserved
-      in either fixture).
-    pattern: ^(0|P(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?)$
-    example: PT2S
+      A signed clock-format offset from the astronomic event, not an ISO
+      8601 duration, despite the firmware's `lutcommon.Timespan` type
+      (shared with genuine duration fields like
+      `DimmedLevelParameters.FadeTime`). Hardware wins outright and the ISO
+      8601 alternative is gone, not kept as a fallback: across 8 observed
+      values -- 6 TimeclockEvents on RA3 (`"0"` x2 via /timeclockevent/651
+      and /676, `"2:00:00"` x2 via /6931 and /6945, `"-2:00:00"` via /6938,
+      `"-30:00"` via /10083) and both NLOTime offsets on Caseta v01.123
+      (`"0"`, via /system/naturallightoptimization) -- not one is ISO 8601
+      shaped, and the four non-zero ones are all `[-]H:MM:SS` or
+      `[-]MM:SS`.
+
+      The earlier version of this schema accepted only the literal `"0"`
+      plus the generator's ISO 8601 pattern, and recorded a non-zero
+      offset's true wire form as unconfirmed; `/timeclockevent/6931` and
+      siblings confirm it. Two independent corroborations of the same
+      shape: `Timestamp.Utc` was corrected the same way (`"0"`,
+      `"-7:00:00"` -- see Timestamp.yaml), and lib/redact.ts carries a
+      negative lookahead carving this exact H:MM:SS / MM:SS shape out of
+      its IPv6 pattern, added after 8 `CountdownTimer.Timeout` values (also
+      `lutcommon.Timespan`) were wrongly rewritten as IPv6 addresses.
+
+      The offset is genuinely signed -- `"-2:00:00"` and `"-30:00"` are
+      sunset/sunrise offsets before the event, and a leading `-` is why
+      those two values were never at risk of the redactor's IPv6 pattern in
+      the first place.
+    pattern: ^(0|-?\d{1,2}(?::[0-5]\d){1,2})$
+    example: "-2:00:00"
   TimeOfDay:
     $ref: "#/components/schemas/FixedTime"
-required:
-  - AstronomicEventType

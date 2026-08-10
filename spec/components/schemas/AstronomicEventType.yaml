@@ -2,8 +2,19 @@ type: string
 description: |
   Sunrise/sunset anchor for an astronomic-scheduled event. The firmware
   extraction did not recover the full enum; members below were recovered
-  from TimeclockEventBase.AstronomicEventType observed on Caseta v01.123
-  (via /system/naturallightoptimization). Unlisted values are possible.
+  from hardware, and unlisted values are possible.
+
+  Observed on TimeclockEventBase.AstronomicEventType, flattened onto both
+  types that embed it: 2 NLOTime instances on Caseta v01.123 (`Sunrise`,
+  `Sunset`, via /system/naturallightoptimization -- the original source of
+  these two members) and 14 TimeclockEvent observations on the RA3 units
+  (`Sunset` 9, `Sunrise` 5, via /timeclockevent and
+  /timeclockevent/{timeclockeventId}), which the coverage-blind spec probe
+  contributed 12 of.
+
+  EventTime.AstronomicEventType carries the same firmware type
+  (`leapobj.AstronomicEventType`) and is typed against this schema by type
+  identity; no corpus ever populates an EventTime.
 enum:
   - Sunrise
   - Sunset

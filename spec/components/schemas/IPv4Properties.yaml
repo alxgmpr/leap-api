@@ -8,12 +8,22 @@
 # with a DHCP-configured interface simply not reporting the fields a static
 # configuration would carry; relaxed all six to optional pending a captured
 # static-IP instance. Only `Type`, the sole field observed, stays required.
+#
+# The static-IP instance that note was waiting on has since arrived, and it
+# confirms the relaxation rather than reversing it: the coverage-blind spec
+# probe's RA3 unit 2 reports `{"Type": "StaticIP", "IP": ...}` and nothing
+# else under /project/masterdevicelist/devices, while the same interface
+# fetched directly at /networkinterface/1 reports IP, SubnetMask, Gateway,
+# DNS1 and DNS2 -- so even a static configuration omits most of these
+# fields depending on which route serves it, and DNS3 is unobserved
+# anywhere. All six stay optional.
+#
+# `Type` points at the shared NetworkConfigurationType schema: `DHCP` (unit
+# 1) and `StaticIP` (unit 2). See NetworkConfigurationType.yaml.
 type: object
 properties:
   Type:
-    type: string
-    description: "TODO(enum): members of NetworkConfigurationType were not recovered
-      from the firmware extraction"
+    $ref: "#/components/schemas/NetworkConfigurationType"
   IP:
     type: string
   SubnetMask:

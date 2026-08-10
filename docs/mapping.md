@@ -132,19 +132,32 @@ rather than to every operation like the three above — see
   hand-authored `GET /area`); the fallback of placing it on the path item
   itself is for a route with no `GET` operation in the finished
   specification at all, which does not currently occur. 19 routes carry this
-  marker in the finished specification.
-- **`x-leap-event-schema`** — a `$ref` to the schema of the frames the
+  marker in the finished specification. The marker records the firmware route
+  table's `SUBSCRIBE` verb, which is not the same claim as "a live processor
+  will accept a `SubscribeRequest` here" — 7 of the 19 were refused (`405`,
+  one `400`) by the probed RA3 unit. `docs/subscriptions.md` has the
+  route-by-route probe result.
+- **`x-leap-event-schema`** — a `$ref` to the schema of the *resource* the
   processor pushes on that subscription once it is active (an unsolicited
-  push, in `docs/subscriptions.md`'s terms). It sits in the same place as
+  push, in `docs/subscriptions.md`'s terms). On a singular route it is also
+  the pushed frame's payload schema; on a **collection** route it is the
+  element type, not the payload — `/zone/status` carries
+  `x-leap-event-schema: ZoneStatus`, while the push observed in
+  `fixtures/push-probe.json` carries `MessageBodyType: MultipleZoneStatus`
+  and a `ZoneStatuses` array containing the changed entries. In either case
+  the pushed object is a **partial**: only the fields that changed, so the
+  referenced schema's `required` list does not hold for a push frame. See
+  `docs/subscriptions.md`. It sits in the same place as
   `x-leap-subscribable` — the `get` operation, or the path item when there is
   none. It is present only where a subscribable route also has a known
   response type recovered from the firmware extraction: 16 of the 19
   subscribable routes carry one. The 3 that don't
   (`/area/{areaId}/occupancysensorsettings`,
   `/service/bacnetnetworksettings/{bacnetnetworksettingsId}`,
-  `/service/bacnetsettings`) are still subscribable — the marker above is
-  still `true` — but the shape of what gets pushed on them is not established
-  in this specification.
+  `/service/bacnetsettings`) still carry `x-leap-subscribable: true`, but the
+  shape of what gets pushed on them is not established in this specification —
+  and for `/service/bacnetsettings` the probed processor refused the subscribe
+  outright (`400 BadRequest`), so there may be nothing to push.
 
 Neither is mirrored into rendered `description` text the way
 `x-leap-platforms` is (see "Why they are mirrored into descriptions" above)
