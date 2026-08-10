@@ -1,0 +1,36 @@
+# Copied verbatim from _generated/LEDSettings.yaml. The generator gave it no
+# `required` list -- firmware types both LED slots as pointers -- and every
+# observed instance carries both, which is not grounds to add a `required`
+# the firmware does not assert.
+type: object
+description: |
+  A device's idle and nightlight LED settings. 15 distinct objects observed,
+  all on Caseta v01.123: 14 through `fixtures/caseta.json` and 1 through
+  `fixtures/spec-read-caseta.json`. Every one has exactly the three keys
+  `href`, `IdleLED`, `NightlightLED`.
+
+  **This route's `500` is an RA3 finding, not a universal one.** Both RA3
+  corpora return `500 InternalServerError` on every device id they requested
+  -- 32 in `fixtures/ra3.json` (v03.247) and 8 in `fixtures/spec-read.json`
+  (v03.249) -- while Caseta returns `200 OK` on some device ids and `404
+  NotFound` on the rest (14/10 on the original capture, 1/7 on the spec
+  probe). docs/platforms.md attributes the Caseta `200`s to wired
+  dimmers/switches; nothing in the fixtures identifies why a given id `404`s,
+  so no cause is asserted here. docs/platforms.md and docs/protocol.md both already
+  scope the finding to RA3; what this schema adds is that the second RA3
+  corpus reproduces it at a later firmware build, so it is not a
+  one-capture artefact. Whether those two corpora are two physical
+  processors or one at two builds is not established by anything this
+  repository publishes -- see docs/platforms.md -- so the claim is about
+  two corpora, not two units.
+
+  `href` points into a separate `/ledsettings/{id}` resource space rather
+  than back at the requested URL: `/device/8/ledsettings` answers with
+  `href: "/ledsettings/6"`. Same indirection CountdownTimer shows.
+properties:
+  href:
+    type: string
+  IdleLED:
+    $ref: "#/components/schemas/LEDSpecificSettings"
+  NightlightLED:
+    $ref: "#/components/schemas/LEDSpecificSettings"

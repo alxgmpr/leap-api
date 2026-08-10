@@ -1,0 +1,18 @@
+# Copied from _generated/LEDSpecificSettings.yaml with one deviation:
+# `EnabledState` points at the shared EnabledState schema rather than the
+# generated inline open string. Firmware types the field
+# `EnabledState leapobj.EnabledState` -- the same named type, and the same
+# type-identity basis EnabledState.yaml records for its other users. All 30
+# observed values (both slots on all 15 LEDSettings objects) are members:
+# `Enabled` 26, `Disabled` 4. The firmware-required `EnabledState` is present
+# on every one, so `required` is unchanged.
+type: object
+description: |
+  One LED's enable state, held twice on a LEDSettings object -- once as
+  `IdleLED` and once as `NightlightLED`. Every observed instance has this
+  single field and nothing else.
+properties:
+  EnabledState:
+    $ref: "#/components/schemas/EnabledState"
+required:
+  - EnabledState

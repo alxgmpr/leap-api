@@ -24,6 +24,14 @@
 #    a stale id). The mangled generated form
 #    (`/device/{deviceId}/buttongroupexpanded`) is excluded from this file
 #    so it never reaches the bundle.
+#
+# 3. GET /device/{deviceId}/ledsettings had its marker resolved -- a gap
+#    fill, the route table records no responseType. Caseta-only evidence: 15
+#    distinct LEDSettings objects across the two Caseta corpora, and `500
+#    InternalServerError` from both RA3 corpora on every device id they
+#    requested. Two schemas were brought in, LEDSettings verbatim and
+#    LEDSpecificSettings with its `EnabledState` pointed at the shared enum
+#    schema on firmware type identity.
 /device:
   post:
     operationId: createDevice
@@ -212,10 +220,24 @@
     tags:
       - device
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: LEDSettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `LEDSettings` -- 14 device ids on `fixtures/caseta.json` and 1 on
+      `fixtures/spec-read-caseta.json`, 15 distinct objects. Both RA3
+      corpora return `500 InternalServerError` on every device id they
+      requested, 32 and 8; the established "broken on RA3" finding is
+      reproduced at a second firmware build, and is a statement about those
+      two corpora rather than about RA3 units, whose count this repository
+      does not establish. See LEDSettings.yaml.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LEDSettings"
     summary: Get device LED settings
   parameters:
     - name: deviceId

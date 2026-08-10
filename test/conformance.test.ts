@@ -173,7 +173,14 @@ addFormats(ajv);
 // /buttongroup/{buttongroupId}/button with a body. Caseta `404`s all 8. No
 // schema was authored: the wire body key is `Buttons` and the existing
 // schema already described it.
-const EXPECTED_MATCHED_CASES = 821;
+//
+// 821 -> 836: the `device` family, +15, all Caseta -- 14 device ids from
+// `fixtures/caseta.json` and 1 from `fixtures/spec-read-caseta.json` that
+// answer /device/{deviceId}/ledsettings with a body. Neither RA3 corpus
+// contributes a case: both return `500 InternalServerError` on every device
+// id they requested (32 and 8), which is why this is the largest single-
+// operation jump in the task and comes entirely from one platform.
+const EXPECTED_MATCHED_CASES = 836;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

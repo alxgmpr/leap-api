@@ -28,7 +28,10 @@ description: |
   `Enabled`) and OccupancySettings.EnabledState (1 x `Disabled`), each on
   the single object of its type that Caseta v01.123's coverage-blind spec
   probe returned. The zone family added a third, CountdownTimer.EnabledState
-  (11 x `Enabled`, every countdown timer in the original Caseta capture).
+  (11 x `Enabled`, every countdown timer in the original Caseta capture),
+  and the device family a fourth, LEDSpecificSettings.EnabledState -- 30
+  values across the two Caseta corpora (`Enabled` 26, `Disabled` 4), the
+  best-covered of the type-identity additions.
 enum:
   - Enabled
   - Disabled
