@@ -12,6 +12,18 @@ description: |
   `leapobj.SwitchedLevel`): 22 observations, `Off` 19 and `On` 3, on Caseta
   and RA3 unit 2.
 
+  The five enum-typed fields that remain open strings -- CCOLevel,
+  ReceptacleLevel, FanSpeed, StatusAccuracy, ZoneLockState -- are open on
+  purpose, not for want of looking. Each is a real firmware type whose
+  members the extraction failed to recover, and hardware has produced at
+  most one value for each across every corpus. One observed value does not
+  distinguish an enum from a constant, and closing on it asserts the concept
+  is single-valued: an accuracy that is only ever `Good`, a lock state that
+  is only ever `Unlocked`, a CCO that is only ever `Open`. That assertion
+  was made once in this specification, for OccupancyStatus, and the next
+  probe falsified it. Values seen to date are recorded per field under
+  `x-observed-values`, as documentation rather than as an assertion.
+
   `Availability` points at the shared `Availability` schema: its firmware
   type is `leapobj.Availability`, the same type as DeviceStatus.Availability,
   where 85 observations produced `Available`/`Unknown`. No read corpus ever
@@ -33,22 +45,46 @@ properties:
     $ref: "#/components/schemas/SwitchedLevel"
   CCOLevel:
     type: string
-    description: "TODO(enum): members of CCOLevel were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of CCOLevel were not recovered from the firmware
+      extraction, and hardware has produced exactly one: `Open`, 3
+      observations on the RA3 units (/zone/status and /zone/2520/status,
+      the only CCO zone either capture reaches). A `Closed` counterpart is
+      all but certain and simply never coincided with a probe, which is
+      why this stays an open string.
+    x-observed-values:
+      - Open
   ReceptacleLevel:
     type: string
-    description: "TODO(enum): members of ReceptacleLevel were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of ReceptacleLevel were not recovered from the
+      firmware extraction, and hardware has produced nothing either: no
+      probed zone on either platform is a receptacle zone, so no corpus
+      carries this field at all.
   FanSpeed:
     type: string
-    description: "TODO(enum): members of FanSpeed were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of FanSpeed were not recovered from the firmware
+      extraction, and hardware has produced exactly one: `High`, 3
+      observations on the RA3 units (/zone/status and /zone/1982/status,
+      the single observed fan zone). One fan at one moment is not the
+      vocabulary of the type; off/low/medium counterparts are expected.
+    x-observed-values:
+      - High
   Zone:
     $ref: "#/components/schemas/HyperReference"
   StatusAccuracy:
     type: string
-    description: "TODO(enum): members of StatusAccuracy were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of StatusAccuracy were not recovered from the
+      firmware extraction, and hardware has produced exactly one: `Good`,
+      136 observations across both platforms and all read corpora, plus 49
+      more through ZoneExpandedStatus and 52 in pushed frames. Volume is
+      not variety -- every probe caught a healthy system, and a field named
+      "status accuracy" exists to report the unhealthy case this corpus
+      never provoked.
+    x-observed-values:
+      - Good
   Availability:
     $ref: "#/components/schemas/Availability"
   SingleSetPointHVACStatus:
@@ -57,7 +93,14 @@ properties:
     $ref: "#/components/schemas/DualSetPointHVACStatus"
   ZoneLockState:
     type: string
-    description: "TODO(enum): members of ZoneLockState were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of ZoneLockState were not recovered from the
+      firmware extraction, and hardware has produced exactly one:
+      `Unlocked`, 102 observations on the RA3 units (the field never
+      appears on Caseta), plus 33 through ZoneExpandedStatus. A `Locked`
+      counterpart is implied by the field's own name; no probed zone was
+      locked.
+    x-observed-values:
+      - Unlocked
 required:
   - StatusAccuracy
