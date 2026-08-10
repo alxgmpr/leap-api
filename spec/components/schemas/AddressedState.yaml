@@ -2,18 +2,32 @@ type: string
 description: |
   Whether a device has completed addressing on its network. The firmware
   extraction did not recover the full enum; members below were recovered
-  from ControlStationDeviceAssociation.AddressedState (nested inside
-  ControlStation.AssociatedGangedDevices, via
-  /area/{areaId}/associatedcontrolstation) on RA3 v03.247. Unlisted values
-  are possible.
+  from hardware. Unlisted values are possible.
 
-  Note: Device.AddressedState and DeviceMiniDefinitionForMasterDeviceList's
-  own AddressedState field carry the identical firmware type name and the
-  same two observed values (`Addressed`, `Unaddressed`, see the device
-  family's Device.yaml/DeviceMiniDefinitionForMasterDeviceList.yaml
-  comments), but were left as open strings there -- out of this task's
-  scope (a different family's already-committed file). A future pass could
-  point those fields at this schema.
+  Two fields carry the firmware type `leapobj.AddressedState` and both are
+  typed against this schema:
+
+  - `ControlStationDeviceAssociation.AddressedState` (nested inside
+    ControlStation.AssociatedGangedDevices, via
+    /area/{areaId}/associatedcontrolstation and /controlstation/{id}):
+    `Addressed` 78, `Unaddressed` 2 -- RA3 v03.247 unit 1 (30/1) and RA3
+    unit 2 (34/1 spec probe, plus 7 each from the sweep read and write
+    corpora). This is where the two members were originally recovered.
+  - `Device.AddressedState`: `Addressed` 88 (RA3 unit 1 32, Caseta v01.123
+    48, RA3 unit 2 8), `Unaddressed` 1 (RA3 unit 1, /device/3681). Left as
+    an open string when this schema was first written -- "a future pass
+    could point that field here" -- and pointed here in the Task 13 enum
+    pass, which is that future pass. Both platforms and all three read
+    corpora agree on the same two members, and no third value has appeared
+    in 89 observations.
+
+  The earlier version of this note also named
+  `DeviceMiniDefinitionForMasterDeviceList.AddressedState` as a third site.
+  That was wrong: neither the firmware type nor the schema has such a
+  field. The type's own comment mentions AddressedState only to identify
+  which device (/device/3681, the `Unaddressed` one) is missing a
+  SerialNumber -- and that device's AddressedState is the flattened
+  `Device.AddressedState` above.
 enum:
   - Addressed
   - Unaddressed

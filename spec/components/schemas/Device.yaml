@@ -24,6 +24,13 @@
 #    processor identifying itself: RA3 /device/435 and Caseta /device/1).
 #    All four relaxed to optional. `ModelNumber` (56/56) and
 #    `AddressedState` (56/56) stay required.
+#
+# 3. `AddressedState` points at the shared AddressedState schema rather than
+#    shipping as an open string: its firmware type is `leapobj.AddressedState`,
+#    identical to ControlStationDeviceAssociation.AddressedState, where the
+#    two members were recovered. 89 Device observations across both platforms
+#    and all three read corpora produce exactly those two -- `Addressed` 88,
+#    `Unaddressed` 1 (/device/3681, RA3 unit 1). See AddressedState.yaml.
 type: object
 allOf:
   - $ref: "#/components/schemas/DeviceBase"
@@ -94,9 +101,7 @@ properties:
   DeviceClass:
     $ref: "#/components/schemas/DeviceClass"
   AddressedState:
-    type: string
-    description: "TODO(enum): members of AddressedState were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/AddressedState"
   IsThisDevice:
     type: boolean
   PhysicalDeviceProperties:
