@@ -161,10 +161,10 @@ description: |
   element type is `leapobj.Date` rather than, say, a date-shaped string.
   That last step is the residual, and it is the only leg of the argument
   with no independent support. Second, points 3 and 4 come from
-  **different platforms and never co-occur**: the 16 TimeclockEvents are
-  all RA3 (both Caseta corpora answer `/timeclockevent` `204 NoContent`),
-  while the rules endpoint is Caseta-only (RA3 v03.249 answers it `404
-  NotFound`). So "Caseta reports a bound of 0 and correspondingly has no
+  **different platforms and never co-occur**: those 16 occurrences, and all
+  7 objects behind them, are RA3's (both Caseta corpora answer
+  `/timeclockevent` `204 NoContent`), while the rules endpoint is
+  Caseta-only (RA3 v03.249 answers it `404 NotFound`). So "Caseta reports a bound of 0 and correspondingly has no
   dates" is *not* what the fixtures show -- it is one platform's bound and
   another platform's empty events, agreeing rather than confirming.
 
