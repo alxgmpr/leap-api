@@ -30,7 +30,7 @@ hold, restore"`. Two subscriptions were opened, one dimmer zone
 between was logged in order.
 
 That is a real answer to a question that had none, and it is also one
-processor, one installation, a handful of runs. **Caseta and Vive were not
+processor, one installation, one run. **Caseta and Vive were not
 tested at all**, here or anywhere in this project's push evidence; nothing
 below should be read as a statement about them.
 
@@ -118,12 +118,31 @@ subscription's tag rather than a single connection-wide constant — so the tag
 is per-subscription, not merely per-connection.
 
 What this control does *not* separate is the tag from the subscribe
-request's *position* in the sequence: in every committed run the subscribe
-happened to be issued at `lt-18`. Distinguishing "the tag is copied from the
-subscribe request" from "the tag is a function of sequence position" would
-take a run that pads the tag counter with unrelated reads before
-subscribing. That run has not been done, so the claim made here is the
-narrower one the evidence supports — each subscription's pushes carry that
+request's *position* in the sequence. The committed run does pad the tag
+counter: `sentRequests` shows 17 reads unrelated to either subscription
+before the first `SubscribeRequest`.
+
+```
+$ node -e '
+const d = JSON.parse(require("fs").readFileSync("fixtures/push-probe.json","utf8"));
+console.log(JSON.stringify(d.sentRequests.map(r => [r.tag, r.communiqueType, r.url])));'
+
+[["lt-1","ReadRequest","/zone/4664"],["lt-2","ReadRequest","/zone/4664/status"],
+ ["lt-3","ReadRequest","/area"],["lt-4","ReadRequest","/area/32/associatedzone"],
+ ... ["lt-17","ReadRequest","/area/1340/associatedzone"],
+ ["lt-18","SubscribeRequest","/zone/status"],
+ ["lt-19","SubscribeRequest","/area/1340/status"], ...]
+```
+
+So the subscribe lands on `lt-18` because the harness's prelude is a
+**fixed length** — 17 reads before the first subscribe — not because
+`lt-18` is special and not by coincidence. Padding is already what this run
+does; what it cannot do is vary. Distinguishing "the tag is copied from the
+subscribe
+request" from "the tag is a function of sequence position" needs a run whose
+prelude is a *different* length, so the subscribe lands on a tag other than
+`lt-18`. That run has not been done, so the claim made here is the narrower
+one the evidence supports — each subscription's pushes carry that
 subscription's own tag — and not a claim about how the processor derives
 the value.
 
@@ -197,9 +216,9 @@ fields that moved:
 
 | `seq` | Push body |
 |---|---|
-| 22 | `{"href": "/area/1340/status", "CurrentScene": null}` — the area reported no active scene once one of its zones was driven directly |
-| 23 | `{"href": "/area/1340/status", "InstantaneousPower": 6, "InstantaneousMaxPower": 10}` |
-| 26 | `{"href": "/area/1340/status", "CurrentScene": {"href": "/areascene/1344"}}` — and reported `/areascene/1344` again once the zone was restored |
+| 22 | `{"AreaStatus": {"href": "/area/1340/status", "CurrentScene": null}}` — the area reported no active scene once one of its zones was driven directly |
+| 23 | `{"AreaStatus": {"href": "/area/1340/status", "InstantaneousPower": 6, "InstantaneousMaxPower": 10}}` |
+| 26 | `{"AreaStatus": {"href": "/area/1340/status", "CurrentScene": {"href": "/areascene/1344"}}}` — and reported `/areascene/1344` again once the zone was restored |
 
 Two consequences for this specification, both stated here rather than
 silently patched:
@@ -236,12 +255,10 @@ run. The 224 ms figure is also recorded directly as the push frame's
 change throughout the file, so the second push's `20231` is not the second
 change's latency.)
 
-A second, independent run of the same experiment reproduced the effect at
-**139 ms** (`"msAfterLevelChange": 139`, again `ReadResponse` /
-`MultipleZoneStatus` on the subscribe tag). Three sub-second latencies
-across two runs is the whole basis for the "a few hundred milliseconds"
-characterisation — it is a handful of observations on one processor under
-no load, not a latency budget anyone should design against.
+Two sub-second latencies, 224 ms and 188 ms, from the one committed run,
+are the whole basis for the "a few hundred milliseconds" characterisation.
+That is two observations on one processor under no load, not a latency
+budget anyone should design against.
 
 **The `201 Created` is not the push.** Both command responses carried a
 `ZoneStatus` body of their own — `seq` 20 reports `"Level": 50`, `seq` 24
@@ -277,13 +294,15 @@ A client must expect push bodies containing fields it has not seen before on
 that resource, at times it did not cause.
 
 This also revises, rather than contradicts, what
-`fixtures/subscriptions.json` recorded: that campaign saw **zero** frames in
-41 twenty-second hold windows, which was attributed to a quiet system. The
-attribution holds — the metering push above arrived on an *area* status
-subscription, and that earlier campaign did open two of those
-(`/area/32/status`, `/area/912/status`, both `200 OK`) without receiving
-anything. Whatever schedules these frames, 20 seconds of quiet on two areas
-was not enough to trigger one.
+`fixtures/subscriptions.json` recorded: that campaign saw **zero** frames
+across 41 hold windows, which was attributed to a quiet system. (The window
+duration was set by the prober and is not recorded in the fixture — its
+entries carry only `url`, `requestTag`, `subscribeStatus` and `frames` — so
+this document does not state one.) The attribution holds — the metering push
+above arrived on an *area* status subscription, and that earlier campaign
+did open two of those (`/area/32/status`, `/area/912/status`, both
+`200 OK`) without receiving anything. Whatever schedules these frames, a
+hold of that length on two areas was not enough to trigger one.
 
 ## What this still does not establish
 
@@ -316,13 +335,58 @@ Stated explicitly rather than left as a confident-sounding gap:
 This specification's bundled OpenAPI document is generated from the firmware
 route extraction, which recorded **40** raw `SUBSCRIBE`-verb markers before
 hand-refinement. That number should not be quoted as the size of the final,
-correct subscribable surface: it double-counts routes that are reachable by
-either a numeric integration id or an XID string (merged into one path per
-this specification's own OpenAPI-validity rule — see `docs/mapping.md`), and
-it includes several of the mangled/concatenated path forms described in
-`docs/mapping.md` (`/devicestatus`, `/systemloadsheddingstatus`, and similar)
-that were excluded from the bundle in favor of their probe-confirmed,
-correctly-slashed equivalents.
+correct subscribable surface. The accounting from 40 to 19 is:
+
+- **18 excluded as mangled/concatenated path forms** — the class described
+  in `docs/mapping.md`: `/areastatus`, `/devicestatus`,
+  `/devicestatus/deviceheard`, `/deviceavailabilitystatus`,
+  `/devicebatterystatusstatus`, `/emergencystatus`, `/loadcontrollerstatus`,
+  `/natlightoptstatus`, `/occupancysensorstatus`, `/operationstatus`,
+  `/rentablespacestatus`, `/systemloadsheddingstatus`, `/systemstatus`,
+  `/temperaturesensorstatus`, `/timeclockeventstatus`, `/timeclockstatus`,
+  `/v2operationstatus`, `/zonetypegroupstatus`. Each was excluded in favour
+  of its probe-confirmed, correctly-slashed equivalent where one exists.
+- **7 further firmware `SUBSCRIBE` routes not carried into the bundle**, and
+  these are ordinary, correctly-slashed routes rather than mangled ones:
+  `/emergency/{id}/status`, `/loadcontroller/{id}/status`,
+  `/natlightopt/{id}/status`, `/profilesession/{id}/status`,
+  `/zonetypegroup`, `/zonetypegroup/{id}`, `/zonetypegroup/{id}/status`.
+  Their absence is a genuine open gap in this specification, not a
+  refinement — see the `/loadcontroller/{id}/status` note at the end of this
+  section, which is one of these 7.
+- **4 hand-authored corrected paths added**: `/device/status`,
+  `/system/loadshedding/status`, `/system/naturallightoptimization/status`,
+  `/zone/status`.
+
+40 − 25 + 4 = 19. Reproduce with:
+
+```
+node --import tsx -e '
+import { readFileSync } from "node:fs";
+import { parse } from "yaml";
+const fw = JSON.parse(readFileSync("vendor/leap-routes.json", "utf8"))
+  .filter((r) => (r.verbs ?? []).includes("SUBSCRIBE")).map((r) => r.path);
+const doc = parse(readFileSync("dist/openapi.yaml", "utf8"));
+const marked = new Set();
+for (const [p, item] of Object.entries(doc.paths)) {
+  if (item["x-leap-subscribable"]) marked.add(p);
+  for (const op of Object.values(item))
+    if (op && typeof op === "object" && op["x-leap-subscribable"]) marked.add(p);
+}
+const norm = (p) => p.replace(/\{[^}]+\}/g, "{id}");
+const spec = new Set([...marked].map(norm)), fwN = new Set(fw.map(norm));
+console.log("firmware SUBSCRIBE markers:", fw.length);
+console.log("bundled x-leap-subscribable:", marked.size);
+console.log("dropped:", [...fwN].filter((p) => !spec.has(p)).sort());
+console.log("added:", [...spec].filter((p) => !fwN.has(p)).sort());
+'
+```
+
+The `{id}`/`{xid}` merge this specification performs elsewhere (see
+`docs/mapping.md`) is **not** part of this arithmetic: none of the 40
+markers is on an `{xid}` path, and the only two `{xid}` siblings of
+`SUBSCRIBE`-marked routes (`/area/{xid}`, `/zone/{xid}`) are `GET`-only, so
+no `SUBSCRIBE` marker is ever double-counted by that split.
 
 The list below is generated directly from the finished, bundled specification
 (`dist/openapi.yaml`, produced by `npm run bundle`) rather than hand-typed, so
@@ -374,9 +438,9 @@ implementation.
 | `/system/naturallightoptimization/status` | untested | Only the firmware's abbreviated form `/natlightoptstatus` was probed (`400`). |
 | `/virtualbutton` | **`405`** | `405 MethodNotAllowed`. |
 | `/zone` | **`405`** | `405 MethodNotAllowed` — consistent with RA3 having no flat zone-list endpoint at all (see `docs/platforms.md`). |
-| `/zone/status` | `200 OK` | **The subscribable zone-status route.** Hand-authored path (the bare collection-status route is absent from the firmware extraction in any form); confirmed by `fixtures/push-probe.json`, which both subscribed to it and received pushes on it. |
+| `/zone/status` | `200 OK` | **The subscribable zone-status route.** Hand-authored path: the extraction has no `/zone/status` and no bare `/zonestatus`, only four paging variants (`/zonestatusexpandedquerystringwith{explicit,implicit}paging`, `/zonestatus/with/{explicit,implicit}/paging`), all `GET`-only and none `SUBSCRIBE`-marked; confirmed by `fixtures/push-probe.json`, which both subscribed to it and received pushes on it. |
 | `/zone/{zoneId}` | **`405`** | `405 MethodNotAllowed` (`/zone/546`, `/zone/574`). |
-| `/zone/{zoneId}/status` | **`405`** | `405 MethodNotAllowed` (`/zone/546/status`, `/zone/574/status`), body `{"Message": "This request is not supported"}`. A firmware-recovered route (`vendor/leap-routes.json`: `/zone/{id}/status`, verbs `GET`/`SUBSCRIBE`/`UPDATE`) whose `SUBSCRIBE` verb this processor does not honor. **Per-zone status is not subscribable; the collection `/zone/status` is.** |
+| `/zone/{zoneId}/status` | **`405`** | `405 MethodNotAllowed` (`/zone/546/status`, `/zone/574/status`). `fixtures/subscriptions.json` records status only — its entries are `{url, requestTag, subscribeStatus, frames}`, with no body field — so the refusal body is not captured for this or any other row in this table. A firmware-recovered route (`vendor/leap-routes.json`: `/zone/{id}/status`, verbs `GET`/`SUBSCRIBE`/`UPDATE`) whose `SUBSCRIBE` verb this processor does not honor. **Per-zone status is not subscribable; the collection `/zone/status` is.** |
 
 That last row is worth dwelling on, because it is why the `ClientTag`
 question stayed open as long as it did. The obvious way to watch one light is
@@ -391,8 +455,13 @@ entirely**: `/loadcontroller/{loadcontrollerId}/status` was accepted with
 `200 OK` twice (`/loadcontroller/9431/status`, `/loadcontroller/564/status`)
 in `fixtures/subscriptions.json`, and the bundled document contains no
 `/loadcontroller/{loadcontrollerId}/status` path at all (only
-`/loadcontroller/{loadcontrollerId}/commandprocessor`). The subscribable
-surface listed above is therefore a floor, not a ceiling.
+`/loadcontroller/{loadcontrollerId}/commandprocessor`). It is not a route
+this project failed to know about, either: it is one of the 7 ordinary,
+correctly-slashed firmware `SUBSCRIBE` routes listed above as dropped
+between the extraction's 40 and the bundle's 19. Firmware marks it
+subscribable, hardware accepted a subscription on it, and the specification
+does not have it. The subscribable surface listed above is therefore a
+floor, not a ceiling.
 
 App reverse engineering (`$SRC/docs/protocols/leap/api-discovery.md`,
 "Subscriptions the App Uses") separately lists 11 resource types the Lutron

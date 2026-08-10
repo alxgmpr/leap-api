@@ -143,9 +143,13 @@ tag. The routing rule above is unaffected — the subscription's tag is no
 longer pending by the time a push arrives, because the `SubscribeResponse`
 already resolved and removed it — but the reuse means a client must not
 recycle `ClientTag` values within a session, or a fresh request could be
-resolved by an unrelated subscription's push. See `docs/subscriptions.md` for
-the evidence, the delta-versus-snapshot shape of push bodies, and the limits
-of a single-processor sample.
+resolved by an unrelated subscription's push. This is a value-equality
+claim, not a claim about how the processor derives the tag: the one
+committed run subscribes at `lt-18` after a fixed-length 17-read prelude, so
+"copied from the subscribe request" and "a function of sequence position"
+are not separated by it. See `docs/subscriptions.md` for the evidence, that
+caveat in full, the delta-versus-snapshot shape of push bodies, and the
+limits of a single-processor sample.
 
 ## The 14 CommuniqueTypes
 
