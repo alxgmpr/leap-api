@@ -1,0 +1,58 @@
+# Refined from _generated/CountdownTimer.yaml. Two deviations, neither
+# touching the `required` list -- firmware marks `Timeout` and `EnabledState`
+# non-pointer and both are present on all 11 observed instances:
+#
+# 1. `Timeout`'s ISO 8601 duration pattern replaced with the clock form --
+#    see the field description below.
+#
+# 2. `EnabledState` points at the shared EnabledState schema rather than the
+#    generated inline open string. Firmware types the field
+#    `EnabledState leapobj.EnabledState` -- the same named type, and the same
+#    type-identity basis EnabledState.yaml records for its other users. All
+#    11 observed values are `Enabled`, a member.
+type: object
+description: |
+  A zone's auto-off timer. Caseta-only in this project's evidence: 11
+  distinct CountdownTimers, all from `fixtures/caseta.json` (Caseta
+  v01.123), reached through `/zone/{zoneId}/countdowntimer`. Three more
+  zones on that capture `404`, as do all 27 zone ids on
+  `fixtures/ra3.json` and all 8 on each coverage-blind spec probe -- the
+  later Caseta bridge, re-paired after a factory reset, has no countdown
+  timer on any zone the probe requested. docs/platforms.md already records
+  the RA3 side of that: this class of configuration is managed through
+  Lutron Designer over IPL there, not over LEAP.
+
+  `href` points into a separate `/countdowntimer/{id}` resource space rather
+  than back at the requested URL -- `/zone/6/countdowntimer` answers with
+  `href: "/countdowntimer/8"` -- and `AssociatedZone` (a pointer in
+  firmware, present on all 11) carries the zone reference instead.
+properties:
+  href:
+    type: string
+  Timeout:
+    type: string
+    description: |
+      A clock-format duration, not an ISO 8601 one, despite the firmware's
+      `lutcommon.Timespan` type -- the same type shared with genuine ISO
+      8601 duration fields such as `DimmedLevelParameters.FadeTime`, and the
+      same mismatch already corrected on `Timestamp.Utc` and
+      `TimeclockEventBase.AstronomicTimeOffset`. The 11 observed values take
+      6 distinct forms, `[H]:MM:SS` or `MM:SS`, and not one is ISO 8601
+      shaped: `1:00:00`, `2:00:00`, `3:00:00`, `4:00:00`, `30:00`, `15:00`.
+
+      The ISO 8601 alternative is dropped rather than kept as a fallback,
+      following Timestamp.yaml's reasoning. The accepted shape is the
+      unsigned form of the pattern lib/redact.ts carves out of its IPv6
+      rule, which was added for exactly these values -- 8 of these
+      `Timeout`s were rewritten to `<ipv6-N>` before that fix. No negative
+      value is accepted: unlike an astronomic offset, a countdown timeout
+      has no observed or plausible signed form.
+    pattern: ^\d{1,2}(?::[0-5]\d){1,2}$
+    example: 1:00:00
+  EnabledState:
+    $ref: "#/components/schemas/EnabledState"
+  AssociatedZone:
+    $ref: "#/components/schemas/HyperReference"
+required:
+  - Timeout
+  - EnabledState

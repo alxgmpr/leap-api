@@ -1,0 +1,22 @@
+# Hand-authored: GET /zone/tuningsettings's collection response. Same naming
+# situation as DaylightingGainSettingsCollection.yaml, which states it in
+# full: the collection route and the per-zone route carry the same
+# MessageBodyType (`TuningSettings`, a name already plural in form) and
+# differ only in the shape underneath it -- an array here, a bare object
+# there. Both operations declare `x-leap-body-type: TuningSettings`, the
+# value the processor actually sends, and point at different schemas.
+#
+# The firmware extraction recovered no responseType for either route.
+# Confirmed 200 OK on Caseta v01.123 (`fixtures/spec-read-caseta.json`) with
+# a one-element array whose element is byte-identical to the
+# `/zone/2/tuningsettings` body; of the 8 zone ids that probe requested on
+# that bridge, `/zone/2` is the only one that returned settings, and the
+# collection agrees with the per-zone route about which. (The earlier
+# `fixtures/caseta.json` capture found 6 -- a differently configured bridge,
+# and it never requested this collection route.) RA3 v03.249 answers `405
+# MethodNotAllowed`, not `204`: the same refusal it gives the bare `/zone`
+# collection (see docs/platforms.md), so the array has never been observed
+# with more or fewer than one element.
+type: array
+items:
+  $ref: "#/components/schemas/TuningSettings"

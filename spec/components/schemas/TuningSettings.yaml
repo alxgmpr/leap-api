@@ -1,0 +1,40 @@
+# Refined from _generated/TuningSettings.yaml. One deviation:
+# `MinimumLightLevel` relaxed to optional. Firmware marks all four numeric
+# fields non-pointer (`float64`), so the generated schema required all four;
+# no observed instance carries `MinimumLightLevel` at all, while
+# `HighEndTrim`, `EnergyTrim` and `LowEndTrim` are on every one and stay
+# required. Same direction of inference Organization.yaml and
+# LoadController.yaml record: an observed absence falsifies a non-pointer
+# `required`.
+type: object
+description: |
+  Per-zone dimmer trim. Caseta-only in this project's evidence: 7 distinct
+  TuningSettings objects, all from the two Caseta v01.123 corpora -- 6 zones
+  through `/zone/{zoneId}/tuningsettings` in `fixtures/caseta.json`, plus
+  `/zone/2` in `fixtures/spec-read-caseta.json`, which also returns that
+  same object as the sole element of the `/zone/tuningsettings` collection.
+  Both RA3 corpora return `404 NotFound` on every zone id they requested
+  (27 and 8 respectively), which is what docs/platforms.md already records:
+  on RA3 this class of configuration is managed through Lutron Designer over
+  IPL, not over LEAP.
+
+  `HighEndTrim` and `LowEndTrim` are observed as both integers and
+  fractional values (`100`, `70.1`, `94.9`; `1.2`, `18.9`), consistent with
+  the firmware's `float64`; `EnergyTrim` is `100` on all 7. None of that
+  distinguishes a percentage from an unbounded number, so no `minimum` or
+  `maximum` is asserted -- the firmware states no range either.
+properties:
+  href:
+    type: string
+  HighEndTrim:
+    type: number
+  EnergyTrim:
+    type: number
+  LowEndTrim:
+    type: number
+  MinimumLightLevel:
+    type: number
+required:
+  - HighEndTrim
+  - EnergyTrim
+  - LowEndTrim

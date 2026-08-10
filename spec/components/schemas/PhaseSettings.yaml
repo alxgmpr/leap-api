@@ -1,0 +1,27 @@
+# Copied from _generated/PhaseSettings.yaml with no structural change; the
+# only addition is evidence recorded on `Direction`. Firmware marks it
+# non-pointer and both observed instances carry it, so `required` stands.
+type: object
+description: |
+  Forward/reverse dimmer phase for a zone. Caseta-only in this project's
+  evidence, and the thinnest of the zone family: 2 objects, `/zone/41` and
+  `/zone/42`, both from `fixtures/caseta.json` (Caseta v01.123). Every other
+  probed zone `404`s on both platforms -- 12 more on that same Caseta
+  capture, 27 on `fixtures/ra3.json`, and 8 each on the two coverage-blind
+  spec probes, which reach no phase-settings zone at all.
+properties:
+  href:
+    type: string
+  Direction:
+    type: string
+    description: |
+      TODO(enum): members of PhaseDirection were not recovered from the
+      firmware extraction, and hardware has produced exactly one:
+      `Reverse`, on both observed instances. A `Forward` counterpart is
+      what the concept and the field name both imply, which is precisely
+      why this stays an open string rather than closing on the one value
+      seen -- the precedent ZoneStatus.yaml records at length.
+    x-observed-values:
+      - Reverse
+required:
+  - Direction

@@ -35,6 +35,26 @@
 #    firmware-extracted route table recovered no responseType for this
 #    operation at all, so this is a gap fill, not a singular/plural
 #    correction like deviation 1 above.
+#
+# 5. Four more markers resolved, the zone family of this task:
+#    /zone/{zoneId}/{tuningsettings,countdowntimer,phasesettings} and the
+#    /zone/tuningsettings collection. All four are gap fills like deviation
+#    4, and all four are Caseta-only in this project's evidence -- both RA3
+#    corpora return `404 NotFound` on every zone id they requested for the
+#    three per-zone routes, and `405 MethodNotAllowed` on the collection.
+#    That matches docs/platforms.md's "Caseta exposes device configuration
+#    RA3 does not" section, which already names these three routes.
+#
+#    The collection route and the per-zone route share a MessageBodyType
+#    (`TuningSettings`) and differ only in an array wrapper, so the
+#    collection schema carries a `Collection` suffix the wire does not
+#    supply -- the same situation the area-settings family recorded, see
+#    DaylightingGainSettingsCollection.yaml.
+#
+#    The `put` operations on /zone/{zoneId}/tuningsettings and
+#    /zone/{zoneId}/phasesettings keep their markers. Only ReadRequests were
+#    ever sent to them, so their response body types are still unknown -- a
+#    `get`'s body is not evidence for the `put` on the same path.
 /zone:
   get:
     operationId: getZone
@@ -163,10 +183,21 @@
     tags:
       - zone
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: CountdownTimer
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `CountdownTimer` holding a bare object, on 11 of the 14 zone ids
+      `fixtures/caseta.json` requested. Every RA3 zone id `404`s on both RA3
+      corpora, and so does every zone id on the later Caseta bridge -- see
+      CountdownTimer.yaml for the corpus-by-corpus counts.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CountdownTimer"
     summary: Get zone countdown timer
   parameters:
     - name: zoneId
@@ -257,10 +288,22 @@
     tags:
       - zone
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: PhaseSettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `PhaseSettings` holding a bare object, on 2 of the 14 zone ids
+      `fixtures/caseta.json` requested (`/zone/41` and `/zone/42`). Every
+      other probed zone `404`s, on both platforms and in all four corpora
+      that requested this route. The `put` on this same path keeps its
+      TODO: no capture ever sent an `UpdateRequest` here.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhaseSettings"
     summary: Get zone phase settings
   put:
     operationId: updateZoneIDPhaseSettings
@@ -322,10 +365,22 @@
     tags:
       - zone
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: TuningSettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `TuningSettings` holding a bare object -- 6 zones in
+      `fixtures/caseta.json` and `/zone/2` in
+      `fixtures/spec-read-caseta.json`, 7 distinct objects. Both RA3 corpora
+      `404` on every zone id they requested. The `put` on this same path
+      keeps its TODO: no capture ever sent an `UpdateRequest` here.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TuningSettings"
     summary: Get zone tuning settings
   put:
     operationId: updateZoneIDTuningSettings
@@ -376,7 +431,21 @@
     tags:
       - zone
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: TuningSettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `TuningSettings` holding an **array** (one element, the settings of
+      `/zone/2`), while the per-zone route returns a bare object under that
+      same key. `x-leap-body-type` is the shared wire value; the two shapes
+      are separate schemas -- see `TuningSettingsCollection.yaml`. RA3
+      v03.249 returns `405 MethodNotAllowed` here, the same refusal it gives
+      the bare `/zone` collection.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TuningSettingsCollection"
+    summary: List zone tuning settings

@@ -142,7 +142,18 @@ addFormats(ajv);
 // them was a matter of pointing at the existing `Service` schema. 2 cases
 // each for alexa, homekit, ifttt and sonos (both platforms answer) and 1 for
 // bacnet, which Caseta answers `404 NotFound`.
-const EXPECTED_MATCHED_CASES = 789;
+//
+// 789 -> 810: the `zone` family, +21, all of it Caseta. 11 for
+// /zone/{zoneId}/countdowntimer and 2 for /zone/{zoneId}/phasesettings, both
+// entirely from the original `fixtures/caseta.json` capture; 7 for
+// /zone/{zoneId}/tuningsettings (6 from that capture, 1 from
+// `fixtures/spec-read-caseta.json`); and 1 for the /zone/tuningsettings
+// collection. Both RA3 corpora contribute nothing -- `404 NotFound` on every
+// zone id for the three per-zone routes, `405 MethodNotAllowed` on the
+// collection. Cases and objects coincide here except on tuningsettings,
+// where the 8 cases carry 7 distinct objects: Caseta's `/zone/2` settings
+// are returned by both the per-zone route and the collection.
+const EXPECTED_MATCHED_CASES = 810;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */
