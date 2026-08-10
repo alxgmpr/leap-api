@@ -2,8 +2,15 @@ type: object
 properties:
   Type:
     type: string
-    description: "TODO(enum): members of DoType were not recovered from the firmware
-      extraction"
+    description: |
+      TODO(enum): members of DoType were not recovered from the firmware
+      extraction, and hardware has produced exactly one: `Command`, on the 2
+      Caseta actions reachable via /system/action. The sibling `AwayStatus`
+      property on this same schema implies at least one more member -- a
+      statement type that sets away status rather than issuing a command --
+      which no captured action uses.
+    x-observed-values:
+      - Command
   Resource:
     $ref: "#/components/schemas/HyperReference"
   Command:

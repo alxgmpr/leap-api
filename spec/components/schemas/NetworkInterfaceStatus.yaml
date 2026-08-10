@@ -4,7 +4,15 @@ properties:
     type: string
   ConnectedStatus:
     type: string
-    description: "TODO(enum): members of NetworkInterfaceConnectedStatus were not
-      recovered from the firmware extraction"
+    description: |
+      TODO(enum): members of NetworkInterfaceConnectedStatus were not
+      recovered from the firmware extraction, and hardware has produced
+      exactly one: `Connected`, once, via /networkinterface/1 on RA3 unit 2
+      -- the only 200 any corpus has for that route. A disconnected
+      counterpart is implied by the field's name and was never captured,
+      unsurprisingly: the probe reached the processor over that very
+      interface.
+    x-observed-values:
+      - Connected
 required:
   - ConnectedStatus

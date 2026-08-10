@@ -37,7 +37,10 @@ description: |
 
   `AdapterType` stays required (`"Ethernet"`, 1/1). Its enum members were
   not recovered from the firmware and one observed value is too thin a base
-  to author one, so it stays an open string.
+  to author one, so it stays an open string -- and a WiFi member is not
+  hypothetical here, since this same schema carries a `WiFiProperties`
+  property that no captured interface populates. The observed value is
+  recorded on the field under `x-observed-values`.
 allOf:
   - $ref: "#/components/schemas/NetworkInterfaceSmallDefinition"
 properties:
@@ -45,8 +48,13 @@ properties:
     type: string
   AdapterType:
     type: string
-    description: "TODO(enum): members of NetworkInterfaceType were not recovered
-      from the firmware extraction"
+    description: |
+      TODO(enum): members of NetworkInterfaceType were not recovered from
+      the firmware extraction, and hardware has produced exactly one:
+      `Ethernet`, once, via /networkinterface/1 on RA3 unit 2. See this
+      schema's description.
+    x-observed-values:
+      - Ethernet
   WiFiProperties:
     $ref: "#/components/schemas/WiFiProperties"
   SOCKS5ProxyProperties:
