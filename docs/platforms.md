@@ -36,6 +36,44 @@ notes, not as evidence for this document. Bringing either platform into the
 conformance corpus this specification is validated against would require new
 capture work, which is out of scope here.
 
+## A second RA3 unit, and what its refusals show
+
+Task 8's probe campaign targeted two configured processors, both masked
+throughout this project's public fixtures and this document: the same RA3
+unit behind `fixtures/ra3.json`, and a second, previously-unswept RA3 unit.
+**The first was unreachable for the entire campaign** (no response on TCP
+8081, no ARP entry); every sweep capture in this project
+(`fixtures/sweep-read.json`, `fixtures/sweep-write.json`,
+`fixtures/subscriptions.json`, `fixtures/late-frames.json`) is against the
+second unit instead. This is not an ambiguity about which platform was
+reached: the swept unit is confirmed a genuine RA3 processor by its own
+`GET /clientsetting` response (`ClientMajorVersion: 3`, an `Admin` session —
+see `fixtures/sweep-read.json`), independent of, and a different physical
+unit from, the one behind `fixtures/ra3.json`.
+
+Of the 206 routes this campaign probed against it — the firmware's own
+route table, minus routes this specification already documents (so the
+sweep would surface only genuinely new ground) — **119 (58%) came back
+`400 BadRequest`, body `{"Message": "This request is not supported"}`, a
+deliberate server refusal, not a malformed request or a wrong host.** Only
+56 came back `200 OK`. This is the direct explanation for Task 8's modest
+yield (5 new path templates, 2 existing templates gaining their first
+fixture, out of 206 routes probed): **presence in the firmware-extracted
+route table does not mean a live processor implements that route.** The
+firmware extraction (`vendor/leap-routes.json`) is a recovered
+compile-time route table — every handler the server binary *can* dispatch
+to — not a live capability list for any one deployed unit; a specific
+processor's actual configuration, firmware build, and installed
+feature set determine which of those routes it answers on the wire, and
+this unit answers well under half of the routes it was asked about with a
+handler that exists in the binary but declines to serve. This is a real
+finding about how firmware-extracted route tables and live processor
+behavior diverge, not a failure of the probe methodology — see
+`docs/mapping.md` for how this specification's own paths are derived from
+that same route table, and why probe confirmation (not extraction
+presence alone) is what this project treats as evidence a route is
+actually live.
+
 ## RA3 vs. Caseta: two different navigation models
 
 The single largest structural difference between the two platforms this

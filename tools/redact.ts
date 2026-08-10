@@ -5,7 +5,7 @@ type ProbeSet = Record<string, { status: string; body?: unknown }>;
 
 // A manifest entry names a stable, non-identifying label and the fixture
 // it should produce. It never names a source file directly — capture
-// filenames embed real device IPs (e.g. `leap-explore-192.0.2.133-....json`),
+// filenames embed real device IPs (e.g. `leap-explore-<ip>-<date>.json`),
 // so the manifest must not, and this repo is public.
 type ManifestEntry = { label: string; to: string };
 
@@ -21,8 +21,10 @@ const SOURCE_DIRS: SourceDir[] = [
   },
 ];
 
-// Task 8's probe sweep against a single, previously-unseen processor
-// (198.51.100.2 -- masked everywhere below and in any log output). Its capture
+// Task 8's probe sweep against a single, previously-unseen processor --
+// its address is deliberately never written here or anywhere else in this
+// public repo, in code, comments, or log output; see maskFilename below,
+// used the same way SOURCE_DIRS's own file names are masked. Its capture
 // filenames have a different shape from SOURCE_DIRS above
 // (`<ip>-<phase>.json` rather than `leap-explore-<ip>-<date>.json`) and are
 // not full probe sets containing `/server` -- the sweep never probed it --

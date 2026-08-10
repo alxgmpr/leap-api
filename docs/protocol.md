@@ -196,6 +196,51 @@ in this project's design document:
 list of status codes it can emit, not because any capture in this project's
 corpus shows one — that gap is stated explicitly rather than silently omitted.
 
+### `102 Processing` — an interim acknowledgement, not a terminal status
+
+Not part of the RA3/Caseta counts above, and observed on a separate,
+single-processor sweep (Task 8's probe campaign against a second,
+previously-unswept RA3 unit, masked throughout this project's public
+fixtures — see `docs/platforms.md`): 5 of that sweep's 206 probed paths, all
+`ReadRequest /firmwareimage/{firmwareimageId}`, initially came back
+`102 Processing` with a null body instead of a terminal status.
+
+`102 Processing` is **not** the final answer. The processor follows it, on
+the *same* `ClientTag`, with the real response roughly a second later —
+`StatusCode: 200 OK`, a populated body, `CommuniqueType: ReadResponse`. All
+5 of the interim `102`s in this sweep resolved this way; none was ever
+followed by anything else. `fixtures/late-frames.json` (redacted) captures
+those 5 real, delayed responses directly — `receivedMsAfterSubscribe`
+(a generic timing field name from the capture tool, not specific to
+subscriptions) records 980–1029ms after the original request, and each
+frame's `header.ClientTag` (`lt-1`) matches what the corresponding entry in
+`fixtures/sweep-read.json` would have used to send the request in the first
+place.
+
+This is a **two-frame pattern for a single logical request**, not a
+subscription push and not a distinct `CommuniqueType` — `docs/mapping.md`'s
+verb table and "The 14 CommuniqueTypes" section above still apply
+unchanged; a client just cannot treat the first frame on a tag as
+necessarily the last. `$SRC/lib/leap-client.ts`'s `handleData` (see
+"Framing and correlation" above) implements this directly: on a frame whose
+`ClientTag` matches a pending request, if `Header.StatusCode` starts with
+`102`, the frame is discarded and the pending entry is left in place rather
+than resolved; the entry is only resolved (and removed) on a later frame
+carrying the same tag with a non-`102` status. An earlier version of this
+client resolved on the `102` itself, permanently losing the real response
+that followed — `$SRC`'s own commit history documents this bug and its fix,
+made necessary directly by this sweep's captured evidence. Only `102` has
+been observed behaving this way; every other status, including other `1xx`
+codes not yet seen in practice, is still treated as terminal.
+
+This has one direct consequence for a client's timeout handling: a fixed
+deadline measured from the original request still covers the observed case
+(the real response arrives in ~1s, well inside a typical multi-second
+timeout), so `$SRC/lib/leap-client.ts` deliberately does *not* extend or
+reset its per-request timeout when a `102` is seen for that tag — doing so
+would let a processor that kept re-emitting `102` without ever finishing
+stall the caller indefinitely instead of failing loudly.
+
 ## Transports
 
 LEAP is one protocol among several the processor speaks, all sharing the same

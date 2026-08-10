@@ -75,17 +75,52 @@ subscription-related JSON examples in `index.md` or `api-discovery.md`
 resource types by URL) include a full envelope with a `Header` block for a
 pushed frame, only response body shapes.
 
-**Conclusion: the available sources do not establish whether pushed
-subscription frames reuse the originating `ClientTag`.** This is stated here
-explicitly, per this project's own accuracy requirements, rather than being
-silently omitted or guessed at. A client should not rely on push frames
-carrying any particular `ClientTag` value — including the original
-subscription's tag — for correlation; the only thing this project's client
-implementation relies on (and the only thing needed for correct behavior) is
-that push frames do *not* match a currently-pending request's tag, which the
-implementation cannot fail to satisfy, since a subscription's `SubscribeRequest`
-tag is normally already resolved and removed from the pending set by the time
-any push frame arrives.
+**Conclusion (as of the design stage): the available sources do not
+establish whether pushed subscription frames reuse the originating
+`ClientTag`.** This was stated here explicitly, per this project's own
+accuracy requirements, rather than being silently omitted or guessed at. A
+client should not rely on push frames carrying any particular `ClientTag`
+value — including the original subscription's tag — for correlation; the
+only thing this project's client implementation relies on (and the only
+thing needed for correct behavior) is that push frames do *not* match a
+currently-pending request's tag, which the implementation cannot fail to
+satisfy, since a subscription's `SubscribeRequest` tag is normally already
+resolved and removed from the pending set by the time any push frame
+arrives.
+
+### Update from Task 8's probe campaign — adjacent evidence, not a resolution
+
+A later probe campaign (Task 8, against a single, previously-unseen
+processor masked throughout this project's public fixtures) captured the
+first pushed-frame headers this project has ever observed on the wire:
+`fixtures/late-frames.json`, 5 frames, every one carrying the exact
+`ClientTag` (`lt-1`) of the request it answered.
+
+**This is evidence for asynchronous *responses*, not for subscription
+*pushes* — and the distinction is exact, not a hedge.** All 5 of those
+frames were the terminal half of a `102 Processing` / `200 OK` two-frame
+answer to an ordinary `ReadRequest GET /firmwareimage/{firmwareimageId}`
+(see `docs/protocol.md`'s "`102 Processing`" section for the full
+mechanism) — not a server-initiated push following a `SubscribeRequest`.
+The same campaign separately probed all 19 subscribable routes this
+specification's bundled document lists (`fixtures/subscriptions.json`, 41
+subscribe attempts total across both id- and status-shaped variants of
+several routes): 10 were accepted with `200 OK`, confirming the
+subscription mechanism itself works, but **zero frames arrived in any of
+the 41 twenty-second hold windows that followed, including on the 10
+accepted subscriptions.** That reflects a quiet system during the probe run
+— no light changed, no sensor tripped, no device state moved — not a
+broken or unsupported feature.
+
+So: the question this section opened with — does a *pushed subscription*
+frame reuse the originating tag — **remains genuinely unresolved.** No
+pushed frame was captured in this campaign at all, on any subscription, to
+answer it either way. What Task 8 actually establishes is narrower and
+adjacent: LEAP's asynchronous-response mechanism, for the one route where it
+was observed, reuses the request's tag. Whether that generalizes to pushed
+frames is still untested. This document continues to say so explicitly
+rather than inferring an answer from a mechanism that, on inspection, turned
+out to be a different one.
 
 ## The subscribable routes
 
