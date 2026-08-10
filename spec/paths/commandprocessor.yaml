@@ -39,8 +39,11 @@
 # `fixtures/push-probe.json`: two `CreateRequest`s to
 # `/zone/4664/commandprocessor` and both of their responses, with bodies.
 # That is where `/zone/{zoneId}/commandprocessor`'s `201` response below
-# comes from. It is the only command-processor *response body* this project
-# has, so the other nine paths keep an unschema'd `200` and nothing more.
+# comes from. It is the only response to a *command* this project has
+# captured -- the 119 probes above are refusals, and 76 of them do carry a
+# body, the uniform `{"Message": "This request is not supported"}`, which
+# describes the refusal rather than any command's result. So the other nine
+# paths keep an unschema'd `200` and nothing more.
 #
 # One of the ten,
 # `/virtualbutton/{virtualbuttonId}/commandprocessor`, is corroborated more
