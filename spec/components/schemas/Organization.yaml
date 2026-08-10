@@ -7,9 +7,12 @@ description: |
   Firmware marks all four fields non-pointer (always present), but Caseta
   v01.123 omits `AccountNumber`: its single installer record
   (`fixtures/spec-read-caseta.json`, /project/contactinfo) carries `Name`,
-  `Phone` and `Email` and nothing else. Both RA3 v03.247 units carry all
-  four. Relaxed to optional on that observed absence -- three observations
-  in all, and the only platform disagreement among them is this field.
+  `Phone` and `Email` and nothing else. Both RA3 corpora carry all four --
+  the original capture (v03.247) and the coverage-blind spec probe
+  (v03.249), whose /project/contactinfo bodies are byte-identical, so those
+  are three observations of two distinct records. Relaxed to optional on
+  that observed absence; the only platform disagreement among them is this
+  field.
 
   The direction of the inference matters and is the same one `LoadController`
   records: an observed absence falsifies a non-pointer `required`, while

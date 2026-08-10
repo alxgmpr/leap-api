@@ -3,8 +3,11 @@
 # _generated/project.yaml -- the generated file has a `/project/contact`
 # path (singular, no `info` suffix) with no recovered response type; the
 # real wire URL is `/project/contactinfo`. Confirmed 200 OK with body key
-# `Contacts` on RA3 v03.247; Caseta v01.123 returns 204 NoContent for the
-# same route (no contacts configured at probe time, not a route failure).
+# `Contacts` on RA3 (v03.247 and v03.249) and on Caseta v01.123 via the
+# coverage-blind spec probe. The original Caseta capture returns 204
+# NoContent for the same route -- no contacts configured on that bridge at
+# probe time, not a route failure, as the later Caseta 200 shows.
+# `/project/contact` (singular) is 400 BadRequest on both platforms.
 type: array
 items:
   $ref: "#/components/schemas/Contact"

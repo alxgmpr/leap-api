@@ -1,10 +1,22 @@
 type: object
 description: |
   Firmware marks `Email` and `PrimaryPhone` non-pointer (always present),
-  but the single observed instance (RA3 v03.247, via /project/contactinfo)
-  omits both -- its email/phone are carried on the nested `Organization`
-  instead. Relaxed to optional on hardware evidence (Caseta v01.123 returns
-  204 on this route, so unconfirmed there).
+  but every observed instance omits both -- their email/phone are carried on
+  the nested `Organization` instead. Relaxed to optional on that evidence.
+
+  Three instances, on both platforms, via /project/contactinfo:
+
+  - RA3 v03.247, the original capture -- `/contactinfo/102`.
+  - RA3 v03.249, the coverage-blind spec probe -- `/contactinfo/102`, a
+    body byte-identical to the above, so this is a second observation of
+    the same record rather than a second record.
+  - Caseta v01.123, the coverage-blind spec probe -- `/contactinfo/1`, a
+    genuinely different record.
+
+  The relaxation is therefore confirmed on Caseta, not merely unconfirmed
+  there: the original Caseta capture answered 204 NoContent on this route,
+  but the Caseta spec probe answers 200 OK with a Contact that omits
+  `Email` and `PrimaryPhone` exactly as RA3 does.
 properties:
   href:
     type: string
