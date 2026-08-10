@@ -42,6 +42,9 @@ describe("redactValue", () => {
     assert.match(out, /^<mac-\d+>$/);
   });
 
+  // (Test input is an invented 40-character hex string, not a real
+  // transfer/project GUID from any capture -- redaction here is by shape,
+  // 32+ hex characters, so any string of that form exercises the same path.)
   test("redacts GUIDs", () => {
     const out = String(redactValue("ABCDEF0123456789ABCDEF0123456789ABCDEF01"));
     assert.match(out, /^<guid-\d+>$/);
