@@ -7,8 +7,10 @@ properties:
     description: |
       TODO(enum): members of NetworkInterfaceConnectedStatus were not
       recovered from the firmware extraction, and hardware has produced
-      exactly one: `Connected`, once, via /networkinterface/1 on RA3 unit 2
-      -- the only 200 any corpus has for that route. A disconnected
+      exactly one distinct value: `Connected`, twice, via
+      /networkinterface/1/status on RA3 v03.249 and on Caseta v01.123 --
+      the only two 200s any corpus has for that route, one per platform,
+      and they agree. A disconnected
       counterpart is implied by the field's name and was never captured,
       unsurprisingly: the probe reached the processor over that very
       interface.
