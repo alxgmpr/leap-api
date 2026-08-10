@@ -117,7 +117,7 @@ recording status and body for each. It has now been run twice:
 
 | Corpus | Target | URLs | Statuses |
 |---|---|---|---|
-| `fixtures/spec-read.json` | RA3 v03.249 (`/server` `ProtocolVersion`). Same project as the sweep corpora — the 21 object URLs both probed return byte-identical bodies — and the same `/clientsetting` version pair, `3` / `249` | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
+| `fixtures/spec-read.json` | RA3 v03.249 (`/server` `ProtocolVersion`). Same project as the sweep corpora: of the 206 URLs `fixtures/sweep-read.json` probed, 47 were probed by this corpus too, and **all 47 return byte-identical bodies** — 45 as `200 OK`, 2 as matching `404 NotFound`s. Same `/clientsetting` version pair too, `3` / `249` | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
 | `fixtures/spec-read-caseta.json` | Caseta v01.123 (`L-BDG2-WH`), a bridge re-paired after a factory reset | 848 | 104 × `200`, 195 × `204`, 191 × `400`, 317 × `404`, 38 × `405`, 3 × `500` |
 
 Both are `{path: {status, body}}` probe sets in `captures.json`, so the
