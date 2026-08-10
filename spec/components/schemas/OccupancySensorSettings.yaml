@@ -15,8 +15,11 @@ description: |
   **The whole evidence base for this schema is one object.** Only the two
   coverage-blind spec probes ever requested any
   `/area/*occupancysensorsettings` URL, 9 requests each -- the collection
-  route plus 8 area ids. Two of Caseta v01.123's 9 came back with a body
-  (`fixtures/spec-read-caseta.json`), and they carry the same object:
+  route plus 8 area ids. Two of Caseta v01.123's 9 returned an
+  `OccupancySensorSettings` payload (`fixtures/spec-read-caseta.json`); the
+  other seven are `404 NotFound`, which carry a `{"Message": ...}` body of
+  their own and so are not body-less, only payload-less. The two carry the
+  same object:
   `/area/2/occupancysensorsettings`, `{"href": ..., "Parent": {...},
   "Timeout": "15:00", "Sensitivity": "Medium"}`, and the
   `/area/occupancysensorsettings` collection whose sole element is
