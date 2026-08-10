@@ -2,25 +2,32 @@
 # evidence. The original note said this type had zero fixture coverage. That
 # was true of the two campaign corpora, and the reason is that they barely
 # asked: each contains exactly three preset-ish URLs -- `/preset` (`400
-# BadRequest` on both), `/presetassignment`, and
-# `/fadefighterproperties/programmingmodel/preset` (`400` on both). Neither
-# ever requested a `/preset/{presetId}` URL or any of its `*assignment`
-# sub-routes, so for those the campaign corpora are silent, not refusing.
+# BadRequest` on both), `/fadefighterproperties/programmingmodel/preset`
+# (`400` on both), and `/presetassignment` (RA3 `204 NoContent`, Caseta
+# `200 OK` with a `PresetAssignments` array). Neither ever requested a
+# `/preset/{presetId}` URL or any of its `*assignment` sub-routes, so for
+# those the campaign corpora are silent, not refusing.
 #
-# The two coverage-blind spec probes did ask: 208 `/preset*` URLs each across
-# 26 templates -- 8 `/preset/{presetId}` plus 8 for each of its 25
-# `*assignment` sub-routes, and notably not the bare `/preset` collection,
-# which neither spec probe requested. What they got back is mostly not a
-# refusal either. On the
-# 25 `/preset/{presetId}/*assignment` sub-routes (8 preset ids each, 200
+# The two coverage-blind spec probes did ask: 208 URLs each under the
+# `/preset` path segment, across 26 templates -- 8 `/preset/{presetId}` plus
+# 8 for each of its 25 `*assignment` sub-routes. (Path segment, not glob:
+# `/presetassignment` and `/presetassignment/deprecated` are also present in
+# both probes and are NOT among the 208.) Notably absent is the bare
+# `/preset` collection, which neither spec probe requested.
+#
+# What they got back is mostly not a refusal either. On the 25
+# `/preset/{presetId}/*assignment` sub-routes (8 preset ids each, 200
 # requests per probe): RA3 v03.249 answers `404 NotFound` x192 and `204
 # NoContent` x8; Caseta v01.123 answers `204 NoContent` x160, `405
 # MethodNotAllowed` x32 and `404 NotFound` x8. A `204` is the route working
 # with nothing to report, which this project distinguishes carefully from
 # the `400 BadRequest` + `{"Message": "This request is not supported"}`
 # refusal (see docs/platforms.md). The point the count actually supports is
-# narrower and is the one that matters here: **no `*assignment` sub-route has
-# ever returned a 200 on either platform.**
+# narrower and is the one that matters here: **no
+# `/preset/{presetId}/*assignment` sub-route has ever returned a 200 on
+# either platform.** That scope is load-bearing -- `/presetassignment`, a
+# different route, is a 200 on the original Caseta capture, which is where
+# the only PresetAssignment objects in this project come from.
 #
 # The `/preset/{presetId}` route itself is where the coverage came from: Caseta
 # v01.123 answers `200 OK` on all 8 preset ids the probe requested, RA3
