@@ -29,12 +29,15 @@ description: |
   `404 NotFound`; the original campaign corpora and the sweep corpora never
   requested these URLs at all.
 
-  Six of the ten fields are unobserved pointers: `Follows`, `OccupancyMode`,
-  and the three OccupancySettingsAction slots (`Occupied`, `Unoccupied`,
-  `PartiallyOccupied`) are all absent from that object, which is consistent
-  with occupancy being `Disabled` on it. Nothing in this corpus exercises
-  them, so OccupancySettingsAction enters the bundle entirely untriaged --
-  see its own file.
+  Six of the ten fields are absent from that object. Five of the six are
+  pointers in firmware, so their absence is unremarkable: `Follows`,
+  `OccupancyMode`, and the three OccupancySettingsAction slots (`Occupied`,
+  `Unoccupied`, `PartiallyOccupied`), which is consistent with occupancy
+  being `Disabled` on it. The sixth is `PresetAssignmentUnsupported`, the
+  non-pointer relaxed above -- that one absence is a firmware/hardware
+  disagreement, the other five are not. Nothing in this corpus exercises the
+  action slots, so OccupancySettingsAction enters the bundle entirely
+  untriaged -- see its own file.
 properties:
   href:
     type: string

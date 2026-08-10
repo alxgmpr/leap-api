@@ -11,9 +11,10 @@
 # 2. The five named per-service GETs -- /service/{alexa,bacnet,homekit,
 #    ifttt,sonos} -- had their TODO markers resolved by pointing at the
 #    existing `Service` schema. No new schema was authored: each returns
-#    `{"Service": {...}}`, a single object identical to the one the same
-#    platform lists inside `GET /service`, so the collection route's element
-#    type already described them. These are the singular routes, so unlike
+#    `{"Service": {...}}`, a single object byte-identical to the entry the
+#    same platform lists inside `GET /service` -- checked for all 9 of the 200
+#    OK bodies -- so the collection route's element type already described
+#    them. These are the singular routes, so unlike
 #    deviation 1 there is no plural correction involved -- the firmware
 #    simply recorded no responseType for any of the five.
 #
@@ -60,8 +61,8 @@
     description: >-
       No responseType recovered from the firmware extraction. Captured
       traffic resolves it: both platforms return `200 OK` with body key
-      `Service` holding a single Service object -- the same object each
-      platform lists inside `GET /service`. RA3 v03.249's carries
+      `Service` holding a single Service object, byte-identical to the entry
+      the same platform lists inside `GET /service`. RA3 v03.249's carries
       `AlexaProperties` with both `Configuration` and `DataSummary`; Caseta
       v01.123's carries `DataSummary` only.
     responses:

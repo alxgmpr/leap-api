@@ -5,7 +5,9 @@
 # not assert.
 type: object
 description: |
-  Capacity limits on timeclock events, one `Rules` element per limit set.
+  Capacity limits on timeclock events, held in a `Rules` array. Only one
+  element has ever been observed, so what determines how many a processor
+  reports is not established here.
 
   This is one of the four plural-*named* firmware types docs/mapping.md
   singles out (`UnconfiguredSensors`, `TimeclockEventRules`,

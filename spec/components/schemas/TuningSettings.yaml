@@ -18,9 +18,10 @@ description: |
   on RA3 this class of configuration is managed through Lutron Designer over
   IPL, not over LEAP.
 
-  `HighEndTrim` and `LowEndTrim` are observed as both integers and
-  fractional values (`100`, `70.1`, `94.9`; `1.2`, `18.9`), consistent with
-  the firmware's `float64`; `EnergyTrim` is `100` on all 7. None of that
+  `HighEndTrim` and `LowEndTrim` are observed as both whole and fractional
+  values, consistent with the firmware's `float64`. Across the 7 objects the
+  distinct values are: `HighEndTrim` `100`, `70.1`, `94.9`; `LowEndTrim`
+  `1.2`, `5.1`, `14.2`, `18.9`; `EnergyTrim` `100` on all 7. None of that
   distinguishes a percentage from an unbounded number, so no `minimum` or
   `maximum` is asserted -- the firmware states no range either.
 properties:

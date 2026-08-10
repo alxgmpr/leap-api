@@ -15,7 +15,11 @@
 #    one observed value, `Enabled`, is a member.
 type: object
 description: |
-  Daylighting gain configuration for an area or a zone.
+  Daylighting gain configuration. Every observed instance is an area's; the
+  zone-level routes (`/zone/daylightinggainsettings` and its per-zone form)
+  exist in the specification but have never returned a body, and
+  `Zone.DaylightingGainSettings` is a bare `HyperReference`, so nothing in
+  this project's evidence says what a zone's looks like.
 
   **The whole evidence base for this schema is one object.** Only the two
   coverage-blind spec probes ever requested any `/area/*daylightinggainsettings`

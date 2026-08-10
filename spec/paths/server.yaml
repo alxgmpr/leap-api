@@ -16,9 +16,12 @@
 #    `leapobj.Ping` struct it was refined from -- the route table connects
 #    neither, recording `responseType: null`.
 #
-#    The remaining five markers in this file are untouched. Four are on
-#    /server/leap/* pairing routes, which no corpus ever answered with a 200,
-#    and the fifth is the `put` on /server/ipl -- only ReadRequests were sent.
+#    The remaining five markers in this file are untouched, and for two
+#    different reasons. Four are on /server/leap/* pairing routes: both spec
+#    probes asked /server/leap/integrator/pairing and /server/leap/pairing
+#    and got `400 BadRequest` from each, while /server/leap/pairing/{id} was
+#    never requested by any corpus at all. The fifth is the `put` on
+#    /server/ipl -- only ReadRequests were sent there.
 /server:
   get:
     operationId: getServer

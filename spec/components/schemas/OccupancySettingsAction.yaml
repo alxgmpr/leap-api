@@ -9,8 +9,8 @@
 #
 # The deviation: `SwitchedLevel` points at the shared SwitchedLevel schema
 # instead of the generated inline open string. Firmware types the field
-# `SwitchedLevel leapobj.SwitchedLevel`; SwitchedLevel.yaml names this type as
-# one of the nine carrying it and this schema as one of the users that had no
+# `SwitchedLevel leapobj.SwitchedLevel`; SwitchedLevel.yaml counts nine fields
+# carrying that type and named this schema among the users that had no
 # hand-refined file yet. That is a type-identity strengthening with no
 # observation at this site, the same basis on which
 # SwitchedLevelParameters.SwitchedLevel is typed there.
