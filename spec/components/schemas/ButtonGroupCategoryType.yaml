@@ -4,7 +4,17 @@ description: |
   enum; the member below was recovered from ButtonGroupCategory.Type,
   observed 20 times across three corpora -- RA3 v03.247 4, Caseta v01.123
   10, RA3 v03.249 6 -- via /buttongroup, /buttongroup/{buttongroupId},
-  /device/{deviceId}/buttongroup and its /expanded form. The Caseta spec
-  probe reaches no button group. Unlisted values are possible.
+  /device/{deviceId}/buttongroup and its /expanded form.
+
+  The Caseta spec probe contributes none, but not for want of coverage: it
+  reaches exactly one button group (`/buttongroup/1`, via
+  /device/1/buttongroup, `200 OK`) and that group carries no `Category` key
+  at all. Absence of the key, not absence of the object -- the same button
+  group is what `StopIfMovingEnabledState.yaml` counts as its 20th
+  observation. `Category` is optional on ButtonGroup generally: only 2 of
+  the 16 button groups the original RA3 capture returns carry it, and 5 of
+  10 on the original Caseta capture.
+
+  Unlisted values are possible.
 enum:
   - Lights
