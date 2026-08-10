@@ -1,7 +1,22 @@
+# TWO COUNTING BASES ARE USED IN THIS FILE, and they are not
+# interchangeable -- the same entity-versus-occurrence distinction
+# docs/platforms.md draws for the Caseta XID denominators:
+#
+#   A. STATUS OBJECTS -- each counted once, at its own URL
+#      /device/{deviceId}/status. 65 across the four read corpora that
+#      return one: RA3 32 + 7, Caseta 24 + 2.
+#   B. OBJECT OCCURRENCES -- basis A plus every route that re-serves the
+#      same object, which here is the /device/status collection, answered
+#      only by the two Caseta corpora. 91 in all: RA3 32 + 7,
+#      Caseta 48 + 4.
+#
+# The `required` argument below is on basis A. The per-field observation
+# counts under `x-observed-values` are on basis B. That is why 89 exceeds
+# 65, and why dividing one by the other means nothing.
+#
 # `required` dropped entirely: the firmware marks ConfigurationTransferStatus,
-# Availability, and StatusAccuracy all non-pointer, but none are universal
-# across the 65 device statuses the four read corpora return through
-# /device/{deviceId}/status (RA3 32 + 7, Caseta 24 + 2).
+# Availability, and StatusAccuracy all non-pointer, but none is universal
+# across the 65 status objects of basis A.
 # ConfigurationTransferStatus is absent on 2/65 -- /device/435/status, the
 # RA3 processor's own status, once per RA3 corpus. Availability is absent on
 # 2/65 -- /device/1/status, the Caseta bridge's own status, once per Caseta
@@ -10,9 +25,10 @@
 # (37/39, the exception being /device/435/status again).
 #
 # `Availability` points at the shared Availability schema (firmware type
-# `leapobj.Availability`, shared with ZoneStatus.Availability): 87
-# observations here, `Unknown` 85 and `Available` 2. ConfigurationTransferStatus
-# and StatusAccuracy keep their TODO(enum) markers -- see those descriptions.
+# `leapobj.Availability`, shared with ZoneStatus.Availability): present on 87
+# of basis B's 91 occurrences, `Unknown` 85 and `Available` 2.
+# ConfigurationTransferStatus and StatusAccuracy keep their TODO(enum)
+# markers -- see those descriptions.
 type: object
 properties:
   href:
@@ -28,8 +44,9 @@ properties:
     description: |
       TODO(enum): members of ConfigurationTransferStatus were not recovered
       from the firmware extraction, and hardware has produced exactly one:
-      `NotRequired`, 89 observations across both platforms and all four
-      read corpora that return a device status. Every probed system was
+      `NotRequired`, 89 of the 91 object occurrences on basis B (see this
+      schema's header comment), across both platforms and all four read
+      corpora that return a device status. Every probed system was
       already in sync; whatever this
       field reports mid-transfer was never captured, so the set stays open.
     x-observed-values:
@@ -48,7 +65,10 @@ properties:
       TODO(enum): members of StatusAccuracy were not recovered from the
       firmware extraction, and hardware has produced exactly one: `Good`,
       37 observations (RA3 v03.247 31, RA3 v03.249 6; absent from every
-      Caseta device status, on both Caseta corpora). Same firmware type as
+      Caseta device status, on both Caseta corpora). This is the one count
+      in this file that is the same on both bases: only the RA3 corpora
+      carry the field, and neither answers the /device/status collection
+      that makes basis B larger. Same firmware type as
       ZoneStatus.StatusAccuracy, which adds 138 more observations of the
       same single value -- see that field for why one value is not a set.
     x-observed-values:
