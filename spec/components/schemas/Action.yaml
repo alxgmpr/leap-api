@@ -4,8 +4,15 @@ properties:
     type: string
   Name:
     type: string
-    description: "TODO(enum): members of ActionName were not recovered from the
-      firmware extraction"
+    description: |
+      TODO(enum): members of ActionName were not recovered from the firmware
+      extraction. Two distinct values are observed (Caseta v01.123, via
+      /system/action), which under this specification's own ">= 2 distinct
+      members -> close the set" rule would qualify -- but both are
+      user-assigned names that `lib/redact.ts` replaced with `<name-N>`
+      placeholders, so the real vocabulary is not in this repository and
+      almost certainly is not a vocabulary at all. Neither closing the set
+      nor recording `x-observed-values` would mean anything here.
   Statements:
     type: array
     items:

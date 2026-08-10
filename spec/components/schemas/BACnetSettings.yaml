@@ -1,9 +1,10 @@
 # Straight copy from _generated/BACnetSettings.yaml -- dependency of
 # BACnetProperties.yaml, flattened into it via `allOf` (see that file's
-# comment). Matches the one captured instance (RA3 v03.247, via /service)
-# field-for-field: Enabled, NetworkNumber, Port, BBMDIPAddress, BBMDTTL,
-# InstanceStrategy all present; DeviceInstance (optional in the firmware)
-# not observed.
+# comment). Matches all three captured instances field-for-field --
+# RA3 v03.247 via /service, RA3 v03.249 via /service and /service/bacnet --
+# Enabled, NetworkNumber, Port, BBMDIPAddress, BBMDTTL, InstanceStrategy all
+# present; DeviceInstance (optional in the firmware) not observed. No Caseta
+# corpus carries a BACnet service.
 type: object
 properties:
   Enabled:
@@ -28,8 +29,16 @@ properties:
     maximum: 4294967295
   InstanceStrategy:
     type: string
-    description: "TODO(enum): members of BACnetInstanceStrategy were not recovered
-      from the firmware extraction"
+    description: |
+      TODO(enum): members of BACnetInstanceStrategy were not recovered from
+      the firmware extraction, and hardware has produced exactly one:
+      `Custom`, 3 observations on RA3 (v03.247 via /service; v03.249 via
+      /service and /service/bacnet). A named firmware enum with one observed
+      value stays an open string -- the field is called a *strategy*, so
+      whatever the non-custom strategies are named, this corpus never
+      provoked one.
+    x-observed-values:
+      - Custom
 required:
   - Enabled
   - NetworkNumber
