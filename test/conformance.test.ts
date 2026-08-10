@@ -55,12 +55,12 @@ addFormats(ajv);
 // raised it 469 -> 470 (+1), the last path Task 8's sweep newly reached --
 // probedNotInSpec is 0 again as of this commit.
 //
-// The coverage-blind spec probe (`spec-read`, 864 URLs / 226 200-OK bodies
+// The coverage-blind spec probe (`spec-read-ra3`, 864 URLs / 226 200-OK bodies
 // against the same processor) raised it again, 470 -> 658 (+188), and like
 // the sweep import it did so WITHOUT any path or schema authoring: it is a
 // far wider read of paths whose response schemas already existed and simply
 // had no fixture bodies to validate against. 14 cases FAILED on import --
-// 13 in spec-read plus one in sweep-write (`/button/498`, which the wider
+// 13 in spec-read-ra3 plus one in sweep-write (`/button/498`, which the wider
 // spec probe reached first) -- across six schemas that disagreed with
 // hardware. Those failures were the probe's actual signal, and every one
 // has since been triaged, one commit per family:
@@ -84,7 +84,35 @@ addFormats(ajv);
 // was re-run after the fixture was written). Re-redacting picked up the
 // other 21 paths and with them 14 more conformance cases. The 30-path
 // figure is the one the campaign ledger records for that run.
-const EXPECTED_MATCHED_CASES = 672;
+//
+// 672 -> 751: the same coverage-blind prober run against a Caseta bridge
+// (`spec-read-caseta`, 848 URLs / 104 200-OK bodies -- the first Caseta data
+// in this project since the original campaign). 79 of those 104 reached a
+// schema; the other 25 are paths whose 200 response has no schema ref yet
+// (18 templates, mostly `TODO(response)` -- `/service/{integration}`,
+// `/area/{areaId}/occupancysettings` and neighbours,
+// `/device/{deviceId}/ledsettings`, `/zone/tuningsettings`). No path or
+// schema was authored for this import: like both earlier corpus imports it
+// gave existing schemas new bodies to validate against.
+//
+// 3 of the 79 FAILED on import, all falsifying a firmware-derived
+// assertion the RA3 corpora had never contradicted, and each triaged in its
+// own commit:
+//
+//   - Organization.AccountNumber  non-pointer in firmware, absent from
+//                                 Caseta's installer record; now optional
+//   - Server.Type                 3rd enum member observed (`LIP`, Caseta's
+//                                 telnet-23 integration server); appended,
+//                                 NOT reopened -- see ServerType.yaml for
+//                                 why this splits from the ServiceType
+//                                 precedent
+//   - LoadController.XID          non-pointer in firmware; Caseta emits no
+//                                 XID on any object, on any route
+//
+// None of those changed which cases are REACHED -- this constant tracks
+// coverage, not conformance, and every one of them edited a schema an
+// existing case already pointed at.
+const EXPECTED_MATCHED_CASES = 751;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */
