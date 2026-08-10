@@ -119,8 +119,9 @@ is per-subscription, not merely per-connection.
 
 What this control does *not* separate is the tag from the subscribe
 request's *position* in the sequence. The committed run does pad the tag
-counter: `sentRequests` shows 17 reads unrelated to either subscription
-before the first `SubscribeRequest`.
+counter: `sentRequests` shows 17 `ReadRequest`s issued before the first
+`SubscribeRequest`, so the subscribe is the eighteenth request on the
+connection.
 
 ```
 $ node -e '
@@ -134,8 +135,17 @@ console.log(JSON.stringify(d.sentRequests.map(r => [r.tag, r.communiqueType, r.u
  ["lt-19","SubscribeRequest","/area/1340/status"], ...]
 ```
 
+Those 17 are a discovery prelude rather than filler: `lt-1` and `lt-2`
+read the zone the run is about to drive, `lt-3` lists the areas, and
+`lt-4`…`lt-17` walk each area's zones. Several of them touch resources the
+subscriptions then cover — zone 4664 is one of the 46 entries in
+`lt-18`'s snapshot, and `lt-17` reads the associated zones of the very area
+`lt-19` subscribes to. That is irrelevant to the argument here, which turns
+only on their being **prior**: what advances the tag counter is how many
+requests were issued before the subscribe, not what they were about.
+
 So the subscribe lands on `lt-18` because the harness's prelude is a
-**fixed length** — 17 reads before the first subscribe — not because
+**fixed length** — 17 requests before the first subscribe — not because
 `lt-18` is special and not by coincidence. Padding is already what this run
 does; what it cannot do is vary. Distinguishing "the tag is copied from the
 subscribe
