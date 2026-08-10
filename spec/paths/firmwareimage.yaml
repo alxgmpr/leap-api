@@ -1,0 +1,33 @@
+# Refined from spec/paths/_generated/firmwareimage.yaml. Straight copy, no
+# deviations -- the generated x-leap-body-type/response schema (FirmwareImage)
+# already matched the observed wire body exactly.
+#
+# Fixture evidence: Task 8's sweep (fixtures/sweep-read.json, 7 of 7
+# probe-confirmed firmware images on a single processor). 5 of those 7
+# additionally show up in fixtures/late-frames.json: the processor sent an
+# interim `102 Processing` for this route before the real `200 OK` arrived
+# roughly a second later on the same ClientTag -- see docs/protocol.md's
+# "Status codes" section for the two-frame pattern this operation
+# demonstrates. fixtures/sweep-read.json already reflects the resolved,
+# terminal 200 OK body (the sweep tool waited for it), not the interim ack.
+/firmwareimage/{firmwareimageId}:
+  get:
+    operationId: getFirmwareImageID
+    tags:
+      - firmwareimage
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: FirmwareImage
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FirmwareImage"
+    summary: Read firmware image info
+  parameters:
+    - name: firmwareimageId
+      in: path
+      required: true
+      schema:
+        type: string
