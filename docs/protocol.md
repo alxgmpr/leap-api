@@ -134,10 +134,18 @@ This is the load-bearing mechanism for subscriptions: a client sends one
 `SubscribeRequest` (tagged) and gets back one `SubscribeResponse` (same tag,
 carrying the initial state), after which the processor pushes further frames
 for that resource on its own schedule, with no further request from the
-client. See `docs/subscriptions.md` for the full lifecycle, including an open
-question about whether those later pushes reuse the original tag — the
-sources available to this project do not settle it, and that document says so
-explicitly rather than guessing.
+client.
+
+Those later pushes **carry the originating `SubscribeRequest`'s `ClientTag`**,
+observed directly in `fixtures/push-probe.json` on one RA3 processor: two
+concurrent subscriptions, tags `lt-18` and `lt-19`, each pushed on its own
+tag. The routing rule above is unaffected — the subscription's tag is no
+longer pending by the time a push arrives, because the `SubscribeResponse`
+already resolved and removed it — but the reuse means a client must not
+recycle `ClientTag` values within a session, or a fresh request could be
+resolved by an unrelated subscription's push. See `docs/subscriptions.md` for
+the evidence, the delta-versus-snapshot shape of push bodies, and the limits
+of a single-processor sample.
 
 ## The 14 CommuniqueTypes
 
@@ -167,8 +175,26 @@ set:
 
 Unsolicited subscription pushes are not a distinct `CommuniqueType` in this
 list — they arrive with the same `CommuniqueType`/`Header`/`Body` shape as any
-other frame (in practice, carrying the resource's status type), distinguished
-only by `ClientTag` not matching a pending request (see "Framing" above).
+other frame, distinguished by the client only by `ClientTag` not matching a
+pending request (see "Framing" above). Every push captured in
+`fixtures/push-probe.json` takes the same concrete form:
+
+```json
+{
+  "CommuniqueType": "ReadResponse",
+  "Header": {
+    "MessageBodyType": "MultipleZoneStatus",
+    "StatusCode": "200 OK",
+    "Url": "/zone/status",
+    "ClientTag": "lt-18"
+  }
+}
+```
+
+That is, **`ReadResponse` — not `SubscribeResponse`** — with `200 OK`, the
+subscribed URL echoed back, and the subscription's own tag. `Body` carries
+only the fields that changed, not a full snapshot; `docs/subscriptions.md`
+has the details and the client consequences.
 
 ## Status codes
 
@@ -218,7 +244,12 @@ frame's `header.ClientTag` (`lt-1`) matches what the corresponding entry in
 place.
 
 This is a **two-frame pattern for a single logical request**, not a
-subscription push and not a distinct `CommuniqueType` — `docs/mapping.md`'s
+subscription push and not a distinct `CommuniqueType`. Both this and a
+subscription push land on a tag the client has seen before, which makes them
+easy to conflate; the difference is whether the tag is still pending. A `102`
+arrives while the request is unresolved and is followed by that request's
+terminal response. A push arrives after the request already got its terminal
+response, and only when the resource's state moves. `docs/mapping.md`'s
 verb table and "The 14 CommuniqueTypes" section above still apply
 unchanged; a client just cannot treat the first frame on a tag as
 necessarily the last. `$SRC/lib/leap-client.ts`'s `handleData` (see
