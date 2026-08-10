@@ -20,8 +20,18 @@ description: |
   reaches gives `Unknown` 4
   (/area/{3,32,1232,1256}/status), `Unoccupied` 3
   (/area/{1208,1220,1244}/status), and `Occupied` 1 (/area/912/status).
-  `fixtures/push-probe.json` carries a ninth, `Unoccupied`, in a pushed
-  /area/{areaId}/status frame.
+
+  `fixtures/push-probe.json` supplies a ninth, `Unoccupied` on
+  /area/1340/status -- an area none of those eight covers. Which frame it is
+  matters: it is the **subscribe-time snapshot**, `seq` 19,
+  `CommuniqueType: SubscribeResponse`, `MessageBodyType: OneAreaStatus`,
+  `deliveredToOnEvent: false` -- not one of the pushes that followed. None
+  of the three `/area/1340/status` pushes in that capture (`seq` 22, 23 and
+  26) carries `OccupancyStatus` at all, because push bodies are field-level
+  deltas and this field did not change while the capture was open. That is
+  the same fact `docs/subscriptions.md` uses to show that `AreaStatus`'s
+  `required: [OccupancyStatus]` does not hold for push frames, so the
+  snapshot/push distinction is load-bearing here rather than bookkeeping.
 
   Worth keeping in view when reading the rest of this specification: a
   single-member enum here was one probe away from being falsified, which is
