@@ -8,6 +8,26 @@
 # for ZoneExpandedStatus (Task 10) and Device/ButtonGroupExpanded/
 # LinkNodeExpanded (Task 12a). Confirmed from fixture evidence, not inferred
 # from the name==type shape alone.
+description: |
+  `NaturalLightOptimizationEventType` discriminates which timing fields the
+  event carries, the same way `TimeclockEvent.TimeclockEventType` does --
+  both are `leapobj.EventTimeType`, and both name a field that
+  `TimeclockEventBase` itself cannot see.
+
+  `TimeclockEventBase` used to require `AstronomicEventType`
+  unconditionally, which is where this schema got that assertion. That was
+  moved out to the embedding parents after `/timeclockevent/6924` (RA3)
+  showed a `FixedTime` event legitimately carrying neither astronomic field
+  -- see TimeclockEventBase.yaml. The assertion is not lost here, it is
+  restated against this schema's own discriminator: when
+  `NaturalLightOptimizationEventType` is `Astronomic`, both
+  `AstronomicEventType` and `AstronomicTimeOffset` are required. Both
+  observed NLOTime instances (StartTime and EndTime on the single probed
+  NaturalLightOptimization, Caseta v01.123, via
+  /system/naturallightoptimization) are `Astronomic` and carry both fields,
+  so this is the same strength the unconditional form had on the observed
+  corpus, with the correct condition attached. A non-astronomic NLOTime is
+  unobserved on either platform.
 allOf:
   - $ref: "#/components/schemas/TimeclockEventBase"
   - type: object
@@ -16,3 +36,13 @@ allOf:
         $ref: "#/components/schemas/EventTimeType"
     required:
       - NaturalLightOptimizationEventType
+if:
+  properties:
+    NaturalLightOptimizationEventType:
+      const: Astronomic
+  required:
+    - NaturalLightOptimizationEventType
+then:
+  required:
+    - AstronomicEventType
+    - AstronomicTimeOffset

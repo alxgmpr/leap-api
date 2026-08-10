@@ -59,13 +59,25 @@ addFormats(ajv);
 // against the same processor) raised it again, 470 -> 658 (+188), and like
 // the sweep import it did so WITHOUT any path or schema authoring: it is a
 // far wider read of paths whose response schemas already existed and simply
-// had no fixture bodies to validate against. 13 of those new cases FAIL --
-// six schemas that disagree with hardware (AreaStatus.CurrentScene,
-// Button.ProgrammingModelType, NetworkInterface, Services.Type,
-// TimeclockEvent.AstronomicTimeOffset / .AstronomicEventType). Those
-// failures are deliberately left failing: they are the probe's actual
-// signal, and triaging them is separate work. This constant tracks cases
-// REACHED, not cases passed, so it moves either way.
+// had no fixture bodies to validate against. 14 cases FAILED on import --
+// 13 in spec-read plus one in sweep-write (`/button/498`, which the wider
+// spec probe reached first) -- across six schemas that disagreed with
+// hardware. Those failures were the probe's actual signal, and every one
+// has since been triaged, one commit per family:
+//
+//   - AreaStatus.CurrentScene    explicit JSON null, `**HyperReference`
+//                                in firmware; now a `oneOf` with `null`
+//   - Button.ProgrammingModelType  6th enum member observed
+//   - NetworkInterface           anonymous embed flattened on wire evidence
+//   - Services.Type              closed enum falsified; now an open string
+//   - TimeclockEvent.AstronomicTimeOffset  clock format, not ISO 8601
+//   - TimeclockEvent.AstronomicEventType   required only when
+//                                `TimeclockEventType == Astronomic`
+//
+// None of that changed which cases are REACHED, which is what this
+// constant tracks -- it stayed at 672 across all five commits, because
+// every one of them edited a schema an existing case already pointed at.
+// The constant moves when coverage moves, not when conformance does.
 //
 // 658 -> 672: `fixtures/sweep-write.json` had drifted from its raw capture,
 // committed at 9 paths while the capture on disk holds 30 (the write phase

@@ -14,11 +14,42 @@
 # TimeclockEvent.TimeclockEventType (this task) -- not a new value
 # invented from nothing, just recognizing established type identity.
 type: object
+description: |
+  `TimeclockEventBase` used to require `AstronomicEventType`
+  unconditionally, which this schema inherited through the nested `$ref`.
+  That requirement moved out to the embedding parents after
+  `/timeclockevent/6924` (RA3) showed a `FixedTime` event legitimately
+  carrying neither astronomic field -- see TimeclockEventBase.yaml.
+
+  Restated here against `EventType`, this schema's own
+  `leapobj.EventTimeType` discriminator, on the same type-identity grounds
+  the comment above uses for pointing `EventType` at the shared enum: when
+  `EventType` is `Astronomic`, the nested `TimeclockEventBase` must carry
+  `AstronomicEventType` and `AstronomicTimeOffset`. This is strictly weaker
+  than the unconditional requirement it replaces, so it cannot manufacture
+  a failure on a body that previously validated -- and it preserves the
+  assertion for the astronomic case instead of dropping it silently. There
+  is still zero fixture coverage for this type on either platform, so
+  whether OccGroupTime nests `TimeclockEventBase` on the wire (as generated
+  and left here) or promotes it flat (as TimeclockEvent and NLOTime do)
+  remains unverified.
 properties:
   TimeclockEventBase:
     $ref: "#/components/schemas/TimeclockEventBase"
   EventType:
     $ref: "#/components/schemas/EventTimeType"
+if:
+  properties:
+    EventType:
+      const: Astronomic
+  required:
+    - EventType
+then:
+  properties:
+    TimeclockEventBase:
+      required:
+        - AstronomicEventType
+        - AstronomicTimeOffset
 required:
   - TimeclockEventBase
   - EventType
