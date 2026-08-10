@@ -1,3 +1,8 @@
+# `OccupancyStatus` points at the shared OccupancyStatus schema (firmware
+# type `leapobj.OccupancyStatus`, shared with
+# OccupancyGroupStatus.OccupancyStatus). This field is where `Occupied` and
+# `Unoccupied` were finally observed: 8 area statuses on RA3 unit 2 give
+# `Unknown` 4, `Unoccupied` 3, `Occupied` 1. See OccupancyStatus.yaml.
 type: object
 properties:
   href:
@@ -5,9 +10,7 @@ properties:
   Level:
     type: number
   OccupancyStatus:
-    type: string
-    description: "TODO(enum): members of OccupancyStatus were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/OccupancyStatus"
   InstantaneousPower:
     type: integer
     minimum: 0
