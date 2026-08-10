@@ -12,10 +12,17 @@ description: |
 
   Both members are well covered and both platforms agree on the vocabulary:
 
-  - `Link.LinkType` (via /link, /link/{linkId}, and nested in
-    Device.OwnedLinks on /device, /device/{deviceId} and
-    /project/masterdevicelist/devices): `RF` 14 -- RA3 v03.247 4, Caseta
-    v01.123 3 + 3, RA3 v03.249 4 -- and `ClearConnectTypeX` 8 (4 / 0 / 4).
+  - `Link.LinkType`, counted on these routes only: /link, /link/{linkId},
+    and Device.OwnedLinks as served by /device, /device/{deviceId} and
+    /project/masterdevicelist/devices. `RF` 14 -- RA3 v03.247 4, Caseta
+    v01.123 3 + 3, RA3 v03.249 4 -- and `ClearConnectTypeX` 8 (4 / 0 / 4),
+    22 in all. The same field occurs 10 further times outside that route
+    list, on /link/{linkId}/associatedlinknode/expanded, where each
+    LinkNodeExpanded nests its parent Device and that Device's OwnedLinks
+    (`RF` 6, `ClearConnectTypeX` 4: RA3 2/2 per corpus, Caseta 1/0 per
+    corpus). They are excluded for the same reason the LinkNode bullet
+    below excludes that route -- it re-serves objects the listed routes
+    already return.
   - `LinkNode.LinkType` (via /link/{linkId}/associatedlinknode): `RF` 44,
     `ClearConnectTypeX` 58 across the two RA3 corpora. Neither Caseta
     corpus reaches the unexpanded route; their /expanded bodies contribute
