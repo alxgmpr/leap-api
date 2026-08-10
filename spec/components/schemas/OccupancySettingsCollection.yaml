@@ -1,0 +1,17 @@
+# Hand-authored: GET /area/occupancysettings's collection response. Same
+# naming situation as DaylightingGainSettingsCollection.yaml, which states it
+# in full: the collection route and the per-area route carry the same
+# MessageBodyType (`OccupancySettings`) and differ only in the shape
+# underneath it, so the schema name needs a suffix the wire does not supply.
+# Both operations declare `x-leap-body-type: OccupancySettings`.
+#
+# The firmware extraction recovered no responseType for either route, so this
+# is a gap fill rather than a singular/plural mislabel correction. Confirmed
+# 200 OK on Caseta v01.123 (`fixtures/spec-read-caseta.json`) with a
+# one-element array whose element is byte-identical to the
+# `/area/2/occupancysettings` body. RA3 v03.249 answers this route
+# `204 NoContent`, so the array has never been observed with more or fewer
+# than one element.
+type: array
+items:
+  $ref: "#/components/schemas/OccupancySettings"

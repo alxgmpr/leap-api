@@ -1,0 +1,52 @@
+# Refined from _generated/DaylightingGainSettings.yaml. Two deviations:
+#
+# 1. `ImmediateLevelChangeUnsupported` relaxed to optional. Firmware marks it
+#    non-pointer (`ImmediateLevelChangeUnsupported bool`), so the generated
+#    schema required it; the one observed instance omits it. Same direction
+#    of inference Organization.yaml and LoadController.yaml record -- an
+#    observed absence falsifies a non-pointer `required`, while presence on a
+#    small sample is not evidence for one. `EnabledState` (also non-pointer)
+#    is present and stays required.
+#
+# 2. `EnabledState` points at the shared EnabledState schema rather than the
+#    generated inline open string. Firmware types the field
+#    `EnabledState leapobj.EnabledState` -- the same named type, and the same
+#    type-identity basis EnabledState.yaml records for its other users; the
+#    one observed value, `Enabled`, is a member.
+type: object
+description: |
+  Daylighting gain configuration for an area or a zone.
+
+  **The whole evidence base for this schema is one object.** Only the two
+  coverage-blind spec probes ever requested any `/area/*daylightinggainsettings`
+  URL, and exactly one of the 27 requests each sent returned a body: Caseta
+  v01.123's `/area/2/daylightinggainsettings`
+  (`fixtures/spec-read-caseta.json`). The same object is also the sole
+  element of that bridge's `/area/daylightinggainsettings` collection --
+  byte-identical, so it is one object seen through two routes, not two
+  observations of two objects. RA3 v03.249 answers the collection route
+  `204 NoContent` and every per-area route `404 NotFound`
+  (`fixtures/spec-read.json`); the original RA3 and Caseta campaign corpora
+  and the sweep corpora never requested these URLs at all.
+
+  `TargetSetPoint` (`33.33`) and `MinimumDaylightLevelSettings`
+  (`{"LevelType": "Off"}`) are both pointers in firmware and both present on
+  that object; `Follows` is a pointer and absent. None of that is a
+  disagreement, so nothing but the `required` list above changed.
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  EnabledState:
+    $ref: "#/components/schemas/EnabledState"
+  TargetSetPoint:
+    type: number
+  ImmediateLevelChangeUnsupported:
+    type: boolean
+  MinimumDaylightLevelSettings:
+    $ref: "#/components/schemas/MinimumDaylightLevelSettings"
+required:
+  - EnabledState

@@ -1,0 +1,22 @@
+# Copied verbatim from _generated/MinimumDaylightLevelSettings.yaml. Pulled
+# into the bundle as a transitive dependency of DaylightingGainSettings (see
+# that file for the evidence base). One observed instance, nested on the
+# single DaylightingGainSettings object any corpus has ever returned
+# (`{"LevelType": "Off"}`, Caseta v01.123, /area/2/daylightinggainsettings):
+# it carries the one required field, so nothing here could be relaxed.
+type: object
+properties:
+  LevelType:
+    type: string
+    description: |
+      TODO(enum): members of MinimumDaylightLevelType were not recovered
+      from the firmware extraction, and hardware has produced exactly one:
+      `Off`, on the single observed DaylightingGainSettings. One value does
+      not distinguish an enum from a constant -- a minimum-daylight-level
+      type that is only ever `Off` is exactly what a switched-off setting
+      looks like, and says nothing about the vocabulary of the type. Stays
+      an open string.
+    x-observed-values:
+      - "Off"
+required:
+  - LevelType

@@ -1,0 +1,64 @@
+# Refined from _generated/OccupancySettings.yaml. Two deviations:
+#
+# 1. `PresetAssignmentUnsupported` relaxed to optional. Firmware marks it
+#    non-pointer (`PresetAssignmentUnsupported bool`), so the generated schema
+#    required it; the one observed instance omits it. Same direction of
+#    inference Organization.yaml and LoadController.yaml record -- an observed
+#    absence falsifies a non-pointer `required`, while presence on a small
+#    sample is not evidence for one. `EnabledState` (also non-pointer) is
+#    present and stays required.
+#
+# 2. `EnabledState` points at the shared EnabledState schema rather than the
+#    generated inline open string. Firmware types the field
+#    `EnabledState leapobj.EnabledState` -- the same named type, and the same
+#    type-identity basis EnabledState.yaml records for its other users; the
+#    one observed value, `Disabled`, is a member.
+type: object
+description: |
+  Occupancy behaviour for an area.
+
+  **The whole evidence base for this schema is one object.** Only the two
+  coverage-blind spec probes ever requested any `/area/*occupancysettings`
+  URL, and exactly one request returned a body: Caseta v01.123's
+  `/area/2/occupancysettings` (`fixtures/spec-read-caseta.json`),
+  `{"href": ..., "Parent": {...}, "EnabledState": "Disabled",
+  "IsStagedOccupancyEnabled": false}`. The same object is also the sole
+  element of that bridge's `/area/occupancysettings` collection --
+  byte-identical, so it is one object seen through two routes. RA3 v03.249
+  answers the collection route `204 NoContent` and every per-area route
+  `404 NotFound`; the original campaign corpora and the sweep corpora never
+  requested these URLs at all.
+
+  Six of the ten fields are unobserved pointers: `Follows`, `OccupancyMode`,
+  and the three OccupancySettingsAction slots (`Occupied`, `Unoccupied`,
+  `PartiallyOccupied`) are all absent from that object, which is consistent
+  with occupancy being `Disabled` on it. Nothing in this corpus exercises
+  them, so OccupancySettingsAction enters the bundle entirely untriaged --
+  see its own file.
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  Occupied:
+    $ref: "#/components/schemas/OccupancySettingsAction"
+  Unoccupied:
+    $ref: "#/components/schemas/OccupancySettingsAction"
+  OccupancyMode:
+    type: string
+    description: |
+      TODO(enum): members of OccupancyMode were not recovered from the
+      firmware extraction, and hardware has produced none either -- the one
+      observed OccupancySettings omits this pointer field.
+  EnabledState:
+    $ref: "#/components/schemas/EnabledState"
+  PartiallyOccupied:
+    $ref: "#/components/schemas/OccupancySettingsAction"
+  PresetAssignmentUnsupported:
+    type: boolean
+  IsStagedOccupancyEnabled:
+    type: boolean
+required:
+  - EnabledState

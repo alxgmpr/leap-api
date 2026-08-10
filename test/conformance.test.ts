@@ -112,7 +112,17 @@ addFormats(ajv);
 // None of those changed which cases are REACHED -- this constant tracks
 // coverage, not conformance, and every one of them edited a schema an
 // existing case already pointed at.
-const EXPECTED_MATCHED_CASES = 751;
+//
+// 751 -> 757: the `area settings` family, the first of the TODO(response)
+// resolutions worked from the two coverage-blind spec probes. +6, one per
+// operation: `/area/{daylightinggainsettings,occupancysensorsettings,
+// occupancysettings}` as both a collection route and a per-area route. Every
+// one of those six bodies is in `fixtures/spec-read-caseta.json` and nowhere
+// else, and behind them stand only three objects -- the three settings
+// records of Caseta's `/area/2`, each returned once bare and once as the
+// single element of its collection route's array. Six cases, three objects:
+// this constant counts cases.
+const EXPECTED_MATCHED_CASES = 757;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

@@ -22,6 +22,12 @@ description: |
   RA3 v03.249, nested under /networkinterface/1); the other five carry no observed
   value in any corpus and take their members from the shared type, not from
   evidence at their own site.
+
+  The area-settings family added two more on the same type-identity basis,
+  both with direct coverage: DaylightingGainSettings.EnabledState (1 x
+  `Enabled`) and OccupancySettings.EnabledState (1 x `Disabled`), each on
+  the single object of its type that Caseta v01.123's coverage-blind spec
+  probe returned.
 enum:
   - Enabled
   - Disabled

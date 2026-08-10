@@ -1,0 +1,23 @@
+# Hand-authored: GET /area/daylightinggainsettings's collection response.
+#
+# The name has a `Collection` suffix because the wire cannot supply a
+# distinguishing one. Unlike the `Zone`/`Zones` cases docs/mapping.md's
+# "Collection GETs and the singular/plural defect" describes, the collection
+# route and the per-area route here carry the *same* MessageBodyType --
+# `DaylightingGainSettings`, a name already plural in form -- and differ only
+# in the shape underneath it: an array on `/area/daylightinggainsettings`, a
+# bare object on `/area/{areaId}/daylightinggainsettings`. Both operations
+# therefore declare `x-leap-body-type: DaylightingGainSettings`, the value the
+# processor actually sends, while pointing at different schemas; docs/mapping.md
+# already notes that `x-leap-body-type` and the schema name are separate facts
+# that need not agree.
+#
+# The firmware extraction recovered no responseType for either route, so this
+# is a gap fill rather than a mislabel correction. Confirmed 200 OK on Caseta
+# v01.123 (`fixtures/spec-read-caseta.json`) with a one-element array whose
+# element is byte-identical to the `/area/2/daylightinggainsettings` body. RA3
+# v03.249 answers this route `204 NoContent`, so the array has never been
+# observed with more or fewer than one element.
+type: array
+items:
+  $ref: "#/components/schemas/DaylightingGainSettings"

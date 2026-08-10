@@ -1,4 +1,4 @@
-# Refined from spec/paths/_generated/area.yaml. Two deviations from a
+# Refined from spec/paths/_generated/area.yaml. Three deviations from a
 # straight copy:
 #
 # 1. /area/{areaId} and /area/{areaXid} are MERGED, decided and recorded per
@@ -24,6 +24,23 @@
 #    collection route with a GET (`/device`, `/zone`, `/virtualbutton`) --
 #    see docs/mapping.md, which previously cited `/area` as the one
 #    no-GET exception to that convention; that carve-out no longer applies.
+#
+# 3. The six area-settings operations -- `/area/{daylightinggainsettings,
+#    occupancysensorsettings,occupancysettings}`, each as a collection route
+#    and a per-area route -- had their `TODO(response)` resolved. The
+#    firmware route table records no responseType for any of the six, so
+#    each is a gap fill, not a singular/plural correction. All six 200 OK
+#    bodies come from one corpus, `fixtures/spec-read-caseta.json` (Caseta
+#    v01.123), and behind them stand only three objects: the
+#    daylighting-gain, occupancy-sensor and occupancy settings of `/area/2`,
+#    each returned twice -- once bare through its per-area route, once as the
+#    single element of its collection route's array. The collection and
+#    per-area routes share a MessageBodyType and differ only in that array
+#    wrapper, which is why the three collection schemas carry a `Collection`
+#    suffix the wire does not supply -- see
+#    DaylightingGainSettingsCollection.yaml. RA3 v03.249 answers all three
+#    collection routes `204 NoContent` and all 24 per-area requests `404
+#    NotFound`, so RA3 contributes no body to any of the six.
 /area:
   get:
     operationId: getArea
@@ -68,10 +85,24 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: DaylightingGainSettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `DaylightingGainSettings` holding an **array** (one element, the
+      settings of `/area/2`), while the per-area route returns a bare object
+      under that same key. `x-leap-body-type` is the shared wire value; the
+      two shapes are separate schemas -- see
+      `DaylightingGainSettingsCollection.yaml`. RA3 v03.249 returns `204
+      NoContent` here.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DaylightingGainSettingsCollection"
+    summary: List area daylighting gain settings
 /area/{areaId}:
   get:
     operationId: getAreaID
@@ -294,10 +325,21 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: DaylightingGainSettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `DaylightingGainSettings` holding a bare object. Only 1 of the 8 area
+      ids the spec probe requested on that bridge has one (`/area/2`); the
+      other 7 return `404 NotFound`, as do all 8 ids it requested on RA3
+      v03.249.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DaylightingGainSettings"
     summary: Get area daylighting gain settings
   parameters:
     - name: areaId
@@ -362,10 +404,21 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: OccupancySensorSettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `OccupancySensorSettings` holding a bare object. Only 1 of the 8 area
+      ids the spec probe requested on that bridge has one (`/area/2`); the
+      other 7 return `404 NotFound`, as do all 8 ids it requested on RA3
+      v03.249.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySensorSettings"
     x-leap-subscribable: true
     summary: Get area occupancy sensor settings
   parameters:
@@ -380,10 +433,20 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: OccupancySettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `OccupancySettings` holding a bare object. Only 1 of the 8 area ids the
+      spec probe requested on that bridge has one (`/area/2`); the other 7
+      return `404 NotFound`, as do all 8 ids it requested on RA3 v03.249.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySettings"
     summary: Get area occupancy settings
   parameters:
     - name: areaId
@@ -479,20 +542,47 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: OccupancySensorSettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `OccupancySensorSettings` holding an **array** (one element, the
+      settings of `/area/2`), while the per-area route returns a bare object
+      under that same key. `x-leap-body-type` is the shared wire value; the
+      two shapes are separate schemas -- see
+      `OccupancySensorSettingsCollection.yaml`. RA3 v03.249 returns `204
+      NoContent` here.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySensorSettingsCollection"
+    summary: List area occupancy sensor settings
 /area/occupancysettings:
   get:
     operationId: getAreaOccupancySettings
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: OccupancySettings
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `OccupancySettings` holding an **array** (one element, the settings of
+      `/area/2`), while the per-area route returns a bare object under that
+      same key. `x-leap-body-type` is the shared wire value; the two shapes
+      are separate schemas -- see `OccupancySettingsCollection.yaml`. RA3
+      v03.249 returns `204 NoContent` here.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupancySettingsCollection"
+    summary: List area occupancy settings
 /area/with/explicit/paging:
   get:
     operationId: getAreaWithExplicitPaging

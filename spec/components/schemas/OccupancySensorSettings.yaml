@@ -1,0 +1,68 @@
+# Refined from _generated/OccupancySensorSettings.yaml. Two deviations:
+#
+# 1. `PresetAssignmentUnsupported` relaxed to optional, leaving this schema
+#    with no required field at all. Firmware marks it non-pointer
+#    (`PresetAssignmentUnsupported bool`), so it was the generated schema's
+#    only `required` entry; the one observed instance omits it. Same
+#    direction of inference Organization.yaml and LoadController.yaml record.
+#
+# 2. `Timeout`'s ISO 8601 duration pattern replaced with the clock form --
+#    see the field description below.
+type: object
+description: |
+  Occupancy-sensor timing and sensitivity for an area.
+
+  **The whole evidence base for this schema is one object.** Only the two
+  coverage-blind spec probes ever requested any
+  `/area/*occupancysensorsettings` URL, and exactly one request returned a
+  body: Caseta v01.123's `/area/2/occupancysensorsettings`
+  (`fixtures/spec-read-caseta.json`), `{"href": ..., "Parent": {...},
+  "Timeout": "15:00", "Sensitivity": "Medium"}`. The same object is also the
+  sole element of that bridge's `/area/occupancysensorsettings` collection --
+  byte-identical, so it is one object seen through two routes. RA3 v03.249
+  answers the collection route `204 NoContent` and every per-area route
+  `404 NotFound`; the original campaign corpora and the sweep corpora never
+  requested these URLs at all.
+properties:
+  href:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Follows:
+    $ref: "#/components/schemas/HyperReference"
+  Timeout:
+    type: string
+    description: |
+      A clock-format duration, not an ISO 8601 one, despite the firmware's
+      `lutcommon.Timespan` type -- the same type shared with genuine ISO
+      8601 duration fields such as `DimmedLevelParameters.FadeTime`, and the
+      same mismatch already recorded for `Timestamp.Utc` and
+      `TimeclockEventBase.AstronomicTimeOffset`. The generator maps every
+      `lutcommon.Timespan` to `^P...$`; the one observed value here is
+      `"15:00"`, which is not ISO 8601 shaped.
+
+      The ISO 8601 alternative is dropped rather than kept as a fallback,
+      following Timestamp.yaml's reasoning: no observed value of this field
+      is ISO 8601 shaped. One observation would be thin ground on its own,
+      but the same `Timeout`-named `lutcommon.Timespan` on
+      `CountdownTimer` gives 11 more, all clock-shaped and none ISO 8601
+      (see CountdownTimer.yaml). The accepted shape is the unsigned form of
+      the pattern lib/redact.ts carves out of its IPv6 rule for exactly
+      these values: a 1-2 digit leading field, then one or two `:MM`-style
+      groups. No negative value is accepted here -- unlike an astronomic
+      offset, a sensor timeout has no observed or plausible signed form.
+    pattern: ^\d{1,2}(?::[0-5]\d){1,2}$
+    example: "15:00"
+  Sensitivity:
+    type: string
+    description: |
+      TODO(enum): members of OccupancySensorSensitivity were not recovered
+      from the firmware extraction, and hardware has produced exactly one:
+      `Medium`, on the single observed OccupancySensorSettings. The name of
+      the value implies neighbours it does not prove, and one value does not
+      distinguish an enum from a constant, so this stays an open string --
+      the precedent ZoneStatus.yaml records at length.
+    x-observed-values:
+      - Medium
+  PresetAssignmentUnsupported:
+    type: boolean

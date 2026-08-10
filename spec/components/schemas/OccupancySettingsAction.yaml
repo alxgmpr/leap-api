@@ -1,0 +1,50 @@
+# Copied from _generated/OccupancySettingsAction.yaml with one deviation,
+# below. Pulled into the bundle as a transitive dependency of
+# OccupancySettings, which references it three times (`Occupied`,
+# `Unoccupied`, `PartiallyOccupied`). Zero fixture coverage: the single
+# OccupancySettings object any corpus has returned carries none of those three
+# pointer fields, so no instance of this type has ever been observed and
+# nothing here could be triaged against hardware. The `required` list is the
+# generator's, unchanged and unverified.
+#
+# The deviation: `SwitchedLevel` points at the shared SwitchedLevel schema
+# instead of the generated inline open string. Firmware types the field
+# `SwitchedLevel leapobj.SwitchedLevel`; SwitchedLevel.yaml names this type as
+# one of the nine carrying it and this schema as one of the users that had no
+# hand-refined file yet. That is a type-identity strengthening with no
+# observation at this site, the same basis on which
+# SwitchedLevelParameters.SwitchedLevel is typed there.
+#
+# `FadeTime` keeps the generated ISO 8601 duration pattern. It is the
+# FadeTime-class `lutcommon.Timespan` that pattern was written for (see
+# lib/go-to-schema.ts), not the clock-format kind corrected on
+# `Timestamp.Utc`, `TimeclockEventBase.AstronomicTimeOffset` and the two
+# `Timeout` fields -- and with no observation either way there is no evidence
+# to depart from the generator here.
+type: object
+properties:
+  Action:
+    type: string
+    description: "TODO(enum): members of OccupancyAction were not recovered from the
+      firmware extraction"
+  DimmedLevel:
+    type: number
+  SwitchedLevel:
+    $ref: "#/components/schemas/SwitchedLevel"
+  CCOLevel:
+    type: string
+    description: "TODO(enum): members of CCOLevel were not recovered from the
+      firmware extraction"
+  ReceptacleLevel:
+    type: string
+    description: "TODO(enum): members of ReceptacleLevel were not recovered from the
+      firmware extraction"
+  FadeTime:
+    type: string
+    pattern: ^P(?=.*\d)(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
+    example: PT2S
+required:
+  - Action
+  - SwitchedLevel
+  - CCOLevel
+  - ReceptacleLevel

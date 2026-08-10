@@ -1,10 +1,13 @@
 # HAND-AUTHORED shared enum for the firmware type `leapobj.SwitchedLevel`,
 # referenced but never defined by the extraction. Nine fields carry it;
-# ZoneStatus.SwitchedLevel and SwitchedLevelParameters.SwitchedLevel are
-# typed against this schema, the other seven (OccupancySettingsAction,
-# SwitchedLevelAssignment, SwitchedEmergencyProperties and its Update,
-# ZoneStatusNotLevelValueFilter, ZoneTypeGroupStatus,
+# ZoneStatus.SwitchedLevel, SwitchedLevelParameters.SwitchedLevel and
+# OccupancySettingsAction.SwitchedLevel are typed against this schema, the
+# other six (SwitchedLevelAssignment, SwitchedEmergencyProperties and its
+# Update, ZoneStatusNotLevelValueFilter, ZoneTypeGroupStatus,
 # LoadSheddingGoalDetails.Switched) have no hand-refined schema yet.
+# OccupancySettingsAction joined the first group when the area-settings
+# family brought it into the bundle; like SwitchedLevelParameters it carries
+# no observed value of its own.
 #
 # Members are quoted: unquoted On/Off are booleans under YAML 1.1, and these
 # are the strings the wire sends. Same treatment as LEDState.yaml.
