@@ -17,12 +17,15 @@ description: |
     /project/masterdevicelist/devices. `RF` 14 -- RA3 v03.247 4, Caseta
     v01.123 3 + 3, RA3 v03.249 4 -- and `ClearConnectTypeX` 8 (4 / 0 / 4),
     22 in all. The same field occurs 10 further times outside that route
-    list, on /link/{linkId}/associatedlinknode/expanded, where each
-    LinkNodeExpanded nests its parent Device and that Device's OwnedLinks
-    (`RF` 6, `ClearConnectTypeX` 4: RA3 2/2 per corpus, Caseta 1/0 per
-    corpus). They are excluded for the same reason the LinkNode bullet
-    below excludes that route -- it re-serves objects the listed routes
-    already return.
+    list, on /link/{linkId}/associatedlinknode/expanded. All 128
+    LinkNodeExpanded entries nest a `Parent` Device, but only 6 of those
+    parents carry an `OwnedLinks` array -- and they are the two devices that
+    own a link at all, the RA3 processor (/device/435, twice per RA3 corpus,
+    `RF` + `ClearConnectTypeX` each time) and the Caseta bridge
+    (/device/1, once per Caseta corpus, `RF`). That is the 10: `RF` 6,
+    `ClearConnectTypeX` 4. They are excluded for the same reason the
+    LinkNode bullet below excludes that route -- it re-serves objects the
+    listed routes already return.
   - `LinkNode.LinkType` (via /link/{linkId}/associatedlinknode): `RF` 44,
     `ClearConnectTypeX` 58 across the two RA3 corpora. Neither Caseta
     corpus reaches the unexpanded route; their /expanded bodies contribute
