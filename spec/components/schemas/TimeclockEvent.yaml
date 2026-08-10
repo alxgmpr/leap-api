@@ -122,10 +122,12 @@ description: |
      beside collection.
 
   3. **The firmware puts a per-event cardinality on them.** `GET
-     /project/timeclockeventrules` returns
+     /project/timeclockeventrules` returns one rule row,
      `{"MaxAllowed": 50, "MaxExceptionDatesPerEvent": 0,
-     "MaxDatesPerEvent": 0}` (Caseta v01.123 --
-     see `TimeclockEventRule.yaml`). An enum has no per-event
+     "MaxDatesPerEvent": 0}` -- that object is `Rules[0]` inside the
+     response, not the response itself, which is
+     `{"TimeclockEventRules": {"href": ..., "Rules": [ ... ]}}` (Caseta
+     v01.123 -- see `TimeclockEventRule.yaml`). An enum has no per-event
      cardinality; a list does. Both limit names map onto these four fields
      by name -- `MaxDatesPerEvent` onto `Dates` and
      `AnnuallyReoccurringDates`, `MaxExceptionDatesPerEvent` onto the two
