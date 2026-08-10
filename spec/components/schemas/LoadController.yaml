@@ -2,9 +2,9 @@ type: object
 description: |
   `required` follows the firmware extraction except for `XID`, which Caseta
   falsified. Every one of the 16 RA3 load-controller observations
-  (`fixtures/sweep-read.json` 8 and `fixtures/spec-read.json` 8, both on
-  RA3 firmware 3.249, via `/zone/{zoneId}/associatedloadcontroller`; 12
-  distinct `/loadcontroller/{id}`s, four of which both corpora reach)
+  (`fixtures/sweep-read.json` 8 and `fixtures/spec-read.json` 8, via
+  `/zone/{zoneId}/associatedloadcontroller`; 12 distinct
+  `/loadcontroller/{id}`s, four of which both corpora reach)
   carries every field this schema
   requires, including the `LoadControllerType: Unknown` instance, which
   omits both type-specific properties objects but still carries `XID`,

@@ -117,7 +117,7 @@ recording status and body for each. It has now been run twice:
 
 | Corpus | Target | URLs | Statuses |
 |---|---|---|---|
-| `fixtures/spec-read.json` | RA3 v03.249 (`/server` `ProtocolVersion`) — the same firmware build and project the sweep corpora report | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
+| `fixtures/spec-read.json` | RA3 v03.249 (`/server` `ProtocolVersion`) — same project as the sweep corpora, and the same `/clientsetting` version pair | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
 | `fixtures/spec-read-caseta.json` | Caseta v01.123 (`L-BDG2-WH`), a bridge re-paired after a factory reset | 848 | 104 × `200`, 195 × `204`, 191 × `400`, 317 × `404`, 38 × `405`, 3 × `500` |
 
 Both are `{path: {status, body}}` probe sets in `captures.json`, so the
