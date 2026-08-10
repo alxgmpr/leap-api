@@ -21,7 +21,7 @@ narrow.
 A single LEAP connection to **one RA3 processor** — the same target as
 `fixtures/spec-read.json`, and so, through that corpus, the same project as
 the sweep corpora. The evidence is the redactor's placeholder pool, which is
-stable and injective within a run (`lib/redact.ts:142-151` keeps its
+stable and injective within a run (`lib/redact.ts:142-143` keeps its
 `counters` and `memo` at module scope): this capture's `host` is
 `<ipv4-2>`, and the only other file containing `<ipv4-2>` is
 `fixtures/spec-read.json`, where it is that processor's own
