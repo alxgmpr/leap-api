@@ -180,10 +180,35 @@ configured. Read every Caseta absence in this document with that in mind.
 
 ### One more platform-wide difference this probe surfaced
 
-**Caseta emits no `XID` on any object, on any route.** Across all five probe
-corpora: 0 of 92 zones, 0 of 144 devices and 0 of 50 areas on the original
-Caseta capture, and 0 of everything on the second bridge — while RA3 returns
-one on areas, zones, control stations and load controllers. The cross-reference
+**Caseta emits no `XID` on any object, on any route.** Across every probe
+corpus in `captures.json`, no Caseta-sourced body carries the key at all,
+while RA3 returns it on areas, zones, control stations and load controllers:
+
+```
+$ for f in fixtures/*.json; do
+    printf '%-32s %s\n' "$f" "$(grep -o '"XID"' "$f" | wc -l | tr -d ' ')"
+  done
+fixtures/caseta.json             0
+fixtures/late-frames.json        0
+fixtures/push-probe.json         60
+fixtures/ra3.json                191
+fixtures/spec-read-caseta.json   0
+fixtures/spec-read.json          193
+fixtures/subscriptions.json      0
+fixtures/sweep-read.json         31
+fixtures/sweep-write.json        15
+```
+
+Both Caseta corpora are `0`; every RA3-sourced corpus is not.
+
+Sizing the Caseta side of that: the original Caseta capture returned 14
+zones, 24 devices and 25 areas (`/zone`, `/device`, `/area` collection
+lengths), reached across 92 zone-rooted, 144 device-rooted and 50
+area-rooted **object occurrences** — the same 14 zones and 24 devices recur
+under `/zone/{id}`, `/zone/{id}/status`, `/device/{id}/status`,
+`/device/{id}/linknode/{id}` and so on, and sub-resources are counted where
+they hang off a zone or device href. None of those occurrences, at either
+counting rule, carries an `XID`. The cross-reference
 identifier `docs/mapping.md` describes as an alternative addressing key for
 several routes appears to be an RA3-family concept. This falsified
 `LoadController`'s firmware-derived `required: XID` (see
