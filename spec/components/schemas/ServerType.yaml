@@ -1,9 +1,42 @@
 type: string
 description: |
-  Server's role/protocol. The firmware extraction did not recover the full
-  enum; members below were recovered from Server.Type observed on RA3
-  v03.247 (`LEAP`, `IPL`) and Caseta v01.123 (`LEAP`), via /server.
-  Unlisted values are possible.
+  Server's role/protocol, and the discriminator for which `*Properties`
+  object is populated on the same `Server` -- see `Server.yaml`.
+
+  The firmware extraction did not recover the members; all three below were
+  recovered from `Server.Type` on hardware, via /server. Unlisted values are
+  possible.
+
+  - `LEAP` -- RA3 v03.247 and Caseta v01.123, both units of each. Carries
+    `LEAPProperties`; TCP 8081, the transport this specification describes.
+  - `IPL` -- RA3 only (both units). Carries `IPLProperties`
+    (`SystemNumber`/`SystemAddress`/`ProcessorID`) on TLS 8902 and WSS 443:
+    the Lutron Designer transport `docs/protocol.md` covers.
+  - `LIP` -- Caseta only, added here from the Caseta coverage-blind spec
+    probe (`fixtures/spec-read-caseta.json`), which reached a second
+    `/server` entry the earlier Caseta capture did not. Carries
+    `LIPProperties` (an `Ids` reference to /server/2/id) on TCP 23: the
+    plain-telnet Lutron Integration Protocol, a different protocol from
+    RA3's `IPL` despite the transposed initials.
+
+  **Appended, not reopened.** A closed enum falsified by a second unit is
+  exactly the shape of the `ServiceType` case, which was resolved the other
+  way -- reopened to a documented `string` rather than extended -- so the
+  divergence needs stating. `ServiceType` was reopened because the firmware
+  types `Service.Type` as a bare Go `string`, with no named type behind it
+  and no closed set to recover. `Server.Type` is the opposite: the firmware
+  types it `leapobj.ServerType`, a real named enum whose members the
+  extraction merely failed to recover, which puts it with
+  `ProgrammingModelType` and `AddressedState` -- observed members are a
+  lower bound on a genuinely closed type, and a newly observed value is a
+  member to add.
+
+  The firmware also contests nothing here. `leapobj.Server` has carried a
+  `LIPProperties *leapobj.LIPPropertyDefinition` field, distinct from
+  `IPLProperties`, since before any Caseta probe: the type system already
+  said a third member existed, and only the platform that exposes it was
+  missing from the corpus.
 enum:
   - LEAP
   - IPL
+  - LIP
