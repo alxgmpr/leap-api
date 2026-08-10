@@ -8,17 +8,19 @@ Caseta bridges, Vive systems, and their companion apps use over TLS port
 ## What this is
 
 A single, browsable, hand-refined OpenAPI document (`spec/`, bundling to
-`dist/openapi.yaml`) covering 205 paths and 300 component schemas, built from
+`dist/openapi.yaml`) covering 210 paths and 315 component schemas, built from
 two independent sources cross-checked against each other:
 
 - A **firmware extraction** — 410 route identifiers and 636 response struct
   definitions recovered from the RA3 processor's compiled server binary — as
   the source of truth for schema shapes and optionality.
 - **Live probing** of real RA3 and Caseta hardware (2,087 requests across both
-  platforms) as the source of truth for which routes actually respond, with
-  what status, and with what body — including catching and correcting two
-  systematic defects in the firmware extraction itself (see
-  `docs/mapping.md`).
+  platforms), plus a later, single-processor probe sweep of a second,
+  previously-unswept RA3 unit (256 further requests: 206 read-phase, 9
+  write-phase, 41 subscribe attempts — see `docs/platforms.md`) as the
+  source of truth for which routes actually respond, with what status, and
+  with what body — including catching and correcting two systematic defects
+  in the firmware extraction itself (see `docs/mapping.md`).
 
 Alongside the specification, five narrative documents cover everything an
 OpenAPI document cannot express on its own:
@@ -27,8 +29,8 @@ OpenAPI document cannot express on its own:
 |---|---|
 | `docs/protocol.md` | The real wire protocol: envelope, NDJSON framing, `ClientTag` correlation, all 14 `CommuniqueType`s, status codes, every transport (not just LEAP TLS 8081), and mutual TLS. |
 | `docs/mapping.md` | The full LEAP-to-OpenAPI mapping: the verb table, the `leaps://` scheme, the three `x-leap-*` vendor extensions, and the flat 57-field `Command` model with its full `CommandType`-to-field pairing table. |
-| `docs/subscriptions.md` | The subscription lifecycle, an open question about `ClientTag` reuse on pushed frames (resolved here as genuinely unresolved by the available sources — stated explicitly, not guessed), and the 19 subscribable routes. |
-| `docs/platforms.md` | Where RA3, Caseta, Vive, and the cloud proxy diverge — a generated table of every path where RA3 and Caseta disagree, RA3's area-walk navigation vs. Caseta's flat lists, and why every schema in this specification is RA3-derived. |
+| `docs/subscriptions.md` | The subscription lifecycle, an open question about `ClientTag` reuse on pushed frames (still genuinely unresolved — a later probe campaign found adjacent evidence about asynchronous *responses*, explicitly not about subscription *pushes*, and says so precisely rather than overstating it), and the 19 subscribable routes. |
+| `docs/platforms.md` | Where RA3, Caseta, Vive, and the cloud proxy diverge — a generated table of every path where RA3 and Caseta disagree, RA3's area-walk navigation vs. Caseta's flat lists, why every schema in this specification is RA3-derived, and a second RA3 unit's probe sweep showing that firmware route-table presence does not imply a live implementation. |
 | `docs/discovery.md` | mDNS discovery (`_lutron._tcp`, its TXT record fields), and how a client obtains a certificate to pair with each platform. |
 
 ## What this is not
@@ -53,40 +55,41 @@ route and finds nothing here cannot tell "this route does not exist" from
 "this route exists but has not been written up" without the numbers below.
 
 - **Paths.** The firmware route extraction recovered 410 distinct route
-  templates. 233 of those 410 (57%) are **absent from the bundled
+  templates. 228 of those 410 (56%) are **absent from the bundled
   specification** — present only in `spec/paths/_generated/` (staging,
   never bundled — see `tools/bundle.ts`), not in `spec/paths/`. The
-  remaining 177 firmware routes are covered by the 205 bundled paths (some
+  remaining 182 firmware routes are covered by the 210 bundled paths (some
   bundled paths merge two firmware routes — id/xid pairs, see
   `docs/mapping.md` — and a few bundled paths, like the ten
   `commandprocessor` routes, have no firmware route at all).
 - **Path families.** `spec/paths/_generated/` holds 170 generated path
   family files, one per top-level resource the extraction recovered.
-  `spec/paths/` (the hand-refined tree the bundle actually reads) holds 21
-  files: 20 refined from a generated family, plus one
+  `spec/paths/` (the hand-refined tree the bundle actually reads) holds 25
+  files: 24 refined from a generated family, plus one
   (`commandprocessor.yaml`) hand-authored from scratch with no generated
   counterpart at all (the extraction recovered zero `commandprocessor`
-  routes — see `docs/mapping.md`). The other 150 generated families were
+  routes — see `docs/mapping.md`). The other 146 generated families were
   never touched.
 - **Schemas.** The firmware extraction recovered 636 struct definitions.
-  `spec/components/schemas/` ships 300 schemas total, but those two numbers
-  don't reconcile 1:1 — 250 of the 300 (39% of the 636 generated) were
-  hand-refined from a generated counterpart of the same name; the other 50
+  `spec/components/schemas/` ships 315 schemas total, but those two numbers
+  don't reconcile 1:1 — 259 of the 315 (41% of the 636 generated) were
+  hand-refined from a generated counterpart of the same name; the other 56
   have no generated counterpart at all (hand-authored collection wrappers
-  like `Zones`/`Devices`/`Areas`, and hand-authored enums like
-  `CommandType`/`ServiceType`/`EnabledState` — none of these were ever
-  struct definitions the firmware extraction could produce, since, per
-  `docs/mapping.md`, the firmware defines no plural collection-wrapper
-  types at all). The remaining 386 of the 636 generated schemas (61%) sit
-  untouched in `spec/components/schemas/_generated/`.
+  like `Zones`/`Devices`/`Areas`/`Curves`/`LoadControllers`, and
+  hand-authored enums like `CommandType`/`ServiceType`/`EnabledState`/
+  `LEDState`/`SessionRole` — none of these were ever struct definitions the
+  firmware extraction could produce, since, per `docs/mapping.md`, the
+  firmware defines no plural collection-wrapper types at all). The
+  remaining 377 of the 636 generated schemas (59%) sit untouched in
+  `spec/components/schemas/_generated/`.
 
 None of this is a defect to be silently patched over — hand-refining a
 schema or path family is real, evidence-checked work (cross-referencing
 `fixtures/`, correcting mislabels, trimming `required` to what is actually
 observed), and this project has done it for the paths and schemas that
 were reachable, probe-confirmed, or otherwise worth the verification cost.
-It has not attempted a straight, unverified copy of the other 233
-routes/386 schemas, because an unverified copy would carry exactly the
+It has not attempted a straight, unverified copy of the other 228
+routes/377 schemas, because an unverified copy would carry exactly the
 false confidence this document works to avoid elsewhere. Run
 `npm run coverage` for the live, generated version of these numbers
 (`probedNotInSpec`/`specWithoutFixture`), which additionally tracks
@@ -104,15 +107,21 @@ extraction.
    (`npm run gen:schemas`, `npm run gen:paths`) into
    `spec/components/schemas/_generated/` and `spec/paths/_generated/` —
    staging output, never hand-edited.
-3. **Redact and commit real probe fixtures** (`npm run redact`) — real
-   captured traffic from RA3 and Caseta, scrubbed of IPs, MAC addresses,
-   serial numbers, and other identifying data, into `fixtures/ra3.json` and
-   `fixtures/caseta.json`. These are the corpus every generated schema is
+3. **Redact and commit real probe fixtures** (`npm run redact`, driven by the
+   `captures.json` manifest) — real captured traffic, scrubbed of IPs, MAC
+   addresses, serial numbers, and other identifying data, into
+   `fixtures/ra3.json`, `fixtures/caseta.json`, and, from a later,
+   single-processor probe sweep of a second RA3 unit,
+   `fixtures/sweep-read.json` and `fixtures/sweep-write.json`, plus two
+   non-`{path: {status, body}}` artifacts outside that manifest —
+   `fixtures/subscriptions.json` (a subscribe-attempt log) and
+   `fixtures/late-frames.json` (asynchronous-response evidence — see
+   `docs/protocol.md`). These are the corpus every generated schema is
    checked against.
-4. **Hand-refine** a subset of the generated paths and schemas — 21 of 170
-   generated path families, 250 of 636 generated schemas as of this writing
+4. **Hand-refine** a subset of the generated paths and schemas — 25 of 170
+   generated path families, 259 of 636 generated schemas as of this writing
    (see "What is and is not covered" above; `spec/components/schemas/`
-   ships 50 more hand-authored schemas beyond those 250, with no generated
+   ships 56 more hand-authored schemas beyond those 259, with no generated
    counterpart to refine from) — into `spec/paths/` and
    `spec/components/schemas/`: correcting the firmware extraction's
    systematic defects (mangled collection paths, singular/plural
