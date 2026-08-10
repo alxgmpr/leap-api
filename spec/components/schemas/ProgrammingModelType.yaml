@@ -13,17 +13,35 @@ description: |
 
   `SimpleConditionalProgrammingModel` is the sixth member, and it is the
   first one this enum learned by being falsified rather than by being
-  extended before the fact: the coverage-blind spec probe (RA3 v03.247)
+  extended before the fact: the coverage-blind spec probe (RA3 v03.249)
   returned it on two distinct buttons -- `/button/498` (fetched directly,
   and again inside `/buttongroup/493/button`; the same body also appears in
   the sweep-write corpus) and `/button/1568` (inside
   `/buttongroup/1609/button`) -- 3 occurrences out of 43
-  `ProgrammingModelType` values in that corpus. It appears in neither the
-  earlier RA3 corpus nor Caseta v01.123, but that is a coverage artifact,
-  not a platform difference: the earlier RA3 sweep never reached a
-  per-button route at all (its `/button` collection returns a bare `{}`,
-  and it probed no `/button/{buttonId}`), so it had no opportunity to see
-  this value.
+  `ProgrammingModelType` values in that corpus.
+
+  It appears in neither the original RA3 capture nor either Caseta corpus,
+  and those two absences have different explanations:
+
+  - **RA3 v03.247: a coverage artifact.** That capture never reached a
+    per-button route at all -- its `/button` collection returns a bare
+    `{}`, and it probed no `/button/{buttonId}` -- so it had no opportunity
+    to see this value. The only routes that carry it are per-button ones,
+    and the corpora that exercised them (the v03.249 spec probe and
+    `sweep-write`) both found it. Note the two RA3 corpora report the same
+    project at different firmware builds, so "a differently programmed
+    installation" is not an available explanation here either way.
+  - **Caseta v01.123: an unexplained platform gap.** Caseta's coverage is
+    not the problem: `/programmingmodel` is a fully enumerated collection
+    on both Caseta corpora (178 entries on the original capture, 109 on the
+    spec probe), and across 295 `ProgrammingModelType` observations neither
+    returns this member. The Caseta spec probe also asked 8
+    `/button/{buttonId}` routes and got `404 NotFound` on all 8. Whether
+    Caseta's firmware lacks the concept or simply has none configured is
+    not established here.
+
+  Neither absence bears on the enum: adding a member to a closed set
+  asserts nothing about which platform emits it.
 
   This is a real firmware enum whose members the extraction failed to
   recover, so it stays closed here and grows as observation forces it --
