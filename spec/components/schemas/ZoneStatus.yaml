@@ -95,7 +95,11 @@ properties:
       return a zone status (/zone/status and /zone/{zoneId}/status), plus 50
       more through ZoneExpandedStatus, 36 through
       /area/{areaId}/associatedzone/status and its expanded form (a route
-      with no declared response schema), and 52 in pushed frames. Volume is
+      with no declared response schema), and 52 more in
+      `fixtures/push-probe.json`. Only 2 of those 52 are in pushes (`seq` 21
+      and 25): 46 are in the subscribe-time snapshot (`seq` 18), 2 in the
+      CreateResponse command replies (`seq` 20, 24) and 2 in ordinary reads
+      (`seq` 2, 27). Volume is
       not variety -- every probe caught a healthy system, and a field named
       "status accuracy" exists to report the unhealthy case this corpus
       never provoked.
