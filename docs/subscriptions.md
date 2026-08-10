@@ -209,9 +209,10 @@ client that replaces its cached `ZoneStatus` wholesale with a push body will
 lose `ZoneLockState`; it must merge per-field instead.
 
 Area pushes behave the same way, and more starkly. The `/area/1340/status`
-subscribe response carried
-`{"href": "/area/1340/status", "Level": 0, "OccupancyStatus": "Unoccupied",
-"CurrentScene": {"href": "/areascene/1344"}}`. Its pushes carried only the
+subscribe response (`seq` 19) carried
+`{"AreaStatus": {"href": "/area/1340/status", "Level": 0,
+"OccupancyStatus": "Unoccupied",
+"CurrentScene": {"href": "/areascene/1344"}}}`. Its pushes carried only the
 fields that moved:
 
 | `seq` | Push body |
@@ -301,8 +302,9 @@ entries carry only `url`, `requestTag`, `subscribeStatus` and `frames` — so
 this document does not state one.) The attribution holds — the metering push
 above arrived on an *area* status subscription, and that earlier campaign
 did open two of those (`/area/32/status`, `/area/912/status`, both
-`200 OK`) without receiving anything. Whatever schedules these frames, a
-hold of that length on two areas was not enough to trigger one.
+`200 OK`) without receiving anything. Whatever schedules these frames, those
+two areas did not emit one for as long as that campaign held its
+subscriptions open.
 
 ## What this still does not establish
 
