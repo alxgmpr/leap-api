@@ -1,12 +1,24 @@
-# Refined from spec/paths/_generated/server.yaml. One deviation from a
+# Refined from spec/paths/_generated/server.yaml. Two deviations from a
 # straight copy:
 #
-# /server is HAND-AUTHORED, not copied. It responds on real hardware but is
+# 1. /server is HAND-AUTHORED, not copied. It responds on real hardware but is
 # entirely absent from the generated corpus -- the route-table extraction
 # only recovered /server's sub-routes (/server/ipl, /server/leap/*,
 # /server/status/ping), never the bare collection route itself. Captured
 # traffic is authoritative: confirmed 200 OK with body key `Servers` on
 # both RA3 v03.247 and Caseta v01.123.
+#
+# 2. GET /server/ipl and GET /server/status/ping had their markers resolved,
+#    two different kinds of resolution. /server/ipl needed no new schema: its
+#    body is byte-identical to an element the already-refined `Servers`
+#    collection returns, so it points at `Server`. /server/status/ping needed
+#    a new one, PingResponse, named for the wire body key rather than for the
+#    `leapobj.Ping` struct it was refined from -- the route table connects
+#    neither, recording `responseType: null`.
+#
+#    The remaining five markers in this file are untouched. Four are on
+#    /server/leap/* pairing routes, which no corpus ever answered with a 200,
+#    and the fifth is the `put` on /server/ipl -- only ReadRequests were sent.
 /server:
   get:
     operationId: getServer
@@ -28,10 +40,24 @@
     tags:
       - server
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Server
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.249 returns `200 OK` with body key
+      `Server` holding a single Server object -- byte-identical to the
+      `Type: "IPL"` entry the same corpus lists inside `GET /server`, so the
+      existing `Server` schema already described it. Caseta v01.123 returns
+      `405 MethodNotAllowed` and has no IPL server in its `/server` list
+      either. The `put` keeps its marker: no `UpdateRequest` was ever sent
+      here.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Server"
+    summary: Read the IPL server
   put:
     operationId: updateServerIPL
     tags:
@@ -95,8 +121,21 @@
     tags:
       - server
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: PingResponse
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: both platforms return `200 OK` with body key
+      `PingResponse` -- `{"LEAPVersion": 3.249}` on RA3 v03.249,
+      `{"LEAPVersion": 1.123}` on Caseta v01.123. The body key is
+      `PingResponse` while the firmware struct is `leapobj.Ping`; see
+      PingResponse.yaml, which also records that `LEAPVersion` is a JSON
+      number and not the zero-padded string `Server.ProtocolVersion` uses
+      for the same build.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PingResponse"
     summary: Ping server status

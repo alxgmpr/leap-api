@@ -1,0 +1,41 @@
+# HAND-NAMED, refined from _generated/Ping.yaml. Two things to record:
+#
+# 1. The schema is named for the wire, not the firmware. The firmware struct
+#    is `leapobj.Ping`; the MessageBodyType both platforms send is
+#    `PingResponse`. This project names response schemas after the wire body
+#    key, so the generated `Ping.yaml` is not bundled and this file carries
+#    its content under the name the processor actually uses. The route table
+#    itself records `responseType: null` for `/server/status/ping`, so
+#    nothing ever connected the struct to the route -- the connection here is
+#    made from the field, not from the name.
+#
+# 2. `BuildDate` relaxed to optional. Firmware marks both fields non-pointer
+#    (`LEAPVersion json.Number`, `BuildDate string`), so the generated schema
+#    required both; neither observed ping carries `BuildDate`. Same direction
+#    of inference Organization.yaml and LoadController.yaml record. It is
+#    kept as a property rather than deleted: the firmware says the field
+#    exists, and nothing observed contradicts that -- only its universality.
+type: object
+description: |
+  The `/server/status/ping` reply. Both platforms answer, and the body is a
+  single field: RA3 v03.249 sends `{"LEAPVersion": 3.249}`, Caseta v01.123
+  sends `{"LEAPVersion": 1.123}`.
+
+  `LEAPVersion` is a JSON **number**, not a string -- firmware types it
+  `json.Number`, and both observed values are unquoted. That makes it a
+  different encoding of the same build than `Server.ProtocolVersion`, which
+  is the zero-padded string `"03.249"` / `"01.123"` in the `/server` body of
+  the very same corpus. A client comparing the two must not compare them as
+  strings.
+
+  Only the two coverage-blind spec probes requested this route. The original
+  campaign corpora never did, and `fixtures/sweep-read.json` reached only the
+  neighbouring `/legacyserverstatusping`, which that processor refused with
+  `400 BadRequest`, body `{"Message": "This request is not supported"}`.
+properties:
+  LEAPVersion:
+    type: number
+  BuildDate:
+    type: string
+required:
+  - LEAPVersion

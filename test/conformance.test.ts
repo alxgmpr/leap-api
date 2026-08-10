@@ -161,7 +161,13 @@ addFormats(ajv);
 // answers `404 NotFound`). Neither original campaign corpus nor either
 // sweep corpus requested either route, so these two cases are the entire
 // evidence base for four newly bundled schemas.
-const EXPECTED_MATCHED_CASES = 812;
+//
+// 812 -> 815: the `server` family, +3. GET /server/status/ping contributes 2,
+// one per platform; GET /server/ipl contributes 1, RA3 only -- Caseta
+// answers it `405 MethodNotAllowed` and has no IPL server in its `/server`
+// list either (its second server is `Type: "LIP"`). Only the two
+// coverage-blind spec probes requested either route.
+const EXPECTED_MATCHED_CASES = 815;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */
