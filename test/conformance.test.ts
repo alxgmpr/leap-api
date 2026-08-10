@@ -65,8 +65,14 @@ addFormats(ajv);
 // TimeclockEvent.AstronomicTimeOffset / .AstronomicEventType). Those
 // failures are deliberately left failing: they are the probe's actual
 // signal, and triaging them is separate work. This constant tracks cases
-// REACHED, not cases passed, so it moves to 658 either way.
-const EXPECTED_MATCHED_CASES = 658;
+// REACHED, not cases passed, so it moves either way.
+//
+// 658 -> 672: `fixtures/sweep-write.json` had drifted from its raw capture,
+// committed at 9 paths while the capture on disk holds 30 (the write phase
+// was re-run after the fixture was written). Re-redacting picked up the
+// other 21 paths and with them 14 more conformance cases. The 30-path
+// figure is the one the campaign ledger records for that run.
+const EXPECTED_MATCHED_CASES = 672;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

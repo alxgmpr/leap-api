@@ -19,12 +19,30 @@
  *   - "zoneName": harness-authored metadata in the push-probe frame log,
  *     holding the same real zone name that "Name" redacts inside the frame
  *     bodies. Lowercase, so the "Name" check never reaches it.
+ *   - "Text": keypad button engravings — the labels physically printed on a
+ *     real household's keypads, naming its scenes and its rooms. Same class
+ *     of user-authored content as "Name"; redacting one while publishing the
+ *     other was an inconsistency, not a decision. (Deliberately described
+ *     here rather than illustrated: quoting real engravings as examples
+ *     would reintroduce in a comment exactly what this key removes from the
+ *     fixtures.)
+ *   - "TimeZone": a coarse regional locator for the installation. Latitude
+ *     and Longitude are already zeroed by ZEROED_NUMERIC_KEYS for exactly
+ *     that reason, and leaving the IANA zone behind undid part of it.
+ *
+ * The last two deliberately rewrite already-committed fixtures. That is
+ * intended: the byte-identity check on regeneration exists to catch
+ * UNINTENDED drift, and is not a reason to keep publishing a real
+ * household's data. Neither key is constrained by pattern or enum in any
+ * schema, so the placeholders validate wherever the real values did.
  */
 const SENSITIVE_STRING_KEYS = new Set([
   "Name",
   "Display",
   "zoneName",
   "JWT",
+  "Text",
+  "TimeZone",
   "ProjectName",
   "HouseholdName",
   "BonjourServiceName",
@@ -63,6 +81,10 @@ function kindForKey(key: string): string {
       return "panid";
     case "JWT":
       return "jwt";
+    case "Text":
+      return "text";
+    case "TimeZone":
+      return "timezone";
     default:
       return "name";
   }
