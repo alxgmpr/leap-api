@@ -19,11 +19,22 @@
 #     Reference (from iOS App Binary RE)" section -- decompiled from Lutron
 #     iOS app v26.0.0 (com.lutron.lsb, build 8).
 #
-# No captured traffic exists for any of these ten paths (the fixtures were
-# gathered by probing read-only ReadRequest/Subscribe routes; a CreateRequest
-# that actually executes a command was never sent during probing). That
-# means these paths are permanently a `specWithoutFixture` entry in
-# `npm run coverage`, by design -- not a gap to chase. One of the ten,
+# The probe-set corpora in `captures.json` contain no traffic for any of
+# these ten paths (they were gathered by probing read-only
+# ReadRequest/Subscribe routes; a CreateRequest that actually executes a
+# command was never sent during a probe sweep). That means these paths are
+# permanently a `specWithoutFixture` entry in `npm run coverage`, by design
+# -- not a gap to chase, and `specWithoutFixture` only counts the manifest
+# corpora.
+#
+# One exchange was captured outside those corpora, in
+# `fixtures/push-probe.json`: two `CreateRequest`s to
+# `/zone/4664/commandprocessor` and both of their responses, with bodies.
+# That is where `/zone/{zoneId}/commandprocessor`'s `201` response below
+# comes from. It is the only command-processor traffic this project has, so
+# the other nine paths keep an unschema'd `200` and nothing more.
+#
+# One of the ten,
 # `/virtualbutton/{virtualbuttonId}/commandprocessor`, is corroborated more
 # strongly than the rest even so: it is not just app-RE, it is the literal
 # `href` of a `Resource` named inside a captured 200 response body
@@ -32,9 +43,12 @@
 #
 # Every operation shares the same shape: `x-leap-communique-type:
 # CreateRequest`, a requestBody of `$ref: Command`, and no confirmed 200
-# response schema (no source -- app RE or captured traffic -- documents
-# what a command processor's CreateResponse body looks like, so none is
-# asserted here rather than invented).
+# response schema (outside the one zone exchange noted above, no source --
+# app RE or captured traffic -- documents what a command processor's
+# response body looks like, so none is asserted here rather than invented).
+# The `200`s are retained everywhere: nothing observed says a command
+# processor never answers `200`, and removing one would assert an absence
+# this project has not established.
 #
 # See Command.yaml's description for the full CommandType-to-parameter-field
 # table and its source citations, and CommandType.yaml for why several
@@ -70,6 +84,31 @@
       `StopIfMoving` as zone commands, and describes (without giving a clean
       literal string) CCO and receptacle level commands -- not established
       as confirmed wire values; see `CommandType.yaml` for why.
+
+      **Observed response.** This is the only command processor any capture
+      in this project has exercised. `fixtures/push-probe.json` logs two
+      `CreateRequest`s to `/zone/4664/commandprocessor` (a dimmer driven
+      0% -> 50% -> 0%) and both replies, `seq` 20 and 24:
+
+          CommuniqueType: CreateResponse
+          Header: {MessageBodyType: OneZoneStatus,
+                   StatusCode: "201 Created",
+                   Url: "/zone/4664/commandprocessor",
+                   ClientTag: "lt-20" / "lt-21"}
+          Body:   {"ZoneStatus": {"href": "/zone/4664/status",
+                   "Level": 50 / 0, "Zone": {"href": "/zone/4664"},
+                   "StatusAccuracy": "Good", "Availability": "Available"}}
+
+      So a successful zone command answers `201 Created` with the zone's
+      resulting status, not an empty body. The `200` below is kept because
+      nothing establishes that a command processor never answers `200`;
+      the `201` is added because hardware did.
+
+      Note also that the observed `CommuniqueType` is `CreateResponse`, not
+      `CommandResponse`. That narrows, but does not close, the open question
+      in `docs/protocol.md` about whether `CommandResponse` is used
+      interchangeably for command-processor replies: one processor, one
+      route, two frames.
     requestBody:
       required: true
       content:
@@ -79,6 +118,17 @@
     responses:
       "200":
         description: Success
+      "201":
+        description: |
+          Created -- the command was accepted and the processor returned the
+          zone's resulting status. Observed twice on RA3 in
+          `fixtures/push-probe.json` (`seq` 20 and 24), as
+          `CommuniqueType: CreateResponse` with
+          `MessageBodyType: OneZoneStatus`.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneStatus"
     summary: Send zone command
   parameters:
     - name: zoneId
