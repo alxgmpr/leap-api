@@ -28,7 +28,7 @@ addFormats(ajv);
 // number of cases that actually reached `ajv.compile`/`validate` below and
 // assert against it directly instead.
 //
-// 468 as of this writing (verified against dist/openapi.yaml + the
+// 469 as of this writing (verified against dist/openapi.yaml + the
 // committed fixtures). When intentionally adding response schema coverage
 // (a new path, a resolved TODO(response), a new hand-authored collection
 // schema), this number goes up -- update the constant below to match and
@@ -48,10 +48,12 @@ addFormats(ajv);
 // sweep-write). Resolving `/zone/{zoneId}/associatedloadcontroller`'s
 // TODO(response) (a `zone`-family update, not a new family) raised it
 // again, 453 -> 461 (+8). `firmwareimage` (a straight copy, no deviations)
-// raised it 461 -> 468 (+7). Each family commit that follows raises this
-// further by resolving the paths the sweep also newly reached
-// (`/clientsetting`, `/curve`).
-const EXPECTED_MATCHED_CASES = 468;
+// raised it 461 -> 468 (+7). `curve` (a hand-authored Curves collection
+// wrapper, fixing the same singular/plural MessageBodyType defect Task 10
+// documented for `/zone`) raised it 468 -> 469 (+1 -- only one curve was
+// observed on the single processor this sweep reached). `clientsetting`
+// remains, the last path this sweep newly reached.
+const EXPECTED_MATCHED_CASES = 469;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

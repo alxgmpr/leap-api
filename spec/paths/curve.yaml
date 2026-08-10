@@ -1,0 +1,22 @@
+# Refined from spec/paths/_generated/curve.yaml. One deviation: x-leap-body-type
+# and the 200 schema were changed from `Curve` (singular) to `Curves`
+# (array) -- the same singular/plural collection defect Task 10 documented
+# for `/zone` (see spec/paths/zone.yaml's header). Confirmed 200 OK with
+# body key `Curves` on a single processor during Task 8's sweep campaign
+# (`fixtures/sweep-read.json`; only one curve observed on that processor,
+# so the collection was never seen with more than one element).
+/curve:
+  get:
+    operationId: getCurve
+    tags:
+      - curve
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Curves
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Curves"
+    summary: List curves
