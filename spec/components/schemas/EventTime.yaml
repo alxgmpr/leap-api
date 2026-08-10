@@ -14,6 +14,50 @@
 # got would apply directly here -- but with zero observed EventTime
 # instances there is no evidence to act on, and relaxing a `required` on
 # nothing is not an improvement.
+#
+# One fact sharpens that, and is recorded here rather than acted on. The
+# firmware marks this field non-pointer:
+#
+#     type leapobj.EventTime struct {
+#         TimeType   leapobj.EventTimeType
+#         FixedTime  *leapobj.FixedTime
+#         AstronomicEventType leapobj.AstronomicEventType
+#         AstronomicTimeOffset *lutcommon.Timespan
+#     }
+#
+# which is identical in kind to `leapobj.TimeclockEventBase`'s
+# `AstronomicEventType leapobj.AstronomicEventType` -- same field name, same
+# named type, same non-pointer marking. That is precisely the marking
+# hardware falsified: `/timeclockevent/6924` (RA3 v03.249) is a
+# `TimeclockEventType: "FixedTime"` event carrying `TimeOfDay` and neither
+# astronomic field. So the firmware's non-pointer marking for this exact
+# field has been demonstrated unreliable in a sibling type, for a reason
+# that transfers structurally (an event anchored to a wall clock has no
+# astronomic anchor to report).
+#
+# It still is not grounds to change this schema, for two reasons. First,
+# this project relaxes a non-pointer `required` on an *observed absence at
+# the site* (Organization.yaml, LoadController.yaml); EventTime offers
+# neither a presence nor an absence, so there is nothing to relax against --
+# a sibling type's instances are evidence about that type. Second, the
+# `if`/`then` those parents received is not a pure relaxation: TimeclockEvent
+# pairs it with a `then` that *requires* `AstronomicTimeOffset`, a
+# strengthening beyond the firmware taken on 6/6 astronomic events. Here it
+# would be 0/0 in both directions. Copying the shape would relax one field
+# and strengthen another on no evidence at all; relaxing only the first
+# would weaken an assertion on no evidence. Neither is supportable, so the
+# schema stands as the firmware states it and this note says what a single
+# observed EventTime would settle.
+#
+# The same reasoning, and the same abstention, applies to a second
+# inconsistency in this file: `AstronomicTimeOffset` keeps the generator's
+# ISO 8601 duration pattern (`^P...$`), while `TimeclockEventBase`'s
+# identically named and identically typed field was corrected to the clock
+# form `^(0|-?\d{1,2}(?::[0-5]\d){1,2})$` after 10 observed values came back
+# clock-shaped and none ISO 8601. On the sibling-falsification argument this
+# pattern is more likely wrong than right -- but it is the same argument,
+# resting on another type's instances, and it gets the same answer here.
+# Whichever way a future ruling goes, these two should move together.
 type: object
 properties:
   TimeType:
