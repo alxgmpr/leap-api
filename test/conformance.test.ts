@@ -28,13 +28,25 @@ addFormats(ajv);
 // number of cases that actually reached `ajv.compile`/`validate` below and
 // assert against it directly instead.
 //
-// 406 as of this writing (verified against dist/openapi.yaml + the
+// 429 as of this writing (verified against dist/openapi.yaml + the
 // committed fixtures). When intentionally adding response schema coverage
 // (a new path, a resolved TODO(response), a new hand-authored collection
 // schema), this number goes up -- update the constant below to match and
 // note why in the commit. If it goes down, that is a coverage regression;
 // investigate before updating the constant.
-const EXPECTED_MATCHED_CASES = 406;
+//
+// Task 8's sweep-read/sweep-write import (406 -> 429, +23) is a case worth
+// noting explicitly: it raised this number WITHOUT any path or schema
+// authoring at all. `/area/{areaId}` (8 concrete instances),
+// `/zone/{zoneId}` (8), and `/controlstation/{controlstationId}` (7) were
+// already-refined operations with an existing response schema and simply
+// had no fixture coverage before -- importing a new probe corpus against a
+// previously-unprobed processor gave those existing schemas new bodies to
+// validate against, independent of any family refinement work. Each family
+// commit that follows raises this further by resolving the paths the sweep
+// also newly reached (`/led/...`, `/clientsetting`, `/curve`,
+// `/firmwareimage/{firmwareimageId}`, `/zone/{zoneId}/associatedloadcontroller`).
+const EXPECTED_MATCHED_CASES = 429;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */
@@ -51,18 +63,43 @@ function resolve(ref: string): object | undefined {
   return doc.components.schemas[name] as object | undefined;
 }
 
-for (const platform of ["ra3", "caseta"] as const) {
+// Platforms come from captures.json (the manifest Task 7 introduced), not a
+// hardcoded list -- every manifest entry is a `{path: {status, body}}` probe
+// set, so a new probe corpus (e.g. Task 8's sweep-read/sweep-write) is
+// validated automatically without editing this file. The subscribe log and
+// late-frames evidence are deliberately never added to that manifest (see
+// tools/redact.ts), so they never reach this loop.
+const manifest: { label: string; to: string }[] = JSON.parse(
+  readFileSync("captures.json", "utf8"),
+);
+
+// Per-platform floor for the "corpus is non-empty" sanity check below.
+// ra3/caseta are the long-running, thousand-request-scale corpora from the
+// original campaign; the Task 8 sweep corpora are a single processor's
+// single-pass sweep, an order of magnitude smaller by design. Unlisted
+// labels fall back to `> 0` -- still a real assertion, just scaled to
+// whatever that corpus turns out to be.
+const MIN_CASES: Record<string, number> = {
+  ra3: 100,
+  caseta: 100,
+  "sweep-read": 40,
+  "sweep-write": 5,
+};
+
+for (const { label: platform, to: fixturePath } of manifest) {
   describe(`conformance: ${platform}`, () => {
-    const probe: Probe = JSON.parse(
-      readFileSync(`fixtures/${platform}.json`, "utf8"),
-    );
+    const probe: Probe = JSON.parse(readFileSync(fixturePath, "utf8"));
 
     const cases = Object.entries(probe).filter(
       ([, v]) => v.status.startsWith("200") && v.body,
     );
 
     test("fixture corpus is non-empty", () => {
-      assert.ok(cases.length > 100, `only ${cases.length} usable fixtures`);
+      const min = MIN_CASES[platform] ?? 0;
+      assert.ok(
+        cases.length > min,
+        `only ${cases.length} usable fixtures (expected > ${min})`,
+      );
     });
 
     for (const [concrete, result] of cases) {
@@ -99,8 +136,8 @@ for (const platform of ["ra3", "caseta"] as const) {
   });
 }
 
-// Registered after both platform describe blocks above have finished
-// building their test lists (node:test collects synchronously), so
+// Registered after every platform describe block above has finished
+// building its test list (node:test collects synchronously), so
 // matchedCases is final by the time this runs.
 test("matched conformance cases have not silently dropped", () => {
   assert.equal(

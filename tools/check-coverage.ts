@@ -15,8 +15,17 @@ export function computeCoverage(): Coverage {
   };
   const specPaths = new Set(Object.keys(doc.paths));
 
+  // Fixture files come from captures.json (the manifest Task 7 introduced),
+  // not a hardcoded list -- every manifest entry is a `{path: {status,
+  // body}}` probe set (the subscribe log and late-frames evidence are
+  // deliberately never added to this manifest; see tools/redact.ts), so this
+  // generalizes cleanly to however many probe corpora the project has
+  // collected without editing this file again per campaign.
+  const manifest: { to: string }[] = existsSync("captures.json")
+    ? JSON.parse(readFileSync("captures.json", "utf8"))
+    : [];
   const probedPaths = new Set<string>();
-  for (const file of ["fixtures/ra3.json", "fixtures/caseta.json"]) {
+  for (const { to: file } of manifest) {
     if (!existsSync(file)) continue;
     const probe: Record<string, { status: string }> = JSON.parse(
       readFileSync(file, "utf8"),

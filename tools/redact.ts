@@ -21,6 +21,28 @@ const SOURCE_DIRS: SourceDir[] = [
   },
 ];
 
+// Task 8's probe sweep against a single, previously-unseen processor
+// (198.51.100.2 -- masked everywhere below and in any log output). Its capture
+// filenames have a different shape from SOURCE_DIRS above
+// (`<ip>-<phase>.json` rather than `leap-explore-<ip>-<date>.json`) and are
+// not full probe sets containing `/server` -- the sweep never probed it --
+// so `classify()`'s content-based labeling (reading `/server`'s
+// ProtocolVersion) cannot resolve a label for them. Labeling here is by
+// filename SUFFIX (the capture phase) instead, which is sufficient because
+// every file in this directory came from the same single host.
+//
+// Only "read" and "write" are `{path: {status, body}}` probe sets that
+// belong in this manifest-driven pipeline. "subscribe" and "late-frames"
+// are ordered-frame arrays, a different shape entirely -- they're redacted
+// and written directly, below, and deliberately never added to
+// `captures.json` so the ProbeSet-only tools (`check-coverage.ts`,
+// `test/conformance.test.ts`) that resolve their fixture list from that
+// manifest never try to iterate them as `{path: {status, body}}`.
+const SWEEP_DIR = "/Users/alex/lutron-protocols/data/sweep";
+const SWEEP_PROBE_SET_PATTERN = /^\d{1,3}(?:\.\d{1,3}){3}-(read|write)\.json$/;
+const SWEEP_FRAME_LOG_PATTERN =
+  /^\d{1,3}(?:\.\d{1,3}){3}-(subscribe|late-frames)\.json$/;
+
 // Maps the LEAP server's ProtocolVersion series (from `/server`) to the
 // manifest label it corresponds to. This is protocol knowledge, not device
 // identity, so it is safe to hard-code here.
@@ -78,6 +100,19 @@ for (const { dir, pattern } of SOURCE_DIRS) {
   }
 }
 
+// Sweep captures: label by filename phase suffix, not by content (see the
+// SWEEP_DIR comment above for why classify() doesn't apply here).
+for (const file of readdirSync(SWEEP_DIR)) {
+  const match = SWEEP_PROBE_SET_PATTERN.exec(file);
+  if (!match) continue;
+  const phase = match[1];
+  const label = `sweep-${phase}`;
+  const probes = readProbeSet(SWEEP_DIR, file);
+  const bucket = byLabel.get(label) ?? [];
+  bucket.push({ dir: SWEEP_DIR, file, probes });
+  byLabel.set(label, bucket);
+}
+
 // Resolve every manifest entry before writing anything, so a bad mapping
 // fails loudly and never emits a partial fixture set.
 const resolved: { to: string; probes: ProbeSet }[] = [];
@@ -104,4 +139,31 @@ for (const { probes, to } of resolved) {
   const redacted = redactTree(probes);
   writeFileSync(to, `${JSON.stringify(redacted, null, 2)}\n`, "utf8");
   console.log(`${to}: ${Object.keys(redacted as object).length} paths`);
+}
+
+// Subscribe log and late-frames evidence: ordered-frame arrays, not
+// `{path: {status, body}}` probe sets, so they never go through the
+// manifest/byLabel machinery above -- and deliberately never get an entry in
+// captures.json, so the ProbeSet-only tools that resolve their fixture list
+// from that manifest (check-coverage.ts, test/conformance.test.ts) never try
+// to iterate them as one. Each still goes through the same `redactTree`, and
+// still resolves to exactly one source file or fails loudly, same discipline
+// as the manifest loop above.
+const FRAME_FIXTURES: Record<string, string> = {
+  subscribe: "fixtures/subscriptions.json",
+  "late-frames": "fixtures/late-frames.json",
+};
+
+for (const file of readdirSync(SWEEP_DIR)) {
+  const match = SWEEP_FRAME_LOG_PATTERN.exec(file);
+  if (!match) continue;
+  const phase = match[1] as "subscribe" | "late-frames";
+  const to = FRAME_FIXTURES[phase];
+  if (!to) continue;
+  const frames = JSON.parse(readFileSync(`${SWEEP_DIR}/${file}`, "utf8"));
+  const redacted = redactTree(frames);
+  writeFileSync(to, `${JSON.stringify(redacted, null, 2)}\n`, "utf8");
+  console.log(
+    `${to}: ${Array.isArray(redacted) ? redacted.length : "?"} frames`,
+  );
 }

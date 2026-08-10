@@ -1,0 +1,157 @@
+[
+  {
+    "url": "/firmwareimage/561",
+    "requestTag": "lt-1",
+    "seq": 0,
+    "receivedMsAfterSubscribe": 987,
+    "communiqueType": "ReadResponse",
+    "header": {
+      "MessageBodyType": "OneFirmwareImageDefinition",
+      "StatusCode": "200 OK",
+      "Url": "/firmwareimage/561",
+      "ClientTag": "lt-1"
+    },
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/561",
+        "Device": {
+          "href": "/device/561"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "003.008.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "url": "/firmwareimage/975",
+    "requestTag": "lt-1",
+    "seq": 0,
+    "receivedMsAfterSubscribe": 987,
+    "communiqueType": "ReadResponse",
+    "header": {
+      "MessageBodyType": "OneFirmwareImageDefinition",
+      "StatusCode": "200 OK",
+      "Url": "/firmwareimage/975",
+      "ClientTag": "lt-1"
+    },
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/975",
+        "Device": {
+          "href": "/device/975"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "003.008.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "url": "/firmwareimage/1729",
+    "requestTag": "lt-1",
+    "seq": 0,
+    "receivedMsAfterSubscribe": 985,
+    "communiqueType": "ReadResponse",
+    "header": {
+      "MessageBodyType": "OneFirmwareImageDefinition",
+      "StatusCode": "200 OK",
+      "Url": "/firmwareimage/1729",
+      "ClientTag": "lt-1"
+    },
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/1729",
+        "Device": {
+          "href": "/device/1729"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "002.028.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "url": "/firmwareimage/2513",
+    "requestTag": "lt-1",
+    "seq": 0,
+    "receivedMsAfterSubscribe": 980,
+    "communiqueType": "ReadResponse",
+    "header": {
+      "MessageBodyType": "OneFirmwareImageDefinition",
+      "StatusCode": "200 OK",
+      "Url": "/firmwareimage/2513",
+      "ClientTag": "lt-1"
+    },
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/2513",
+        "Device": {
+          "href": "/device/2513"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "001.072.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "url": "/firmwareimage/3012",
+    "requestTag": "lt-1",
+    "seq": 0,
+    "receivedMsAfterSubscribe": 1029,
+    "communiqueType": "ReadResponse",
+    "header": {
+      "MessageBodyType": "OneFirmwareImageDefinition",
+      "StatusCode": "200 OK",
+      "Url": "/firmwareimage/3012",
+      "ClientTag": "lt-1"
+    },
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/3012",
+        "Device": {
+          "href": "/device/3012"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "002.028.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

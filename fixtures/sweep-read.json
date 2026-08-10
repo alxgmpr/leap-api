@@ -1,0 +1,2214 @@
+{
+  "/alias": {
+    "status": "204 NoContent"
+  },
+  "/alloccupancygroups": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/allpresetassignmentsforpresetashref": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/allserverdefinitions": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/arealoadshedding": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/arearelation": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/areastatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/areasummary/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/clientsetting": {
+    "status": "200 OK",
+    "body": {
+      "ClientSetting": {
+        "href": "/clientsetting",
+        "ClientMajorVersion": 3,
+        "ClientMinorVersion": 249,
+        "Permissions": {
+          "SessionRole": "Admin"
+        }
+      }
+    }
+  },
+  "/contact": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/countdowntimer": {
+    "status": "204 NoContent"
+  },
+  "/curve": {
+    "status": "200 OK",
+    "body": {
+      "Curves": [
+        {
+          "href": "/curve/1"
+        }
+      ]
+    }
+  },
+  "/dailyevent": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/dailyschedule": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/dailyschedule/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/daliemergencytestgroup": {
+    "status": "204 NoContent"
+  },
+  "/databasetransfersession": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/databasetransfersessionstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/daylightsensorstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/daylightinggaingroup/daylightinggainsettings": {
+    "status": "204 NoContent"
+  },
+  "/deviceavailabilitystatus/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deviceavailabilitystatus/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicebatterystatusstatus/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicebatterystatusstatus/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicerules": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicestatusexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicestatusexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicestatus/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/emergency": {
+    "status": "204 NoContent"
+  },
+  "/emergencystatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/fadesettings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/firmwareupdatesession": {
+    "status": "204 NoContent"
+  },
+  "/ledsettings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/legacyserverstatusping": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/linkstatus/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/listdaynightmodes": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/listnaturalshows": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/loadcontrollerstatus/query/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/loadcontrollerstatus/query/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/loadcontrollerstatus/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/loadcontrollerstatus/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/login": {
+    "status": "405 MethodNotAllowed",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/natlightoptstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/naturallightoptimization/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/naturallightoptimization/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/occupancyaggregationrules": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/occupancyaggregator": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/occupancysensor/occupancysensorsettings": {
+    "status": "204 NoContent"
+  },
+  "/occupancysensorstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/operationstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/profilesession": {
+    "status": "204 NoContent"
+  },
+  "/rentablespaceassociatedarea/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/rentablespaceassociatedarea/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/rentablespacestatus/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/rentablespacestatus/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/rentablespace/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/rentablespace/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/rootarea": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/sequence": {
+    "status": "204 NoContent"
+  },
+  "/serverdefinition": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serverleappairings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicealexaconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicealexaconfigalias": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serviceautoprog": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicebacnetdefaultsettings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicegooglehome": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicegooglehomeconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicehomekitconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicehomekitconfigassociatedshadegroup": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicehomekitconfigassociatedzone": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicehomekitdatasummaryaccessoriesquery": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serviceiftttconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serviceketra": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicentpserver": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/shadegroup": {
+    "status": "405 MethodNotAllowed",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/shadegroupstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/systemloadshedding": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/systemstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/systemuser": {
+    "status": "204 NoContent"
+  },
+  "/temperaturesensor": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/temperaturesensorstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/thirdpartydevice": {
+    "status": "204 NoContent"
+  },
+  "/timeclockeventstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/timeclockstatus/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/timeclockstatus/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/v2operationstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/virtualbuttonsummary": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/weeklyschedule": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonestatusexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonestatusexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonestatus/with/explicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonestatus/with/implicit/paging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonetypegroup": {
+    "status": "204 NoContent"
+  },
+  "/zonetypegrouploadshedding": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonetypegroup/occupancysettings": {
+    "status": "204 NoContent"
+  },
+  "/zonetypegroupstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonetypegroups/emergencysettings/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/area/32": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/32",
+        "XID": "<xid-26>",
+        "Name": "<name-8>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/518"
+          },
+          {
+            "href": "/zone/546"
+          },
+          {
+            "href": "/zone/574"
+          },
+          {
+            "href": "/zone/3663"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/481"
+          },
+          {
+            "href": "/controlstation/559"
+          },
+          {
+            "href": "/controlstation/692"
+          },
+          {
+            "href": "/controlstation/3645"
+          },
+          {
+            "href": "/controlstation/9426"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/912": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/912",
+        "XID": "<xid-27>",
+        "Name": "<name-66>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/988"
+          },
+          {
+            "href": "/zone/1129"
+          },
+          {
+            "href": "/zone/4005"
+          },
+          {
+            "href": "/zone/4901"
+          },
+          {
+            "href": "/zone/5222"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/973"
+          },
+          {
+            "href": "/controlstation/1018"
+          },
+          {
+            "href": "/controlstation/1089"
+          },
+          {
+            "href": "/controlstation/3987"
+          },
+          {
+            "href": "/controlstation/5837"
+          },
+          {
+            "href": "/controlstation/5942"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1220": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1220",
+        "XID": "<xid-29>",
+        "Name": "<name-11>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/1743"
+          },
+          {
+            "href": "/zone/4274"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/1727"
+          },
+          {
+            "href": "/controlstation/4265"
+          },
+          {
+            "href": "/controlstation/4289"
+          },
+          {
+            "href": "/controlstation/10827"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1316": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1316",
+        "XID": "<xid-34>",
+        "Name": "<name-16>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/2127"
+          },
+          {
+            "href": "/zone/2448"
+          },
+          {
+            "href": "/zone/2520"
+          },
+          {
+            "href": "/zone/13008"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/2074"
+          },
+          {
+            "href": "/controlstation/2382"
+          },
+          {
+            "href": "/controlstation/2511"
+          },
+          {
+            "href": "/controlstation/8278"
+          },
+          {
+            "href": "/controlstation/13050"
+          },
+          {
+            "href": "/controlstation/13106"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1304": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1304",
+        "XID": "<xid-33>",
+        "Name": "<name-15>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/2154"
+          },
+          {
+            "href": "/zone/2202"
+          },
+          {
+            "href": "/zone/3025"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/2136"
+          },
+          {
+            "href": "/controlstation/3010"
+          },
+          {
+            "href": "/controlstation/4178"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1208": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1208",
+        "XID": "<xid-28>",
+        "Name": "<name-10>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/1512"
+          },
+          {
+            "href": "/zone/3978"
+          },
+          {
+            "href": "/zone/11113"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/1494"
+          },
+          {
+            "href": "/controlstation/2605"
+          },
+          {
+            "href": "/controlstation/4155"
+          },
+          {
+            "href": "/controlstation/5036"
+          },
+          {
+            "href": "/controlstation/5419"
+          },
+          {
+            "href": "/controlstation/11127"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1232": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1232",
+        "XID": "<xid-30>",
+        "Name": "<name-12>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/1878"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/1801"
+          },
+          {
+            "href": "/controlstation/12755"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/area/1280": {
+    "status": "200 OK",
+    "body": {
+      "Area": {
+        "href": "/area/1280",
+        "XID": "<xid-32>",
+        "Name": "<name-14>",
+        "Parent": {
+          "href": "/area/3"
+        },
+        "AssociatedZones": [
+          {
+            "href": "/zone/1931"
+          },
+          {
+            "href": "/zone/1956"
+          },
+          {
+            "href": "/zone/1982"
+          },
+          {
+            "href": "/zone/4042"
+          },
+          {
+            "href": "/zone/10000"
+          },
+          {
+            "href": "/zone/10470"
+          }
+        ],
+        "AssociatedControlStations": [
+          {
+            "href": "/controlstation/1892"
+          },
+          {
+            "href": "/controlstation/2655"
+          },
+          {
+            "href": "/controlstation/4112"
+          },
+          {
+            "href": "/controlstation/5835"
+          },
+          {
+            "href": "/controlstation/9991"
+          },
+          {
+            "href": "/controlstation/10551"
+          }
+        ],
+        "IsLeaf": true
+      }
+    }
+  },
+  "/controlstation/530": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /controlstation/530"
+    }
+  },
+  "/controlstation/559": {
+    "status": "200 OK",
+    "body": {
+      "ControlStation": {
+        "href": "/controlstation/559",
+        "XID": "<xid-2>",
+        "Name": "<name-26>",
+        "AssociatedArea": {
+          "href": "/area/32"
+        },
+        "SortOrder": 1,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/561",
+              "DeviceType": "PlugInDimmer",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
+      }
+    }
+  },
+  "/controlstation/973": {
+    "status": "200 OK",
+    "body": {
+      "ControlStation": {
+        "href": "/controlstation/973",
+        "XID": "<xid-3>",
+        "Name": "<name-26>",
+        "AssociatedArea": {
+          "href": "/area/912"
+        },
+        "SortOrder": 0,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/975",
+              "DeviceType": "PlugInDimmer",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
+      }
+    }
+  },
+  "/controlstation/1727": {
+    "status": "200 OK",
+    "body": {
+      "ControlStation": {
+        "href": "/controlstation/1727",
+        "XID": "<xid-4>",
+        "Name": "<name-39>",
+        "AssociatedArea": {
+          "href": "/area/1220"
+        },
+        "SortOrder": 0,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/1729",
+              "DeviceType": "PlugInDimmer",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
+      }
+    }
+  },
+  "/controlstation/692": {
+    "status": "200 OK",
+    "body": {
+      "ControlStation": {
+        "href": "/controlstation/692",
+        "XID": "<xid-5>",
+        "Name": "<name-27>",
+        "AssociatedArea": {
+          "href": "/area/32"
+        },
+        "SortOrder": 2,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/694",
+              "DeviceType": "Pico4Button",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
+      }
+    }
+  },
+  "/controlstation/1018": {
+    "status": "200 OK",
+    "body": {
+      "ControlStation": {
+        "href": "/controlstation/1018",
+        "XID": "<xid-6>",
+        "Name": "<name-28>",
+        "AssociatedArea": {
+          "href": "/area/912"
+        },
+        "SortOrder": 1,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/1020",
+              "DeviceType": "Pico4Button",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
+      }
+    }
+  },
+  "/controlstation/2511": {
+    "status": "200 OK",
+    "body": {
+      "ControlStation": {
+        "href": "/controlstation/2511",
+        "XID": "<xid-7>",
+        "Name": "<name-47>",
+        "AssociatedArea": {
+          "href": "/area/1316"
+        },
+        "SortOrder": 2,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/2513",
+              "DeviceType": "PowPakCCO",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
+      }
+    }
+  },
+  "/controlstation/3010": {
+    "status": "200 OK",
+    "body": {
+      "ControlStation": {
+        "href": "/controlstation/3010",
+        "XID": "<xid-8>",
+        "Name": "<name-43>",
+        "AssociatedArea": {
+          "href": "/area/1304"
+        },
+        "SortOrder": 1,
+        "AssociatedGangedDevices": [
+          {
+            "Device": {
+              "href": "/device/3012",
+              "DeviceType": "PlugInDimmer",
+              "AddressedState": "Addressed"
+            },
+            "GangPosition": 0
+          }
+        ]
+      }
+    }
+  },
+  "/countdowntimer/8": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /countdowntimer/8"
+    }
+  },
+  "/countdowntimer/18": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /countdowntimer/18"
+    }
+  },
+  "/countdowntimer/17": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /countdowntimer/17"
+    }
+  },
+  "/countdowntimer/4": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /countdowntimer/4"
+    }
+  },
+  "/countdowntimer/15": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /countdowntimer/15"
+    }
+  },
+  "/countdowntimer/23": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /countdowntimer/23"
+    }
+  },
+  "/countdowntimer/7": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /countdowntimer/7"
+    }
+  },
+  "/countdowntimer/12": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /countdowntimer/12"
+    }
+  },
+  "/deprecated/presetassignment/752": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/presetassignment/791": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/presetassignment/962": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/presetassignment/329": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/presetassignment/356": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/presetassignment/274": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/presetassignment/322": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/presetassignment/352": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/preset/208/presetassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/preset/210/presetassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/preset/209/presetassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/preset/207/presetassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/preset/87/presetassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/preset/63/presetassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/preset/89/presetassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/deprecated/preset/236/presetassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/firmwareimage/532": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist"
+    }
+  },
+  "/firmwareimage/561": {
+    "status": "200 OK",
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/561",
+        "Device": {
+          "href": "/device/561"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "003.008.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "/firmwareimage/975": {
+    "status": "200 OK",
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/975",
+        "Device": {
+          "href": "/device/975"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "003.008.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "/firmwareimage/1729": {
+    "status": "200 OK",
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/1729",
+        "Device": {
+          "href": "/device/1729"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "002.028.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "/firmwareimage/2513": {
+    "status": "200 OK",
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/2513",
+        "Device": {
+          "href": "/device/2513"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "001.072.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "/firmwareimage/3012": {
+    "status": "200 OK",
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/3012",
+        "Device": {
+          "href": "/device/3012"
+        },
+        "Contents": [
+          {
+            "Type": "CCA",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "002.028.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "/firmwareimage/2138": {
+    "status": "200 OK",
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/2138",
+        "Device": {
+          "href": "/device/2138"
+        },
+        "Contents": [
+          {
+            "Type": "CCX",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "003.014.017r000"
+              },
+              "AvailableForUpload": {
+                "DisplayName": "003.014.017r000"
+              }
+            },
+            "Boot": {
+              "Firmware": {
+                "DisplayName": "001.006.000r000"
+              },
+              "AvailableForUpload": {
+                "DisplayName": "001.006.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "/firmwareimage/2432": {
+    "status": "200 OK",
+    "body": {
+      "FirmwareImage": {
+        "href": "/firmwareimage/2432",
+        "Device": {
+          "href": "/device/2432"
+        },
+        "Contents": [
+          {
+            "Type": "CCX",
+            "OS": {
+              "Firmware": {
+                "DisplayName": "003.014.017r000"
+              },
+              "AvailableForUpload": {
+                "DisplayName": "003.014.017r000"
+              }
+            },
+            "Boot": {
+              "Firmware": {
+                "DisplayName": "001.006.000r000"
+              },
+              "AvailableForUpload": {
+                "DisplayName": "001.006.000r000"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "/led/490": {
+    "status": "200 OK",
+    "body": {
+      "LED": {
+        "href": "/led/490",
+        "Parent": {
+          "href": "/device/483"
+        }
+      }
+    }
+  },
+  "/led/491": {
+    "status": "200 OK",
+    "body": {
+      "LED": {
+        "href": "/led/491",
+        "Parent": {
+          "href": "/device/483"
+        }
+      }
+    }
+  },
+  "/led/492": {
+    "status": "200 OK",
+    "body": {
+      "LED": {
+        "href": "/led/492",
+        "Parent": {
+          "href": "/device/483"
+        }
+      }
+    }
+  },
+  "/led/1098": {
+    "status": "200 OK",
+    "body": {
+      "LED": {
+        "href": "/led/1098",
+        "Parent": {
+          "href": "/device/1091"
+        }
+      }
+    }
+  },
+  "/led/1099": {
+    "status": "200 OK",
+    "body": {
+      "LED": {
+        "href": "/led/1099",
+        "Parent": {
+          "href": "/device/1091"
+        }
+      }
+    }
+  },
+  "/led/1100": {
+    "status": "200 OK",
+    "body": {
+      "LED": {
+        "href": "/led/1100",
+        "Parent": {
+          "href": "/device/1091"
+        }
+      }
+    }
+  },
+  "/led/1564": {
+    "status": "200 OK",
+    "body": {
+      "LED": {
+        "href": "/led/1564",
+        "Parent": {
+          "href": "/device/1557"
+        }
+      }
+    }
+  },
+  "/led/1565": {
+    "status": "200 OK",
+    "body": {
+      "LED": {
+        "href": "/led/1565",
+        "Parent": {
+          "href": "/device/1557"
+        }
+      }
+    }
+  },
+  "/led/490/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/490/status",
+        "LED": {
+          "href": "/led/490"
+        },
+        "State": "On"
+      }
+    }
+  },
+  "/led/491/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/491/status",
+        "LED": {
+          "href": "/led/491"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/492/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/492/status",
+        "LED": {
+          "href": "/led/492"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/1098/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1098/status",
+        "LED": {
+          "href": "/led/1098"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/1099/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1099/status",
+        "LED": {
+          "href": "/led/1099"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/1100/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1100/status",
+        "LED": {
+          "href": "/led/1100"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/1564/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1564/status",
+        "LED": {
+          "href": "/led/1564"
+        },
+        "State": "On"
+      }
+    }
+  },
+  "/led/1565/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1565/status",
+        "LED": {
+          "href": "/led/1565"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/link/439/associatedlinknodeexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/437/associatedlinknodeexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/1/associatedlinknodeexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/439/associatedlinknodeexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/437/associatedlinknodeexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/1/associatedlinknodeexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/439/associatedlinknodeexpandedwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/437/associatedlinknodeexpandedwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/1/associatedlinknodeexpandedwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/439/associatedlinknodeexpandedwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/437/associatedlinknodeexpandedwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/1/associatedlinknodeexpandedwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/439/associatedlinknodes": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/437/associatedlinknodes": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/1/associatedlinknodes": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/vbutton/13": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /vbutton/13"
+    }
+  },
+  "/vbutton/14": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /vbutton/14"
+    }
+  },
+  "/vbutton/15": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /vbutton/15"
+    }
+  },
+  "/vbutton/16": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /vbutton/16"
+    }
+  },
+  "/vbutton/17": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /vbutton/17"
+    }
+  },
+  "/vbutton/18": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /vbutton/18"
+    }
+  },
+  "/zone/546/expanded/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/574/expanded/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/988/expanded/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/1743/expanded/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/2520/expanded/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/3025/expanded/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/2154/expanded/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/2448/expanded/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/546": {
+    "status": "200 OK",
+    "body": {
+      "Zone": {
+        "href": "/zone/546",
+        "XID": "<xid-38>",
+        "Name": "<name-20>",
+        "AvailableControlTypes": [
+          "Dimmed"
+        ],
+        "Category": {
+          "Type": "",
+          "IsLight": true
+        },
+        "AssociatedArea": {
+          "href": "/area/32"
+        },
+        "SortOrder": 1,
+        "ControlType": "Dimmed"
+      }
+    }
+  },
+  "/zone/574": {
+    "status": "200 OK",
+    "body": {
+      "Zone": {
+        "href": "/zone/574",
+        "XID": "<xid-39>",
+        "Name": "<name-21>",
+        "AvailableControlTypes": [
+          "Dimmed"
+        ],
+        "Category": {
+          "Type": "",
+          "IsLight": true
+        },
+        "AssociatedArea": {
+          "href": "/area/32"
+        },
+        "SortOrder": 2,
+        "ControlType": "Dimmed"
+      }
+    }
+  },
+  "/zone/988": {
+    "status": "200 OK",
+    "body": {
+      "Zone": {
+        "href": "/zone/988",
+        "XID": "<xid-42>",
+        "Name": "<name-21>",
+        "AvailableControlTypes": [
+          "Dimmed"
+        ],
+        "Category": {
+          "Type": "",
+          "IsLight": true
+        },
+        "AssociatedArea": {
+          "href": "/area/912"
+        },
+        "SortOrder": 0,
+        "ControlType": "Dimmed"
+      }
+    }
+  },
+  "/zone/1743": {
+    "status": "200 OK",
+    "body": {
+      "Zone": {
+        "href": "/zone/1743",
+        "XID": "<xid-46>",
+        "Name": "<name-19>",
+        "AvailableControlTypes": [
+          "Dimmed"
+        ],
+        "Category": {
+          "Type": "",
+          "IsLight": true
+        },
+        "AssociatedArea": {
+          "href": "/area/1220"
+        },
+        "SortOrder": 0,
+        "ControlType": "Dimmed"
+      }
+    }
+  },
+  "/zone/2520": {
+    "status": "200 OK",
+    "body": {
+      "Zone": {
+        "href": "/zone/2520",
+        "XID": "<xid-60>",
+        "Name": "<name-45>",
+        "Category": {
+          "Type": "",
+          "IsLight": false
+        },
+        "AssociatedArea": {
+          "href": "/area/1316"
+        },
+        "SortOrder": 2,
+        "ControlType": "CCO"
+      }
+    }
+  },
+  "/zone/3025": {
+    "status": "200 OK",
+    "body": {
+      "Zone": {
+        "href": "/zone/3025",
+        "XID": "<xid-56>",
+        "Name": "<name-42>",
+        "AvailableControlTypes": [
+          "Dimmed"
+        ],
+        "Category": {
+          "Type": "",
+          "IsLight": true
+        },
+        "AssociatedArea": {
+          "href": "/area/1304"
+        },
+        "SortOrder": 2,
+        "ControlType": "Dimmed"
+      }
+    }
+  },
+  "/zone/2154": {
+    "status": "200 OK",
+    "body": {
+      "Zone": {
+        "href": "/zone/2154",
+        "XID": "<xid-54>",
+        "Name": "<name-29>",
+        "AvailableControlTypes": [
+          "Dimmed"
+        ],
+        "Category": {
+          "Type": "",
+          "IsLight": true
+        },
+        "AssociatedArea": {
+          "href": "/area/1304"
+        },
+        "SortOrder": 0,
+        "ControlType": "Dimmed"
+      }
+    }
+  },
+  "/zone/2448": {
+    "status": "200 OK",
+    "body": {
+      "Zone": {
+        "href": "/zone/2448",
+        "XID": "<xid-59>",
+        "Name": "<name-44>",
+        "AvailableControlTypes": [
+          "Dimmed"
+        ],
+        "Category": {
+          "Type": "",
+          "IsLight": true
+        },
+        "AssociatedArea": {
+          "href": "/area/1316"
+        },
+        "SortOrder": 1,
+        "ControlType": "Dimmed"
+      }
+    }
+  },
+  "/zone/546/associatedloadcontroller": {
+    "status": "200 OK",
+    "body": {
+      "LoadControllers": [
+        {
+          "href": "/loadcontroller/9431",
+          "XID": "<xid-64>",
+          "Name": "<name-193>",
+          "Parent": {
+            "href": "/device/9428"
+          },
+          "LoadControllerType": "PhaseControl",
+          "PhaseControlLoadControllerProperties": {
+            "PhaseControlType": "Forward"
+          },
+          "TuningSettings": {
+            "href": "/loadcontroller/9431/tuningsettings"
+          },
+          "OutputNumber": 1,
+          "AssociatedLoad": {
+            "href": "/load/547"
+          },
+          "AssociatedZone": {
+            "href": "/zone/546"
+          },
+          "AssociatedDevice": {
+            "href": "/device/9428"
+          },
+          "DimmedLoadControllerProperties": {
+            "TuningSettings": {
+              "href": "/loadcontroller/9431/tuningsettings"
+            },
+            "PhaseControlType": "Forward"
+          }
+        }
+      ]
+    }
+  },
+  "/zone/574/associatedloadcontroller": {
+    "status": "200 OK",
+    "body": {
+      "LoadControllers": [
+        {
+          "href": "/loadcontroller/564",
+          "XID": "<xid-65>",
+          "Name": "<name-194>",
+          "Parent": {
+            "href": "/device/561"
+          },
+          "LoadControllerType": "PhaseControl",
+          "PhaseControlLoadControllerProperties": {
+            "PhaseControlType": "Forward"
+          },
+          "TuningSettings": {
+            "href": "/loadcontroller/564/tuningsettings"
+          },
+          "OutputNumber": 1,
+          "AssociatedLoad": {
+            "href": "/load/575"
+          },
+          "AssociatedZone": {
+            "href": "/zone/574"
+          },
+          "AssociatedDevice": {
+            "href": "/device/561"
+          },
+          "DimmedLoadControllerProperties": {
+            "TuningSettings": {
+              "href": "/loadcontroller/564/tuningsettings"
+            },
+            "PhaseControlType": "Forward"
+          }
+        }
+      ]
+    }
+  },
+  "/zone/988/associatedloadcontroller": {
+    "status": "200 OK",
+    "body": {
+      "LoadControllers": [
+        {
+          "href": "/loadcontroller/978",
+          "XID": "<xid-66>",
+          "Name": "<name-193>",
+          "Parent": {
+            "href": "/device/975"
+          },
+          "LoadControllerType": "PhaseControl",
+          "PhaseControlLoadControllerProperties": {
+            "PhaseControlType": "Forward"
+          },
+          "TuningSettings": {
+            "href": "/loadcontroller/978/tuningsettings"
+          },
+          "OutputNumber": 1,
+          "AssociatedLoad": {
+            "href": "/load/989"
+          },
+          "AssociatedZone": {
+            "href": "/zone/988"
+          },
+          "AssociatedDevice": {
+            "href": "/device/975"
+          },
+          "DimmedLoadControllerProperties": {
+            "TuningSettings": {
+              "href": "/loadcontroller/978/tuningsettings"
+            },
+            "PhaseControlType": "Forward"
+          }
+        }
+      ]
+    }
+  },
+  "/zone/1743/associatedloadcontroller": {
+    "status": "200 OK",
+    "body": {
+      "LoadControllers": [
+        {
+          "href": "/loadcontroller/1732",
+          "XID": "<xid-67>",
+          "Name": "<name-195>",
+          "Parent": {
+            "href": "/device/1729"
+          },
+          "LoadControllerType": "PhaseControl",
+          "PhaseControlLoadControllerProperties": {
+            "PhaseControlType": "Forward"
+          },
+          "TuningSettings": {
+            "href": "/loadcontroller/1732/tuningsettings"
+          },
+          "OutputNumber": 1,
+          "AssociatedLoad": {
+            "href": "/load/1744"
+          },
+          "AssociatedZone": {
+            "href": "/zone/1743"
+          },
+          "AssociatedDevice": {
+            "href": "/device/1729"
+          },
+          "DimmedLoadControllerProperties": {
+            "TuningSettings": {
+              "href": "/loadcontroller/1732/tuningsettings"
+            },
+            "PhaseControlType": "Forward"
+          }
+        }
+      ]
+    }
+  },
+  "/zone/2520/associatedloadcontroller": {
+    "status": "200 OK",
+    "body": {
+      "LoadControllers": [
+        {
+          "href": "/loadcontroller/2516",
+          "XID": "<xid-68>",
+          "Name": "<name-196>",
+          "Parent": {
+            "href": "/device/2513"
+          },
+          "LoadControllerType": "Unknown",
+          "OutputNumber": 1,
+          "AssociatedLoad": {
+            "href": "/load/2521"
+          },
+          "AssociatedZone": {
+            "href": "/zone/2520"
+          },
+          "AssociatedDevice": {
+            "href": "/device/2513"
+          }
+        }
+      ]
+    }
+  },
+  "/zone/3025/associatedloadcontroller": {
+    "status": "200 OK",
+    "body": {
+      "LoadControllers": [
+        {
+          "href": "/loadcontroller/3015",
+          "XID": "<xid-69>",
+          "Name": "<name-194>",
+          "Parent": {
+            "href": "/device/3012"
+          },
+          "LoadControllerType": "PhaseControl",
+          "PhaseControlLoadControllerProperties": {
+            "PhaseControlType": "Forward"
+          },
+          "TuningSettings": {
+            "href": "/loadcontroller/3015/tuningsettings"
+          },
+          "OutputNumber": 1,
+          "AssociatedLoad": {
+            "href": "/load/3026"
+          },
+          "AssociatedZone": {
+            "href": "/zone/3025"
+          },
+          "AssociatedDevice": {
+            "href": "/device/3012"
+          },
+          "DimmedLoadControllerProperties": {
+            "TuningSettings": {
+              "href": "/loadcontroller/3015/tuningsettings"
+            },
+            "PhaseControlType": "Forward"
+          }
+        }
+      ]
+    }
+  },
+  "/zone/2154/associatedloadcontroller": {
+    "status": "200 OK",
+    "body": {
+      "LoadControllers": [
+        {
+          "href": "/loadcontroller/2141",
+          "XID": "<xid-70>",
+          "Name": "<name-195>",
+          "Parent": {
+            "href": "/device/2138"
+          },
+          "LoadControllerType": "PhaseControl",
+          "PhaseControlLoadControllerProperties": {
+            "PhaseControlType": "Reverse"
+          },
+          "TuningSettings": {
+            "href": "/loadcontroller/2141/tuningsettings"
+          },
+          "OutputNumber": 1,
+          "AssociatedLoad": {
+            "href": "/load/2155"
+          },
+          "AssociatedZone": {
+            "href": "/zone/2154"
+          },
+          "AssociatedDevice": {
+            "href": "/device/2138"
+          },
+          "DimmedLoadControllerProperties": {
+            "TuningSettings": {
+              "href": "/loadcontroller/2141/tuningsettings"
+            },
+            "PhaseControlType": "Reverse"
+          }
+        }
+      ]
+    }
+  },
+  "/zone/2448/associatedloadcontroller": {
+    "status": "200 OK",
+    "body": {
+      "LoadControllers": [
+        {
+          "href": "/loadcontroller/2435",
+          "XID": "<xid-71>",
+          "Name": "<name-194>",
+          "Parent": {
+            "href": "/device/2432"
+          },
+          "LoadControllerType": "PhaseControl",
+          "PhaseControlLoadControllerProperties": {
+            "PhaseControlType": "Reverse"
+          },
+          "TuningSettings": {
+            "href": "/loadcontroller/2435/tuningsettings"
+          },
+          "OutputNumber": 1,
+          "AssociatedLoad": {
+            "href": "/load/2449"
+          },
+          "AssociatedZone": {
+            "href": "/zone/2448"
+          },
+          "AssociatedDevice": {
+            "href": "/device/2432"
+          },
+          "DimmedLoadControllerProperties": {
+            "TuningSettings": {
+              "href": "/loadcontroller/2435/tuningsettings"
+            },
+            "PhaseControlType": "Reverse"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,248 @@
+[
+  {
+    "url": "/zone",
+    "requestTag": "lt-1",
+    "subscribeStatus": "405 MethodNotAllowed",
+    "frames": []
+  },
+  {
+    "url": "/zone/546",
+    "requestTag": "lt-1",
+    "subscribeStatus": "405 MethodNotAllowed",
+    "frames": []
+  },
+  {
+    "url": "/zone/574",
+    "requestTag": "lt-1",
+    "subscribeStatus": "405 MethodNotAllowed",
+    "frames": []
+  },
+  {
+    "url": "/zone/546/status",
+    "requestTag": "lt-1",
+    "subscribeStatus": "405 MethodNotAllowed",
+    "frames": []
+  },
+  {
+    "url": "/zone/574/status",
+    "requestTag": "lt-1",
+    "subscribeStatus": "405 MethodNotAllowed",
+    "frames": []
+  },
+  {
+    "url": "/area",
+    "requestTag": "lt-1",
+    "subscribeStatus": "405 MethodNotAllowed",
+    "frames": []
+  },
+  {
+    "url": "/area/32/status",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/area/912/status",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/device",
+    "requestTag": "lt-1",
+    "subscribeStatus": "405 MethodNotAllowed",
+    "frames": []
+  },
+  {
+    "url": "/devicestatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/link/439/status",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/link/437/status",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/project",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/area/32",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/area/912",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/area/32/occupancysensorsettings",
+    "requestTag": "lt-1",
+    "subscribeStatus": "404 NotFound",
+    "frames": []
+  },
+  {
+    "url": "/area/912/occupancysensorsettings",
+    "requestTag": "lt-1",
+    "subscribeStatus": "404 NotFound",
+    "frames": []
+  },
+  {
+    "url": "/areastatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/deviceavailabilitystatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/devicebatterystatusstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/device/435",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/device/532",
+    "requestTag": "lt-1",
+    "subscribeStatus": "404 NotFound",
+    "frames": []
+  },
+  {
+    "url": "/devicestatus/deviceheard",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/emergencystatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/loadcontrollerstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/natlightoptstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/occupancysensorstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/operationstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/rentablespacestatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/service/bacnetsettings",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/systemloadsheddingstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/systemstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/temperaturesensorstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/timeclockeventstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/timeclockstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/v2operationstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/virtualbutton",
+    "requestTag": "lt-1",
+    "subscribeStatus": "405 MethodNotAllowed",
+    "frames": []
+  },
+  {
+    "url": "/zonetypegroup",
+    "requestTag": "lt-1",
+    "subscribeStatus": "204 NoContent",
+    "frames": []
+  },
+  {
+    "url": "/zonetypegroupstatus",
+    "requestTag": "lt-1",
+    "subscribeStatus": "400 BadRequest",
+    "frames": []
+  },
+  {
+    "url": "/loadcontroller/9431/status",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  },
+  {
+    "url": "/loadcontroller/564/status",
+    "requestTag": "lt-1",
+    "subscribeStatus": "200 OK",
+    "frames": []
+  }
+]

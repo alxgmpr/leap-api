@@ -1,0 +1,104 @@
+{
+  "/clientsetting": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "ClientMinorVersion is not modifiable"
+    }
+  },
+  "/led/490/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/490/status",
+        "LED": {
+          "href": "/led/490"
+        },
+        "State": "On"
+      }
+    }
+  },
+  "/led/491/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/491/status",
+        "LED": {
+          "href": "/led/491"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/492/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/492/status",
+        "LED": {
+          "href": "/led/492"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/1098/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1098/status",
+        "LED": {
+          "href": "/led/1098"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/1099/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1099/status",
+        "LED": {
+          "href": "/led/1099"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/1100/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1100/status",
+        "LED": {
+          "href": "/led/1100"
+        },
+        "State": "Off"
+      }
+    }
+  },
+  "/led/1564/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1564/status",
+        "LED": {
+          "href": "/led/1564"
+        },
+        "State": "On"
+      }
+    }
+  },
+  "/led/1565/status": {
+    "status": "200 OK",
+    "body": {
+      "LEDStatus": {
+        "href": "/led/1565/status",
+        "LED": {
+          "href": "/led/1565"
+        },
+        "State": "Off"
+      }
+    }
+  }
+}
