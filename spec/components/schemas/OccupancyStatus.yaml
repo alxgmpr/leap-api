@@ -5,16 +5,19 @@ description: |
   value observed on the wire, and unlisted values are possible.
 
   This schema shipped with a single member, `Unknown`, recovered from
-  OccupancyGroupStatus.OccupancyStatus on Caseta v01.123 (24 instances, via
-  /occupancygroup/status -- hand-authored, see occupancygroup.yaml; never
-  observed on RA3 v03.247, which answers 204 NoContent on that route). Its
+  OccupancyGroupStatus.OccupancyStatus on Caseta v01.123 (25 instances
+  across the two Caseta corpora -- 24 from the original capture and 1 from
+  the coverage-blind spec probe -- via /occupancygroup/status,
+  hand-authored, see occupancygroup.yaml; never observed on RA3, which
+  answers 204 NoContent on that route). Its
   description called that a single-value, single-platform sample and said
   `Occupied` and `Unoccupied` counterparts were "expected by the concept but
   unconfirmed in either fixture".
 
   The coverage-blind spec probe confirmed both, on the other field carrying
   this same firmware type (`leapobj.OccupancyStatus`):
-  AreaStatus.OccupancyStatus across 8 areas of RA3 unit 2 gives `Unknown` 4
+  AreaStatus.OccupancyStatus across the 8 areas the RA3 v03.249 probe
+  reaches gives `Unknown` 4
   (/area/{3,32,1232,1256}/status), `Unoccupied` 3
   (/area/{1208,1220,1244}/status), and `Occupied` 1 (/area/912/status).
   `fixtures/push-probe.json` carries a ninth, `Unoccupied`, in a pushed

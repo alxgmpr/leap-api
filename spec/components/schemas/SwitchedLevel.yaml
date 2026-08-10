@@ -15,11 +15,12 @@ description: |
   unlisted values are possible.
 
   Observed on ZoneStatus.SwitchedLevel (and, through the allOf,
-  ZoneExpandedStatus): `Off` 19 (Caseta v01.123 14, RA3 v03.247 unit 2 5),
-  `On` 3 (2 / 1), via /zone/status, /zone/{zoneId}/status and their expanded
-  forms. `fixtures/push-probe.json` shows both members again in pushed
-  MultipleZoneStatus frames. RA3 unit 1's capture has no switched zones at
-  all.
+  ZoneExpandedStatus): `Off` 19 (original Caseta capture 14, RA3 v03.249
+  spec probe 5), `On` 3 (2 / 1), via /zone/status and
+  /zone/{zoneId}/status. `fixtures/push-probe.json` shows both members
+  again in pushed MultipleZoneStatus frames. The original RA3 capture
+  (v03.247) has no switched zones at all, and the Caseta spec probe reaches
+  a single dimmed zone, so neither contributes.
 
   SwitchedLevelParameters.SwitchedLevel is typed here on firmware type
   identity; it is command-parameter input, so no corpus observes it

@@ -12,9 +12,11 @@ description: |
   capture never caught.
 
   Observed on BatteryStatus.LevelState (nested in DeviceStatus, via
-  /device/{id}/status and /device/status): `Unknown` 67 (RA3 v03.247 unit 1
-  29, Caseta v01.123 34, RA3 unit 2 4), `Good` 16 (2 / 12 / 2). Both members
-  appear on both platforms and in all three read corpora.
+  /device/{id}/status and /device/status): `Unknown` 69 -- RA3 v03.247 29,
+  Caseta v01.123 34 + 2, RA3 v03.249 4 -- and `Good` 16 (2 / 12 / 2). Both
+  members appear on both platforms; `Unknown` in all four read corpora that
+  return a BatteryStatus, `Good` in three of them (the Caseta spec probe
+  reaches one battery-powered device and it reports `Unknown`).
 
   `Unknown` dominating is consistent with what DeviceStatus.Availability
   shows over the same devices: an idle processor reports `Unknown` for

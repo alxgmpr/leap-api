@@ -12,9 +12,11 @@ description: |
   two-member set for a field named "availability" is very likely a lower
   bound, not the whole type.
 
-  `DeviceStatus.Availability`: `Unknown` 83 (RA3 v03.247 unit 1 31, Caseta
-  v01.123 46, RA3 unit 2 6), `Available` 2 (both /device/435/status, the
-  RA3 processor reporting on itself). The lopsidedness is real and matches
+  `DeviceStatus.Availability` (via /device/status and
+  /device/{deviceId}/status): `Unknown` 85 -- RA3 v03.247 31, Caseta
+  v01.123 46 + 2, RA3 v03.249 6 -- and `Available` 2 (both
+  /device/435/status, the RA3 processor reporting on itself, once per RA3
+  corpus). The lopsidedness is real and matches
   what the captures show elsewhere -- an idle processor reports `Unknown`
   for devices it has not heard from recently.
 

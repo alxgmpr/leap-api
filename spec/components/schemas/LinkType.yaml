@@ -13,12 +13,18 @@ description: |
   Both members are well covered and both platforms agree on the vocabulary:
 
   - `Link.LinkType` (via /link, /link/{linkId}, and nested in
-    Device.OwnedLinks): `RF` 11 (RA3 v03.247 unit 1 4, Caseta v01.123 3, RA3
-    unit 2 4), `ClearConnectTypeX` 8 (4 / 0 / 4).
-  - `LinkNode.LinkType` (via /link/{linkId}/associatedlinknode and its
-    /expanded form): `RF` 44, `ClearConnectTypeX` 58 on the RA3 units; the
-    Caseta capture reaches only the expanded route, contributing 24 more
-    `RF`.
+    Device.OwnedLinks on /device, /device/{deviceId} and
+    /project/masterdevicelist/devices): `RF` 14 -- RA3 v03.247 4, Caseta
+    v01.123 3 + 3, RA3 v03.249 4 -- and `ClearConnectTypeX` 8 (4 / 0 / 4).
+  - `LinkNode.LinkType` (via /link/{linkId}/associatedlinknode): `RF` 44,
+    `ClearConnectTypeX` 58 across the two RA3 corpora. Neither Caseta
+    corpus reaches the unexpanded route; their /expanded bodies contribute
+    26 more `RF` (24 from the original capture, 2 from the spec probe).
+    Three further LinkNodes come from direct
+    /device/{deviceId}/linknode/{linknodeId} fetches -- `RF` 1 and
+    `ClearConnectTypeX` 1 on RA3 v03.249, `RF` 1 on the Caseta spec probe --
+    a route with no declared response schema, so conformance never sees
+    them.
 
   `ClearConnectTypeX` is absent from Caseta because that platform's link
   inventory is a single `RF` link (/link/1), not because the value is

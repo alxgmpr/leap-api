@@ -4,8 +4,11 @@ description: |
   (Zone.ControlType and Zone.AvailableControlTypes shipped as open strings);
   members below were recovered from Zone.ControlType and
   Zone.AvailableControlTypes observed on RA3 v03.247 and Caseta v01.123.
-  Across all four read corpora Zone.ControlType now gives `Dimmed` 94,
-  `Switched` 17, `CCO` 3 and `FanSpeed` 2; `Dimmed` is the only value ever
+  Across every read corpus that reaches a zone -- `ra3`, `caseta`,
+  `sweep-read`, `spec-read` and `spec-read-caseta`, counted via /zone,
+  /zone/{zoneId} and /area/{areaId}/associatedzone -- Zone.ControlType now
+  gives `Dimmed` 96, `Switched` 17, `CCO` 3 and `FanSpeed` 2; `Dimmed` is
+  the only value ever
   seen inside AvailableControlTypes. ZoneTypeGroupAbridged.Type carries the
   same firmware type and is typed against this schema by type identity,
   though nothing in the corpus populates it. Unlisted values are possible.

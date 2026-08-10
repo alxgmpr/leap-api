@@ -1,13 +1,17 @@
 # `required` dropped entirely: the firmware marks ConfigurationTransferStatus,
 # Availability, and StatusAccuracy all non-pointer, but none are universal
-# across 56 observed device statuses (both platforms). ConfigurationTransferStatus
-# is absent on 1/56 (/device/435/status, RA3), Availability on 1/56
-# (/device/1/status, Caseta), and StatusAccuracy on 25/56 -- entirely absent on
-# every Caseta status (0/24) and present on all but one RA3 status (31/32).
+# across the 65 device statuses the four read corpora return through
+# /device/{deviceId}/status (RA3 32 + 7, Caseta 24 + 2).
+# ConfigurationTransferStatus is absent on 2/65 -- /device/435/status, the
+# RA3 processor's own status, once per RA3 corpus. Availability is absent on
+# 2/65 -- /device/1/status, the Caseta bridge's own status, once per Caseta
+# corpus. StatusAccuracy is absent on 28/65: entirely absent from every
+# Caseta status (0/26) and present on all but one status per RA3 corpus
+# (37/39, the exception being /device/435/status again).
 #
 # `Availability` points at the shared Availability schema (firmware type
-# `leapobj.Availability`, shared with ZoneStatus.Availability): 85
-# observations here, `Unknown` 83 and `Available` 2. ConfigurationTransferStatus
+# `leapobj.Availability`, shared with ZoneStatus.Availability): 87
+# observations here, `Unknown` 85 and `Available` 2. ConfigurationTransferStatus
 # and StatusAccuracy keep their TODO(enum) markers -- see those descriptions.
 type: object
 properties:
@@ -24,8 +28,9 @@ properties:
     description: |
       TODO(enum): members of ConfigurationTransferStatus were not recovered
       from the firmware extraction, and hardware has produced exactly one:
-      `NotRequired`, 85 observations across both platforms and all three
-      read corpora. Every probed system was already in sync; whatever this
+      `NotRequired`, 89 observations across both platforms and all four
+      read corpora that return a device status. Every probed system was
+      already in sync; whatever this
       field reports mid-transfer was never captured, so the set stays open.
     x-observed-values:
       - NotRequired
@@ -42,9 +47,9 @@ properties:
     description: |
       TODO(enum): members of StatusAccuracy were not recovered from the
       firmware extraction, and hardware has produced exactly one: `Good`,
-      37 observations (RA3 v03.247 unit 1 31, RA3 unit 2 6; absent from
-      every Caseta device status). Same firmware type as
-      ZoneStatus.StatusAccuracy, which adds 136 more observations of the
+      37 observations (RA3 v03.247 31, RA3 v03.249 6; absent from every
+      Caseta device status, on both Caseta corpora). Same firmware type as
+      ZoneStatus.StatusAccuracy, which adds 138 more observations of the
       same single value -- see that field for why one value is not a set.
     x-observed-values:
       - Good

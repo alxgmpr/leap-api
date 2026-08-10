@@ -1,16 +1,18 @@
 type: object
 description: |
   Firmware marks SwitchedLevel, CCOLevel, ReceptacleLevel, FanSpeed,
-  Availability, and ZoneLockState as non-pointer (required), but across 41
-  observed zones (RA3 v03.247, Caseta v01.123) each is only ever present on
-  the zone types it applies to (e.g. FanSpeed only on fan zones, SwitchedLevel
-  only on switched zones) and most are absent entirely from one platform or
-  the other — relaxed to optional here on hardware evidence. StatusAccuracy
-  was present on all 41 and stays required.
+  Availability, and ZoneLockState as non-pointer (required), but across the
+  138 zone-status bodies the four read corpora return through /zone/status
+  and /zone/{zoneId}/status each is only ever present on the zone types it
+  applies to (e.g. FanSpeed only on fan zones, SwitchedLevel only on
+  switched zones) and most are absent entirely from one platform or the
+  other — relaxed to optional here on hardware evidence. StatusAccuracy was
+  present on all 138 and stays required.
 
   `SwitchedLevel` points at the shared `SwitchedLevel` schema (firmware type
-  `leapobj.SwitchedLevel`): 22 observations, `Off` 19 and `On` 3, on Caseta
-  and RA3 unit 2.
+  `leapobj.SwitchedLevel`): 22 observations, `Off` 19 and `On` 3, on the
+  original Caseta capture and the RA3 v03.249 spec probe. The Caseta spec
+  probe reaches one zone and it is dimmed, so it adds none.
 
   The five enum-typed fields that remain open strings -- CCOLevel,
   ReceptacleLevel, FanSpeed, StatusAccuracy, ZoneLockState -- are open on
@@ -26,7 +28,7 @@ description: |
 
   `Availability` points at the shared `Availability` schema: its firmware
   type is `leapobj.Availability`, the same type as DeviceStatus.Availability,
-  where 85 observations produced `Available`/`Unknown`. No read corpus ever
+  where 87 observations produced `Available`/`Unknown`. No read corpus ever
   populates it on a zone; the two zone-side observations are the `Available`
   values in `fixtures/push-probe.json`'s CreateResponse frames for a live
   level change on /zone/4664.
@@ -48,8 +50,9 @@ properties:
     description: |
       TODO(enum): members of CCOLevel were not recovered from the firmware
       extraction, and hardware has produced exactly one: `Open`, 3
-      observations on the RA3 units (/zone/status and /zone/2520/status,
-      the only CCO zone either capture reaches). A `Closed` counterpart is
+      observations across the two RA3 corpora (/zone/status and
+      /zone/2520/status, the only CCO zone either reaches; neither Caseta
+      corpus reaches one). A `Closed` counterpart is
       all but certain and simply never coincided with a probe, which is
       why this stays an open string.
     x-observed-values:
@@ -66,8 +69,9 @@ properties:
     description: |
       TODO(enum): members of FanSpeed were not recovered from the firmware
       extraction, and hardware has produced exactly one: `High`, 3
-      observations on the RA3 units (/zone/status and /zone/1982/status,
-      the single observed fan zone). One fan at one moment is not the
+      observations across the two RA3 corpora (/zone/status and
+      /zone/1982/status, the single observed fan zone; neither Caseta
+      corpus reaches one). One fan at one moment is not the
       vocabulary of the type; off/low/medium counterparts are expected.
     x-observed-values:
       - High
@@ -78,8 +82,11 @@ properties:
     description: |
       TODO(enum): members of StatusAccuracy were not recovered from the
       firmware extraction, and hardware has produced exactly one: `Good`,
-      136 observations across both platforms and all read corpora, plus 49
-      more through ZoneExpandedStatus and 52 in pushed frames. Volume is
+      138 observations across both platforms and all four read corpora that
+      return a zone status (/zone/status and /zone/{zoneId}/status), plus 50
+      more through ZoneExpandedStatus, 36 through
+      /area/{areaId}/associatedzone/status and its expanded form (a route
+      with no declared response schema), and 52 in pushed frames. Volume is
       not variety -- every probe caught a healthy system, and a field named
       "status accuracy" exists to report the unhealthy case this corpus
       never provoked.
@@ -96,8 +103,10 @@ properties:
     description: |
       TODO(enum): members of ZoneLockState were not recovered from the
       firmware extraction, and hardware has produced exactly one:
-      `Unlocked`, 102 observations on the RA3 units (the field never
-      appears on Caseta), plus 33 through ZoneExpandedStatus. A `Locked`
+      `Unlocked`, 102 observations across the two RA3 corpora (the field
+      never appears on either Caseta corpus), plus 33 through
+      ZoneExpandedStatus and 36 through
+      /area/{areaId}/associatedzone/status and its expanded form. A `Locked`
       counterpart is implied by the field's own name; no probed zone was
       locked.
     x-observed-values:
