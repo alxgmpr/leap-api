@@ -285,8 +285,10 @@ subscription push probe (`fixtures/push-probe.json`) sent two
 0% → 50% → 0%, and logged both replies —
 `CommuniqueType: CreateResponse`, `StatusCode: 201 Created`,
 `MessageBodyType: OneZoneStatus`, body
-`{"ZoneStatus": {"href": "/zone/4664/status", "Level": 50, ...}}` (`seq` 20
-and 24). That is the whole of this project's captured command traffic: one
+`{"ZoneStatus": {"href": "/zone/4664/status", "Level": 50 / 0, ...}}`. The
+four header attributes are shared; the bodies are not — `seq` 20 reports
+`"Level": 50` and `seq` 24 reports `"Level": 0`, which is the point of the
+second command. That is the whole of this project's captured command traffic: one
 processor, one route, two requests.
 
 **The request bodies were not logged.** `fixtures/push-probe.json`'s
