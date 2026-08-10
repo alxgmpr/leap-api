@@ -180,7 +180,14 @@ addFormats(ajv);
 // contributes a case: both return `500 InternalServerError` on every device
 // id they requested (32 and 8), which is why this is the largest single-
 // operation jump in the task and comes entirely from one platform.
-const EXPECTED_MATCHED_CASES = 836;
+//
+// 836 -> 839: /device/{deviceId}/linknode/{linknodeId}, +3, the three bodies
+// the two coverage-blind spec probes got from that route -- 2 on RA3 v03.249
+// (`RF` and `ClearConnectTypeX`) and 1 on Caseta v01.123 (`RF`). LinkType.yaml
+// had already counted those three link nodes and noted that conformance
+// never saw them; it now validates all three. No schema was authored -- the
+// existing `LinkNode` already described the body.
+const EXPECTED_MATCHED_CASES = 839;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

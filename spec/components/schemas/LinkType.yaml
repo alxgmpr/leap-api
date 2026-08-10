@@ -32,9 +32,9 @@ description: |
     26 more `RF` (24 from the original capture, 2 from the spec probe).
     Three further LinkNodes come from direct
     /device/{deviceId}/linknode/{linknodeId} fetches -- `RF` 1 and
-    `ClearConnectTypeX` 1 on RA3 v03.249, `RF` 1 on the Caseta spec probe --
-    a route with no declared response schema, so conformance never sees
-    them.
+    `ClearConnectTypeX` 1 on RA3 v03.249, `RF` 1 on the Caseta spec probe.
+    That route gained a declared response schema in the device family, so
+    conformance now validates all three.
 
   `ClearConnectTypeX` is absent from Caseta because that platform's link
   inventory is a single `RF` link (/link/1), not because the value is

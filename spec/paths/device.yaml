@@ -32,6 +32,13 @@
 #    requested. Two schemas were brought in, LEDSettings verbatim and
 #    LEDSpecificSettings with its `EnabledState` pointed at the shared enum
 #    schema on firmware type identity.
+#
+# 4. GET /device/{deviceId}/linknode/{linknodeId} had its marker resolved by
+#    reuse, no schema authored: the wire body key is `LinkNode` and the
+#    existing schema already covered it. A gap fill; the route table records
+#    no responseType. Three observed bodies, two platforms. LinkType.yaml
+#    counted these three already and noted that conformance never saw them
+#    -- that note is now stale and is corrected in the same commit.
 /device:
   post:
     operationId: createDevice
@@ -251,10 +258,24 @@
     tags:
       - device
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: LinkNode
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: both platforms return `200 OK` with body key
+      `LinkNode` holding a bare object, which the existing `LinkNode` schema
+      already described. Three bodies in all -- RA3 v03.249's
+      `/device/435/linknode/{438,436}` (`RF` and `ClearConnectTypeX`) and
+      Caseta v01.123's `/device/3/linknode/2` (`RF`). Every other
+      device/linknode id pair the spec probes tried returns `404 NotFound`;
+      neither original campaign corpus nor either sweep corpus requested this
+      route.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkNode"
     summary: Get device link node
   parameters:
     - name: deviceId
