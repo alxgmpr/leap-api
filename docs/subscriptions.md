@@ -137,7 +137,8 @@ console.log(JSON.stringify(d.sentRequests.map(r => [r.tag, r.communiqueType, r.u
 
 Those 17 are a discovery prelude rather than filler: `lt-1` and `lt-2`
 read the zone the run is about to drive, `lt-3` lists the areas, and
-`lt-4`…`lt-17` walk each area's zones. Several of them touch resources the
+`lt-4`…`lt-17` read the associated zones of 14 of them. Several of them
+touch resources the
 subscriptions then cover — zone 4664 is one of the 46 entries in
 `lt-18`'s snapshot, and `lt-17` reads the associated zones of the very area
 `lt-19` subscribes to. That is irrelevant to the argument here, which turns
