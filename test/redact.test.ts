@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
 import test, { describe } from "node:test";
 import { redactTree, redactValue } from "../lib/redact.ts";
 
@@ -186,5 +187,25 @@ describe("redactValue — email catch-all", () => {
   test("redacts an email-shaped string regardless of key", () => {
     const out = String(redactValue("someone@example.com"));
     assert.match(out, /^<email-\d+>$/);
+  });
+});
+
+describe("capture manifest", () => {
+  test("captures.json exists and is a non-empty array", () => {
+    assert.ok(existsSync("captures.json"), "manifest missing");
+    const m = JSON.parse(readFileSync("captures.json", "utf8"));
+    assert.ok(Array.isArray(m) && m.length >= 2);
+    for (const e of m) {
+      assert.equal(typeof e.to, "string");
+      assert.ok(e.to.startsWith("fixtures/"), "outputs must land in fixtures/");
+    }
+  });
+
+  test("the manifest embeds no dotted-quad address", () => {
+    const raw = readFileSync("captures.json", "utf8");
+    assert.ok(
+      !/\b\d{1,3}(\.\d{1,3}){3}\b/.test(raw),
+      "manifest must not contain a device IP",
+    );
   });
 });

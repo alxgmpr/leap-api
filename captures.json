@@ -1,0 +1,4 @@
+[
+  { "label": "ra3", "to": "fixtures/ra3.json" },
+  { "label": "caseta", "to": "fixtures/caseta.json" }
+]
