@@ -7,6 +7,13 @@ description: |
   only on switched zones) and most are absent entirely from one platform or
   the other — relaxed to optional here on hardware evidence. StatusAccuracy
   was present on all 41 and stays required.
+
+  `Availability` points at the shared `Availability` schema: its firmware
+  type is `leapobj.Availability`, the same type as DeviceStatus.Availability,
+  where 85 observations produced `Available`/`Unknown`. No read corpus ever
+  populates it on a zone; the two zone-side observations are the `Available`
+  values in `fixtures/push-probe.json`'s CreateResponse frames for a live
+  level change on /zone/4664.
 properties:
   href:
     type: string
@@ -41,9 +48,7 @@ properties:
     description: "TODO(enum): members of StatusAccuracy were not recovered from the
       firmware extraction"
   Availability:
-    type: string
-    description: "TODO(enum): members of Availability were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/Availability"
   SingleSetPointHVACStatus:
     $ref: "#/components/schemas/SingleSetPointHVACStatus"
   DualSetPointHVACStatus:

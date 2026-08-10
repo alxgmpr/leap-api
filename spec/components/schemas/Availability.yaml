@@ -1,0 +1,29 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.Availability`,
+# referenced but never defined by the extraction (so the generator emitted
+# `TODO(enum): members of Availability ...` at every site). Three fields
+# carry it: DeviceStatus.Availability and ZoneStatus.Availability, both
+# typed against this schema, and DeviceAvailabilityStatus.Availability,
+# which has no hand-refined schema yet.
+type: string
+description: |
+  Whether the processor currently has a live view of the resource. The
+  firmware extraction did not recover the full enum; the members below are
+  every value observed on the wire, and unlisted values are possible -- a
+  two-member set for a field named "availability" is very likely a lower
+  bound, not the whole type.
+
+  `DeviceStatus.Availability`: `Unknown` 83 (RA3 v03.247 unit 1 31, Caseta
+  v01.123 46, RA3 unit 2 6), `Available` 2 (both /device/435/status, the
+  RA3 processor reporting on itself). The lopsidedness is real and matches
+  what the captures show elsewhere -- an idle processor reports `Unknown`
+  for devices it has not heard from recently.
+
+  `ZoneStatus.Availability` is never populated in any read corpus. Its two
+  observations come from `fixtures/push-probe.json`, where the
+  CreateResponse frames for a live level change on /zone/4664 carry
+  `{"StatusAccuracy": "Good", "Availability": "Available"}` -- the same
+  value, on the same firmware type, from the one capture that caught a zone
+  mid-transaction.
+enum:
+  - Available
+  - Unknown
