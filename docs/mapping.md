@@ -287,7 +287,19 @@ subscription push probe (`fixtures/push-probe.json`) sent two
 `MessageBodyType: OneZoneStatus`, body
 `{"ZoneStatus": {"href": "/zone/4664/status", "Level": 50, ...}}` (`seq` 20
 and 24). That is the whole of this project's captured command traffic: one
-processor, one route, one `CommandType`. It is enough to give
+processor, one route, two requests.
+
+**The request bodies were not logged.** `fixtures/push-probe.json`'s
+`sentRequests` entries carry only `tag`, `communiqueType`, `url`,
+`sentAtMs` and `answeredAtMs` — no `Body`, and no `CommandType`; the string
+`CommandType` does not appear in that file at all. So the capture
+establishes what a command processor *replies*, and establishes nothing
+about the envelope that provoked it. The only captured `CommandType`
+anywhere in `fixtures/` is `PressAndRelease`, in the `Command` nested inside
+Caseta's `GET /system/action` body — a command the processor reported as
+programmed, not one this project sent.
+
+That is enough to give
 `/zone/{zoneId}/commandprocessor` a `201` response with a `ZoneStatus`
 schema, and not enough to say anything about the other nine paths, whose
 `200` responses are still deliberately left without an asserted schema
