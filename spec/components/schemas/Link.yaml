@@ -3,6 +3,11 @@
 # platforms), while present on both directly-fetched /link/{linkId} Links
 # (RA3). Relaxed to optional; LinkType (present on all 6 observed Links,
 # nested and direct) stays required.
+#
+# `LinkType` points at the shared LinkType schema (firmware type
+# `leapobj.LinkType`, shared with LinkNode.LinkType): 19 observed Links give
+# `RF` 11 (both platforms) and `ClearConnectTypeX` 8 (RA3 only, because
+# Caseta's whole link inventory is one RF link). See LinkType.yaml.
 type: object
 properties:
   href:
@@ -10,9 +15,7 @@ properties:
   Parent:
     $ref: "#/components/schemas/HyperReference"
   LinkType:
-    type: string
-    description: "TODO(enum): members of LinkType were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/LinkType"
   LinkNumber:
     type: integer
     minimum: 0

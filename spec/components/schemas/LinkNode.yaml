@@ -1,3 +1,8 @@
+# `LinkType` points at the shared LinkType schema (firmware type
+# `leapobj.LinkType`, shared with Link.LinkType): 102 observed link nodes
+# on the two RA3 units give `ClearConnectTypeX` 58 and `RF` 44, and the
+# Caseta capture adds 24 more `RF` through LinkNodeExpanded, which is an
+# allOf against this schema. See LinkType.yaml.
 type: object
 properties:
   href:
@@ -5,9 +10,7 @@ properties:
   Parent:
     $ref: "#/components/schemas/HyperReference"
   LinkType:
-    type: string
-    description: "TODO(enum): members of LinkType were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/LinkType"
   RFProperties:
     $ref: "#/components/schemas/RFProperties"
   AssociatedLink:

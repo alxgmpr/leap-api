@@ -28,7 +28,7 @@ describe("computeCoverage", () => {
     // either number changes unexpectedly, that's a regression to
     // investigate, not a constant to bump.
     const c = computeCoverage();
-    assert.equal(c.todoEnums, 81);
+    assert.equal(c.todoEnums, 79);
     assert.equal(c.todoResponses, 167);
   });
 });
