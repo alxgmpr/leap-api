@@ -14,13 +14,29 @@ description: |
   the full enum; the members below are every value observed on the wire, and
   unlisted values are possible.
 
-  Observed on ZoneStatus.SwitchedLevel (and, through the allOf,
-  ZoneExpandedStatus): `Off` 19 (original Caseta capture 14, RA3 v03.249
-  spec probe 5), `On` 3 (2 / 1), via /zone/status and
-  /zone/{zoneId}/status. `fixtures/push-probe.json` shows both members
-  again in pushed MultipleZoneStatus frames. The original RA3 capture
-  (v03.247) has no switched zones at all, and the Caseta spec probe reaches
-  a single dimmed zone, so neither contributes.
+  Observed on ZoneStatus.SwitchedLevel via /zone/status and
+  /zone/{zoneId}/status: `Off` 19 (original Caseta capture 14, RA3 v03.249
+  spec probe 5), `On` 3 (2 / 1).
+
+  ZoneExpandedStatus is an allOf against this schema's parent and is counted
+  separately, as it is in `ZoneStatus.yaml`: /zone/{zoneId}/status/expanded
+  adds 8 more, `Off` 7 and `On` 1, all from the original Caseta capture --
+  the only corpus whose expanded route reaches a switched zone. Two further
+  `Off`s come from the spec probe's /area/{areaId}/associatedzone/status and
+  its expanded form, a route with no declared response schema.
+
+  `fixtures/push-probe.json` shows both members again, but in the
+  subscribe-time **snapshot**, not in a push: `seq` 18,
+  `CommuniqueType: SubscribeResponse`, `MessageBodyType:
+  MultipleZoneStatus`, 5 x `Off` and 1 x `On` among the 46 zone statuses it
+  carries. None of the five pushes in that capture carries a
+  `SwitchedLevel` at all: push bodies are field-level deltas, so no push
+  reported a switched zone changing while the capture was open -- the one
+  zone the run drove, 4664, reports `Level`, not `SwitchedLevel`. See
+  `docs/subscriptions.md` for why that distinction matters.
+
+  The original RA3 capture (v03.247) has no switched zones at all, and the
+  Caseta spec probe reaches a single dimmed zone, so neither contributes.
 
   SwitchedLevelParameters.SwitchedLevel is typed here on firmware type
   identity; it is command-parameter input, so no corpus observes it
