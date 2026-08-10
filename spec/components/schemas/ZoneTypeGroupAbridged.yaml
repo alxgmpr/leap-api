@@ -1,10 +1,15 @@
+# `Type` points at the shared ZoneType schema on firmware type identity:
+# `leapobj.ZoneTypeGroupAbridged.Type` is `leapobj.ZoneType`, the same type as
+# Zone.ControlType and Zone.AvailableControlTypes, where the four members were
+# recovered (116 ControlType observations across both platforms and all four
+# read corpora). This schema is reached only through Area.AssociatedZoneTypeGroups
+# and is never populated in any corpus, so it contributes no evidence of its
+# own. See ZoneType.yaml.
 type: object
 properties:
   href:
     type: string
   Type:
-    type: string
-    description: "TODO(enum): members of ZoneType were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/ZoneType"
 required:
   - Type
