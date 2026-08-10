@@ -102,7 +102,7 @@ route and finds nothing here cannot tell "this route does not exist" from
   definitions and nothing else, so the extraction can emit no named enum
   type at all, and per `docs/mapping.md` the firmware defines no plural
   collection-wrapper types either. One of the 61, `ServiceType`, is no
-  longer an enum — live traffic from a second processor falsified it as a
+  longer an enum — live traffic on RA3 firmware v03.249 falsified it as a
   closed set (it returned a `Type` this specification did not list), so it
   is now a documented-open `string` with its observed values retained as
   documentation rather than as an assertion. `ServerType`, falsified the same

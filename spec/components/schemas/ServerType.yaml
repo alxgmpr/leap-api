@@ -20,7 +20,7 @@ description: |
     plain-telnet Lutron Integration Protocol, a different protocol from
     RA3's `IPL` despite the transposed initials.
 
-  **Appended, not reopened.** A closed enum falsified by a second unit is
+  **Appended, not reopened.** A closed enum falsified by a later corpus is
   exactly the shape of the `ServiceType` case, which was resolved the other
   way -- reopened to a documented `string` rather than extended -- so the
   divergence needs stating. `ServiceType` was reopened because the firmware
