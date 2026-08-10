@@ -1,8 +1,9 @@
 # `OccupancyStatus` points at the shared OccupancyStatus schema (firmware
 # type `leapobj.OccupancyStatus`, shared with
 # OccupancyGroupStatus.OccupancyStatus). This field is where `Occupied` and
-# `Unoccupied` were finally observed: 8 area statuses on RA3 unit 2 give
-# `Unknown` 4, `Unoccupied` 3, `Occupied` 1. See OccupancyStatus.yaml.
+# `Unoccupied` were finally observed: the 8 area statuses the coverage-blind
+# spec probe reaches on RA3 v03.249 give `Unknown` 4, `Unoccupied` 3,
+# `Occupied` 1. See OccupancyStatus.yaml.
 type: object
 properties:
   href:
@@ -23,7 +24,7 @@ properties:
     description: |
       Nullable: the wire sends an explicit JSON `null` for an area with no
       scene currently active, rather than omitting the key. Observed on 4 of
-      the 8 probed areas (RA3 v03.247, via /area/{areaId}/status):
+      the 8 probed areas (RA3 v03.249, via /area/{areaId}/status):
       `/area/3/status`, `/area/32/status`, `/area/1208/status` and
       `/area/1232/status` all carry `"CurrentScene": null`, while
       `/area/912/status`, `/area/1220/status`, `/area/1244/status` and
@@ -32,7 +33,7 @@ properties:
 
       Firmware and hardware agree here -- the loss is the generator's.
       Firmware types the field `CurrentScene **leapobj.HyperReference` (a
-      double pointer, unique to this field in the extracted corpus): the
+      double pointer): the
       outer pointer carries presence, the inner one carries null-vs-value,
       which is exactly the "explicit null" encoding observed. The Go struct
       parser strips pointers at any depth to a single `optional` flag (see
@@ -43,6 +44,14 @@ properties:
       proper, so `type: "null"` is available; a `$ref`-plus-`type` sibling
       would not work, since `null` cannot also satisfy `HyperReference`
       (which requires `href`).
+
+      The double pointer is not unique to this field. The extraction has 40
+      `**` fields across 17 types; 37 of them are on `*Update` request
+      types, where a double pointer is the ordinary Go partial-update idiom
+      (distinguishing "leave alone" from "set to null"). On non-update
+      response types there are three: `ColorTuningStatus.CurveDimming`,
+      `WarmDimParameters.CurveDimming`, and this one. `CurrentScene` is
+      simply the only one of the three this project has wire evidence for.
     oneOf:
       - $ref: "#/components/schemas/HyperReference"
       - type: "null"

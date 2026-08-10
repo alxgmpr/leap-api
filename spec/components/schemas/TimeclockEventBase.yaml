@@ -40,11 +40,12 @@ properties:
       8601 duration, despite the firmware's `lutcommon.Timespan` type
       (shared with genuine duration fields like
       `DimmedLevelParameters.FadeTime`). Hardware wins outright and the ISO
-      8601 alternative is gone, not kept as a fallback: across 8 observed
+      8601 alternative is gone, not kept as a fallback: across 10 observed
       values -- 6 TimeclockEvents on RA3 (`"0"` x2 via /timeclockevent/651
       and /676, `"2:00:00"` x2 via /6931 and /6945, `"-2:00:00"` via /6938,
-      `"-30:00"` via /10083) and both NLOTime offsets on Caseta v01.123
-      (`"0"`, via /system/naturallightoptimization) -- not one is ISO 8601
+      `"-30:00"` via /10083) and both NLOTime offsets in each of the two
+      Caseta v01.123 corpora (`"0"`, via /system/naturallightoptimization)
+      -- not one is ISO 8601
       shaped, and the four non-zero ones are all `[-]H:MM:SS` or
       `[-]MM:SS`.
 
@@ -62,6 +63,14 @@ properties:
       sunset/sunrise offsets before the event, and a leading `-` is why
       those two values were never at risk of the redactor's IPv6 pattern in
       the first place.
+
+      Firmware types this field `*lutcommon.Timespan` -- a pointer, i.e.
+      optional -- and it is optional here. `TimeclockEvent.yaml`,
+      `NLOTime.yaml` and `OccGroupTime.yaml` each require it *conditionally*,
+      when their own discriminator says the event is astronomic. That is a
+      strengthening beyond what the firmware asserts, taken on 6/6 astronomic
+      TimeclockEvents and 4/4 NLOTime instances; see TimeclockEvent.yaml for
+      why the same argument does not run for `TimeOfDay`, where n=1.
     pattern: ^(0|-?\d{1,2}(?::[0-5]\d){1,2})$
     example: "-2:00:00"
   TimeOfDay:

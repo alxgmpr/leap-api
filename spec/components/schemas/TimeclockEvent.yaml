@@ -1,16 +1,18 @@
 # Refined from _generated/TimeclockEvent.yaml. Three deviations, all decided
-# from fixture evidence -- originally 2 observed TimeclockEvent objects (RA3
-# v03.247, via /timeclockevent), now 7 (the coverage-blind spec probe added
-# 5 more from a second RA3 unit's 3 timeclocks, fetched both as a collection
-# and individually via /timeclockevent/{timeclockeventId}) -- hand-authored,
-# see timeclockevent.yaml and timeclock.yaml:
+# from fixture evidence. Counts below are of *distinct* TimeclockEvent
+# objects, not of bodies: the original RA3 capture (v03.247) returned 2
+# (/timeclockevent/651 and /676, via /timeclockevent), and the coverage-blind
+# spec probe (v03.249) returned 7 -- those same two, byte-identical, plus 5
+# from its 3 timeclocks, each fetched both as a collection and individually
+# via /timeclockevent/{timeclockeventId}. Hand-authored; see
+# timeclockevent.yaml and timeclock.yaml:
 #
 # 1. FLATTENED `TimeclockEventBase` and `WeeklyRecurrence`, both named
 #    fields whose Go type shares the field name -- anonymous embeds, same
 #    class of bug as ZoneExpandedStatus (Task 10), Device/ButtonGroupExpanded/
 #    LinkNodeExpanded (Task 12a), and NLOTime (Task 12b, which flattened
 #    this same TimeclockEventBase type for a different parent schema). All 7
-#    observed TimeclockEvent objects have TimeclockEventBase's fields
+#    distinct TimeclockEvent objects have TimeclockEventBase's fields
 #    (AstronomicEventType, AstronomicTimeOffset, TimeOfDay) and
 #    WeeklyRecurrence's fields (Sunday..Saturday) sitting flat at the top
 #    level, never nested under a "TimeclockEventBase" or "WeeklyRecurrence"
@@ -49,18 +51,37 @@ description: |
   2020-12, so the applicator keywords are available): when
   `TimeclockEventType` is `Astronomic`, both `AstronomicEventType` and
   `AstronomicTimeOffset` are required. That holds on 6/6 observed
-  astronomic events -- `/timeclockevent/{651,676}` on the first RA3 unit
-  and `/timeclockevent/{6931,6938,6945,10083}` on the second -- and is
+  astronomic events -- `/timeclockevent/{651,676}`, returned identically by
+  both RA3 corpora, and `/timeclockevent/{6931,6938,6945,10083}`, which only
+  the v03.249 spec probe reaches -- and is
   vacuously satisfied by the one observed `FixedTime` event. The `if`
   itself requires `TimeclockEventType`, so an event that somehow omitted
   the discriminator is not silently held to the astronomic rule; the
   top-level `required` already rejects that case.
 
-  No converse rule is asserted for `FixedTime`. `TimeOfDay` was present on
-  the single observed `FixedTime` event, but firmware types it
+  **The `then` clause asserts more than the firmware does, deliberately.**
+  Firmware types `AstronomicEventType` non-pointer but
+  `AstronomicTimeOffset` a *pointer*:
+
+      type leapobj.TimeclockEventBase struct {
+          AstronomicEventType leapobj.AstronomicEventType
+          AstronomicTimeOffset *lutcommon.Timespan
+          TimeOfDay  *leapobj.FixedTime
+      }
+
+  Before this conditional, `AstronomicTimeOffset` was required nowhere in
+  the specification. So requiring it on astronomic events is a restatement
+  of the firmware's `AstronomicEventType` rule *plus* a strengthening the
+  firmware does not back. The strengthening rests on 6/6: every astronomic
+  TimeclockEvent in either RA3 corpus carries the offset, and so do all 4
+  NLOTime instances across the two Caseta corpora.
+
+  No converse rule is asserted for `FixedTime`, and the difference is the
+  sample size, not the direction of the rule. `TimeOfDay` was present on the
+  single observed `FixedTime` event, but firmware types it
   `*leapobj.FixedTime` (a pointer, i.e. optional) and n=1 is not a base to
-  contradict that -- firmware and hardware agree it is optional, so it
-  stays optional.
+  contradict a pointer -- firmware and hardware agree it is optional, so it
+  stays optional. 6/6 is; n=1 is not.
 allOf:
   - $ref: "#/components/schemas/TimeclockEventBase"
   - $ref: "#/components/schemas/WeeklyRecurrence"

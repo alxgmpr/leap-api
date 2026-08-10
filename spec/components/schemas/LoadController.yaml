@@ -1,9 +1,11 @@
 type: object
 description: |
   `required` follows the firmware extraction except for `XID`, which Caseta
-  falsified. Every one of the 17 RA3 v03.247 load controllers observed
-  (`fixtures/sweep-read.json` and `fixtures/spec-read.json`,
-  `/zone/{zoneId}/associatedloadcontroller`) carries every field this schema
+  falsified. Every one of the 16 RA3 load-controller observations
+  (`fixtures/sweep-read.json` 8 and `fixtures/spec-read.json` 8, both on
+  RA3 firmware 3.249, via `/zone/{zoneId}/associatedloadcontroller`; 12
+  distinct `/loadcontroller/{id}`s, four of which both corpora reach)
+  carries every field this schema
   requires, including the `LoadControllerType: Unknown` instance, which
   omits both type-specific properties objects but still carries `XID`,
   `Name`, `Parent`, `LoadControllerType`, `OutputNumber`, and
@@ -18,11 +20,11 @@ description: |
   a per-object one.** The single Caseta v01.123 load controller
   (`fixtures/spec-read-caseta.json`, /zone/2/associatedloadcontroller) omits
   `XID` while carrying every other required field. That is not a quirk of
-  one object: across all five probe corpora, no Caseta response of any kind
-  carries an `XID` -- 0 of 92 zones, 0 of 144 devices, 0 of 50 areas on the
-  original Caseta capture, and 0 of everything on this second bridge --
-  while RA3 emits one on areas, zones, control stations and load
-  controllers. Caseta appears not to assign the cross-reference identifier
+  one object: across every probe corpus in `captures.json`, no Caseta
+  response of any kind carries an `XID` -- `grep -c '"XID"'` returns 0 for
+  both `fixtures/caseta.json` and `fixtures/spec-read-caseta.json`, against
+  191 and 193 for the two RA3 corpora -- while RA3 emits one on areas,
+  zones, control stations and load controllers. Caseta appears not to assign the cross-reference identifier
   at all. Firmware marks it non-pointer, hardware omits it on a whole
   platform, so it is optional here.
 
