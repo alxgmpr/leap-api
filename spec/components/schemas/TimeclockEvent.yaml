@@ -1,4 +1,4 @@
-# Refined from _generated/TimeclockEvent.yaml. Three deviations, all decided
+# Refined from _generated/TimeclockEvent.yaml. Four deviations, all decided
 # from fixture evidence. Counts below are of *distinct* TimeclockEvent
 # objects, not of bodies: the original RA3 capture (v03.247) returned 2
 # (/timeclockevent/651 and /676, via /timeclockevent), and the coverage-blind
@@ -28,6 +28,18 @@
 #    as an `if`/`then`, not relaxed away -- recorded in the schema-level
 #    `description` below rather than here, because it is a rule a reader of
 #    the rendered document needs, not just a maintenance note.
+#
+# 4. The four `leapobj.DateList` fields -- Dates, AnnuallyReoccurringDates,
+#    ExceptionDates, AnnuallyReoccurringExceptionDates -- were RETYPED from
+#    open strings carrying an unrecovered-enum marker to arrays of `Date`.
+#    These were the only four such markers in the bundle; the other files
+#    referencing the type (_generated/TimeclockEvent{,Create,Update}.yaml)
+#    are generator output and are not bundled. The argument sits in the
+#    schema-level `description` below rather than here, for the same reason
+#    as deviation 3: a reader of the rendered document needs to know that
+#    the element type is inferred and that the field is unobserved. Note
+#    that this changes nothing about `required` -- deviation 2 had already
+#    relaxed all four on their 0/7 absence, and they stay optional.
 #
 # `ScheduleType` and `TimeclockEventType` point at shared enum schemas
 # (ScheduleType.yaml, EventTimeType.yaml) recovered from this and other
@@ -82,6 +94,63 @@ description: |
   `*leapobj.FixedTime` (a pointer, i.e. optional) and n=1 is not a base to
   contradict a pointer -- firmware and hardware agree it is optional, so it
   stays optional. 6/6 is; n=1 is not.
+
+  ## `DateList` is a list, not an enum
+
+  `Dates`, `AnnuallyReoccurringDates`, `ExceptionDates` and
+  `AnnuallyReoccurringExceptionDates` are all typed `leapobj.DateList` and
+  all four shipped as open strings carrying an unrecovered-enum marker.
+  That marker was the wrong kind. They are now arrays of `Date`. The
+  argument, in the order the evidence actually supports it:
+
+  1. **The name is defined nowhere.** `vendor/leap-types.json` has no
+     `DateList` key at all, while three types reference it
+     (`TimeclockEvent`, `TimeclockEventCreate`, `TimeclockEventUpdate`).
+     The extraction records struct definitions only, so this establishes
+     that `DateList` is a **named non-struct type** -- and nothing more
+     than that. It does *not* by itself distinguish a slice from an enum:
+     `leapobj.ScheduleType`, sitting in this very struct two fields above
+     `Dates`, is undefined in exactly the same way and is an enum, modeled
+     as one in `ScheduleType.yaml`. This point rules out "struct". The
+     discrimination is done by 2 and 3.
+
+  2. **Plurality, and the company the fields keep.** All four names are
+     plural, and they sit directly beside `BeginDate` and `EndDate`, which
+     are `*leapobj.Date` -- a type the extraction *does* define (`{Day,
+     Month, Year}`) and which this schema already `$ref`s. A singular
+     `Date` beside a plural `DateList` in one struct reads as scalar
+     beside collection.
+
+  3. **The firmware puts a per-event cardinality on them.** `GET
+     /project/timeclockeventrules` returns
+     `{"MaxAllowed": 50, "MaxExceptionDatesPerEvent": 0,
+     "MaxDatesPerEvent": 0}` (Caseta v01.123 --
+     see `TimeclockEventRule.yaml`). An enum has no per-event
+     cardinality; a list does. Both limit names map onto these four fields
+     by name -- `MaxDatesPerEvent` onto `Dates` and
+     `AnnuallyReoccurringDates`, `MaxExceptionDatesPerEvent` onto the two
+     `ExceptionDates` fields -- and that mapping is a reading of the
+     names, not something the wire states.
+
+  4. **Nothing observed contradicts it, because nothing is observed at
+     all.** Across all six corpora, 16 TimeclockEvent occurrences / 7
+     distinct objects, every one is `ScheduleType: "DayOfWeek"` and not
+     one carries any of the four fields.
+
+  **Two limits on this, stated because they are easy to miss.** First, the
+  element type is *inferred*, from the `Date`/`DateList` pairing in point 2
+  and the counting in point 3 -- no capture has ever shown an element, so
+  `items: {$ref: Date}` is the reasoned reading of a firmware type, not a
+  transcription of a wire body. Second, points 3 and 4 come from
+  **different platforms and never co-occur**: the 16 TimeclockEvents are
+  all RA3 (both Caseta corpora answer `/timeclockevent` `204 NoContent`),
+  while the rules endpoint is Caseta-only (RA3 v03.249 answers it `404
+  NotFound`). So "Caseta reports a bound of 0 and correspondingly has no
+  dates" is *not* what the fixtures show -- it is one platform's bound and
+  another platform's empty events, agreeing rather than confirming.
+
+  This is a retype away from a marker that was the wrong kind, not a
+  discovery about the wire.
 allOf:
   - $ref: "#/components/schemas/TimeclockEventBase"
   - $ref: "#/components/schemas/WeeklyRecurrence"
@@ -109,25 +178,49 @@ properties:
   ScheduleType:
     $ref: "#/components/schemas/ScheduleType"
   Dates:
-    type: string
-    description: "TODO(enum): members of DateList were not recovered from the
-      firmware extraction"
+    type: array
+    items:
+      $ref: "#/components/schemas/Date"
+    description: |
+      Retyped from an open string carrying an unrecovered-enum marker.
+      `leapobj.DateList` is a list of dates; the argument, and the part of
+      it that is inferred rather than observed, is in this schema's
+      description above. **Unobserved:** no capture in this project has
+      ever returned this field on any TimeclockEvent.
   AnnuallyReoccurringDates:
-    type: string
-    description: "TODO(enum): members of DateList were not recovered from the
-      firmware extraction"
+    type: array
+    items:
+      $ref: "#/components/schemas/Date"
+    description: |
+      Retyped from an open string carrying an unrecovered-enum marker.
+      `leapobj.DateList` is a list of dates; the argument, and the part of
+      it that is inferred rather than observed, is in this schema's
+      description above. **Unobserved:** no capture in this project has
+      ever returned this field on any TimeclockEvent.
   BeginDate:
     $ref: "#/components/schemas/Date"
   EndDate:
     $ref: "#/components/schemas/Date"
   ExceptionDates:
-    type: string
-    description: "TODO(enum): members of DateList were not recovered from the
-      firmware extraction"
+    type: array
+    items:
+      $ref: "#/components/schemas/Date"
+    description: |
+      Retyped from an open string carrying an unrecovered-enum marker.
+      `leapobj.DateList` is a list of dates; the argument, and the part of
+      it that is inferred rather than observed, is in this schema's
+      description above. **Unobserved:** no capture in this project has
+      ever returned this field on any TimeclockEvent.
   AnnuallyReoccurringExceptionDates:
-    type: string
-    description: "TODO(enum): members of DateList were not recovered from the
-      firmware extraction"
+    type: array
+    items:
+      $ref: "#/components/schemas/Date"
+    description: |
+      Retyped from an open string carrying an unrecovered-enum marker.
+      `leapobj.DateList` is a list of dates; the argument, and the part of
+      it that is inferred rather than observed, is in this schema's
+      description above. **Unobserved:** no capture in this project has
+      ever returned this field on any TimeclockEvent.
   TimeclockEventType:
     $ref: "#/components/schemas/EventTimeType"
 required:

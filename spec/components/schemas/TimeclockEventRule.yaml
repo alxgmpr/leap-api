@@ -11,14 +11,23 @@ description: |
 
   `MaxDatesPerEvent` and `MaxExceptionDatesPerEvent` are worth reading
   alongside `TimeclockEvent.Dates` and its three siblings, whose firmware
-  type is `*leapobj.DateList`: the firmware quantifies "dates per event" as
-  a bounded count, which is a property a list has and an enum does not.
-  Those four fields still carry an unrecovered-enum marker; this endpoint is
-  corroborating evidence that the marker is the wrong kind, not evidence of
-  any particular element type. Caseta reports the bound as `0`, so this
-  bridge permits no dates on any event -- consistent with every observed
-  TimeclockEvent in every corpus being `ScheduleType: "DayOfWeek"` with no
-  `Dates` member.
+  type is `leapobj.DateList` (non-pointer on `TimeclockEvent` itself;
+  pointer on some fields of `TimeclockEventCreate`/`Update`): the firmware
+  quantifies "dates per event" as a bounded count, which is a property a
+  list has and an enum does not. This endpoint was the strongest of the
+  four reasons those fields were retyped from an open string to an array of
+  `Date` -- see `TimeclockEvent.yaml`, whose description carries the full
+  argument, including which parts of it are inferred.
+
+  Two cautions this body invites and does not support. The mapping of the
+  two limit names onto the four fields is a reading of the names, not
+  something the wire states. And Caseta's bound of `0` does not explain
+  Caseta's timeclock events: **this bridge returns no TimeclockEvent at
+  all** (`/timeclockevent` is `204 NoContent` on both Caseta corpora). The
+  16 observed TimeclockEvents, all `ScheduleType: "DayOfWeek"` and none
+  carrying any of the four fields, are RA3's -- and RA3 answers this rules
+  route `404 NotFound`. The bound and the empty events agree; they are not
+  the same system reporting both.
 properties:
   MaxAllowed:
     type: integer
