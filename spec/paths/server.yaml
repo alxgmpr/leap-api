@@ -17,9 +17,18 @@
 #    neither, recording `responseType: null`.
 #
 #    The remaining five markers in this file are untouched, and the reason
-#    differs per marker. Every probe in this project sends only ReadRequests,
-#    so the three states are "read and refused", "never requested", and "the
-#    path was read but the marked operation is not a read":
+#    differs per marker. The premise they all rest on is narrow and is stated
+#    narrowly: **no non-ReadRequest was ever sent to any `/server*` path in
+#    this project.** (Not "every probe sends only ReadRequests" -- that is
+#    false twice over. `fixtures/push-probe.json` logs 2 SubscribeRequests
+#    and 2 CreateRequests, and `fixtures/sweep-write.json` is a write sweep:
+#    `/device/435` answers `200 OK` to a read in `fixtures/spec-read.json`
+#    and `405 MethodNotAllowed` there. Neither reaches a `/server*` path --
+#    push-probe's non-reads went to `/zone/status`, `/area/1340/status` and
+#    `/zone/4664/commandprocessor`, and sweep-write contains no `/server*`
+#    URL at all.) Given that premise, the three states are "read and
+#    refused", "never requested", and "the path was read but the marked
+#    operation is not a read":
 #
 #      - `getServerLEAPIntegratorPairing` (GET /server/leap/integrator/pairing)
 #        was asked and refused: `400 BadRequest`, body `{"Message": "This
