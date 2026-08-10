@@ -121,6 +121,18 @@ description: |
      `Date` beside a plural `DateList` in one struct reads as scalar
      beside collection.
 
+     **`BeginDate` is not only a firmware neighbour; it is an observed
+     one.** It is present on all 16 TimeclockEvent occurrences (all 7
+     distinct objects), and every value is exactly `{Day, Month, Year}`
+     with numeric values and no other key -- precisely what the `Date`
+     schema requires. Four distinct values across the seven objects, e.g.
+     `{"Day": 22, "Month": 3, "Year": 2026}`. So the `Date` shape that
+     `items: {$ref: Date}` imports into the four unobserved fields is
+     corroborated 16 times *inside these very objects*, and the
+     `required: [Day, Month, Year]` that rides along with the `$ref` is
+     not a bare firmware assumption at this site. (`EndDate`, the other
+     `leapobj.Date` field, is never observed -- 0/16.)
+
   3. **The firmware puts a per-event cardinality on them.** `GET
      /project/timeclockeventrules` returns one rule row,
      `{"MaxAllowed": 50, "MaxExceptionDatesPerEvent": 0,
@@ -140,10 +152,15 @@ description: |
      one carries any of the four fields.
 
   **Two limits on this, stated because they are easy to miss.** First, the
-  element type is *inferred*, from the `Date`/`DateList` pairing in point 2
-  and the counting in point 3 -- no capture has ever shown an element, so
-  `items: {$ref: Date}` is the reasoned reading of a firmware type, not a
-  transcription of a wire body. Second, points 3 and 4 come from
+  element type is *inferred*: no capture has ever shown a `DateList`
+  element, so `items: {$ref: Date}` is the reasoned reading of a firmware
+  type, not a transcription of a wire body. The `BeginDate` evidence in
+  point 2 narrows that gap without closing it -- it establishes what a
+  `leapobj.Date` looks like on the wire *in this struct*, which is the
+  shape the `$ref` imports; it does not establish that `DateList`'s
+  element type is `leapobj.Date` rather than, say, a date-shaped string.
+  That last step is the residual, and it is the only leg of the argument
+  with no independent support. Second, points 3 and 4 come from
   **different platforms and never co-occur**: the 16 TimeclockEvents are
   all RA3 (both Caseta corpora answer `/timeclockevent` `204 NoContent`),
   while the rules endpoint is Caseta-only (RA3 v03.249 answers it `404
