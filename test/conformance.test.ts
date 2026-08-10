@@ -28,7 +28,7 @@ addFormats(ajv);
 // number of cases that actually reached `ajv.compile`/`validate` below and
 // assert against it directly instead.
 //
-// 453 as of this writing (verified against dist/openapi.yaml + the
+// 461 as of this writing (verified against dist/openapi.yaml + the
 // committed fixtures). When intentionally adding response schema coverage
 // (a new path, a resolved TODO(response), a new hand-authored collection
 // schema), this number goes up -- update the constant below to match and
@@ -45,11 +45,12 @@ addFormats(ajv);
 // validate against, independent of any family refinement work. The `led`
 // family commit raised it further, 429 -> 453 (+24: 8 `GET /led/{ledId}` +
 // 8 `GET /led/{ledId}/status` from sweep-read, 8 `PUT .../status` from
-// sweep-write). Each family commit that follows raises this further by
-// resolving the paths the sweep also newly reached (`/clientsetting`,
-// `/curve`, `/firmwareimage/{firmwareimageId}`,
-// `/zone/{zoneId}/associatedloadcontroller`).
-const EXPECTED_MATCHED_CASES = 453;
+// sweep-write). Resolving `/zone/{zoneId}/associatedloadcontroller`'s
+// TODO(response) (a `zone`-family update, not a new family) raised it
+// again, 453 -> 461 (+8). Each family commit that follows raises this
+// further by resolving the paths the sweep also newly reached
+// (`/clientsetting`, `/curve`, `/firmwareimage/{firmwareimageId}`).
+const EXPECTED_MATCHED_CASES = 461;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

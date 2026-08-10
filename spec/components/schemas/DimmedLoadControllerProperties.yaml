@@ -1,0 +1,17 @@
+type: object
+description: |
+  Same deviation as PhaseControlLoadControllerProperties.yaml:
+  `PhaseControlType`'s unresolved-enum marker is resolved to the
+  hand-authored `PhaseControlType` enum. All 7 `PhaseControl`
+  `DimmedLoadControllerProperties` instances observed in
+  `fixtures/sweep-read.json` carry a `PhaseControlType` matching the sibling
+  `PhaseControlLoadControllerProperties.PhaseControlType` on the same load
+  controller -- the two fields are redundant on every sample seen, not
+  independently varying.
+properties:
+  TuningSettings:
+    $ref: "#/components/schemas/HyperReference"
+  PhaseControlType:
+    $ref: "#/components/schemas/PhaseControlType"
+required:
+  - PhaseControlType

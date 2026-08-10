@@ -1,0 +1,10 @@
+type: string
+description: |
+  The firmware extraction did not recover the full enum; members below are
+  every value observed across 7 probe-confirmed PhaseControl load
+  controllers (`fixtures/sweep-read.json`,
+  `/zone/{zoneId}/associatedloadcontroller`) on a single processor during
+  Task 8's sweep campaign. Unlisted values are possible.
+enum:
+  - Forward
+  - Reverse

@@ -1,0 +1,4 @@
+type: object
+properties:
+  FanSpeedConfiguration:
+    $ref: "#/components/schemas/HyperReference"

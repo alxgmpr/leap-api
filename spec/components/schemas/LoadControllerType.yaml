@@ -1,0 +1,15 @@
+type: string
+description: |
+  The firmware extraction did not recover the full enum; members below are
+  every value observed across 8 probe-confirmed load controllers
+  (`fixtures/sweep-read.json`, `/zone/{zoneId}/associatedloadcontroller`) on
+  a single processor during Task 8's sweep campaign: 7 `PhaseControl` and 1
+  `Unknown` (a load controller with none of the type-specific properties
+  objects populated -- see `LoadController.yaml`). Unlisted values are
+  possible -- `FanSpeedLoadControllerProperties` exists in the firmware
+  extraction as a sibling of the two type-specific properties objects
+  observed here, implying at least one more member (a fan-speed load
+  controller type) that this sweep never happened to probe.
+enum:
+  - PhaseControl
+  - Unknown

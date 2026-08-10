@@ -27,6 +27,14 @@
 #    `{zoneId}` variant carried richer metadata -- subscribability, event
 #    schema, summary -- than its `{zoneXid}` counterpart for the same
 #    operation, so that is the definition kept).
+#
+# 4. (Task 8) /zone/{zoneId}/associatedloadcontroller's TODO(response) is
+#    resolved: Task 8's sweep fixtures (`fixtures/sweep-read.json`, 8
+#    probe-confirmed zones) confirm a 200 OK body keyed `LoadControllers`, a
+#    hand-authored collection wrapper (see LoadControllers.yaml) -- the
+#    firmware-extracted route table recovered no responseType for this
+#    operation at all, so this is a gap fill, not a singular/plural
+#    correction like deviation 1 above.
 /zone:
   get:
     operationId: getZone
@@ -128,10 +136,14 @@
     tags:
       - zone
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: LoadControllers
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadControllers"
     summary: List load controllers for zone
   parameters:
     - name: zoneId

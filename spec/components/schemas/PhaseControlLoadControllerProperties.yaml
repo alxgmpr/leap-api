@@ -1,0 +1,10 @@
+type: object
+description: |
+  `PhaseControlType`'s unresolved-enum marker is resolved to the
+  hand-authored `PhaseControlType` enum -- see that schema for the fixture
+  citation.
+properties:
+  PhaseControlType:
+    $ref: "#/components/schemas/PhaseControlType"
+required:
+  - PhaseControlType

@@ -1,0 +1,50 @@
+type: object
+description: |
+  `required` is unchanged from the firmware extraction: all 8 probe-confirmed
+  load controllers (`fixtures/sweep-read.json`,
+  `/zone/{zoneId}/associatedloadcontroller`) carry every field this schema
+  requires, including the one `LoadControllerType: Unknown` instance, which
+  omits both type-specific properties objects but still carries `XID`,
+  `Name`, `Parent`, `LoadControllerType`, `OutputNumber`, and
+  `AssociatedDevice`. `LoadControllerType`'s enum is resolved (see
+  `LoadControllerType.yaml`); `AssociatedLoad`/`AssociatedZone` were present
+  on all 8 samples too but stay optional, matching the firmware
+  extraction -- presence on a small sample is not evidence of a `required`
+  firmware field being wrongly marked optional, only the reverse (an
+  observed absence) would be.
+properties:
+  href:
+    type: string
+  XID:
+    type: string
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  LoadControllerType:
+    $ref: "#/components/schemas/LoadControllerType"
+  FanSpeedLoadControllerProperties:
+    $ref: "#/components/schemas/FanSpeedLoadControllerProperties"
+  PhaseControlLoadControllerProperties:
+    $ref: "#/components/schemas/PhaseControlLoadControllerProperties"
+  TuningSettings:
+    $ref: "#/components/schemas/HyperReference"
+  OutputNumber:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  AssociatedLoad:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedZone:
+    $ref: "#/components/schemas/HyperReference"
+  AssociatedDevice:
+    $ref: "#/components/schemas/HyperReference"
+  DimmedLoadControllerProperties:
+    $ref: "#/components/schemas/DimmedLoadControllerProperties"
+required:
+  - XID
+  - Name
+  - Parent
+  - LoadControllerType
+  - OutputNumber
+  - AssociatedDevice

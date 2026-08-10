@@ -1,0 +1,16 @@
+type: array
+description: |
+  Body of a `ReadRequest` on `/zone/{zoneId}/associatedloadcontroller`
+  (MessageBodyType `LoadControllers`; the wire wraps this array as
+  `{"LoadControllers": [...]}`, unwrapped here per the MessageBodyType
+  convention -- see docs/mapping.md's "The `Body` wrapper"). This operation
+  had no responseType at all in the firmware-extracted route table (a
+  TODO(response) marker, not a singular/plural mislabel like `Zones`/`Zone`)
+  -- confirmed 200 OK with this body shape across 8 probe-confirmed zones in
+  `fixtures/sweep-read.json` during Task 8's sweep campaign. Hand-authored,
+  per docs/mapping.md's "Collection GETs and the singular/plural defect":
+  the firmware extraction defines no plural collection-wrapper types at all,
+  so every such response schema in this specification is hand-authored
+  rather than generated.
+items:
+  $ref: "#/components/schemas/LoadController"
