@@ -1,9 +1,48 @@
 type: object
+description: |
+  FLATTENED `NetworkInterfaceSmallDefinition`, a named field whose Go type
+  shares the field name (`NetworkInterfaceSmallDefinition
+  leapobj.NetworkInterfaceSmallDefinition`, non-pointer) -- an anonymous
+  embed promoted flat onto the wire body, the same class of generator
+  defect already recorded for ZoneExpandedStatus (Task 10),
+  Device/ButtonGroupExpanded/LinkNodeExpanded (Task 12a), NLOTime (Task
+  12b) and TimeclockEvent.
+
+  Decided from the wire body, not from the name==type shape. The one
+  observed instance (`/networkinterface/1`, RA3 v03.247, from the
+  coverage-blind spec probe -- the only 200 OK any corpus has for this
+  route; every `/device/{deviceId}/networkinterface` probe on both
+  platforms answers `400 BadRequest "This request is not supported"`) has
+  `MACAddress`, `IPv4Properties` and `IPv6Properties` sitting flat at the
+  top level next to `AdapterType` and `SOCKS5ProxyProperties`:
+
+      {"href": "/networkinterface/1", "MACAddress": "...",
+       "IPv4Properties": {"Type": "StaticIP", ...},
+       "IPv6Properties": {"UniqueLocalUnicastAddresses": [...]},
+       "AdapterType": "Ethernet", "SOCKS5ProxyProperties": {...}}
+
+  There is no `NetworkInterfaceSmallDefinition` key, so the generated
+  schema's `required: [NetworkInterfaceSmallDefinition]` could never be
+  satisfied by any body this route returns. Hardware wins; restructured as
+  `allOf` against the embedded type, keeping its own `required:
+  [MACAddress]` (present on the one instance).
+
+  `NetworkInterfaceSmallDefinition` remains a standalone component rather
+  than being inlined: `DeviceMiniDefinitionForMasterDeviceList` holds it as
+  a named slice (`NetworkInterfaces []*leapobj.NetworkInterfaceSmallDefinition`),
+  which is genuinely nested on the wire -- `/project/masterdevicelist` and
+  `/project/masterdevicelist/devices` both return
+  `"NetworkInterfaces": [{"MACAddress": ...}]` on RA3. Only this schema's
+  embed is flattened.
+
+  `AdapterType` stays required (`"Ethernet"`, 1/1). Its enum members were
+  not recovered from the firmware and one observed value is too thin a base
+  to author one, so it stays an open string.
+allOf:
+  - $ref: "#/components/schemas/NetworkInterfaceSmallDefinition"
 properties:
   href:
     type: string
-  NetworkInterfaceSmallDefinition:
-    $ref: "#/components/schemas/NetworkInterfaceSmallDefinition"
   AdapterType:
     type: string
     description: "TODO(enum): members of NetworkInterfaceType were not recovered
@@ -13,5 +52,4 @@ properties:
   SOCKS5ProxyProperties:
     $ref: "#/components/schemas/SOCKS5ProxyProperties"
 required:
-  - NetworkInterfaceSmallDefinition
   - AdapterType
