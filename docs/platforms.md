@@ -48,18 +48,33 @@ processor by its own `GET /clientsetting` response
 — see `fixtures/sweep-read.json`).
 
 **This document describes corpora, not processor counts.** What the committed
-fixtures establish is that the sweep and the later coverage-blind probe read
-a *different firmware build* from the original RA3 capture — `03.249` on
+fixtures establish is that the later coverage-blind probe read a *different
+firmware build* from the original RA3 capture — `03.249` on
 `fixtures/spec-read.json`'s `/server` against `03.247` on
 `fixtures/ra3.json`'s, five months apart — while reporting the *same
-project*: `/project` returns the same `MasterDeviceList` (`/device/435`) and
-the same `Contacts` (`/contactinfo/102`) in both, and every zone, device and
-area id in `fixtures/sweep-read.json` also appears in `fixtures/ra3.json`
-under the same identifiers. Whether that is a second physical processor or
-the original one at a later firmware build is **not determined by anything
-this repository publishes**, and nothing in this document depends on the
-answer: the finding below is about what a live processor refuses, not about
-how many processors were asked.
+project, edited in between*.
+
+Same project: `/project` is byte-identical in the two corpora apart from its
+`ProjectModifiedTimestamp` (2026-03-06 against 2026-08-10), so the same
+`MasterDeviceList` (`/device/435`) and the same `Contacts`
+(`/contactinfo/102`). `/area/912` carries the same `XID` in
+`fixtures/ra3.json`, `fixtures/sweep-read.json` and `fixtures/spec-read.json`
+— the same area object in all three.
+
+Edited in between: that same `/area/912` grows from 2 `AssociatedZones` to 5
+and from 3 `AssociatedControlStations` to 6 between the original capture and
+the two later ones, and its `Name` redacts to a different placeholder, so it
+was renamed. The later corpora are **not** a subset of the earlier one:
+`fixtures/sweep-read.json` references 10 zone ids and 1 device id that
+appear nowhere in `fixtures/ra3.json`. Every object the sweep returned *in
+full* (16 of them) is present in the original capture; the additions show up
+as references from bodies that grew.
+
+Whether that is a second physical processor or the original one at a later
+firmware build is **not determined by anything this repository publishes** —
+five months of programming changes is equally consistent with either — and
+nothing in this document depends on the answer: the finding below is about
+what a live processor refuses, not about how many processors were asked.
 
 Of the 206 routes this campaign probed — the firmware's own
 route table, minus routes this specification already documents (so the
