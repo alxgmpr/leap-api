@@ -134,7 +134,15 @@ addFormats(ajv);
 // all. Note the case-vs-object gap again: those 21 RA3 cases carry 38
 // AreaScenes and 18 zone statuses reported twice over (once plain, once
 // expanded); the constant counts the 200-OK bodies, not what is inside them.
-const EXPECTED_MATCHED_CASES = 780;
+//
+// 780 -> 789: the `service` family, +9, and the cheapest of these families --
+// no schema was authored at all. The five named per-service GETs
+// (/service/{alexa,bacnet,homekit,ifttt,sonos}) each return `{"Service":
+// {...}}`, the same object type `GET /service` already lists, so resolving
+// them was a matter of pointing at the existing `Service` schema. 2 cases
+// each for alexa, homekit, ifttt and sonos (both platforms answer) and 1 for
+// bacnet, which Caseta answers `404 NotFound`.
+const EXPECTED_MATCHED_CASES = 789;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

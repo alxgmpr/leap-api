@@ -1,12 +1,26 @@
-# Refined from spec/paths/_generated/service.yaml. One deviation from a
+# Refined from spec/paths/_generated/service.yaml. Two deviations from a
 # straight copy:
 #
-# GET /service: x-leap-body-type and the 200 schema were changed from
-# `Service` (singular) to `Services` (a new array schema). The firmware
-# extraction mislabeled the collection route's MessageBodyType; captured
-# traffic on both RA3 v03.247 and Caseta v01.123 shows the wire body is
-# `{"Services": [...]}`. Same class of mislabel Task 10 found for GET /zone
-# and Task 12a found for GET /device and GET /link.
+# 1. GET /service: x-leap-body-type and the 200 schema were changed from
+#    `Service` (singular) to `Services` (a new array schema). The firmware
+#    extraction mislabeled the collection route's MessageBodyType; captured
+#    traffic on both RA3 v03.247 and Caseta v01.123 shows the wire body is
+#    `{"Services": [...]}`. Same class of mislabel Task 10 found for GET
+#    /zone and Task 12a found for GET /device and GET /link.
+#
+# 2. The five named per-service GETs -- /service/{alexa,bacnet,homekit,
+#    ifttt,sonos} -- had their TODO markers resolved by pointing at the
+#    existing `Service` schema. No new schema was authored: each returns
+#    `{"Service": {...}}`, a single object identical to the one the same
+#    platform lists inside `GET /service`, so the collection route's element
+#    type already described them. These are the singular routes, so unlike
+#    deviation 1 there is no plural correction involved -- the firmware
+#    simply recorded no responseType for any of the five.
+#
+#    The 42 remaining TODO markers in this file are untouched: every other
+#    /service/* route either was never probed or never returned a 200 in any
+#    corpus. `/service/{serviceId}` is a separate, already-refined operation
+#    and is not one of the five.
 /service:
   post:
     operationId: createService
@@ -42,10 +56,22 @@
     tags:
       - service
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Service
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: both platforms return `200 OK` with body key
+      `Service` holding a single Service object -- the same object each
+      platform lists inside `GET /service`. RA3 v03.249's carries
+      `AlexaProperties` with both `Configuration` and `DataSummary`; Caseta
+      v01.123's carries `DataSummary` only.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Read the Alexa service
 /service/alexadatasummary:
   get:
     operationId: getServiceAlexaDataSummary
@@ -110,10 +136,22 @@
     tags:
       - service
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Service
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.249 returns `200 OK` with body key
+      `Service` holding a single Service object with `BACnetProperties`.
+      Caseta v01.123 returns `404 NotFound` -- alone among the five named
+      service routes, this one has no Caseta body, and the Caseta `GET
+      /service` list contains no `BACnet` entry either.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Read the BACnet service
 /service/bacnetinstances:
   get:
     operationId: getServiceBACnetInstances
@@ -270,10 +308,23 @@
     tags:
       - service
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Service
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: both platforms return `200 OK` with body key
+      `Service` holding a single Service object. `HomeKitProperties`
+      differs by platform -- RA3 v03.249 reports `MaxAssociations` 149 with
+      `Configuration`, `DataSummary` and a `BridgeAccessory`; Caseta v01.123
+      reports `MaxAssociations` 99 and a `BonjourServiceName`, and nothing
+      else.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Read the HomeKit service
 /service/homekitdatasummary:
   get:
     operationId: getServiceHomeKitDataSummary
@@ -339,10 +390,22 @@
     tags:
       - service
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Service
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: both platforms return `200 OK` with body key
+      `Service` holding a single Service object. RA3 v03.249's
+      `IFTTTProperties` carries `Configuration` and `DataSummary`; Caseta
+      v01.123's carries `DataSummary` only -- the same split as
+      `/service/alexa`.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Read the IFTTT service
 /service/iftttdatasummary:
   get:
     operationId: getServiceIFTTTDataSummary
@@ -468,10 +531,23 @@
     tags:
       - service
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Service
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: both platforms return `200 OK` with body key
+      `Service`, and both send the same two-field object,
+      `{"href": "/service/sonos", "Type": "Sonos"}` -- no properties key at
+      all, which Service.yaml already records for this `Type`. The `put` on
+      this same path is untouched: no capture in this project ever sent an
+      `UpdateRequest`, so its response body type is still unknown.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Read the Sonos service
   put:
     operationId: updateServiceSonos
     tags:
