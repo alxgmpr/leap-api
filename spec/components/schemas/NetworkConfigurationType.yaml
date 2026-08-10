@@ -9,14 +9,18 @@ description: |
   not recover the full enum; the members below are every value observed on
   the wire, and unlisted values are possible.
 
-  Observed on IPv4Properties.Type, one value per RA3 unit: `DHCP` on unit 1
-  (v03.247, via /project/masterdevicelist/devices) and `StaticIP` on unit 2
-  (the coverage-blind spec probe, on both
-  /project/masterdevicelist/devices and /networkinterface/1). Caseta's
-  capture never reaches an IPv4Properties object.
+  Observed on IPv4Properties.Type, in five instances across three corpora:
 
-  The two members are what the two units happen to be configured as, not a
-  demonstration that the type has exactly two -- a link-local or
+  - `DHCP` -- the original RA3 capture (v03.247, via
+    /project/masterdevicelist/devices), and the Caseta spec probe
+    (v01.123, via /networkinterface/1).
+  - `StaticIP` -- the coverage-blind RA3 spec probe (v03.249), on
+    /project/masterdevicelist, /project/masterdevicelist/devices and
+    /networkinterface/1.
+
+  Both members are therefore observed on RA3, and `DHCP` on both platforms.
+  They are what the captured installations happen to be configured as, not
+  a demonstration that the type has exactly two -- a link-local or
   auto-configuration member would not be surprising.
 enum:
   - DHCP

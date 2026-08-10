@@ -1,6 +1,6 @@
 # Refined from _generated/IPv4Properties.yaml. `required` trimmed: the
 # firmware marks IP, SubnetMask, Gateway, DNS1, DNS2, and DNS3 non-pointer,
-# but the one observed instance in this project's corpus (RA3 v03.247, via
+# but the only instance observed at the time (RA3 v03.247, via
 # /project/masterdevicelist/devices, Type "DHCP") has none of them -- just
 # `Type`. Discovered when wiring up GET /project/masterdevicelist/devices'
 # response schema (Devices -> Device -> ... -> IPv4Properties) surfaced the
@@ -11,15 +11,29 @@
 #
 # The static-IP instance that note was waiting on has since arrived, and it
 # confirms the relaxation rather than reversing it: the coverage-blind spec
-# probe's RA3 unit 2 reports `{"Type": "StaticIP", "IP": ...}` and nothing
+# probe on RA3 v03.249 reports `{"Type": "StaticIP", "IP": ...}` and nothing
 # else under /project/masterdevicelist/devices, while the same interface
 # fetched directly at /networkinterface/1 reports IP, SubnetMask, Gateway,
 # DNS1 and DNS2 -- so even a static configuration omits most of these
 # fields depending on which route serves it, and DNS3 is unobserved
 # anywhere. All six stay optional.
 #
-# `Type` points at the shared NetworkConfigurationType schema: `DHCP` (unit
-# 1) and `StaticIP` (unit 2). See NetworkConfigurationType.yaml.
+# The Caseta spec probe then supplied the counterexample to the *original*
+# inference above: its /networkinterface/1 is `{"Type": "DHCP", "IP": ...,
+# "SubnetMask": ..., "Gateway": ..., "DNS1": ...}`. A DHCP-configured
+# interface does report those fields when the route serves them, so "DHCP
+# simply does not have them" is not the explanation; which route serves the
+# object is. The superseding explanation stands and is strengthened.
+#
+# All five observed instances, from the three corpora that reach one:
+#   ra3.json               /project/masterdevicelist/devices  DHCP     (Type only)
+#   spec-read.json         /project/masterdevicelist/devices  StaticIP (Type, IP)
+#   spec-read.json         /project/masterdevicelist          StaticIP (Type, IP)
+#   spec-read.json         /networkinterface/1                StaticIP (6 fields)
+#   spec-read-caseta.json  /networkinterface/1                DHCP     (5 fields)
+#
+# `Type` points at the shared NetworkConfigurationType schema.
+# See NetworkConfigurationType.yaml.
 type: object
 properties:
   Type:
