@@ -112,14 +112,20 @@ client router described in `docs/protocol.md`, and that field records that
 each push did in fact reach `onEvent` rather than resolving a pending
 request.
 
-**Two controls rule out the boring explanations.** With two subscriptions
+**One control rules out the boring explanation.** With two subscriptions
 live on the same socket simultaneously, each push carried *its own*
 subscription's tag rather than a single connection-wide constant — so the tag
-is per-subscription, not per-connection. Separately, a second run of the same
-experiment (not committed as a fixture) shifted the tag counter with padding
-reads before subscribing, and produced subscribe tag `lt-7` with its pushes
-also on `lt-7` — so the value tracks the subscribe request, not a fixed
-position in the sequence.
+is per-subscription, not merely per-connection.
+
+What this control does *not* separate is the tag from the subscribe
+request's *position* in the sequence: in every committed run the subscribe
+happened to be issued at `lt-18`. Distinguishing "the tag is copied from the
+subscribe request" from "the tag is a function of sequence position" would
+take a run that pads the tag counter with unrelated reads before
+subscribing. That run has not been done, so the claim made here is the
+narrower one the evidence supports — each subscription's pushes carry that
+subscription's own tag — and not a claim about how the processor derives
+the value.
 
 ### Why this does not change what a client must do
 
@@ -229,6 +235,13 @@ run. The 224 ms figure is also recorded directly as the push frame's
 `"msAfterLevelChange": 224`; that field is measured from the *first* level
 change throughout the file, so the second push's `20231` is not the second
 change's latency.)
+
+A second, independent run of the same experiment reproduced the effect at
+**139 ms** (`"msAfterLevelChange": 139`, again `ReadResponse` /
+`MultipleZoneStatus` on the subscribe tag). Three sub-second latencies
+across two runs is the whole basis for the "a few hundred milliseconds"
+characterisation — it is a handful of observations on one processor under
+no load, not a latency budget anyone should design against.
 
 **The `201 Created` is not the push.** Both command responses carried a
 `ZoneStatus` body of their own — `seq` 20 reports `"Level": 50`, `seq` 24
