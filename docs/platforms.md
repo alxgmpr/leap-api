@@ -66,9 +66,9 @@ and from 3 `AssociatedControlStations` to 6 between the original capture and
 the two later ones, and its `Name` redacts to a different placeholder, so it
 was renamed. The later corpora are **not** a subset of the earlier one:
 `fixtures/sweep-read.json` references 10 zone ids and 1 device id that
-appear nowhere in `fixtures/ra3.json`. Every object the sweep returned *in
-full* (16 of them) is present in the original capture; the additions show up
-as references from bodies that grew.
+appear nowhere in `fixtures/ra3.json`. All 16 zone, device and area objects
+the sweep returned *in full*, at their own URL, are present in the original
+capture; the 11 additions appear only as references from bodies that grew.
 
 Whether that is a second physical processor or the original one at a later
 firmware build is **not determined by anything this repository publishes** —
@@ -117,7 +117,7 @@ recording status and body for each. It has now been run twice:
 
 | Corpus | Target | URLs | Statuses |
 |---|---|---|---|
-| `fixtures/spec-read.json` | RA3 v03.249 (`/server` `ProtocolVersion`) — same project as the sweep corpora, and the same `/clientsetting` version pair | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
+| `fixtures/spec-read.json` | RA3 v03.249 (`/server` `ProtocolVersion`). Same project as the sweep corpora — the 21 object URLs both probed return byte-identical bodies — and the same `/clientsetting` version pair, `3` / `249` | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
 | `fixtures/spec-read-caseta.json` | Caseta v01.123 (`L-BDG2-WH`), a bridge re-paired after a factory reset | 848 | 104 × `200`, 195 × `204`, 191 × `400`, 317 × `404`, 38 × `405`, 3 × `500` |
 
 Both are `{path: {status, body}}` probe sets in `captures.json`, so the
