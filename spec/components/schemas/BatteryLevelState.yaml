@@ -1,0 +1,25 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.BatteryLevelState`,
+# referenced but never defined by the extraction. Two fields carry it:
+# BatteryStatus.LevelState (typed against this schema) and
+# DeviceStatusFilterBatteryStatus.BatteryLevelState, a query-filter type with
+# no hand-refined schema.
+type: string
+description: |
+  Coarse battery level for a battery-powered device. The firmware extraction
+  did not recover the full enum; the members below are every value observed
+  on the wire, and unlisted values are possible -- a battery gauge that can
+  report `Good` almost certainly has at least one degraded state this
+  capture never caught.
+
+  Observed on BatteryStatus.LevelState (nested in DeviceStatus, via
+  /device/{id}/status and /device/status): `Unknown` 67 (RA3 v03.247 unit 1
+  29, Caseta v01.123 34, RA3 unit 2 4), `Good` 16 (2 / 12 / 2). Both members
+  appear on both platforms and in all three read corpora.
+
+  `Unknown` dominating is consistent with what DeviceStatus.Availability
+  shows over the same devices: an idle processor reports `Unknown` for
+  devices it has not recently heard from, and the battery reading goes with
+  it.
+enum:
+  - Good
+  - Unknown

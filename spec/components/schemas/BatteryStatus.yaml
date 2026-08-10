@@ -1,8 +1,10 @@
+# `LevelState` points at the shared BatteryLevelState schema rather than
+# shipping as an open string: 83 observations across both platforms and all
+# three read corpora produce two values, `Unknown` (67) and `Good` (16).
+# See BatteryLevelState.yaml.
 type: object
 properties:
   LevelState:
-    type: string
-    description: "TODO(enum): members of BatteryLevelState were not recovered from
-      the firmware extraction"
+    $ref: "#/components/schemas/BatteryLevelState"
 required:
   - LevelState
