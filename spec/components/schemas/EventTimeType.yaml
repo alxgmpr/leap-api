@@ -9,8 +9,8 @@ description: |
   /system/away), NLOTime.NaturalLightOptimizationEventType (Caseta v01.123,
   via /system/naturallightoptimization), and TimeclockEvent.TimeclockEventType
   (RA3 v03.247, 2 instances, via /timeclockevent -- both `Astronomic`). The
-  coverage-blind spec probe added 14 more TimeclockEvent observations on RA3
-  unit 2, and with them the only `FixedTime` seen outside Caseta:
+  coverage-blind spec probe (RA3 v03.249) added 14 more TimeclockEvent
+  observations, and with them the only `FixedTime` seen outside Caseta:
   /timeclockevent/6924. OccGroupTime.EventType and EventTime.TimeType are
   typed against this same schema by type-identity (matching marker text) but
   have zero direct fixture coverage of their own (see OccGroupTime.yaml and

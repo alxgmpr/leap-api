@@ -7,9 +7,10 @@ description: |
   recovered from `Server.Type` on hardware, via /server. Unlisted values are
   possible.
 
-  - `LEAP` -- RA3 v03.247 and Caseta v01.123, both units of each. Carries
+  - `LEAP` -- RA3 (v03.247 and v03.249) and Caseta v01.123, in every
+    corpus that reaches /server. Carries
     `LEAPProperties`; TCP 8081, the transport this specification describes.
-  - `IPL` -- RA3 only (both units). Carries `IPLProperties`
+  - `IPL` -- RA3 only, in both RA3 corpora. Carries `IPLProperties`
     (`SystemNumber`/`SystemAddress`/`ProcessorID`) on TLS 8902 and WSS 443:
     the Lutron Designer transport `docs/protocol.md` covers.
   - `LIP` -- Caseta only, added here from the Caseta coverage-blind spec

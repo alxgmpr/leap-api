@@ -10,8 +10,8 @@ description: |
 
   **Open string, not an enum.** This field carried a closed 8-member `enum`
   until hardware falsified it: the coverage-blind spec probe's `/service`
-  collection (a second, separately configured RA3 processor -- see
-  docs/platforms.md) returned a ninth value, `{"href": "/service/cloud",
+  collection (RA3 v03.249 -- see docs/platforms.md) returned a ninth value,
+  `{"href": "/service/cloud",
   "Type": "Cloud"}`, alongside the same seven the earlier RA3 capture
   showed. That enum's own description already said the members were
   observed-not-exhaustive and that an unlisted service type "must still
@@ -26,16 +26,19 @@ description: |
   new value is to add it -- there is no `leapobj.ServiceType` at all. The
   field is a bare Go `string`, and the values are whichever integrations a
   particular processor's firmware build and feature set have provisioned.
-  The two RA3 units this project has captured do not agree on that list,
-  which is the same per-unit feature-set divergence docs/platforms.md
-  records for route availability. Appending `Cloud` to a closed enum would
-  have re-armed the identical failure for the next unobserved integration.
+  The two RA3 corpora this project has captured do not agree on that list --
+  same project, two firmware builds, one extra integration on the later one
+  -- which is the same kind of per-installation, per-build divergence
+  docs/platforms.md records for route availability. Appending `Cloud` to a
+  closed enum would have re-armed the identical failure for the next
+  unobserved integration.
 
   Values observed to date, retained below under `x-observed-values` as
-  documentation rather than as an assertion (RA3 v03.247 unit 1: Alexa,
-  GoogleHome, BACnet, HomeKit, IFTTT, Sonos, NTPServer; RA3 unit 2, spec
-  probe: those seven plus Cloud; Caseta v01.123: Sonos, HomeKit, Alexa,
-  GoogleHome, AutoProgrammer, IFTTT). A value outside this list is expected
+  documentation rather than as an assertion (RA3 v03.247: Alexa,
+  GoogleHome, BACnet, HomeKit, IFTTT, Sonos, NTPServer; RA3 v03.249, the
+  spec probe: those seven plus Cloud; Caseta v01.123, both corpora: Sonos,
+  HomeKit, Alexa, GoogleHome, AutoProgrammer, IFTTT). A value outside this
+  list is expected
   and validates -- consistent with `Service.yaml`, which does not set
   `additionalProperties: false`.
 x-observed-values:

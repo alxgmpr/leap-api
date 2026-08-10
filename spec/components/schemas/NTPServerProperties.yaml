@@ -12,10 +12,10 @@ properties:
     description: |
       TODO(enum): members of NTPServerPropertiesType were not recovered
       from the firmware extraction, and hardware has produced exactly one:
-      `Static`, on both RA3 units' /service entry for `Type: "NTPServer"`.
-      The value's own name implies a non-static counterpart (a
-      DHCP-supplied server list is the obvious candidate) that neither unit
-      is configured for.
+      `Static`, on the /service entry for `Type: "NTPServer"` in each of the
+      two RA3 corpora. The value's own name implies a non-static counterpart
+      (a DHCP-supplied server list is the obvious candidate) that neither
+      capture is configured for.
     x-observed-values:
       - Static
   Endpoints:

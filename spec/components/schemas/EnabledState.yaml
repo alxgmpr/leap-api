@@ -10,7 +10,7 @@ description: |
   TimeclockStatus.EnabledState (RA3 v03.247, via /timeclock/status).
   TimeclockEventStatus.EnableState is typed against this same schema by
   type-identity (matching marker text); the coverage-blind spec probe has
-  since given it direct coverage too (7 x `Enabled`, RA3 unit 2, via
+  since given it direct coverage too (7 x `Enabled`, RA3 v03.249, via
   /timeclockevent/{id}/status). Unlisted values are possible.
 
   Six further fields whose firmware type is this same `leapobj.EnabledState`
@@ -19,7 +19,7 @@ description: |
   SOCKS5ProxyProperties.EnabledState, and the `AutoVibrancy` property of
   DimmedLevelParameters, SpectrumTuningLevelParameters, and VibrancyStatus.
   Only SOCKS5ProxyProperties has direct coverage of its own (1 x `Disabled`,
-  RA3 unit 2, nested under /networkinterface/1); the other five carry no observed
+  RA3 v03.249, nested under /networkinterface/1); the other five carry no observed
   value in any corpus and take their members from the shared type, not from
   evidence at their own site.
 enum:

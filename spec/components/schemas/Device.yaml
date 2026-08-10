@@ -28,9 +28,10 @@
 # 3. `AddressedState` points at the shared AddressedState schema rather than
 #    shipping as an open string: its firmware type is `leapobj.AddressedState`,
 #    identical to ControlStationDeviceAssociation.AddressedState, where the
-#    two members were recovered. 89 Device observations across both platforms
-#    and all three read corpora produce exactly those two -- `Addressed` 88,
-#    `Unaddressed` 1 (/device/3681, RA3 unit 1). See AddressedState.yaml.
+#    two members were recovered. 93 Device observations across both platforms
+#    and all four read corpora that return a Device produce exactly those two
+#    -- `Addressed` 92, `Unaddressed` 1 (/device/3681, RA3 v03.247).
+#    See AddressedState.yaml.
 type: object
 allOf:
   - $ref: "#/components/schemas/DeviceBase"
