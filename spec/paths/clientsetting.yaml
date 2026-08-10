@@ -1,0 +1,48 @@
+# Refined from spec/paths/_generated/clientsetting.yaml. Straight copy of
+# both operations' shape (x-leap-body-type/response schema already correct);
+# the only deviation is in the schemas ClientSetting $refs -- Permissions.
+# SessionRole's unresolved-enum marker is resolved (see SessionRole.yaml).
+#
+# PUT finding from Task 8's sweep (fixtures/sweep-write.json): sending an
+# UpdateRequest to this path returned `400 BadRequest`, body
+# `{"Message": "ClientMinorVersion is not modifiable"}` -- the one write
+# probe in this campaign that failed. `ClientMajorVersion`/
+# `ClientMinorVersion` describe the connecting client itself (this session's
+# own protocol version, echoed back at `GET /clientsetting` -- see
+# fixtures/sweep-read.json), not a server-side setting a client can change;
+# noted here since no requestBody is modeled in this specification to carry
+# the constraint directly (see docs/mapping.md's "The flat `Command` model"
+# section for why write payloads are largely undocumented in this project).
+/clientsetting:
+  get:
+    operationId: getClientSetting
+    tags:
+      - clientsetting
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: ClientSetting
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientSetting"
+    summary: Get client settings
+  put:
+    operationId: updateClientSetting
+    tags:
+      - clientsetting
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: ClientSetting
+    description: >-
+      A probe-confirmed UpdateRequest attempting to change
+      ClientMinorVersion returned 400 BadRequest ("ClientMinorVersion is not
+      modifiable") -- see this file's header comment.
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientSetting"
+    summary: Update client settings

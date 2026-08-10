@@ -28,7 +28,7 @@ addFormats(ajv);
 // number of cases that actually reached `ajv.compile`/`validate` below and
 // assert against it directly instead.
 //
-// 469 as of this writing (verified against dist/openapi.yaml + the
+// 470 as of this writing (verified against dist/openapi.yaml + the
 // committed fixtures). When intentionally adding response schema coverage
 // (a new path, a resolved TODO(response), a new hand-authored collection
 // schema), this number goes up -- update the constant below to match and
@@ -52,8 +52,9 @@ addFormats(ajv);
 // wrapper, fixing the same singular/plural MessageBodyType defect Task 10
 // documented for `/zone`) raised it 468 -> 469 (+1 -- only one curve was
 // observed on the single processor this sweep reached). `clientsetting`
-// remains, the last path this sweep newly reached.
-const EXPECTED_MATCHED_CASES = 469;
+// raised it 469 -> 470 (+1), the last path Task 8's sweep newly reached --
+// probedNotInSpec is 0 again as of this commit.
+const EXPECTED_MATCHED_CASES = 470;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

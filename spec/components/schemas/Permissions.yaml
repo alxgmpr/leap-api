@@ -1,0 +1,9 @@
+type: object
+description: |
+  `SessionRole`'s unresolved-enum marker is resolved to the hand-authored
+  `SessionRole` enum -- see that schema for the fixture citation.
+properties:
+  SessionRole:
+    $ref: "#/components/schemas/SessionRole"
+required:
+  - SessionRole

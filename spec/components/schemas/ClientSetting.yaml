@@ -1,0 +1,13 @@
+type: object
+properties:
+  href:
+    type: string
+  ClientMajorVersion:
+    type: integer
+  ClientMinorVersion:
+    type: integer
+  Permissions:
+    $ref: "#/components/schemas/Permissions"
+required:
+  - ClientMajorVersion
+  - ClientMinorVersion
