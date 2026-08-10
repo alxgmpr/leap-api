@@ -3,8 +3,11 @@
 # `leapobj.EnabledState`). Directly observed once, too: the coverage-blind
 # spec probe's /networkinterface/1 on RA3 v03.249 carries
 # `SOCKS5ProxyProperties: {"EnabledState": "Disabled"}`. The Caseta probe's
-# /networkinterface/1 omits the whole object, which is why NetworkInterface
-# does not list this property in its own `required`.
+# /networkinterface/1 omits the whole object, corroborating the optionality
+# firmware already declares -- `leapobj.NetworkInterface` types the field
+# `*leapobj.SOCKS5ProxyProperties`, a pointer, so NetworkInterface never
+# required it. The `required: [EnabledState]` below applies only when the
+# object is present.
 type: object
 properties:
   EnabledState:

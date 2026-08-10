@@ -34,8 +34,12 @@ description: |
   never be satisfied by any body this route returns. Hardware wins;
   restructured as `allOf` against the embedded type, keeping its own
   `required: [MACAddress]` (present on both instances). The Caseta body
-  corroborates the flatten on a second platform and omits
-  `SOCKS5ProxyProperties` entirely, which is why that property is optional.
+  corroborates the flatten on a second platform. It also omits
+  `SOCKS5ProxyProperties` entirely -- which corroborates that property's
+  optionality rather than establishing it: firmware already types it
+  `SOCKS5ProxyProperties *leapobj.SOCKS5ProxyProperties`, a pointer, and
+  the generated schema's `required` was `[NetworkInterfaceSmallDefinition,
+  AdapterType]`, never including it.
 
   `NetworkInterfaceSmallDefinition` remains a standalone component rather
   than being inlined: `DeviceMiniDefinitionForMasterDeviceList` holds it as
