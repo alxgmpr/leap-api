@@ -167,7 +167,13 @@ addFormats(ajv);
 // answers it `405 MethodNotAllowed` and has no IPL server in its `/server`
 // list either (its second server is `Type: "LIP"`). Only the two
 // coverage-blind spec probes requested either route.
-const EXPECTED_MATCHED_CASES = 815;
+//
+// 815 -> 821: the `buttongroup` family, +6, all RA3 v03.249 -- the 6 of 8
+// button-group ids the spec probe requested that answered
+// /buttongroup/{buttongroupId}/button with a body. Caseta `404`s all 8. No
+// schema was authored: the wire body key is `Buttons` and the existing
+// schema already described it.
+const EXPECTED_MATCHED_CASES = 821;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

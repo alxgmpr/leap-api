@@ -1,12 +1,30 @@
-# Refined from _generated/buttongroup.yaml. One deviation from a straight
+# Refined from _generated/buttongroup.yaml. Two deviations from a straight
 # copy:
 #
-# GET /buttongroup: x-leap-body-type and the 200 schema were changed from
+# 1. GET /buttongroup: x-leap-body-type and the 200 schema were changed from
 # `ButtonGroup` (singular) to `ButtonGroups` (a new array schema). Same
 # class of extraction mislabel Task 10 found for GET /zone. Caseta
 # v01.123's actual 200 response is `{"ButtonGroups": [...]}`. RA3 v03.247
 # returns 204 NoContent on this route (per this task's instructions'
 # useful-context note, a real platform divergence, not a capture error).
+#
+# 2. GET /buttongroup/{buttongroupId}/button had its marker resolved, by
+#    reuse rather than authoring: the wire body key is `Buttons` and the
+#    elements are ordinary Button objects, so the existing schema covered it
+#    once the ref was added. A gap fill -- the route table recorded no
+#    responseType -- not a singular/plural mislabel like deviation 1.
+#
+#    The buttons this route returns carry `ProgrammingModel` objects with a
+#    `ProgrammingModelType` inside them, which is the richer of the two
+#    contexts ProgrammingModel.yaml describes (`GET /button` on Caseta
+#    returns bare href-only references instead). That file's
+#    context-dependent-required finding is confirmed, not disturbed: the
+#    field is present here and absent there, which is why it is required in
+#    neither. All 5 distinct types seen here are already members of the
+#    ProgrammingModelType enum, so no enum changed.
+#
+#    The remaining 2 markers in this file are on /affectedzone, which no
+#    corpus ever answered with a 200.
 /buttongroup:
   get:
     operationId: getButtonGroup
@@ -89,10 +107,24 @@
     tags:
       - buttongroup
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Buttons
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.249 returns `200 OK` with body key
+      `Buttons` on 6 of the 8 button-group ids the spec probe requested, 23
+      distinct buttons between them; the other 2 return `404 NotFound`, as do
+      all 8 on Caseta v01.123. Points at the existing `Buttons` schema, which
+      `GET /button` already uses. Note that `Buttons` is a `oneOf` admitting
+      a literal `{}` as well as an array -- that empty-object form was
+      observed only on RA3's `GET /button` and never on this route, so it is
+      not a shape this operation is known to produce.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Buttons"
     summary: List buttons in button group
   parameters:
     - name: buttongroupId

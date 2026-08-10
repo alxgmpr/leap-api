@@ -9,6 +9,13 @@
 # Modeled as a `oneOf` of the normal array and the specific empty-object
 # shape (`additionalProperties: false`, so it only accepts exactly `{}`,
 # not an escape hatch for arbitrary objects).
+#
+# A second operation now points here: GET /buttongroup/{buttongroupId}/button,
+# whose missing response schema the buttongroup family filled in. It sends
+# the same body key and ordinary Button elements -- 23 distinct buttons
+# across 6 button groups on RA3 v03.249, the only corpus that answers it.
+# The empty-object branch above remains a `GET /button` observation only; no
+# body from the per-group route has ever taken that form.
 oneOf:
   - type: array
     items:
