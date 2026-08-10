@@ -25,7 +25,14 @@
  *     other was an inconsistency, not a decision. (Deliberately described
  *     here rather than illustrated: quoting real engravings as examples
  *     would reintroduce in a comment exactly what this key removes from the
- *     fixtures.)
+ *     fixtures.) Unlike `FullyQualifiedName`, which deliberately reuses the
+ *     "name" pool to keep cross-references legible, `Text` gets its own
+ *     "text" pool — see `kindForKey`. That is intentional and is the
+ *     opposite trade for a reason: a keypad engraving is often byte-equal
+ *     to the name of the zone or room it drives, and sharing a pool would
+ *     publish that linkage. Separate pools leak strictly less. Do not
+ *     "fix" this to match `FullyQualifiedName`; `test/redact.test.ts`
+ *     asserts the pools stay separate.
  *   - "TimeZone": a coarse regional locator for the installation. Latitude
  *     and Longitude are already zeroed by ZEROED_NUMERIC_KEYS for exactly
  *     that reason, and leaving the IANA zone behind undid part of it.

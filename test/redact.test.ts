@@ -183,6 +183,47 @@ describe("redactTree", () => {
     assert.match(out.zoneName, /^<name-\d+>$/);
   });
 
+  // Found in real data: Engraving.Text is the label physically printed on a
+  // keypad button. It is user-authored household content of the same class
+  // as "Name" -- room and fixture names, occupant references -- and matches
+  // no scalar pattern, so only a key-name rule reaches it. It gets its own
+  // "text" placeholder pool rather than sharing "name" on purpose; see
+  // lib/redact.ts.
+  // (Test input is a synthetic engraving, not any real value found in the
+  // data — redaction here is by key name, not by shape, so any string
+  // exercises the same path.)
+  test("redacts a keypad engraving under Text", () => {
+    const out = redactTree({ Text: "Guest Suite" }) as { Text: string };
+    assert.match(out.Text, /^<text-\d+>$/);
+  });
+
+  // Found in real data: System.TimeZone is an IANA zone name, a coarse
+  // regional locator for the installation. Latitude and Longitude are
+  // already zeroed by ZEROED_NUMERIC_KEYS for exactly that reason, so
+  // leaving the zone behind undid part of it.
+  // (Test input is a synthetic IANA zone, not the installation's real one.)
+  test("redacts TimeZone", () => {
+    const out = redactTree({ TimeZone: "Etc/UTC" }) as { TimeZone: string };
+    assert.match(out.TimeZone, /^<timezone-\d+>$/);
+  });
+
+  // Text and TimeZone each get their own placeholder pool rather than
+  // sharing the "name" pool that FullyQualifiedName reuses. That is
+  // deliberate -- it leaks strictly less linkage between an engraving and
+  // the zone or room of the same name -- and this asserts the pools stay
+  // separate, so a later reader does not "fix" it to match
+  // FullyQualifiedName.
+  test("Text and TimeZone use their own placeholder pools", () => {
+    const out = redactTree({
+      Name: "Corridor Alpha",
+      Text: "Corridor Alpha",
+      TimeZone: "Corridor Alpha",
+    }) as { Name: string; Text: string; TimeZone: string };
+    assert.match(out.Name, /^<name-\d+>$/);
+    assert.match(out.Text, /^<text-\d+>$/);
+    assert.match(out.TimeZone, /^<timezone-\d+>$/);
+  });
+
   // Found in real data: HomeKitProperties.BridgeAccessory.SerialNumber is a
   // hex-ish string too short to match the 32+ char GUID pattern, so the
   // "zero out numbers, else pattern-match" rule let it through unredacted.
