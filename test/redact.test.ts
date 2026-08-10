@@ -159,6 +159,30 @@ describe("redactTree", () => {
     assert.match(out.ExtendedPANID, /^<panid-\d+>$/);
   });
 
+  // Found in real data: /clientsetting carries a cloud-pairing JWT whose
+  // base64url payload decodes to the processor's own serial number and a
+  // whitelisted public key. It matches no scalar pattern -- no "@", no
+  // dotted quad, not 32+ hex -- so only a key-name rule reaches it.
+  // (Test input is a synthetic three-segment token, not the real one.)
+  test("redacts a JWT", () => {
+    const out = redactTree({ JWT: "eyJhbGciOiJub25lIn0.eyJhIjoxfQ.c2ln" }) as {
+      JWT: string;
+    };
+    assert.match(out.JWT, /^<jwt-\d+>$/);
+  });
+
+  // Found in real data: the push-probe frame log records the zone under test
+  // in harness-authored metadata as `zoneName`, holding the same real name
+  // that "Name" redacts inside the frame bodies. Lowercase, so the "Name"
+  // check never reaches it.
+  // (Test input is a synthetic zone name, not the real one.)
+  test("redacts a lowercase zoneName", () => {
+    const out = redactTree({ zoneName: "Marlowe Sconce" }) as {
+      zoneName: string;
+    };
+    assert.match(out.zoneName, /^<name-\d+>$/);
+  });
+
   // Found in real data: HomeKitProperties.BridgeAccessory.SerialNumber is a
   // hex-ish string too short to match the 32+ char GUID pattern, so the
   // "zero out numbers, else pattern-match" rule let it through unredacted.

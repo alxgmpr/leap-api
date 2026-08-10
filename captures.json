@@ -2,5 +2,6 @@
   { "label": "ra3", "to": "fixtures/ra3.json" },
   { "label": "caseta", "to": "fixtures/caseta.json" },
   { "label": "sweep-read", "to": "fixtures/sweep-read.json" },
-  { "label": "sweep-write", "to": "fixtures/sweep-write.json" }
+  { "label": "sweep-write", "to": "fixtures/sweep-write.json" },
+  { "label": "spec-read", "to": "fixtures/spec-read.json" }
 ]

@@ -54,7 +54,19 @@ addFormats(ajv);
 // observed on the single processor this sweep reached). `clientsetting`
 // raised it 469 -> 470 (+1), the last path Task 8's sweep newly reached --
 // probedNotInSpec is 0 again as of this commit.
-const EXPECTED_MATCHED_CASES = 470;
+//
+// The coverage-blind spec probe (`spec-read`, 864 URLs / 226 200-OK bodies
+// against the same processor) raised it again, 470 -> 658 (+188), and like
+// the sweep import it did so WITHOUT any path or schema authoring: it is a
+// far wider read of paths whose response schemas already existed and simply
+// had no fixture bodies to validate against. 13 of those new cases FAIL --
+// six schemas that disagree with hardware (AreaStatus.CurrentScene,
+// Button.ProgrammingModelType, NetworkInterface, Services.Type,
+// TimeclockEvent.AstronomicTimeOffset / .AstronomicEventType). Those
+// failures are deliberately left failing: they are the probe's actual
+// signal, and triaging them is separate work. This constant tracks cases
+// REACHED, not cases passed, so it moves to 658 either way.
+const EXPECTED_MATCHED_CASES = 658;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

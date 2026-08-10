@@ -12,10 +12,19 @@
  *     which do not appear in this data).
  *   - "NetworkMasterKey" / "ExtendedPANID": Zigbee network credentials,
  *     base64-encoded, so they don't match any IP/MAC/GUID pattern.
+ *   - "JWT": the cloud-pairing token under `/clientsetting`. Its payload is
+ *     base64url and decodes to the processor's own SerialNumber plus a
+ *     whitelisted public key — a credential and a hardware identifier in one
+ *     string, matching no scalar pattern (no @, no dotted quad, not 32+ hex).
+ *   - "zoneName": harness-authored metadata in the push-probe frame log,
+ *     holding the same real zone name that "Name" redacts inside the frame
+ *     bodies. Lowercase, so the "Name" check never reaches it.
  */
 const SENSITIVE_STRING_KEYS = new Set([
   "Name",
   "Display",
+  "zoneName",
+  "JWT",
   "ProjectName",
   "HouseholdName",
   "BonjourServiceName",
@@ -52,6 +61,8 @@ function kindForKey(key: string): string {
       return "networkkey";
     case "ExtendedPANID":
       return "panid";
+    case "JWT":
+      return "jwt";
     default:
       return "name";
   }
