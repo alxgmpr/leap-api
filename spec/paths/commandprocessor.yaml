@@ -19,20 +19,28 @@
 #     Reference (from iOS App Binary RE)" section -- decompiled from Lutron
 #     iOS app v26.0.0 (com.lutron.lsb, build 8).
 #
-# The probe-set corpora in `captures.json` contain no traffic for any of
-# these ten paths (they were gathered by probing read-only
-# ReadRequest/Subscribe routes; a CreateRequest that actually executes a
-# command was never sent during a probe sweep). That means these paths are
-# permanently a `specWithoutFixture` entry in `npm run coverage`, by design
-# -- not a gap to chase, and `specWithoutFixture` only counts the manifest
-# corpora.
+# The probe-set corpora in `captures.json` contain no *command* traffic for
+# these ten paths. They do contain probes of them: 119 commandprocessor URLs
+# were requested across the six manifest corpora, and every one came back
+# `400 BadRequest`. 117 of the 119 match one of the ten templates below --
+# 8 of the ten were reached, `/loadcontroller/{id}/commandprocessor` and
+# `/naturalshow/{id}/commandprocessor` were not -- and the remaining 2 are
+# `/device/commandprocessor`, a bare collection form this specification does
+# not declare. What was never sent during a probe sweep is a `CreateRequest`
+# that actually executes a command; the sweeps issue reads.
 #
-# One exchange was captured outside those corpora, in
+# Those refusals do not change the coverage accounting: `tools/check-
+# coverage.ts:34` adds a path to `probedPaths` only
+# `if (result.status.startsWith("200"))`, so a route answered `400` is not
+# counted as covered. These ten therefore stay a `specWithoutFixture` entry
+# in `npm run coverage` -- by design, not a gap to chase.
+#
+# One command exchange was captured outside those corpora, in
 # `fixtures/push-probe.json`: two `CreateRequest`s to
 # `/zone/4664/commandprocessor` and both of their responses, with bodies.
 # That is where `/zone/{zoneId}/commandprocessor`'s `201` response below
-# comes from. It is the only command-processor traffic this project has, so
-# the other nine paths keep an unschema'd `200` and nothing more.
+# comes from. It is the only command-processor *response body* this project
+# has, so the other nine paths keep an unschema'd `200` and nothing more.
 #
 # One of the ten,
 # `/virtualbutton/{virtualbuttonId}/commandprocessor`, is corroborated more
