@@ -1,0 +1,33 @@
+type: array
+description: |
+  Body of a `ReadRequest` on `/area/{areaId}/associatedzone/status/expanded`
+  (MessageBodyType `ZoneExpandedStatuses`; the wire wraps this array as
+  `{"ZoneExpandedStatuses": [...]}`, unwrapped here per the MessageBodyType
+  convention). Hand-authored, per docs/mapping.md's "Collection GETs and the
+  singular/plural defect": the firmware extraction defines no plural
+  collection-wrapper types at all.
+
+  The firmware-extracted route table recovered no responseType for this
+  operation at all. Confirmed 200 OK on RA3 v03.249
+  (`fixtures/spec-read.json`): 7 of the 8 area ids the probe requested
+  returned one, 18 distinct ZoneExpandedStatuses between them, and the
+  eighth (`/area/3`, a parent grouping area with no zones of its own)
+  returned `204 NoContent`. They are the same 18 zones the unexpanded
+  sibling route returns for the same 7 areas -- compared by `href`, the two
+  sets are equal -- so this route adds no zones, only the full `Zone` object
+  in place of the href-only reference. Caseta v01.123 returns no body on
+  this route.
+
+  Note the element type: `ZoneExpandedStatus`, singular, which is itself the
+  flattened-anonymous-embed correction Task 10 made (see that file). The
+  per-zone route `/zone/{zoneId}/status/expanded` returns that object bare;
+  only this area-scoped route wraps it in an array.
+
+  One thing the route table got right here and wrong there: it records this
+  path as `/area/{id}/associatedzone/status/expanded`, segments in wire
+  order, while recording the per-zone one as `/zone/{id}/expanded/status`
+  — the reordering spec/paths/zone.yaml had to hand-correct. So the
+  extraction's segment-order defect is per-route, not systematic to the
+  `expanded` segment.
+items:
+  $ref: "#/components/schemas/ZoneExpandedStatus"

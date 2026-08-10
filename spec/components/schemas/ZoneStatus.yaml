@@ -94,8 +94,9 @@ properties:
       138 observations across both platforms and all four read corpora that
       return a zone status (/zone/status and /zone/{zoneId}/status), plus 50
       more through ZoneExpandedStatus, 36 through
-      /area/{areaId}/associatedzone/status and its expanded form (a route
-      with no declared response schema), and 52 more in
+      /area/{areaId}/associatedzone/status and its expanded form (18 zones
+      each; both routes gained a declared response schema in the area-misc
+      family, so conformance now validates those 36 too), and 52 more in
       `fixtures/push-probe.json`. Only 2 of those 52 are in pushes (`seq` 21
       and 25): 46 are in the subscribe-time snapshot (`seq` 18), 2 in the
       CreateResponse command replies (`seq` 20, 24) and 2 in ordinary reads

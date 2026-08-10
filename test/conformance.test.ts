@@ -122,7 +122,19 @@ addFormats(ajv);
 // records of Caseta's `/area/2`, each returned once bare and once as the
 // single element of its collection route's array. Six cases, three objects:
 // this constant counts cases.
-const EXPECTED_MATCHED_CASES = 757;
+//
+// 757 -> 780: the `area misc` family, +23 across four operations, and this
+// time RA3 carries almost all of it. `/area/{areaId}/areascene`,
+// `/area/{areaId}/associatedzone/status` and its `/expanded` sibling
+// contribute 7 cases each -- the 7 area ids that returned a body out of the
+// 8 `fixtures/spec-read.json` requested, the eighth being `/area/3`, a
+// parent grouping area that answers `204 NoContent` on all three.
+// `/area/{areaId}/childarea/summary` contributes the remaining 2, one per
+// platform, and is the only one of the four Caseta answers with a body at
+// all. Note the case-vs-object gap again: those 21 RA3 cases carry 38
+// AreaScenes and 18 zone statuses reported twice over (once plain, once
+// expanded); the constant counts the 200-OK bodies, not what is inside them.
+const EXPECTED_MATCHED_CASES = 780;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

@@ -1,4 +1,4 @@
-# Refined from spec/paths/_generated/area.yaml. Three deviations from a
+# Refined from spec/paths/_generated/area.yaml. Four deviations from a
 # straight copy:
 #
 # 1. /area/{areaId} and /area/{areaXid} are MERGED, decided and recorded per
@@ -41,6 +41,19 @@
 #    DaylightingGainSettingsCollection.yaml. RA3 v03.249 answers all three
 #    collection routes `204 NoContent` and all 24 per-area requests `404
 #    NotFound`, so RA3 contributes no body to any of the six.
+#
+# 4. Four more `TODO(response)`s resolved, the area-misc family:
+#    `/area/{areaId}/areascene`, `/area/{areaId}/associatedzone/status`, its
+#    `/expanded` sibling, and `/area/{areaId}/childarea/summary`. Same gap-fill
+#    shape as deviation 3 -- all four are in the firmware route table with
+#    `responseType: null` -- but the evidence runs the other way round: three
+#    of the four are answered only by RA3 v03.249, and only
+#    `/childarea/summary` gets a body from both platforms. Two of the four
+#    reuse existing schemas (`ZoneStatuses`, and `ZoneExpandedStatus` as the
+#    element of a new `ZoneExpandedStatuses` wrapper); `AreaSummaries` wraps
+#    the already-refined `AreaSummary`; only `AreaScene` is a new element
+#    type, copied verbatim from the generated file because all 38 observed
+#    instances agree with it.
 /area:
   get:
     operationId: getArea
@@ -152,10 +165,22 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: AreaScenes
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.249 returns `200 OK` with body key
+      `AreaScenes` for 7 of the 8 area ids the spec probe requested (38
+      distinct scenes between them); the eighth, `/area/3`, is a parent
+      grouping area and returns `204 NoContent`. Caseta v01.123 returns
+      `204 NoContent` on both of its own areas, so no Caseta body backs this
+      schema.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaScenes"
     summary: List scenes in area
   parameters:
     - name: areaId
@@ -244,10 +269,26 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: ZoneStatuses
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.249 returns `200 OK` with body key
+      `ZoneStatuses` for 7 of the 8 area ids the spec probe requested (18
+      distinct zone statuses between them); the eighth, `/area/3`, is a
+      parent grouping area with no zones of its own and returns `204
+      NoContent`. The body is the same array-of-ZoneStatus shape
+      `/zone/status` returns, scoped to one area. Caseta v01.123 returns
+      `204 NoContent` on both of its own areas -- consistent with
+      docs/platforms.md's finding that Caseta uses flat `/zone` lists rather
+      than RA3's area-walk navigation.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneStatuses"
+    summary: List statuses of zones in area
   parameters:
     - name: areaId
       in: path
@@ -260,10 +301,23 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: ZoneExpandedStatuses
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.249 returns `200 OK` with body key
+      `ZoneExpandedStatuses` for the same 7 area ids, carrying the same 18
+      zones as the unexpanded sibling route (equal sets, compared by
+      `href`) with the full `Zone` object in place of the href-only
+      reference. `/area/3` returns `204 NoContent`; Caseta v01.123 returns
+      `204 NoContent` on both of its own areas.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneExpandedStatuses"
+    summary: List expanded statuses of zones in area
   parameters:
     - name: areaId
       in: path
@@ -308,10 +362,23 @@
     tags:
       - area
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: AreaSummaries
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it, and this is the one area-misc route both
+      platforms answer with a body -- from the parent area in each case,
+      while every leaf returns `204 NoContent`. RA3 v03.249: `200 OK` with
+      body key `AreaSummaries` from `/area/3`, 18 distinct summaries, `204`
+      from each of the 7 other area ids requested. Caseta v01.123: `200 OK`
+      from `/area/1` with a single summary describing `/area/2`, and `204`
+      from `/area/2`.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaSummaries"
     summary: List child area summaries
   parameters:
     - name: areaId

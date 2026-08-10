@@ -7,5 +7,13 @@ description: |
   paths concatenated, e.g. `/zonestatus`, not the real `/zone/status`), so
   both the path and this schema are hand-authored from captured traffic
   (RA3 v03.247, Caseta v01.123 — both 200 OK).
+
+  A second operation now points here: `/area/{areaId}/associatedzone/status`,
+  whose missing response schema the area-misc family filled in. That route sends the
+  same MessageBodyType and the same array-of-ZoneStatus shape, scoped to one
+  area's zones rather than the whole processor — 18 distinct zone statuses
+  across the 7 area ids that returned a body on RA3 v03.249, and no body at
+  all on Caseta v01.123. Unlike `/zone/status` it IS present in the firmware
+  route table, correctly spelled; what it lacked was a responseType.
 items:
   $ref: "#/components/schemas/ZoneStatus"

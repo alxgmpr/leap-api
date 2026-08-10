@@ -1,0 +1,25 @@
+type: array
+description: |
+  Body of a `ReadRequest` on `/area/{areaId}/childarea/summary`
+  (MessageBodyType `AreaSummaries`; the wire wraps this array as
+  `{"AreaSummaries": [...]}`, unwrapped here per the MessageBodyType
+  convention). Hand-authored, per docs/mapping.md's "Collection GETs and the
+  singular/plural defect": the firmware extraction defines no plural
+  collection-wrapper types at all.
+
+  The firmware-extracted route table recovered no responseType for this
+  operation at all, so this is a gap fill rather than a singular/plural
+  mislabel. Both
+  platforms confirm the shape, and on both it is the *parent* area that
+  answers with a body while the leaves answer `204 NoContent`: RA3 v03.249
+  returns 18 distinct AreaSummaries from `/area/3` and `204` from each of the
+  7 other area ids the probe requested; Caseta v01.123 returns a single
+  AreaSummary from `/area/1` (describing `/area/2`) and `204` from `/area/2`.
+  All 19 carry `IsLeaf: true`, consistent with that split.
+
+  The 18 RA3 summaries all carry `SortOrder`; the one Caseta summary omits
+  it. Firmware types it `*uint32`, a pointer, and AreaSummary.yaml already
+  has it optional, so that is a platform difference this schema records
+  rather than a disagreement it has to resolve.
+items:
+  $ref: "#/components/schemas/AreaSummary"

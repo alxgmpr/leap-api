@@ -1,0 +1,22 @@
+type: array
+description: |
+  Body of a `ReadRequest` on `/area/{areaId}/areascene` (MessageBodyType
+  `AreaScenes`; the wire wraps this array as `{"AreaScenes": [...]}`,
+  unwrapped here per the MessageBodyType convention -- see docs/mapping.md's
+  "The `Body` wrapper"). Hand-authored, per docs/mapping.md's "Collection
+  GETs and the singular/plural defect": the firmware extraction defines no
+  plural collection-wrapper types at all, so every such response schema in
+  this specification is hand-authored rather than generated.
+
+  The firmware-extracted route table recovered no responseType for this
+  operation at all, so this is a gap fill rather than a singular/plural
+  mislabel of the `Zones`/`Zone` kind. Confirmed 200 OK on RA3 v03.249
+  (`fixtures/spec-read.json`): 7 of the 8 area ids that probe requested
+  returned one, 38 distinct AreaScenes between them, and the eighth
+  (`/area/3`, a parent grouping area) returned `204 NoContent`. Caseta
+  v01.123 returns no body on this route: `204 NoContent` on both area ids
+  that exist on that bridge (`/area/1`, `/area/2`) and `404 NotFound` on the
+  other 6 the probe requested. The element schema therefore rests entirely
+  on RA3 evidence.
+items:
+  $ref: "#/components/schemas/AreaScene"

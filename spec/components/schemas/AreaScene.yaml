@@ -1,0 +1,23 @@
+# Copied verbatim from _generated/AreaScene.yaml. Brought into the bundle by
+# the area-misc family as the element type of AreaScenes; nothing needed
+# relaxing. The 38 AreaScene objects the RA3 v03.249 spec probe returned
+# through /area/{areaId}/areascene all carry both firmware-required fields
+# (`Name`, `SortOrder`) and both pointers (`Parent`, `Preset`), so hardware
+# and firmware agree on every field of this type.
+type: object
+properties:
+  href:
+    type: string
+  Name:
+    type: string
+  Parent:
+    $ref: "#/components/schemas/HyperReference"
+  Preset:
+    $ref: "#/components/schemas/HyperReference"
+  SortOrder:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - Name
+  - SortOrder

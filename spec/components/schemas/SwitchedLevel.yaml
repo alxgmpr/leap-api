@@ -26,7 +26,9 @@ description: |
   adds 8 more, `Off` 7 and `On` 1, all from the original Caseta capture --
   the only corpus whose expanded route reaches a switched zone. Two further
   `Off`s come from the spec probe's /area/{areaId}/associatedzone/status and
-  its expanded form, a route with no declared response schema.
+  its expanded form -- one switched zone, reported once through each. Both
+  routes gained a declared response schema in the area-misc family, so
+  conformance now validates those two bodies.
 
   `fixtures/push-probe.json` shows both members again, but in the
   subscribe-time **snapshot**, not in a push: `seq` 18,
