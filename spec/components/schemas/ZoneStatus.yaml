@@ -21,10 +21,19 @@ description: |
   most one value for each across every corpus. One observed value does not
   distinguish an enum from a constant, and closing on it asserts the concept
   is single-valued: an accuracy that is only ever `Good`, a lock state that
-  is only ever `Unlocked`, a CCO that is only ever `Open`. That assertion
-  was made once in this specification, for OccupancyStatus, and the next
-  probe falsified it. Values seen to date are recorded per field under
-  `x-observed-values`, as documentation rather than as an assertion.
+  is only ever `Unlocked`, a CCO that is only ever `Open`.
+
+  This specification has made that assertion before, five times, all of them
+  predating this pass and all still shipping closed on a single distinct
+  observed value: `Role` (`Installer`), `SessionRole` (`Admin`),
+  `ButtonGroupCategoryType` (`Lights`), `StopIfMovingEnabledState`
+  (`Disabled`) and `SystemLoadSheddingState` (`Disabled`). `OccupancyStatus`
+  is the sixth, and the one where a later probe showed what it costs: it
+  shipped closed on `Unknown` alone, its own note said `Occupied` and
+  `Unoccupied` were expected but unconfirmed, and the coverage-blind probe
+  produced both. That is the precedent this field declines to repeat.
+  Values seen to date are recorded per field under `x-observed-values`, as
+  documentation rather than as an assertion.
 
   `Availability` points at the shared `Availability` schema: its firmware
   type is `leapobj.Availability`, the same type as DeviceStatus.Availability,

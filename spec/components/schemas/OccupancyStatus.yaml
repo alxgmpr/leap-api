@@ -27,7 +27,16 @@ description: |
   single-member enum here was one probe away from being falsified, which is
   why the enum pass that added these two members left the remaining
   single-observation enum fields as open strings rather than closing them
-  on the same kind of evidence.
+  on the same kind of evidence -- see `ZoneStatus.yaml`, which records that
+  argument in full.
+
+  This is not the only single-observation closure in the specification, just
+  the only one hardware has falsified so far. `Role`, `SessionRole`,
+  `ButtonGroupCategoryType`, `StopIfMovingEnabledState` and
+  `SystemLoadSheddingState` all predate this pass and all still ship closed
+  on one distinct observed value. They are left alone rather than reopened:
+  nothing has contradicted them, and reopening on suspicion would assert an
+  absence no corpus has observed.
 enum:
   - Occupied
   - Unoccupied

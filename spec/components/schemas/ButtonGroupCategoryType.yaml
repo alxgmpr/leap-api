@@ -1,9 +1,10 @@
 type: string
 description: |
   Button group category. The firmware extraction did not recover the full
-  enum; members below were recovered from ButtonGroupCategory.Type observed
-  on RA3 v03.247 (4 instances) and Caseta v01.123 (10 instances), via
-  /buttongroup and /device/{deviceId}/buttongroup/expanded. Unlisted values
-  are possible.
+  enum; the member below was recovered from ButtonGroupCategory.Type,
+  observed 20 times across three corpora -- RA3 v03.247 4, Caseta v01.123
+  10, RA3 v03.249 6 -- via /buttongroup, /buttongroup/{buttongroupId},
+  /device/{deviceId}/buttongroup and its /expanded form. The Caseta spec
+  probe reaches no button group. Unlisted values are possible.
 enum:
   - Lights

@@ -1,9 +1,10 @@
 type: string
 description: |
   Load shedding activation state. The firmware extraction did not recover
-  the full enum; members below were recovered from
-  SystemLoadSheddingStatus.State observed on RA3 v03.247 (via
-  /system/loadshedding/status; unconfirmed on Caseta, which returns 405 on
-  this route). Unlisted values are possible.
+  the full enum; the member below was recovered from
+  SystemLoadSheddingStatus.State via /system/loadshedding/status, observed
+  once in each RA3 corpus (v03.247 and v03.249) and unconfirmed on Caseta,
+  which returns 405 MethodNotAllowed on this route. Two observations of the
+  same value on one installation; unlisted values are possible.
 enum:
   - Disabled

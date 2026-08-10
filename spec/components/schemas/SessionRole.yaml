@@ -1,9 +1,13 @@
 type: string
 description: |
   The firmware extraction did not recover the full enum; `Admin` is the only
-  value observed, on a single processor's own session during Task 8's sweep
-  campaign (`fixtures/sweep-read.json`, `/clientsetting`). Unlisted values
-  are possible -- a non-admin integrator/guest role, for instance, is
-  plausible but unconfirmed by any capture in this project's corpus.
+  value observed, on the probe client's own `/clientsetting` session in
+  three corpora -- `fixtures/sweep-read.json`, `fixtures/spec-read.json`
+  and `fixtures/spec-read-caseta.json`, so on both platforms. All three
+  report the role of this project's own prober, so they say what that
+  client was granted, not what the type can hold. Unlisted values are
+  possible -- a
+  non-admin integrator/guest role, for instance, is plausible but
+  unconfirmed by any capture in this project's corpus.
 enum:
   - Admin

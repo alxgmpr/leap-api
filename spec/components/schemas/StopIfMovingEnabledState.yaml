@@ -3,9 +3,11 @@ description: |
   Whether a shade button group stops movement when a new command arrives.
   The firmware extraction did not recover the full enum; the only member
   below was recovered from ButtonGroup.StopIfMoving observed on Caseta
-  v01.123 (19 instances, via /buttongroup). Never observed on RA3 v03.247
-  in any context (always absent), and never observed as anything but
+  v01.123 -- 20 instances across the two Caseta corpora, 19 from the
+  original capture (via /buttongroup and /device/{deviceId}/buttongroup)
+  and 1 from the coverage-blind spec probe. Never observed on either RA3
+  corpus in any context (always absent), and never observed as anything but
   `Disabled` on Caseta -- an `Enabled` counterpart is expected by the field
-  name but unconfirmed in either fixture. Unlisted values are possible.
+  name but unconfirmed in any fixture. Unlisted values are possible.
 enum:
   - Disabled
