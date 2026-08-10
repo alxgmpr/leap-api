@@ -187,7 +187,13 @@ addFormats(ajv);
 // had already counted those three link nodes and noted that conformance
 // never saw them; it now validates all three. No schema was authored -- the
 // existing `LinkNode` already described the body.
-const EXPECTED_MATCHED_CASES = 839;
+//
+// 839 -> 847: /programmingmodel/{programmingmodelId}/preset, +8, all Caseta
+// v01.123 -- every programming-model id the spec probe requested answered
+// with a `Presets` array (RA3 `404`s all 8). 8 cases, 9 Presets: one array
+// has two elements. This is also the last of the 27 operations this task set
+// out to resolve; the constant has moved 751 -> 847 across ten commits.
+const EXPECTED_MATCHED_CASES = 847;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

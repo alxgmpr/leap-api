@@ -29,6 +29,6 @@ describe("computeCoverage", () => {
     // investigate, not a constant to bump.
     const c = computeCoverage();
     assert.equal(c.todoEnums, 80);
-    assert.equal(c.todoResponses, 141);
+    assert.equal(c.todoResponses, 140);
   });
 });

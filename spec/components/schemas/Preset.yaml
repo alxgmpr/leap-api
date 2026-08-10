@@ -1,10 +1,22 @@
-# Copied verbatim: zero fixture coverage. Every probed /preset/* route
-# (bare /preset and all 25 /preset/{presetId}/*assignment sub-routes)
-# returns 400 BadRequest on both platforms in the probe corpus -- no 200
-# response was ever captured for this family, so no triage was possible.
-# All properties are arrays of `HyperReference` with no required list and
-# no TODO(enum) markers, so nothing here could be relaxed or recovered
-# even with evidence.
+# Copied verbatim, and still unrelaxed -- but no longer for want of
+# evidence. The original note said this type had zero fixture coverage,
+# which was true of the two campaign corpora: bare /preset returns 400
+# BadRequest on both, and every /preset/{presetId}/*assignment sub-route was
+# refused. The coverage-blind spec probe against Caseta v01.123 changed that:
+# it returns 200 OK on 8 /preset/{presetId} URLs, and the programmingmodel
+# family added 9 more Preset objects through
+# /programmingmodel/{programmingmodelId}/preset. RA3 v03.249 returns 404 on
+# all 8 preset ids it requested.
+#
+# What the evidence shows is thin but consistent: 17 Preset occurrences, 10
+# distinct by `href` (the two routes overlap -- the same preset is reachable
+# both directly and through its programming model), and every one carries
+# exactly `href` and `Parent` and nothing else. None of the 26 array
+# properties below has ever been populated on the wire. That is not grounds to
+# change anything: all 26 are optional already (firmware types them as
+# slices), there is no required list to relax and no TODO(enum) marker to
+# recover, so the schema this evidence confirms is the one that was already
+# here.
 type: object
 properties:
   href:

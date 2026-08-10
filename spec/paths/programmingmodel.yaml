@@ -1,14 +1,19 @@
-# Refined from _generated/programmingmodel.yaml. One deviation from a
+# Refined from _generated/programmingmodel.yaml. Two deviations from a
 # straight copy:
 #
-# GET /programmingmodel: x-leap-body-type and the 200 schema were changed
+# 1. GET /programmingmodel: x-leap-body-type and the 200 schema were changed
 # from `ProgrammingModel` (singular) to `ProgrammingModels` (a new array
 # schema). Same class of extraction mislabel Task 10 found for GET /zone.
 # Caseta v01.123's actual 200 response is `{"ProgrammingModels": [...]}`.
 # RA3 v03.247 returns 204 NoContent on this route.
 #
-# /programmingmodel/{programmingmodelId}/preset has no fixture coverage in
-# either platform's probe corpus, so it stays TODO(response), unchanged.
+# 2. /programmingmodel/{programmingmodelId}/preset had its marker resolved.
+#    The note that used to sit here said the route had no fixture coverage
+#    in either platform's probe corpus; that was true of the two campaign
+#    corpora and is no longer true -- the coverage-blind spec probe against
+#    Caseta v01.123 answers all 8 programming-model ids it requested with a
+#    `Presets` array. A gap fill, not a singular/plural mislabel: unlike
+#    deviation 1, the route table recorded no responseType here at all.
 /programmingmodel:
   get:
     operationId: getProgrammingModel
@@ -51,10 +56,21 @@
     tags:
       - programmingmodel
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: Presets
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `Presets` on all 8 programming-model ids the spec probe requested, 9
+      Presets between them -- 7 single-element arrays and one of two. RA3
+      v03.249 returns `404 NotFound` on all 8 ids it requested. Every
+      observed Preset carries only `href` and `Parent`; see Preset.yaml.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Presets"
     summary: List presets for programming model
   parameters:
     - name: programmingmodelId

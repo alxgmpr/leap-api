@@ -1,0 +1,19 @@
+type: array
+description: |
+  Body of a `ReadRequest` on `/programmingmodel/{programmingmodelId}/preset`
+  (MessageBodyType `Presets`; the wire wraps this array as
+  `{"Presets": [...]}`, unwrapped here per the MessageBodyType convention).
+  Hand-authored, per docs/mapping.md's "Collection GETs and the
+  singular/plural defect": the firmware extraction defines no plural
+  collection-wrapper types at all.
+
+  The firmware-extracted route table recovered no responseType for this
+  operation, so this is a gap fill rather than a singular/plural mislabel.
+  Confirmed 200 OK on Caseta v01.123 (`fixtures/spec-read-caseta.json`): all
+  8 programming-model ids the probe requested returned a body, 9 Presets
+  between them -- 7 arrays of one and one array of two
+  (`/programmingmodel/126`). RA3 v03.249 returns `404 NotFound` on all 8 ids
+  it requested, and neither original campaign corpus nor either sweep corpus
+  requested this route.
+items:
+  $ref: "#/components/schemas/Preset"
