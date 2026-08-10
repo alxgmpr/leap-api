@@ -6,9 +6,10 @@
 #      /device/{deviceId}/status. 65 across the four read corpora that
 #      return one: RA3 32 + 7, Caseta 24 + 2.
 #   B. OBJECT OCCURRENCES -- basis A plus every route that re-serves the
-#      same object, which here is the /device/status collection, answered
-#      only by the two Caseta corpora. 91 in all: RA3 32 + 7,
-#      Caseta 48 + 4.
+#      same object, which here is the /device/status collection. Only the
+#      two Caseta corpora return a body for it; both RA3 corpora answer
+#      204 NoContent, so basis B adds nothing on RA3. 91 in all:
+#      RA3 32 + 7, Caseta 48 + 4.
 #
 # The `required` argument below is on basis A. The per-field observation
 # counts under `x-observed-values` are on basis B. That is why 89 exceeds
@@ -67,8 +68,8 @@ properties:
       37 observations (RA3 v03.247 31, RA3 v03.249 6; absent from every
       Caseta device status, on both Caseta corpora). This is the one count
       in this file that is the same on both bases: only the RA3 corpora
-      carry the field, and neither answers the /device/status collection
-      that makes basis B larger. Same firmware type as
+      carry the field, and both answer 204 NoContent on the /device/status
+      collection that makes basis B larger elsewhere. Same firmware type as
       ZoneStatus.StatusAccuracy, which adds 138 more observations of the
       same single value -- see that field for why one value is not a set.
     x-observed-values:

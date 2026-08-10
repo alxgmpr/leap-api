@@ -27,8 +27,11 @@ description: |
   `CommuniqueType: SubscribeResponse`, `MessageBodyType: OneAreaStatus`,
   `deliveredToOnEvent: false` -- not one of the pushes that followed. None
   of the three `/area/1340/status` pushes in that capture (`seq` 22, 23 and
-  26) carries `OccupancyStatus` at all, because push bodies are field-level
-  deltas and this field did not change while the capture was open. That is
+  26) carries `OccupancyStatus` at all: push bodies are field-level deltas,
+  so a field absent from every push is one the processor never reported
+  changing. (The capture cannot say more than that -- its closing read,
+  `seq` 27, is a zone read, so the area's end-state occupancy was never
+  re-read.) That is
   the same fact `docs/subscriptions.md` uses to show that `AreaStatus`'s
   `required: [OccupancyStatus]` does not hold for push frames, so the
   snapshot/push distinction is load-bearing here rather than bookkeeping.
