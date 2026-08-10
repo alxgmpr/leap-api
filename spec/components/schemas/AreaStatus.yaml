@@ -17,6 +17,31 @@ properties:
     minimum: 0
     maximum: 4294967295
   CurrentScene:
-    $ref: "#/components/schemas/HyperReference"
+    description: |
+      Nullable: the wire sends an explicit JSON `null` for an area with no
+      scene currently active, rather than omitting the key. Observed on 4 of
+      the 8 probed areas (RA3 v03.247, via /area/{areaId}/status):
+      `/area/3/status`, `/area/32/status`, `/area/1208/status` and
+      `/area/1232/status` all carry `"CurrentScene": null`, while
+      `/area/912/status`, `/area/1220/status`, `/area/1244/status` and
+      `/area/1256/status` carry a real reference (e.g.
+      `{"href": "/areascene/916"}`). No probed area omits the key entirely.
+
+      Firmware and hardware agree here -- the loss is the generator's.
+      Firmware types the field `CurrentScene **leapobj.HyperReference` (a
+      double pointer, unique to this field in the extracted corpus): the
+      outer pointer carries presence, the inner one carries null-vs-value,
+      which is exactly the "explicit null" encoding observed. The Go struct
+      parser strips pointers at any depth to a single `optional` flag (see
+      lib/go-struct-parser.ts), so the null-vs-absent distinction never
+      reached the generated schema and `CurrentScene` came out as a bare
+      `$ref`. Restored here as an OpenAPI 3.1 `oneOf` against
+      `HyperReference` or the JSON Schema `null` type -- 3.1 is JSON Schema
+      proper, so `type: "null"` is available; a `$ref`-plus-`type` sibling
+      would not work, since `null` cannot also satisfy `HyperReference`
+      (which requires `href`).
+    oneOf:
+      - $ref: "#/components/schemas/HyperReference"
+      - type: "null"
 required:
   - OccupancyStatus
