@@ -1,9 +1,12 @@
+# `EnabledState` points at the shared EnabledState schema on firmware type
+# identity (`leapobj.SOCKS5ProxyProperties.EnabledState` is
+# `leapobj.EnabledState`). Directly observed once, too: the coverage-blind
+# spec probe's /networkinterface/1 (RA3 unit 2) carries
+# `SOCKS5ProxyProperties: {"EnabledState": "Disabled"}`.
 type: object
 properties:
   EnabledState:
-    type: string
-    description: "TODO(enum): members of EnabledState were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/EnabledState"
   Hostname:
     type: string
   Port:

@@ -1,3 +1,7 @@
+# `AutoVibrancy` points at the shared EnabledState schema on firmware type
+# identity (`leapobj.SpectrumTuningLevelParameters.AutoVibrancy` is
+# `leapobj.EnabledState`). Command-parameter input, so no corpus observes it;
+# the members come from the shared type -- see EnabledState.yaml.
 type: object
 properties:
   Level:
@@ -5,9 +9,7 @@ properties:
   Vibrancy:
     type: number
   AutoVibrancy:
-    type: string
-    description: "TODO(enum): members of EnabledState were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/EnabledState"
   ColorTuningStatus:
     $ref: "#/components/schemas/ColorTuningStatus"
   DelayTime:

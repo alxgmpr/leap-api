@@ -1,3 +1,12 @@
+# `EnabledState` points at the shared EnabledState schema on firmware type
+# identity: `leapobj.AssociatedNetworkInterface.EnabledState` is
+# `leapobj.EnabledState`, the same referenced-but-undefined type behind
+# Server.EnableState, TimeclockStatus.EnabledState, and
+# NaturalLightOptimizationStatus.EnabledState, whose members
+# (`Enabled`/`Disabled`) those fixtures recovered. No AssociatedNetworkInterface
+# object carries an observed EnabledState value in any corpus -- the members
+# come from the shared type, not from evidence at this site. Same reasoning as
+# TimeclockEventStatus.EnableState (Task 12b).
 type: object
 properties:
   href:
@@ -5,8 +14,6 @@ properties:
   NetworkInterface:
     $ref: "#/components/schemas/HyperReference"
   EnabledState:
-    type: string
-    description: "TODO(enum): members of EnabledState were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/EnabledState"
 required:
   - EnabledState

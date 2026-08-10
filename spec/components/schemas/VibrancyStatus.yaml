@@ -1,8 +1,10 @@
+# `AutoVibrancy` points at the shared EnabledState schema on firmware type
+# identity (`leapobj.VibrancyStatus.AutoVibrancy` is `leapobj.EnabledState`).
+# No observed VibrancyStatus object in any corpus carries the field; the
+# members come from the shared type -- see EnabledState.yaml.
 type: object
 properties:
   Vibrancy:
     type: number
   AutoVibrancy:
-    type: string
-    description: "TODO(enum): members of EnabledState were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/EnabledState"
