@@ -10,13 +10,18 @@
 # shape to the id variant's `get`. The path parameter documents that it
 # accepts either form.
 #
-# No fixture coverage exists for any /controlstation/{id} route directly
-# (the bare /controlstation collection route is 405 MethodNotAllowed on
-# both platforms -- only POST is defined, no GET -- and no per-id fetch was
-# captured). `ControlStation` objects ARE observed, but only nested inside
+# (Task 8 update) Direct fixture coverage for GET /controlstation/{id} now
+# exists: fixtures/sweep-read.json probed it on a single, previously-unseen
+# processor (7 concrete instances, all XID/Name/AssociatedArea/SortOrder/
+# AssociatedGangedDevices present, all validated against ControlStation.yaml
+# in test/conformance.test.ts's "sweep-read" block). Before Task 8, no
+# fixture covered any /controlstation/{id} route directly -- `ControlStation`
+# objects were only observed nested inside
 # /area/{areaId}/associatedcontrolstation's `ControlStations` array (a
-# different family's file, out of this task's scope -- see ControlStation.yaml
-# for the fixture evidence used to leave its `required` list unchanged).
+# different family's file -- see ControlStation.yaml for the fixture
+# evidence that originally justified its `required` list, unchanged by this
+# update). The bare /controlstation collection route remains unprobed by
+# this project either way -- only the per-id GET gained coverage.
 /controlstation:
   post:
     operationId: createControlStation
