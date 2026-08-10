@@ -8,6 +8,10 @@ description: |
   the other — relaxed to optional here on hardware evidence. StatusAccuracy
   was present on all 41 and stays required.
 
+  `SwitchedLevel` points at the shared `SwitchedLevel` schema (firmware type
+  `leapobj.SwitchedLevel`): 22 observations, `Off` 19 and `On` 3, on Caseta
+  and RA3 unit 2.
+
   `Availability` points at the shared `Availability` schema: its firmware
   type is `leapobj.Availability`, the same type as DeviceStatus.Availability,
   where 85 observations produced `Available`/`Unknown`. No read corpus ever
@@ -26,9 +30,7 @@ properties:
   Tilt:
     type: number
   SwitchedLevel:
-    type: string
-    description: "TODO(enum): members of SwitchedLevel were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/SwitchedLevel"
   CCOLevel:
     type: string
     description: "TODO(enum): members of CCOLevel were not recovered from the

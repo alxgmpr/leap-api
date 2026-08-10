@@ -1,9 +1,12 @@
+# `SwitchedLevel` points at the shared SwitchedLevel schema on firmware type
+# identity (`leapobj.SwitchedLevelParameters.SwitchedLevel` is
+# `leapobj.SwitchedLevel`, the same type as ZoneStatus.SwitchedLevel, where
+# `On`/`Off` were observed). Command-parameter input, so no corpus observes
+# this field itself. See SwitchedLevel.yaml.
 type: object
 properties:
   SwitchedLevel:
-    type: string
-    description: "TODO(enum): members of SwitchedLevel were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/SwitchedLevel"
   DelayTime:
     type: string
     pattern: ^P(?=.*\d)(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
