@@ -1,20 +1,44 @@
-# HAND-AUTHORED enum -- the firmware types `Service.Type` as a bare `string`
-# (vendor/leap-types.json: `type leapobj.Service struct { ... Type string
-# ... }`, no named enum type at all), so there is nothing for the generator
-# to recover members from. Members below are every `Type` value observed on
-# either platform's captured `/service` collection (RA3 v03.247: Alexa,
-# GoogleHome, BACnet, HomeKit, IFTTT, NTPServer; Caseta v01.123: Sonos,
-# HomeKit, Alexa, GoogleHome, AutoProgrammer, IFTTT). Union across both
-# platforms is 8 distinct values. **Observed-not-exhaustive**: a service
-# type not in this list is possible and must still validate (see
-# Service.yaml, which does not set `additionalProperties: false`).
+# HAND-AUTHORED (formerly a closed enum -- see the description). The
+# firmware types `Service.Type` as a bare `string` (vendor/leap-types.json:
+# `type leapobj.Service struct { ... Type string ... }`, no named enum type
+# at all), so there is nothing for the generator to recover members from
+# and nothing for this specification to close the set against.
 type: string
 description: |
   Discriminator for `Service.Type`, naming which `*Properties` field (if
   any) is populated on the same object -- see `Service.yaml`.
-  Observed-not-exhaustive: recovered from captured traffic, not a firmware
-  enum (the firmware types this field as a bare `string`).
-enum:
+
+  **Open string, not an enum.** This field carried a closed 8-member `enum`
+  until hardware falsified it: the coverage-blind spec probe's `/service`
+  collection (a second, separately configured RA3 processor -- see
+  docs/platforms.md) returned a ninth value, `{"href": "/service/cloud",
+  "Type": "Cloud"}`, alongside the same seven the earlier RA3 capture
+  showed. That enum's own description already said the members were
+  observed-not-exhaustive and that an unlisted service type "must still
+  validate" -- a promise a closed `enum` cannot keep, and did not. The
+  contradiction is resolved in favor of what the description always said
+  the field was.
+
+  Hardware wins, and unusually the firmware does not contest it: unlike
+  `ProgrammingModelType` or `AddressedState` -- real firmware enums whose
+  members the extraction merely failed to recover, where the observed set
+  is a lower bound on a genuinely closed type and the right response to a
+  new value is to add it -- there is no `leapobj.ServiceType` at all. The
+  field is a bare Go `string`, and the values are whichever integrations a
+  particular processor's firmware build and feature set have provisioned.
+  The two RA3 units this project has captured do not agree on that list,
+  which is the same per-unit feature-set divergence docs/platforms.md
+  records for route availability. Appending `Cloud` to a closed enum would
+  have re-armed the identical failure for the next unobserved integration.
+
+  Values observed to date, retained below under `x-observed-values` as
+  documentation rather than as an assertion (RA3 v03.247 unit 1: Alexa,
+  GoogleHome, BACnet, HomeKit, IFTTT, Sonos, NTPServer; RA3 unit 2, spec
+  probe: those seven plus Cloud; Caseta v01.123: Sonos, HomeKit, Alexa,
+  GoogleHome, AutoProgrammer, IFTTT). A value outside this list is expected
+  and validates -- consistent with `Service.yaml`, which does not set
+  `additionalProperties: false`.
+x-observed-values:
   - Alexa
   - GoogleHome
   - BACnet
@@ -23,3 +47,5 @@ enum:
   - Sonos
   - NTPServer
   - AutoProgrammer
+  - Cloud
+example: HomeKit

@@ -76,8 +76,10 @@ route and finds nothing here cannot tell "this route does not exist" from
   hand-refined from a generated counterpart of the same name; the other 56
   have no generated counterpart at all (hand-authored collection wrappers
   like `Zones`/`Devices`/`Areas`/`Curves`/`LoadControllers`, and
-  hand-authored enums like `CommandType`/`ServiceType`/`EnabledState`/
-  `LEDState`/`SessionRole` — none of these were ever struct definitions the
+  hand-authored enums like `CommandType`/`EnabledState`/`LEDState`/
+  `SessionRole`, and `ServiceType`, which live traffic since falsified as a
+  closed set and which is now an open string — none of these were ever
+  struct definitions the
   firmware extraction could produce, since, per `docs/mapping.md`, the
   firmware defines no plural collection-wrapper types at all). The
   remaining 377 of the 636 generated schemas (59%) sit untouched in
