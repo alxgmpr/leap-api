@@ -1,0 +1,16 @@
+# Copied verbatim from _generated/SignedWhiteList.yaml. Pulled into the
+# bundle as a transitive dependency of MasterDeviceList. The one observed
+# instance -- nested on RA3 v03.249's /project/masterdevicelist body -- has
+# the single required field, so nothing here could be relaxed.
+type: object
+description: |
+  A signed device whitelist. `JWT` is a JSON Web Token; in the committed
+  fixture it is redacted to a `<jwt-N>` placeholder, so this project has
+  evidence that the field is present and is a string, and none about its
+  claims or signature. No format is asserted beyond `string` for that
+  reason.
+properties:
+  JWT:
+    type: string
+required:
+  - JWT

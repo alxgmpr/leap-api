@@ -1,0 +1,38 @@
+# Copied verbatim from _generated/MasterDeviceList.yaml. The generator gave
+# it no `required` list, because firmware types both fields as optional
+# (`Devices []*...` and `SignedWhiteList *...`), and the one observed
+# instance carries both -- presence on n=1 is not grounds to add a `required`
+# the firmware does not assert, so nothing changed.
+type: object
+description: |
+  The processor's own device inventory, as distinct from `/device`.
+
+  One observed instance, RA3 v03.249 (`fixtures/spec-read.json`,
+  /project/masterdevicelist): a single-element `Devices` array for
+  `/device/435` -- the processor itself, carrying its MAC, a `StaticIP`
+  IPv4Properties, an IPv6 unique-local address and an `IPL` ProcessorID --
+  plus a `SignedWhiteList`. Caseta v01.123 answers this route `405
+  MethodNotAllowed`, and neither original campaign corpus nor either sweep
+  corpus requested it.
+
+  **The sibling route `/project/masterdevicelist/devices` is not this route's
+  array unwrapped.** Both describe the same device, `/device/435`, but at
+  different depths: this route's element carries exactly the four fields of
+  `DeviceMiniDefinitionForMasterDeviceList` (`href`, `SerialNumber`,
+  `NetworkInterfaces`, `IPL`), while the `/devices` route returns a full
+  `Device` object with 18 keys, which is why that route is refed against
+  `Devices` (items `Device`) rather than against the mini definition. Same
+  processor, two projections, and the route with the longer URL is the one
+  with the wider body.
+
+  That also makes this the only place any corpus shows
+  `DeviceMiniDefinitionForMasterDeviceList` as an object in its own right.
+  Everywhere else it is a Go anonymous embed whose fields sit flat on a
+  `Device` -- the flatten Device.yaml records.
+properties:
+  Devices:
+    type: array
+    items:
+      $ref: "#/components/schemas/DeviceMiniDefinitionForMasterDeviceList"
+  SignedWhiteList:
+    $ref: "#/components/schemas/SignedWhiteList"

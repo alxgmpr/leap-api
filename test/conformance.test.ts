@@ -153,7 +153,15 @@ addFormats(ajv);
 // collection. Cases and objects coincide here except on tuningsettings,
 // where the 8 cases carry 7 distinct objects: Caseta's `/zone/2` settings
 // are returned by both the per-zone route and the collection.
-const EXPECTED_MATCHED_CASES = 810;
+//
+// 810 -> 812: the `project` family, +2, one per operation and one per
+// platform. GET /project/masterdevicelist has exactly one observed body, on
+// RA3 v03.249 (Caseta answers `405 MethodNotAllowed`); GET
+// /project/timeclockeventrules has exactly one, on Caseta v01.123 (RA3
+// answers `404 NotFound`). Neither original campaign corpus nor either
+// sweep corpus requested either route, so these two cases are the entire
+// evidence base for four newly bundled schemas.
+const EXPECTED_MATCHED_CASES = 812;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

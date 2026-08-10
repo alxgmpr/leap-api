@@ -1,7 +1,7 @@
-# Refined from spec/paths/_generated/project.yaml. One deviation from a
+# Refined from spec/paths/_generated/project.yaml. Two deviations from a
 # straight copy:
 #
-# /project/contactinfo is HAND-AUTHORED, not copied. It responds on real
+# 1. /project/contactinfo is HAND-AUTHORED, not copied. It responds on real
 # hardware but is entirely absent from the generated corpus -- the closest
 # generated entry is `/project/contact` (singular, no `info` suffix, no
 # recovered response type), a different route. Captured traffic is
@@ -9,6 +9,17 @@
 # and v03.249) and on Caseta v01.123 via the coverage-blind spec probe. The
 # original Caseta capture returns 204 NoContent for the same route -- no
 # contacts configured on that bridge at probe time, not a route failure.
+#
+# 2. GET /project/masterdevicelist and GET /project/timeclockeventrules had
+#    their markers resolved. Both are gap fills -- the route table records
+#    no responseType for either -- and each has exactly one observed body,
+#    on opposite platforms: masterdevicelist only on RA3 v03.249 (Caseta
+#    405s it), timeclockeventrules only on Caseta v01.123 (RA3 404s it).
+#    Neither original campaign corpus nor either sweep corpus requested
+#    either route. Four component schemas were copied in from the generated
+#    corpus for them, all verbatim: MasterDeviceList, SignedWhiteList,
+#    TimeclockEventRules, TimeclockEventRule. The `put` on
+#    /project/masterdevicelist keeps its marker; only ReadRequests were sent.
 /project:
   get:
     operationId: getProject
@@ -113,10 +124,25 @@
     tags:
       - project
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: MasterDeviceList
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: RA3 v03.249 returns `200 OK` with body key
+      `MasterDeviceList` -- a `Devices` array plus a `SignedWhiteList`.
+      Caseta v01.123 returns `405 MethodNotAllowed`, and neither original
+      campaign corpus nor either sweep corpus requested this route, so there
+      is exactly one observed body. Its `Devices` elements are the four-field
+      mini definition, not the full `Device` objects the sibling
+      `/project/masterdevicelist/devices` route returns -- see
+      MasterDeviceList.yaml. The `put` keeps its marker: no `UpdateRequest`
+      was ever sent here.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MasterDeviceList"
     summary: Get master device list
   put:
     operationId: updateProjectMasterDevicelist
@@ -134,8 +160,21 @@
     tags:
       - project
     x-leap-communique-type: ReadRequest
-    description: "TODO(response): no responseType recovered from the firmware extraction"
+    x-leap-body-type: TimeclockEventRules
+    description: >-
+      No responseType recovered from the firmware extraction. Captured
+      traffic resolves it: Caseta v01.123 returns `200 OK` with body key
+      `TimeclockEventRules` holding an object -- an `href` and a nested
+      `Rules` array of one element. RA3 v03.249 returns `404 NotFound`, and
+      neither original campaign corpus nor either sweep corpus requested
+      this route, so there is exactly one observed body. Unlike this
+      specification's collection routes, no hand-authored array wrapper is
+      involved: the plural-named firmware type is itself the response body.
     responses:
       "200":
         description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeclockEventRules"
     summary: Get time clock event rules

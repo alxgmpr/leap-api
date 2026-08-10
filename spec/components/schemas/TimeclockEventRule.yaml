@@ -1,0 +1,38 @@
+# Copied verbatim from _generated/TimeclockEventRule.yaml. The one observed
+# instance carries all three firmware-required fields, so nothing needed
+# relaxing.
+type: object
+description: |
+  One row of the processor's timeclock-event capacity limits. One observed
+  instance, Caseta v01.123 (`fixtures/spec-read-caseta.json`,
+  /project/timeclockeventrules): `{"MaxAllowed": 50,
+  "MaxExceptionDatesPerEvent": 0, "MaxDatesPerEvent": 0}`. RA3 v03.249
+  answers that route `404 NotFound`.
+
+  `MaxDatesPerEvent` and `MaxExceptionDatesPerEvent` are worth reading
+  alongside `TimeclockEvent.Dates` and its three siblings, whose firmware
+  type is `*leapobj.DateList`: the firmware quantifies "dates per event" as
+  a bounded count, which is a property a list has and an enum does not.
+  Those four fields still carry an unrecovered-enum marker; this endpoint is
+  corroborating evidence that the marker is the wrong kind, not evidence of
+  any particular element type. Caseta reports the bound as `0`, so this
+  bridge permits no dates on any event -- consistent with every observed
+  TimeclockEvent in every corpus being `ScheduleType: "DayOfWeek"` with no
+  `Dates` member.
+properties:
+  MaxAllowed:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  MaxExceptionDatesPerEvent:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+  MaxDatesPerEvent:
+    type: integer
+    minimum: 0
+    maximum: 4294967295
+required:
+  - MaxAllowed
+  - MaxExceptionDatesPerEvent
+  - MaxDatesPerEvent

@@ -1,0 +1,32 @@
+# Copied verbatim from _generated/TimeclockEventRules.yaml. The generator
+# gave it no `required` list -- firmware types `Rules []*TimeclockEventRule`,
+# a slice, and `HyperReference` is the href -- and the one observed instance
+# carries both, which is not grounds to add a `required` the firmware does
+# not assert.
+type: object
+description: |
+  Capacity limits on timeclock events, one `Rules` element per limit set.
+
+  This is one of the four plural-*named* firmware types docs/mapping.md
+  singles out (`UnconfiguredSensors`, `TimeclockEventRules`,
+  `OccupancyAggregationRules`, `RepeatableDeviceRules`) when explaining why
+  the extraction still supplies no usable collection wrappers: each is an
+  object wrapping a named array field, not the bare
+  `type: array, items: {$ref: <Singular>}` shape a `Zones`-style wrapper
+  needs. Hardware confirms that reading for this one. Caseta v01.123 sends
+  `{"TimeclockEventRules": {"href": ..., "Rules": [ ... ]}}` -- the plural
+  MessageBodyType names an object with an `href` and a nested `Rules` array,
+  not an array of TimeclockEventRules. So no hand-authored wrapper is needed
+  here, unlike every collection route in this specification: the firmware
+  type IS the response body.
+
+  One observed instance, and only from Caseta: RA3 v03.249 answers this
+  route `404 NotFound`, and neither original campaign corpus nor either
+  sweep corpus requested it.
+properties:
+  href:
+    type: string
+  Rules:
+    type: array
+    items:
+      $ref: "#/components/schemas/TimeclockEventRule"
