@@ -18,11 +18,16 @@ Everything in this document about *pushed* frames comes from one capture:
 before its findings, because the findings are specific and the scope is
 narrow.
 
-A single LEAP connection to **one RA3 processor** — the same target as the
-sweep corpora `fixtures/sweep-read.json`, `fixtures/sweep-write.json` and
-`fixtures/subscriptions.json` (see `docs/platforms.md`, and
-`tools/redact.ts`'s `PUSH_PROBE_DIR` comment) — in
-**one installation**, on **one run** kept open for 26 seconds. The capture's own
+A single LEAP connection to **one RA3 processor** — the same target as
+`fixtures/spec-read.json`, and so, through that corpus, the same project as
+the sweep corpora. The evidence is the redactor's placeholder pool, which is
+stable and injective within a run (`lib/redact.ts:142-151` keeps its
+`counters` and `memo` at module scope): this capture's `host` is
+`<ipv4-2>`, and the only other file containing `<ipv4-2>` is
+`fixtures/spec-read.json`, where it is that processor's own
+`/networkinterface/1` `IPv4Properties.IP`. That also dates the firmware —
+`fixtures/spec-read.json`'s `/server` reports `ProtocolVersion: "03.249"`.
+It is **one installation**, **one run**, kept open for 26 seconds. The capture's own
 `note` describes the shape: `"single connection: subscribe, level change,
 hold, restore"`. Two subscriptions were opened, one dimmer zone
 (`"zone": 4664`, `"originalLevel": 0`, `"targetLevel": 50`) was driven

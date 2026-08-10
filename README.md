@@ -27,7 +27,9 @@ two independent sources cross-checked against each other:
   - 886 requests in a still later RA3 pass, on firmware v03.249 — an
     864-URL, coverage-blind probe of the specification's *own* path list
     (`fixtures/spec-read.json`), plus a 22-request subscription-push probe
-    (`fixtures/push-probe.json`, see `docs/subscriptions.md`).
+    against the same processor (`fixtures/push-probe.json`, whose `host` is
+    the same redaction placeholder as that corpus's own interface address —
+    see `docs/subscriptions.md`).
   - 848 requests replaying that same coverage-blind path list against a
     *second Caseta bridge* (`fixtures/spec-read-caseta.json`) — the first
     Caseta data since the original campaign, and what lets
