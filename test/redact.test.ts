@@ -201,7 +201,8 @@ describe("redactTree", () => {
   // regional locator for the installation. Latitude and Longitude are
   // already zeroed by ZEROED_NUMERIC_KEYS for exactly that reason, so
   // leaving the zone behind undid part of it.
-  // (Test input is a synthetic IANA zone, not the installation's real one.)
+  // (Test input is a stand-in IANA zone, not the installation's real one --
+  // `Etc/UTC` is a genuine zone identifier, just not this household's.)
   test("redacts TimeZone", () => {
     const out = redactTree({ TimeZone: "Etc/UTC" }) as { TimeZone: string };
     assert.match(out.TimeZone, /^<timezone-\d+>$/);
