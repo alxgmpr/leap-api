@@ -71,9 +71,9 @@ route and finds nothing here cannot tell "this route does not exist" from
   routes — see `docs/mapping.md`). The other 146 generated families were
   never touched.
 - **Schemas.** The firmware extraction recovered 636 struct definitions.
-  `spec/components/schemas/` ships 315 schemas total, but those two numbers
-  don't reconcile 1:1 — 259 of the 315 (41% of the 636 generated) were
-  hand-refined from a generated counterpart of the same name; the other 56
+  `spec/components/schemas/` ships 320 schemas total, but those two numbers
+  don't reconcile 1:1 — 259 of the 320 (41% of the 636 generated) were
+  hand-refined from a generated counterpart of the same name; the other 61
   have no generated counterpart at all (hand-authored collection wrappers
   like `Zones`/`Devices`/`Areas`/`Curves`/`LoadControllers`, and
   hand-authored enums like `CommandType`/`EnabledState`/`LEDState`/
@@ -81,8 +81,12 @@ route and finds nothing here cannot tell "this route does not exist" from
   closed set and which is now an open string — none of these were ever
   struct definitions the
   firmware extraction could produce, since, per `docs/mapping.md`, the
-  firmware defines no plural collection-wrapper types at all). The
-  remaining 377 of the 636 generated schemas (59%) sit untouched in
+  firmware defines no plural collection-wrapper types at all). Five of
+  those 61 are new: `Availability`, `BatteryLevelState`, `LinkType`,
+  `SwitchedLevel` and `NetworkConfigurationType`, shared enums whose
+  firmware types the extraction referenced but never defined, recovered
+  from probe data in the Task 13 enum pass. The remaining 377 of the 636
+  generated schemas (59%) sit untouched in
   `spec/components/schemas/_generated/`.
 
 None of this is a defect to be silently patched over — hand-refining a
