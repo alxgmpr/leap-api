@@ -222,6 +222,63 @@ npm run coverage       # report probe-vs-spec and TODO-marker coverage
 staging output — regenerating them does not touch the hand-refined files in
 `spec/paths/` and `spec/components/schemas/` that the bundle actually uses.
 
+## Before publishing: the manual leak sweep
+
+`npm run redact` (`lib/redact.ts`) covers `fixtures/` and nothing else. It
+cannot see a real value typed by hand anywhere else in the tree — as a test
+input, as an illustrative example inside a code comment, or quoted in prose.
+That is the class of leak this project has actually had, more than once, and
+every instance was a real value used *because it looked realistic*.
+
+**This cannot be automated in CI, and nothing below should be added to
+`.github/workflows/ci.yml`.** CI has no access to the raw captures — that is
+the design, and it is the same reason CI cannot run `npm run redact` (the
+captures live in a separate, private research repository; see "How to
+regenerate" above). Without them there is nothing to compare a hand-typed
+literal against, so no test, lint rule or hook in this repository can tell a
+real household value from an invented one. The only control is a manual
+sweep, run before publishing by someone who has the captures.
+
+Pattern matching is not that control. `PATTERNS` in `lib/redact.ts` matches
+value *shapes* — IPv4, MAC, IPv6, GUID, email — and the values most likely
+to be hand-typed as realistic-looking examples have no shape at all: room
+and area names, keypad engravings, contact names, timezones. Shapes are also
+brittle in ways that only surface afterwards: the bare-hex GUID rule
+(`/^[0-9A-F]{32,}$/`) is upper-case only, so a lower-case hex identifier of
+the same length passes straight through it.
+
+The method that has caught every leak so far is a cross-reference — harvest
+the literal values out of the raw captures, then search the tracked tree for
+each one. Two refinements are load-bearing, and both were learned from leaks
+that survived an earlier sweep which had declared the tree clean.
+
+1. **Harvest from every key, not just the sensitive ones.** One leak sat
+   under a `GUID` key. `GUID` is not in `SENSITIVE_STRING_KEYS`
+   (`TransferGUID` is), so a harvest driven by the redactor's own key list
+   could never have produced that value to search for. Harvest the capture
+   *filenames* too, and the literals embedded in any earlier sweep's or
+   tool's own patterns and comments — a real address once lived inside this
+   repository's documented capture-filename pattern in `tools/redact.ts`,
+   put there as a helpful example of what a capture file is called.
+2. **Match as substrings against raw file text, not as whole values against
+   parsed JSON.** Two leaks were real values embedded in composite strings
+   of the form `"<real name> Bedroom"`, which whole-value comparison cannot
+   see — and they sat in test inputs and code comments, so there was no JSON
+   to parse in the first place.
+
+Two rules follow from the same reasoning:
+
+- **Check replacements the same way before using them.** A synthetic
+  stand-in that happens to occur in the captures is not a fix.
+- **Commit messages and code comments are published content.** The sweep
+  covers the whole tracked tree and the messages that ship with it, not just
+  the data files.
+
+When a value has to be explained, describe the category and never quote an
+instance. `lib/redact.ts`'s comment on the `Text` key is the model: it says
+exactly what keypad engravings are and why they are sensitive without
+reproducing one.
+
 ## How to run the tests
 
 `dist/openapi.yaml` is gitignored and not checked in, but several test
