@@ -2,8 +2,34 @@ type: object
 properties:
   DiscoveryMechanism:
     type: string
-    description: "TODO(enum): members of DiscoveryMechanism were not recovered from
-      the firmware extraction"
+    description: |
+      TODO(enum): members of DiscoveryMechanism were not recovered from the
+      firmware extraction. `leapobj.DiscoveryMechanism` is a named type --
+      so a real enum exists in the firmware -- but `vendor/leap-types.json`
+      carries no entry for it, the same referenced-but-undefined shape
+      `ScheduleType` and `leapobj.DateList` have.
+
+      Hardware has now produced exactly one member: `UserInteraction`, one
+      observation, in the `caseta-device-join` run of
+      `fixtures/push-experiments.json` -- an unprompted push on
+      `/device/status/deviceheard` carrying the `DeviceHeard` of a
+      `Pico3ButtonRaiseLower`. Platform is Caseta (that run's `host` is
+      `<ipv4-6>`, the bridge's own `/networkinterface/1` address in both
+      Caseta spec-probe corpora); no firmware version is attached, because
+      a frame log records no `ProtocolVersion` and that host's two corpora
+      report two different ones. One observation is not a set, so this stays an
+      open string rather than becoming a closed enum -- the same treatment
+      `DeviceStatus.ConfigurationTransferStatus` and
+      `DeviceStatus.StatusAccuracy` get, and for the same reason. A device
+      that joined some other way would report some other value, and no
+      capture in this project has one.
+
+      `CacheDeviceHeardParameters.DiscoveryMechanism` is the same firmware
+      type and keeps its own unresolved marker: it is a request parameter,
+      no capture in this project sends one, and nothing observed here says
+      anything about what it carries.
+    x-observed-values:
+      - UserInteraction
   UnassociatedDeviceDiscoverySession:
     $ref: "#/components/schemas/HyperReference"
   ModelNumber:
