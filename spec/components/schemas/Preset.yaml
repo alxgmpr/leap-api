@@ -39,11 +39,14 @@
 # more Preset objects through /programmingmodel/{programmingmodelId}/preset.
 #
 # What the evidence shows is thin but consistent: 33 Preset occurrences, 17
-# distinct by `href` (the two routes overlap -- the same preset is reachable
-# both directly and through its programming model -- and the two Caseta
-# probes sampled different preset ids, which is where most of the growth
-# from the earlier 17/10 figure comes from), and every one carries
-# exactly `href` and `Parent` and nothing else. None of the 26 array
+# distinct by `href`, and every one carries exactly `href` and `Parent` and
+# nothing else. Two things inflate the occurrence count over the distinct
+# one, and neither is a second kind of evidence: the two routes overlap (the
+# same preset is reachable both directly and through its programming model),
+# and the corpus split is 17 occurrences / 10 distinct on the v01.123 probe
+# and 16 / 8 on the v01.124 bare-bridge probe, whose 8 sampled preset ids
+# overlap the earlier 10 in exactly one, `/preset/3`. That is why 10 + 8
+# gives 17 and not 18. None of the 26 array
 # properties below has ever been populated on the wire. That is not grounds to
 # change anything: all 26 are optional already (firmware types them as
 # slices), there is no required list to relax and no TODO(enum) marker to

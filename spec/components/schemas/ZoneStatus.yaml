@@ -102,8 +102,9 @@ properties:
       stores that snapshot twice -- once as `frames[0]` and once as
       `subscriptions[0].body` -- so it is two sites and one observation.
 
-      Every one of the seven is a **snapshot or a read**; no push in any
-      capture carries a `FanSpeed` at all, since pushes are field-level
+      Every one of those seven observations is a **snapshot or a read**, as
+      is the eighth counted separately through the expanded route; no push in
+      any capture carries a `FanSpeed` at all, since pushes are field-level
       deltas and no fan changed while a capture was open. See
       `docs/subscriptions.md`.
 
