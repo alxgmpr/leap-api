@@ -13,10 +13,34 @@ this all depends on, and `docs/mapping.md` for how `x-leap-subscribable` and
 
 ## The push probe, and what it is evidence for
 
-Everything in this document about *pushed* frames comes from one capture:
-`fixtures/push-probe.json` (redacted; 27 frames). Its scope is worth stating
-before its findings, because the findings are specific and the scope is
-narrow.
+Everything in this document about *pushed* frames comes from two fixtures:
+`fixtures/push-probe.json` (redacted; 27 frames), the original run described
+in this section, and `fixtures/push-experiments.json`, six later
+single-connection runs keyed by name. Each finding below says which run it
+rests on. The original run's scope is worth stating before its findings,
+because the findings are specific and the scope is narrow.
+
+The six later runs, and what each one is for:
+
+| Run | Platform | Shape |
+|---|---|---|
+| `ra3-push-pad-0` | RA3 | Subscribe, drive a zone, restore. Subscribes on `lt-18`/`lt-19`. |
+| `ra3-push-pad-7` | RA3 | The same experiment with seven filler reads first, so the subscribes land on `lt-25`/`lt-26`. |
+| `caseta-push-pad-0` | Caseta | The same experiment on the other platform. The first Caseta push evidence in this project. |
+| `ra3-keypad-press` | RA3 | Passive: no write of any kind issued, while a human pressed a physical keypad. |
+| `caseta-device-join` | Caseta | Passive, zero requests sent, 900 s. A device joined the RF link. |
+| `caseta-connect-observe` | Caseta | Passive, zero requests sent, 30 s. What arrives on connect and nothing else. |
+
+Platform, in that table, is established by the `host` placeholder and not by
+anything a frame log states about itself. The RA3 runs carry
+`"host": "<ipv4-2>"`, which is the RA3 processor's own
+`/networkinterface/1` `IPv4Properties.IP` in `fixtures/spec-read.json`; the
+Caseta runs carry `"host": "<ipv4-6>"`, the Caseta bridge's own in both
+`fixtures/spec-read-caseta.json` and `fixtures/spec-read-caseta-bare.json`.
+**No firmware version is attached to any of the six**, deliberately: a frame
+log records no `ProtocolVersion`, and in the Caseta case the two corpora that
+share its host report two different ones (`01.123` and `01.124`), so the host
+that identifies the platform cannot date the firmware.
 
 A single LEAP connection to **one RA3 processor** — the same target as
 `fixtures/spec-read.json`, and so, through that corpus, the same project as
@@ -35,9 +59,11 @@ hold, restore"`. Two subscriptions were opened, one dimmer zone
 between was logged in order.
 
 That is a real answer to a question that had none, and it is also one
-processor, one installation, one run. **Caseta and Vive were not
-tested at all**, here or anywhere in this project's push evidence; nothing
-below should be read as a statement about them.
+processor, one installation, one run. **Vive is not tested at all**, here or
+anywhere in this project's push evidence; nothing below should be read as a
+statement about it. Caseta was in that sentence too until
+`fixtures/push-experiments.json` landed — it now has three connections' worth
+of push evidence of its own, and a section below.
 
 ## Lifecycle
 
@@ -122,9 +148,9 @@ live on the same socket simultaneously, each push carried *its own*
 subscription's tag rather than a single connection-wide constant — so the tag
 is per-subscription, not merely per-connection.
 
-What this control does *not* separate is the tag from the subscribe
-request's *position* in the sequence. The committed run does pad the tag
-counter: `sentRequests` shows 17 `ReadRequest`s issued before the first
+What that control does *not* separate, on its own, is the tag from the
+subscribe request's *position* in the sequence. The committed run does pad the
+tag counter: `sentRequests` shows 17 `ReadRequest`s issued before the first
 `SubscribeRequest`, so the subscribe is the eighteenth request on the
 connection.
 
@@ -152,15 +178,58 @@ requests were issued before the subscribe, not what they were about.
 
 So the subscribe lands on `lt-18` because the harness's prelude is a
 **fixed length** — 17 requests before the first subscribe — not because
-`lt-18` is special and not by coincidence. Padding is already what this run
+`lt-18` is special and not by coincidence. Padding is already what that run
 does; what it cannot do is vary. Distinguishing "the tag is copied from the
-subscribe
-request" from "the tag is a function of sequence position" needs a run whose
-prelude is a *different* length, so the subscribe lands on a tag other than
-`lt-18`. That run has not been done, so the claim made here is the narrower
-one the evidence supports — each subscription's pushes carry that
-subscription's own tag — and not a claim about how the processor derives
-the value.
+subscribe request" from "the tag is a function of sequence position" needs a
+run whose prelude is a *different* length, so the subscribe lands on a tag
+other than `lt-18`.
+
+### That run has now been done
+
+`fixtures/push-experiments.json` carries the pair. `ra3-push-pad-0` repeats
+the original prelude; `ra3-push-pad-7` inserts seven extra reads of
+`/project` first (its `padTags` field lists the seven tags they consumed:
+`lt-18` … `lt-24`), so the same two subscriptions, in the same order, on the
+same two URLs, land seven tags later. **Every push moved with the
+subscription, not with the position.**
+
+| Run | `padTags` | `/zone/status` | `/area/1340/status` | Push tags, in order |
+|---|---|---|---|---|
+| `ra3-push-pad-0` | *(none)* | `lt-18` | `lt-19` | `lt-19`, `lt-18`, `lt-19`, `lt-18` |
+| `ra3-push-pad-7` | `lt-18`…`lt-24` | `lt-25` | `lt-26` | `lt-26`, `lt-25`, `lt-26`, `lt-25` |
+
+```
+node -e '
+const d = JSON.parse(require("fs").readFileSync("fixtures/push-experiments.json","utf8"));
+for (const run of ["ra3-push-pad-0", "ra3-push-pad-7"]) {
+  const r = d[run];
+  console.log(run,
+    "subs:", r.subscriptions.map(s => s.url + "=" + s.tag).join(" "),
+    "| pushes:", r.frames.filter(f => f.deliveredToOnEvent)
+                         .map(f => f.header.ClientTag).join(","));
+}'
+
+ra3-push-pad-0 subs: /zone/status=lt-18 /area/1340/status=lt-19 | pushes: lt-19,lt-18,lt-19,lt-18
+ra3-push-pad-7 subs: /zone/status=lt-25 /area/1340/status=lt-26 | pushes: lt-26,lt-25,lt-26,lt-25
+```
+
+The decisive part is the negative half: in `ra3-push-pad-7`, `lt-18` and
+`lt-19` were issued — they are the first two filler reads of `/project` — and
+they pushed **nothing**. If the tag were a function of position, the pushes
+would have stayed on `lt-18`/`lt-19` in both runs. They did not.
+
+**The tag is a property of the subscription, carried over from the
+`SubscribeRequest` that opened it.**
+
+The same behaviour reproduces on the other platform, on a different tag
+value again: `caseta-push-pad-0` subscribed `/zone/status` at `lt-5` and both
+of its tagged pushes carry `lt-5`.
+
+**Scope limit, unchanged by this pair.** Both RA3 runs are one connection
+each, with the same two URLs. Nothing here speaks to a client that
+reconnects and happens to subscribe at the same tag value, or to whether a
+tag survives a processor-side subscription rebuild. A subscription's tag is
+per-subscription within a connection; that is the whole claim.
 
 ### Why this does not change what a client must do
 
@@ -255,6 +324,46 @@ silently patched:
   `ZoneStatus`. On singular routes like `/area/{areaId}/status` the marker
   and the payload do coincide. See `docs/mapping.md`.
 
+### The delta rule holds for changes nobody commanded
+
+Everything above came from pushes that followed this project's own LEAP
+write, which leaves open the reading that the processor was echoing a delta
+it had just been handed. `ra3-keypad-press` closes that: it issued **no
+write of any kind** (`"requestsIssued": []`, `"reads": []`; the only requests
+on the connection are its three `SubscribeRequest`s), a human pressed a
+physical keypad, and the 10 pushes that resulted are deltas in exactly the
+same way.
+
+The `/zone/status` subscribe snapshot in that run carries 46 `ZoneStatuses`
+entries, over the key union
+`href, Level, Zone, StatusAccuracy, ZoneLockState, CCOLevel, FanSpeed,
+SwitchedLevel`. Across all 10 pushes, **every entry has exactly four keys** —
+`href`, `Level`, `Zone`, `StatusAccuracy` — and nothing else:
+
+```
+node -e '
+const d = JSON.parse(require("fs").readFileSync("fixtures/push-experiments.json","utf8"));
+const r = d["ra3-keypad-press"];
+const pushes = r.frames.filter(f => f.deliveredToOnEvent);
+const shapes = new Set();
+for (const f of pushes) for (const z of f.body.ZoneStatuses)
+  shapes.add(Object.keys(z).sort().join(","));
+console.log("push entry key sets:", [...shapes]);
+const snap = r.subscriptions[0].body.ZoneStatuses;
+console.log("snapshot entries:", snap.length,
+  "carrying ZoneLockState:", snap.filter(z => "ZoneLockState" in z).length);'
+
+push entry key sets: [ 'Level,StatusAccuracy,Zone,href' ]
+snapshot entries: 46 carrying ZoneLockState: 44
+```
+
+`ZoneLockState` is on 44 of the 46 snapshot entries, not all of them — the
+two without it are a fan zone and a CCO zone, which report `FanSpeed` and
+`CCOLevel` instead. That does not soften the finding, because **all five
+zones that actually moved during the run do carry `ZoneLockState` in the
+snapshot**, and no push carries it for any of them. Merge per field; do not
+replace.
+
 ## Timing, and ordering against the command's own response
 
 Both level changes in the capture produced a `/zone/status` push, and in
@@ -322,31 +431,220 @@ did open two of those (`/area/32/status`, `/area/912/status`, both
 two areas did not emit one for as long as that campaign held its
 subscriptions open.
 
+## A physical keypad press pushes
+
+Until `ra3-keypad-press` every push in this project followed a write this
+project had itself issued over LEAP, which left the most important question
+about the mechanism open: is a subscription a channel for observing the
+system, or only an echo of your own commands?
+
+It is a channel for observing the system. The run held one connection open
+for 603 s and sent **no request other than its three `SubscribeRequest`s**
+(`"requestsIssued": []`, `"reads": []`), while a human at the far end worked
+a physical keypad. **Ten pushes arrived, all on `/zone/status`, all carrying
+`lt-1`** — the tag that subscription's own `SubscribeRequest` went out with,
+exactly as the section above predicts.
+
+**Where the evidence stops and testimony begins**, because the two are mixed
+in this run and only one of them is in the fixture. The fixture establishes
+that this client issued no write and that ten zone-status pushes arrived
+anyway; that is the whole headline and it needs nothing else. What the
+fixture does **not** record is who or what moved those zones, or which
+gestures were used — a frame carries a zone href and a level and no origin
+of any kind. That a person was pressing a keypad, and that the presses
+included holds and double taps, is the operator's account of the run. Two of
+the four observations below depend on it, and say so.
+
+```
+node -e '
+const d = JSON.parse(require("fs").readFileSync("fixtures/push-experiments.json","utf8"));
+const r = d["ra3-keypad-press"];
+console.log("requests issued:", JSON.stringify(r.requestsIssued),
+            "reads:", JSON.stringify(r.reads));
+const p = r.frames.filter(f => f.deliveredToOnEvent);
+console.log("pushes:", p.length,
+  "urls:", [...new Set(p.map(f => f.header.Url))],
+  "tags:", [...new Set(p.map(f => f.header.ClientTag))]);'
+
+requests issued: [] reads: []
+pushes: 10 urls: [ '/zone/status' ] tags: [ 'lt-1' ]
+```
+
+Four further things this run shows, each narrower than it first looks.
+
+**A hold does not stream the ramp.** Intermediate settled levels do appear —
+nine of the ten pushes carry zone 546, reporting it at 0, 75, 26, 48, 100, 0,
+25, 0 and 100 in turn (the sixth push is the one that covers a different
+zone) — but each level arrives as a single frame. The minimum gap between
+consecutive pushes
+across the whole run is **1601 ms** (the nine gaps are 3392, 5012, 2202,
+1989, 2198, 1601, 2831, 3588 and 4237 ms). A fade reported live would push at
+a far higher rate than that. The processor appears to push the endpoint of a
+fade rather than its progression, which matters to anyone building live
+dimming feedback on LEAP. **Stated as an inference, not an observation**, and
+doubly so: the fixture does not record which presses were holds — that they
+happened at all is the operator's account — so this rests on the *absence* of
+high-rate frames rather than on a labelled hold. A run that marks its holds
+would settle it.
+
+**Nothing in the frame identifies the control.** This one is pure fixture,
+with no testimony in it. The number of zones per push varies from 1 to 4
+(`4,3,3,3,2,1,2,3,4,4`), and the groupings are stable — zones 518, 546 and
+574 move together, 3663 appears only in the three four-zone pushes and always
+alongside those, and 4005 appeared alone once — so whatever acted was acting
+on different sets. But a
+`ZoneStatus` entry names a zone and a level, and there is no control, button,
+buttongroup or keypad reference anywhere in any of the ten bodies. **A push
+cannot be attributed to the control that caused it from `/zone/status`
+alone**, and by the same token these frames cannot confirm that a keypad
+caused them.
+
+**No distinct frame type for a double tap.** All 10 pushes are
+`CommuniqueType: ReadResponse` with `MessageBodyType: MultipleZoneStatus`;
+none carries a tap count, gesture, or any other press-shaped field. This
+rests on the operator's account that double taps were among the presses — the
+fixture cannot show that they were. Taking that account, it is evidence that
+nothing of the kind appears *on this route*, and it is not evidence that LEAP
+has no such notion elsewhere.
+
+**`/project` accepted a subscription and pushed nothing.** The run's third
+subscribe went to `/project` and was accepted — `200 OK`, tag `lt-3`,
+`SubscribeResponse` with a full `Project` body — and then delivered not one
+frame for the remaining 600 s, while `/zone/status` pushed ten times on the
+same socket. A subscribable route that accepts and stays silent is worth
+recording as a clean negative: acceptance of a `SubscribeRequest` says
+nothing about whether that resource ever pushes.
+
+## Caseta pushes, and does two things RA3 never did
+
+`caseta-push-pad-0` is the first Caseta push evidence in this project. The
+bridge has one zone — `fixtures/spec-read-caseta.json`'s `/zone` returns a
+one-element `Zones` array — and that zone, `/zone/2`, is
+`ControlType: Dimmed`, so the run drove it 0% → 50% → 0% with no adaptation
+and restored it (`"restore": {"ok": true, "verifiedLevel": 0}`).
+`SubscribeRequest /zone/status` came back `200 OK` on `lt-5`, and both
+tagged pushes carry `lt-5`. **The tag rule is the same on both platforms.**
+
+Two behaviours have no RA3 counterpart anywhere in this project's corpus.
+
+**1. The bridge auto-subscribes the client at connect.** Within 18 ms of the
+connection opening, before the client has sent anything, two untagged
+`SubscribeResponse` `204 NoContent` frames arrive, for
+`/device/status/deviceheard` and `/zone/status/deprecated/level`. Neither URL
+appears in the run's own `sentRequests` — the client asked for neither. All
+three committed Caseta connections do it, and all four committed RA3
+connections do not:
+
+```
+node -e '
+const d = JSON.parse(require("fs").readFileSync("fixtures/push-experiments.json","utf8"));
+d["push-probe"] = JSON.parse(require("fs").readFileSync("fixtures/push-probe.json","utf8"));
+for (const [k, r] of Object.entries(d))
+  console.log(k.padEnd(24), "host=" + r.host,
+    "untagged frames:", r.frames.filter(f => f.header.ClientTag === undefined).length);'
+
+ra3-push-pad-0           host=<ipv4-2> untagged frames: 0
+ra3-push-pad-7           host=<ipv4-2> untagged frames: 0
+caseta-push-pad-0        host=<ipv4-6> untagged frames: 4
+ra3-keypad-press         host=<ipv4-2> untagged frames: 0
+caseta-device-join       host=<ipv4-6> untagged frames: 3
+caseta-connect-observe   host=<ipv4-6> untagged frames: 2
+push-probe               host=<ipv4-2> untagged frames: 0
+```
+
+`caseta-connect-observe` is the cleanest form of it: 30 s, zero requests
+sent, and the only two frames on the whole connection are that pair, at 8 ms
+and 11 ms. See `docs/platforms.md` — this is a platform divergence, not a
+firmware-wide behaviour.
+
+**2. Every state change produces a second, untagged push.** In
+`caseta-push-pad-0` each of the two level changes produced *two* pushes: an
+untagged one on `/zone/2/status/level`, then 46 ms and 19 ms later the tagged
+one on `/zone/status` carrying `lt-5`. **A client keyed purely on `ClientTag`
+drops the untagged frames; a client keyed on `Header.Url` sees each change
+twice.** Both are real hazards and they are opposite ones.
+
+The untagged pushes arrive on `/zone/2/status/level`, which is neither of the
+two URLs the bridge auto-subscribed the client to — the nearer of those is
+the collection `/zone/status/deprecated/level`. That they are related is the
+obvious reading; these frames do not establish it, and this document does not
+claim it.
+
+**One thing the Caseta run does not show** is a narrower push body than its
+snapshot. Both carry the same four fields (`href`, `Level`, `Zone`,
+`StatusAccuracy`). That does not contradict the delta rule: the bridge has
+one zone, and its snapshot never carried a `ZoneLockState` for the push to
+omit.
+
+## The device-join push
+
+`caseta-device-join` held one connection for 900 s and sent nothing at all.
+Two frames arrived at connect (the auto-subscribe pair above); the third, at
+98,499 ms, is a push on `/device/status/deviceheard`:
+
+```json
+{ "DeviceStatus": { "DeviceHeard": {
+  "DiscoveryMechanism": "UserInteraction",
+  "ModelNumber": "PJ2-3BRL-GXX-X01", "DeviceType": "Pico3ButtonRaiseLower",
+  "SerialNumber": 0, "DeviceClass": { "HexadecimalEncoding": "1070206" },
+  "Link": { "href": "/link/1" }, "ProductId": "17235974" } } }
+```
+
+(`SerialNumber` reads `0` because `lib/redact.ts` zeroes it; the wire carried
+a real one.)
+
+`Header.MessageBodyType` is `OneDeviceStatus`, so the payload is a
+`DeviceStatus` that happens to carry a `DeviceHeard` — which is why
+`spec/paths/device.yaml`'s new `/device/status/deviceheard` points
+`x-leap-event-schema` at `DeviceStatus`. It is **untagged**, like every other
+frame on that connection, for the same reason: the client never subscribed,
+the bridge did it for them. And it is a route no read sweep in this project
+could ever have found, because the firmware route table carries only the
+mangled `/devicestatus/deviceheard` and marks it `SUBSCRIBE` with no `GET`.
+
+This is also where `DiscoveryMechanism` gets its first observed value,
+`UserInteraction` — one observation, so `DeviceHeard.yaml` keeps the field an
+open string.
+
 ## What this still does not establish
 
 Stated explicitly rather than left as a confident-sounding gap:
 
-- **Non-LEAP-originated changes.** Every push observed here followed a level
-  change the probe harness itself commanded over LEAP. Whether a change made by a
-  physical keypad press, a wall dimmer tap, an occupancy sensor, a timeclock
-  event, or the Lutron app on another connection produces the same push is
-  **untested**. It is a reasonable expectation — the subscription is on the
-  resource, not on the caller — but it was not observed.
-- **Caseta and Vive.** Untested for push behaviour entirely. `/zone/status`
-  answers `GET` on Caseta (`x-leap-platforms`: `caseta: 200 OK`), but that is
-  a read result — no Caseta subscribe attempt, and no Caseta push frame,
-  exists in this corpus.
-- **Whether the delta rule is universal.** Observed on `ZoneStatuses` and
-  `AreaStatus`. Whether every subscribable resource pushes deltas, or some
-  push full snapshots, is not established.
+- **Other non-LEAP origins.** A physical keypad press is now confirmed to
+  push (`ra3-keypad-press`), so the general form of this gap is closed. What
+  remains open is narrower and worth not overstating: an occupancy sensor, a
+  timeclock event, and the Lutron app writing on another connection have each
+  still never been observed producing a push.
+- **Vive.** Untested for push behaviour entirely. Caseta no longer belongs in
+  this entry: three Caseta connections are committed in
+  `fixtures/push-experiments.json`, two of them carrying pushes.
+- **Which button, on any platform.** `/zone/status` push bodies name zones and
+  nothing else. Whether some other subscribable route reports the control that
+  acted is untested — no capture here subscribes to one.
+- **Whether a hold really does not stream.** The 1601 ms floor on inter-push
+  gaps is strong evidence against live ramp reporting, but it is the absence
+  of frames, and the run does not label which presses were holds. A run that
+  marks its holds would turn this from inference into observation.
+- **Whether the delta rule is universal.** Observed on `ZoneStatuses` (both
+  LEAP-originated and keypad-originated) and `AreaStatus`. Whether every
+  subscribable resource pushes deltas, or some push full snapshots, is not
+  established — and `caseta-push-pad-0` could not test it, since its one zone
+  had nothing to omit.
 - **`UnsubscribeResponse`.** Still never captured; no subscription in this
   corpus was ever explicitly torn down rather than dropped with the socket.
-- **Push behaviour under load.** One zone changing on a quiet system. Whether
-  a burst of simultaneous changes coalesces into one push, or produces one
-  push each, is untested.
-- **Whether the tag is stable for the life of the subscription.** All 5
-  pushes here arrived within 24 seconds of subscribing. A subscription held
-  for hours, or one surviving a processor-side reconnect, was not tested.
+- **Push behaviour under load.** One zone changing on a quiet system, or a
+  human pressing one keypad. Whether a burst of simultaneous changes coalesces
+  into one push, or produces one push each, is untested.
+- **Whether the tag is stable for the life of the subscription.** The longest
+  interval between a subscribe and a push on its tag anywhere in this corpus
+  is 63 s (`ra3-keypad-press`: its `SubscribeResponse` landed at 3,094 ms and
+  the last push on that tag at 66,337 ms). A subscription held for hours, or one surviving a
+  processor-side reconnect, was not tested — and the tag pair above does not
+  speak to reconnects either.
+- **Whether a client may subscribe to the auto-subscribed routes itself.**
+  Caseta pushes on `/device/status/deviceheard` unasked. No `SubscribeRequest`
+  for it was ever sent, on either platform, so whether a client can open that
+  subscription deliberately is unknown.
 
 ## The subscribable routes
 
@@ -449,20 +747,20 @@ does not imply a live implementation.
 | `/area/{areaId}` | `200 OK` | Confirmed twice (`/area/32`, `/area/912`). |
 | `/area/{areaId}/occupancysensorsettings` | `404` | Inconclusive, not a refusal: both probed areas (`32`, `912`) have no such resource, so the verb was never reached. |
 | `/area/{areaId}/status` | `200 OK` | Confirmed twice, and the source of 3 of the 5 pushes in `fixtures/push-probe.json`. |
-| `/device` | **`405`** | `405 MethodNotAllowed`. |
+| `/device` | **`405`** | `405 MethodNotAllowed`, and the one row in this table whose refusal *body* is captured: `ra3-keypad-press` (tag `lt-2`) records `CommuniqueType: ExceptionResponse`, `MessageBodyType: ExceptionDetail`, body `{"Message": "This request is not supported"}`. That is the first `ExceptionResponse` ever observed in this project — see `docs/protocol.md`. RA3 only; Caseta has never been asked. |
 | `/device/status` | untested | Only the firmware's mangled form `/devicestatus` was probed (`400 BadRequest`). The corrected collection path — hand-authored, see the mangled-path defect in `docs/mapping.md` — was never subscribed to. |
 | `/device/status/deviceheard` | never requested | **Confirmed pushing without ever being asked.** The Caseta bridge auto-subscribed the client to this URL 11 ms after TLS (untagged `SubscribeResponse 204`) and, 98 s later, pushed an untagged `ReadResponse` on it — `MessageBodyType: OneDeviceStatus`, body `{"DeviceStatus": {"DeviceHeard": {…}}}` — reporting a `Pico3ButtonRaiseLower` with `DiscoveryMechanism: UserInteraction` (`caseta-device-join` in `fixtures/push-experiments.json`). Subscribe-only: the route has no `GET` in the firmware table and none here, which is why no read sweep ever reached it. No `SubscribeRequest` for it was sent by this project on either platform, so nothing is established about whether a client may subscribe to it itself, and no RA3 frame on it exists at all. |
 | `/device/{deviceId}` | `200 OK` | Confirmed on `/device/435`. (`/device/532` returned `404`: that instance does not exist.) |
 | `/link/{linkId}/memberdiscoverysession/{memberdiscoverysessionId}/status` | untested | Never probed; requires a live discovery session. |
 | `/link/{linkId}/status` | `200 OK` | Confirmed twice (`/link/439`, `/link/437`). |
-| `/project` | `200 OK` | |
+| `/project` | `200 OK` | Accepted twice, and **a clean negative on pushing**: in `ra3-keypad-press` it was accepted on `lt-3` with a full `Project` snapshot and then delivered nothing at all for the remaining 600 s, while `/zone/status` pushed ten times on the same connection. Accepting a `SubscribeRequest` and ever pushing are different properties. |
 | `/service/bacnetnetworksettings/{bacnetnetworksettingsId}` | untested | Never probed. |
 | `/service/bacnetsettings` | **`400`** | `400 BadRequest` — this processor refuses the subscribe. BACnet is a commercial-system feature; whether the refusal is "not supported" or "not configured here" is not established. |
 | `/system/loadshedding/status` | untested | Hand-authored path; only the mangled `/systemloadsheddingstatus` was probed (`400`). |
 | `/system/naturallightoptimization/status` | untested | Only the firmware's abbreviated form `/natlightoptstatus` was probed (`400`). |
 | `/virtualbutton` | **`405`** | `405 MethodNotAllowed`. |
 | `/zone` | **`405`** | `405 MethodNotAllowed` — consistent with RA3 having no flat zone-list endpoint at all (see `docs/platforms.md`). |
-| `/zone/status` | `200 OK` | **The subscribable zone-status route.** Hand-authored path: the extraction has no `/zone/status` and no bare `/zonestatus`, only four paging variants (`/zonestatusexpandedquerystringwith{explicit,implicit}paging`, `/zonestatus/with/{explicit,implicit}/paging`), all `GET`-only and none `SUBSCRIBE`-marked; confirmed by `fixtures/push-probe.json`, which both subscribed to it and received pushes on it. |
+| `/zone/status` | `200 OK` | **The subscribable zone-status route.** Hand-authored path: the extraction has no `/zone/status` and no bare `/zonestatus`, only four paging variants (`/zonestatusexpandedquerystringwith{explicit,implicit}paging`, `/zonestatus/with/{explicit,implicit}/paging`), all `GET`-only and none `SUBSCRIBE`-marked; confirmed by `fixtures/push-probe.json`, which both subscribed to it and received pushes on it. Now confirmed on **both platforms** and for a change nobody commanded: `caseta-push-pad-0` subscribed on `lt-5` and got pushes on `lt-5`, and `ra3-keypad-press` got 10 pushes on `lt-1` from a physical keypad with no write issued. |
 | `/zone/{zoneId}` | **`405`** | `405 MethodNotAllowed` (`/zone/546`, `/zone/574`). |
 | `/zone/{zoneId}/status` | **`405`** | `405 MethodNotAllowed` (`/zone/546/status`, `/zone/574/status`). `fixtures/subscriptions.json` records status only — its entries are `{url, requestTag, subscribeStatus, frames}`, with no body field — so the refusal body is not captured for this or any other row in this table. A firmware-recovered route (`vendor/leap-routes.json`: `/zone/{id}/status`, verbs `GET`/`SUBSCRIBE`/`UPDATE`) whose `SUBSCRIBE` verb this processor does not honor. **Per-zone status is not subscribable; the collection `/zone/status` is.** |
 
