@@ -20,12 +20,25 @@ description: |
   what the captures show elsewhere -- an idle processor reports `Unknown`
   for devices it has not heard from recently.
 
-  `ZoneStatus.Availability` is never populated in any read corpus. Its two
-  observations come from `fixtures/push-probe.json`, where the
-  CreateResponse frames for a live level change on /zone/4664 carry
-  `{"StatusAccuracy": "Good", "Availability": "Available"}` -- the same
-  value, on the same firmware type, from the one capture that caught a zone
-  mid-transaction.
+  `ZoneStatus.Availability` is never populated in any read corpus, on either
+  platform. Every zone-side observation comes from a frame log, and every
+  one of them is a `CreateResponse` reply to a `CreateRequest` on a
+  `/zone/{id}/commandprocessor` -- the reply carries
+  `{"StatusAccuracy": "Good", "Availability": "Available"}` for the zone it
+  just drove. **8 observations across 4 captures and both platforms**, all
+  `Available`:
+
+    fixtures/push-probe.json         2   /zone/4664/status   (seq 20, 24)
+    push-experiments ra3-push-pad-0  2   /zone/4664/status   (seq 20, 23)
+    push-experiments ra3-push-pad-7  2   /zone/4664/status   (seq 27, 30)
+    push-experiments caseta-push-pad-0 2 /zone/2/status      (seq 8, 11)
+
+  The last pair is the first Caseta observation of this field on a zone, so
+  the value is no longer known through a single RA3 zone. The census is
+  larger than it was and no more varied: 8 command replies on 2 zones on 2
+  platforms all report `Available`, which is what a zone that has just
+  accepted a level change should report. Nothing here has seen a zone
+  reported unavailable.
 enum:
   - Available
   - Unknown

@@ -43,9 +43,12 @@ description: |
   `Availability` points at the shared `Availability` schema: its firmware
   type is `leapobj.Availability`, the same type as DeviceStatus.Availability,
   where 87 observations produced `Available`/`Unknown`. No read corpus ever
-  populates it on a zone; the two zone-side observations are the `Available`
-  values in `fixtures/push-probe.json`'s CreateResponse frames for a live
-  level change on /zone/4664.
+  populates it on a zone, on either platform. All 8 zone-side observations
+  are `Available`, and every one is a `CreateResponse` reply to a
+  `/zone/{id}/commandprocessor` write -- 2 in `fixtures/push-probe.json` and
+  6 in `fixtures/push-experiments.json` (2 each in `ra3-push-pad-0`,
+  `ra3-push-pad-7` and `caseta-push-pad-0`, the last being the first Caseta
+  zone-side observations in the project). See `Availability.yaml`.
 properties:
   href:
     type: string
