@@ -193,7 +193,28 @@ addFormats(ajv);
 // with a `Presets` array (RA3 `404`s all 8). 8 cases, 9 Presets: one array
 // has two elements. This is also the last of the 27 operations this task set
 // out to resolve; the constant has moved 751 -> 847 across ten commits.
-const EXPECTED_MATCHED_CASES = 847;
+//
+// 847 -> 925: the bare-bridge corpus (`spec-read-caseta-bare`, 848 URLs / 78
+// 200-OK bodies -- the same Caseta bridge as `spec-read-caseta`, probed again
+// after a factory reset with zero devices provisioned, on firmware 01.124
+// rather than 01.123). +78, and like every earlier corpus import it authored
+// no path and no schema.
+//
+// Two things distinguish it from the earlier imports. First, ALL 78 of its
+// 200-OK bodies reached a schema, where `spec-read-caseta` had 25 of 104 land
+// on paths with no 200 schema ref: a bare bridge answers a strict subset of
+// the routes a provisioned one does, so its bodies fall on ground the
+// provisioned corpus already covered. The one exception runs the other way --
+// `/link/{linkId}` is the single 200-OK template present here and absent from
+// `spec-read-caseta`, and `LinkNode`'s neighbour `Link` schema already
+// described it. Second, none of the 78 FAILED. Every earlier corpus import
+// falsified at least one firmware-derived assertion; this one falsified none,
+// which is what a subset of already-validated routes should do and is
+// evidence of nothing beyond that.
+//
+// `npm run coverage` is unchanged by this import (0 / 116 / 76 / 140) for the
+// same reason: no route here was unreached before.
+const EXPECTED_MATCHED_CASES = 925;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

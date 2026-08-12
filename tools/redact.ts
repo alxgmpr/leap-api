@@ -78,8 +78,29 @@ const SWEEP_FRAME_LOG_PATTERN =
 // cannot classify is a hard error rather than a silent skip -- an
 // unclassifiable file here would otherwise vanish from the fixture set
 // without failing anything.
+//
+// A THIRD signal became necessary when the directory gained a second Caseta
+// capture: the same bridge probed again after a factory reset, with zero
+// devices provisioned, on firmware 01.124. Phase and platform are identical
+// to the provisioned 01.123 capture -- same prober, same phase, same
+// ProtocolVersion series -- so `<phase>-<platform>` puts both files in the
+// `spec-read-caseta` bucket, and the manifest loop below refuses a
+// two-file bucket and aborts the whole run. That abort is the designed
+// behaviour, not a bug to route around: two captures under one label means
+// the fixture written is whichever the directory listing happened to yield.
+//
+// The distinguishing signal is a filename VARIANT token, written by hand
+// when the capture is filed, and it is the only one available: nothing in
+// the response bodies says "this bridge has no devices" in a way that is
+// stable to classify on (an empty collection is a 204, and a provisioned
+// bridge can also 204 a collection it happens not to use). So the pattern
+// carries an optional `-bare-<firmware>` token between the address and the
+// phase suffix, and the label becomes `<phase>-<platform>-<variant>`. A
+// capture without the token keeps exactly the label it had before, so the
+// two existing spec-probe fixtures are untouched.
 const SPEC_PROBE_DIR = "/Users/alex/lutron-protocols/data/spec-probe";
-const SPEC_PROBE_PATTERN = /^\d{1,3}(?:\.\d{1,3}){3}-(spec-read)\.json$/;
+const SPEC_PROBE_PATTERN =
+  /^\d{1,3}(?:\.\d{1,3}){3}(?:-(bare)-\d+\.\d+)?-(spec-read)\.json$/;
 
 // Push-behaviour probe: a single-connection experiment (subscribe, change a
 // level, hold, restore) against the same processor, filed in the general
@@ -176,7 +197,8 @@ for (const file of readdirSync(SWEEP_DIR)) {
 for (const file of readdirSync(SPEC_PROBE_DIR).sort()) {
   const match = SPEC_PROBE_PATTERN.exec(file);
   if (!match) continue;
-  const phase = match[1] as string;
+  const variant = match[1];
+  const phase = match[2] as string;
   const probes = readProbeSet(SPEC_PROBE_DIR, file);
   const platform = classify(probes);
   if (!platform) {
@@ -186,7 +208,9 @@ for (const file of readdirSync(SPEC_PROBE_DIR).sort()) {
         "silently. Add its series to LABEL_BY_SERIES.",
     );
   }
-  const label = `${phase}-${platform}`;
+  const label = variant
+    ? `${phase}-${platform}-${variant}`
+    : `${phase}-${platform}`;
   const bucket = byLabel.get(label) ?? [];
   bucket.push({ dir: SPEC_PROBE_DIR, file, probes });
   byLabel.set(label, bucket);
