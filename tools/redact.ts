@@ -120,6 +120,54 @@ const PUSH_PROBE_PATTERN =
   /^leap-push-probe-\d{1,3}(?:\.\d{1,3}){3}-2026-08-10T03-05-52-625Z\.json$/;
 const PUSH_PROBE_FIXTURE = "fixtures/push-probe.json";
 
+// The 2026-08-11/12 push experiments: six more single-connection frame logs
+// from the same directory, and the same shape of evidence as
+// PUSH_PROBE_PATTERN's -- ordered-frame records, not `{path: {status, body}}`
+// probe sets, so like it they are redacted and written directly and never
+// given a captures.json entry.
+//
+// They are published as ONE fixture, an object keyed by run, rather than six
+// files. The reason is that no single one of them establishes anything: the
+// ClientTag verdict is legible only from the pad-0 and pad-7 runs read
+// together (the tag moves iff the subscribe tag moved), the connect-time
+// auto-subscribe is a platform divergence only when the Caseta runs are read
+// against the RA3 one, and three of the six are 2-, 3- and 14-frame logs that
+// would be six mostly-empty files. Redacting them in one call also shares the
+// placeholder memo across runs, so a zone that appears in two runs carries the
+// same `<name-N>` in both, which is what makes reading them together possible
+// at all. Each run keeps its own harness shape under its own key; the keys are
+// the stable names the docs cite.
+//
+// Each run is pinned by an exact filename, the way PUSH_PROBE_PATTERN pins
+// its timestamp, and each must resolve to exactly one file. The directory
+// holds sibling runs of every one of these experiments -- another pad-5
+// Caseta push probe, two more connect-observes, an earlier device-join -- and
+// a pattern loose enough to admit them would let a later run silently change
+// what is published.
+const PUSH_EXPERIMENTS_FIXTURE = "fixtures/push-experiments.json";
+const PUSH_EXPERIMENT_PATTERNS: Record<string, RegExp> = {
+  // RA3, pad 0: subscribes at lt-18/lt-19 and pushes on those.
+  "ra3-push-pad-0":
+    /^leap-push-probe-\d{1,3}(?:\.\d{1,3}){3}-2026-08-11T21-08-31-447Z\.json$/,
+  // RA3, pad 7: seven filler reads shift the counter, the same two
+  // subscriptions land on lt-25/lt-26, and every push moves with them.
+  "ra3-push-pad-7":
+    /^leap-push-probe-\d{1,3}(?:\.\d{1,3}){3}-2026-08-11T21-09-12-891Z\.json$/,
+  // Caseta, pad 0: the platform's own push evidence, and the untagged
+  // second push per state change.
+  "caseta-push-pad-0":
+    /^leap-push-probe-\d{1,3}(?:\.\d{1,3}){3}-2026-08-11T21-12-12-834Z\.json$/,
+  // RA3, passive: a human pressing a physical keypad, no write issued.
+  "ra3-keypad-press":
+    /^leap-keypad-press-\d{1,3}(?:\.\d{1,3}){3}-20260812T195233Z\.json$/,
+  // Caseta, passive: the device-join push carrying a DeviceHeard body.
+  "caseta-device-join":
+    /^leap-devicejoin-\d{1,3}(?:\.\d{1,3}){3}-20260812T013125Z\.json$/,
+  // Caseta, passive: a 30s silent hold on a bare bridge, zero requests sent.
+  "caseta-connect-observe":
+    /^leap-connect-observe-\d{1,3}(?:\.\d{1,3}){3}-2026-08-11T22-25-36-889Z\.json$/,
+};
+
 // Maps the LEAP server's ProtocolVersion series (from `/server`) to the
 // manifest label it corresponds to. This is protocol knowledge, not device
 // identity, so it is safe to hard-code here.
@@ -302,3 +350,41 @@ for (const file of pushProbeFiles) {
     `${PUSH_PROBE_FIXTURE}: ${redacted.frames?.length ?? "?"} frames`,
   );
 }
+
+// The 2026-08-11/12 push experiments (see PUSH_EXPERIMENT_PATTERNS above).
+// This block is LAST on purpose. `lib/redact.ts`'s placeholder counter is
+// module-level and shared across every redactTree call in a run, so a block
+// that allocates a new placeholder renumbers everything written after it.
+// Appending here is what keeps the nine fixtures above byte-identical.
+const pushExperiments: Record<string, unknown> = {};
+
+for (const [run, pattern] of Object.entries(PUSH_EXPERIMENT_PATTERNS)) {
+  const files = readdirSync(PUSH_PROBE_DIR)
+    .filter((f) => pattern.test(f))
+    .sort();
+  if (files.length !== 1) {
+    const found = files.map(maskFilename).join(", ");
+    throw new Error(
+      `redact: push-experiment run "${run}" (-> ${PUSH_EXPERIMENTS_FIXTURE}) ` +
+        `resolved to ${files.length} file(s)${found ? ` (${found})` : ""}; ` +
+        "expected exactly 1. Refusing to emit ambiguous evidence.",
+    );
+  }
+  const file = files[0] as string;
+  const log = JSON.parse(readFileSync(`${PUSH_PROBE_DIR}/${file}`, "utf8"));
+  pushExperiments[run] = redactTree(log);
+}
+
+writeFileSync(
+  PUSH_EXPERIMENTS_FIXTURE,
+  `${JSON.stringify(pushExperiments, null, 2)}\n`,
+  "utf8",
+);
+console.log(
+  `${PUSH_EXPERIMENTS_FIXTURE}: ${Object.entries(pushExperiments)
+    .map(
+      ([run, log]) =>
+        `${run} ${(log as { frames?: unknown[] }).frames?.length ?? "?"}f`,
+    )
+    .join(", ")}`,
+);

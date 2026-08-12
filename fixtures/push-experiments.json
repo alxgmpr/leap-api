@@ -1,0 +1,6492 @@
+{
+  "ra3-push-pad-0": {
+    "host": "<ipv4-2>",
+    "zone": 4664,
+    "pad": 0,
+    "padUrl": null,
+    "startedAt": "2026-08-11T21:08:04.953Z",
+    "note": "single connection: subscribe, level change, hold, restore",
+    "zoneName": "<name-94>",
+    "originalLevel": 0,
+    "targetLevel": 50,
+    "areaId": 1340,
+    "padTags": [],
+    "subscriptions": [
+      {
+        "url": "/zone/status",
+        "tag": "lt-18",
+        "status": "200 OK",
+        "communiqueType": "SubscribeResponse"
+      },
+      {
+        "url": "/area/1340/status",
+        "tag": "lt-19",
+        "status": "200 OK",
+        "communiqueType": "SubscribeResponse"
+      }
+    ],
+    "commandTag": "lt-20",
+    "commandStatus": "201 Created",
+    "levelChangeSentAtMs": 3660,
+    "frames": [
+      {
+        "seq": 1,
+        "atIso": "2026-08-11T21:08:05.204Z",
+        "atMs": 28,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/4664",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/zone/4664",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "Zone": {
+            "href": "/zone/4664",
+            "XID": "<xid-125>",
+            "Name": "<name-94>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1340"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          }
+        }
+      },
+      {
+        "seq": 2,
+        "atIso": "2026-08-11T21:08:05.236Z",
+        "atMs": 60,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/4664/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/4664/status",
+          "ClientTag": "lt-2"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/4664/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          }
+        }
+      },
+      {
+        "seq": 3,
+        "atIso": "2026-08-11T21:08:05.260Z",
+        "atMs": 84,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleAreaDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area",
+          "ClientTag": "lt-3"
+        },
+        "body": {
+          "Areas": [
+            {
+              "href": "/area/3",
+              "XID": "<xid-25>",
+              "Name": "<name-1>",
+              "SortOrder": 0,
+              "IsLeaf": false
+            },
+            {
+              "href": "/area/32",
+              "XID": "<xid-26>",
+              "Name": "<name-8>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 3,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/912",
+              "XID": "<xid-27>",
+              "Name": "<name-66>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 4,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1208",
+              "XID": "<xid-28>",
+              "Name": "<name-10>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 6,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1220",
+              "XID": "<xid-29>",
+              "Name": "<name-11>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 7,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1232",
+              "XID": "<xid-30>",
+              "Name": "<name-12>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 13,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1244",
+              "XID": "<xid-72>",
+              "Name": "<name-82>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 16,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1256",
+              "XID": "<xid-31>",
+              "Name": "<name-13>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 17,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1268",
+              "XID": "<xid-73>",
+              "Name": "<name-75>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 14,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1280",
+              "XID": "<xid-32>",
+              "Name": "<name-14>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 0,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1292",
+              "XID": "<xid-74>",
+              "Name": "<name-77>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 5,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1304",
+              "XID": "<xid-33>",
+              "Name": "<name-15>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 10,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1316",
+              "XID": "<xid-34>",
+              "Name": "<name-16>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 11,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1328",
+              "XID": "<xid-35>",
+              "Name": "<name-17>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 12,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1340",
+              "XID": "<xid-75>",
+              "Name": "<name-197>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 15,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1352",
+              "XID": "<xid-76>",
+              "Name": "<name-85>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 2,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1617",
+              "XID": "<xid-36>",
+              "Name": "<name-18>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 8,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/13719",
+              "XID": "<xid-77>",
+              "Name": "<name-198>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 1,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/13735",
+              "XID": "<xid-78>",
+              "Name": "<name-93>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 9,
+              "IsLeaf": true
+            }
+          ]
+        }
+      },
+      {
+        "seq": 4,
+        "atIso": "2026-08-11T21:08:05.295Z",
+        "atMs": 119,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/32/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/32/associatedzone",
+          "ClientTag": "lt-4"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/518",
+              "XID": "<xid-37>",
+              "Name": "<name-19>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/32"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/546",
+              "XID": "<xid-38>",
+              "Name": "<name-20>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/32"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/574",
+              "XID": "<xid-39>",
+              "Name": "<name-21>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/32"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/3663",
+              "XID": "<xid-40>",
+              "Name": "<name-38>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/32"
+              },
+              "SortOrder": 3,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 5,
+        "atIso": "2026-08-11T21:08:05.332Z",
+        "atMs": 156,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/912/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/912/associatedzone",
+          "ClientTag": "lt-5"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/988",
+              "XID": "<xid-42>",
+              "Name": "<name-21>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/1129",
+              "XID": "<xid-43>",
+              "Name": "<name-19>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/4005",
+              "XID": "<xid-94>",
+              "Name": "<name-38>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/4901",
+              "XID": "<xid-95>",
+              "Name": "<name-223>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 4,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/5222",
+              "XID": "<xid-96>",
+              "Name": "<name-224>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 3,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 6,
+        "atIso": "2026-08-11T21:08:05.360Z",
+        "atMs": 184,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1208/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1208/associatedzone",
+          "ClientTag": "lt-6"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1512",
+              "XID": "<xid-44>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1208"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/3978",
+              "XID": "<xid-97>",
+              "Name": "<name-225>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1208"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/11113",
+              "XID": "<xid-98>",
+              "Name": "<name-224>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1208"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 7,
+        "atIso": "2026-08-11T21:08:05.389Z",
+        "atMs": 213,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1220/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1220/associatedzone",
+          "ClientTag": "lt-7"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1743",
+              "XID": "<xid-46>",
+              "Name": "<name-19>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1220"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/4274",
+              "XID": "<xid-99>",
+              "Name": "<name-67>",
+              "Category": {
+                "Type": "ExhaustFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1220"
+              },
+              "SortOrder": 1,
+              "ControlType": "Switched"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 8,
+        "atIso": "2026-08-11T21:08:05.424Z",
+        "atMs": 248,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1232/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1232/associatedzone",
+          "ClientTag": "lt-8"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1878",
+              "XID": "<xid-47>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1232"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 9,
+        "atIso": "2026-08-11T21:08:05.453Z",
+        "atMs": 277,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1244/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1244/associatedzone",
+          "ClientTag": "lt-9"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/6552",
+              "XID": "<xid-100>",
+              "Name": "<name-19>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1244"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 10,
+        "atIso": "2026-08-11T21:08:05.486Z",
+        "atMs": 310,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1256/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1256/associatedzone",
+          "ClientTag": "lt-10"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1840",
+              "XID": "<xid-48>",
+              "Name": "<name-34>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1256"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/2307",
+              "XID": "<xid-49>",
+              "Name": "<name-35>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1256"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 11,
+        "atIso": "2026-08-11T21:08:05.522Z",
+        "atMs": 346,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1268/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1268/associatedzone",
+          "ClientTag": "lt-11"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/5656",
+              "XID": "<xid-126>",
+              "Name": "<name-228>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1268"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/5682",
+              "XID": "<xid-127>",
+              "Name": "<name-74>",
+              "Category": {
+                "Type": "ExhaustFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1268"
+              },
+              "SortOrder": 1,
+              "ControlType": "Switched"
+            },
+            {
+              "href": "/zone/11346",
+              "XID": "<xid-128>",
+              "Name": "<name-229>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1268"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 12,
+        "atIso": "2026-08-11T21:08:05.551Z",
+        "atMs": 375,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1280/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1280/associatedzone",
+          "ClientTag": "lt-12"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1931",
+              "XID": "<xid-50>",
+              "Name": "<name-36>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/1956",
+              "XID": "<xid-51>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/1982",
+              "XID": "<xid-52>",
+              "Name": "<name-37>",
+              "Category": {
+                "Type": "CeilingFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 2,
+              "ControlType": "FanSpeed"
+            },
+            {
+              "href": "/zone/4042",
+              "XID": "<xid-129>",
+              "Name": "<name-230>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 3,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/10000",
+              "XID": "<xid-130>",
+              "Name": "<name-231>",
+              "Category": {
+                "Type": "ExhaustFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 5,
+              "ControlType": "Switched"
+            },
+            {
+              "href": "/zone/10470",
+              "XID": "<xid-131>",
+              "Name": "<name-232>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 4,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 13,
+        "atIso": "2026-08-11T21:08:05.584Z",
+        "atMs": 408,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1292/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1292/associatedzone",
+          "ClientTag": "lt-13"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/6712",
+              "XID": "<xid-132>",
+              "Name": "<name-228>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1292"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/6730",
+              "XID": "<xid-133>",
+              "Name": "<name-74>",
+              "Category": {
+                "Type": "ExhaustFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1292"
+              },
+              "SortOrder": 1,
+              "ControlType": "Switched"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 14,
+        "atIso": "2026-08-11T21:08:05.615Z",
+        "atMs": 439,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1304/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1304/associatedzone",
+          "ClientTag": "lt-14"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/2154",
+              "XID": "<xid-54>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1304"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/2202",
+              "XID": "<xid-55>",
+              "Name": "<name-41>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1304"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/3025",
+              "XID": "<xid-56>",
+              "Name": "<name-42>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1304"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 15,
+        "atIso": "2026-08-11T21:08:05.654Z",
+        "atMs": 478,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1316/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1316/associatedzone",
+          "ClientTag": "lt-15"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/2127",
+              "XID": "<xid-57>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1316"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/2448",
+              "XID": "<xid-59>",
+              "Name": "<name-44>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1316"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/2520",
+              "XID": "<xid-60>",
+              "Name": "<name-45>",
+              "Category": {
+                "Type": "",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1316"
+              },
+              "SortOrder": 2,
+              "ControlType": "CCO"
+            },
+            {
+              "href": "/zone/13008",
+              "XID": "<xid-134>",
+              "Name": "<name-233>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1316"
+              },
+              "SortOrder": 3,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 16,
+        "atIso": "2026-08-11T21:08:05.685Z",
+        "atMs": 509,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1328/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1328/associatedzone",
+          "ClientTag": "lt-16"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/2065",
+              "XID": "<xid-61>",
+              "Name": "<name-48>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1328"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/10508",
+              "XID": "<xid-135>",
+              "Name": "<name-234>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1328"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 17,
+        "atIso": "2026-08-11T21:08:05.723Z",
+        "atMs": 547,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1340/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1340/associatedzone",
+          "ClientTag": "lt-17"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/4664",
+              "XID": "<xid-125>",
+              "Name": "<name-94>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1340"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/6570",
+              "XID": "<xid-136>",
+              "Name": "<name-70>",
+              "Category": {
+                "Type": "OtherAmbient",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1340"
+              },
+              "SortOrder": 1,
+              "ControlType": "Switched"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 18,
+        "atIso": "2026-08-11T21:08:05.826Z",
+        "atMs": 650,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-18"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/988/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/988"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1129/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1129"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1512/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1512"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1594/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/1594"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1743/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1743"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1840/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1840"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1878/status",
+              "Level": 25,
+              "Zone": {
+                "href": "/zone/1878"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1931/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1931"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1956/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1956"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1982/status",
+              "FanSpeed": "High",
+              "Zone": {
+                "href": "/zone/1982"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/2017/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/2017"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2065/status",
+              "Level": 25,
+              "Zone": {
+                "href": "/zone/2065"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2127/status",
+              "Level": 10,
+              "Zone": {
+                "href": "/zone/2127"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2154/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2154"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2202/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2202"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2307/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/2307"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2448/status",
+              "Level": 35,
+              "Zone": {
+                "href": "/zone/2448"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2520/status",
+              "CCOLevel": "Open",
+              "Zone": {
+                "href": "/zone/2520"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/3025/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/3025"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/3663/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3663"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/3978/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3978"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4005/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4005"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4042/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/4042"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4247/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4247"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4274/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/4274"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4639/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4639"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4664/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4664"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4901/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4901"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5222/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/5222"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5656/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/5656"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5682/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/5682"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5763/status",
+              "Level": 65,
+              "Zone": {
+                "href": "/zone/5763"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5788/status",
+              "Level": 100,
+              "SwitchedLevel": "On",
+              "Zone": {
+                "href": "/zone/5788"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6552/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/6552"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6570/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/6570"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6712/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/6712"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6730/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/6730"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10000/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/10000"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10470/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/10470"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10508/status",
+              "Level": 20,
+              "Zone": {
+                "href": "/zone/10508"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/11113/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/11113"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/11346/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/11346"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/13008/status",
+              "Level": 35,
+              "Zone": {
+                "href": "/zone/13008"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 19,
+        "atIso": "2026-08-11T21:08:05.834Z",
+        "atMs": 658,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "SubscribeRequest /area/1340/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "MessageBodyType": "OneAreaStatus",
+          "StatusCode": "200 OK",
+          "Url": "/area/1340/status",
+          "ClientTag": "lt-19"
+        },
+        "body": {
+          "AreaStatus": {
+            "href": "/area/1340/status",
+            "Level": 0,
+            "OccupancyStatus": "Unoccupied",
+            "CurrentScene": {
+              "href": "/areascene/1344"
+            }
+          }
+        }
+      },
+      {
+        "seq": 20,
+        "atIso": "2026-08-11T21:08:08.878Z",
+        "atMs": 3702,
+        "msAfterLevelChange": 42,
+        "classification": "response",
+        "matchedRequest": "CreateRequest /zone/4664/commandprocessor",
+        "deliveredToOnEvent": false,
+        "communiqueType": "CreateResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "201 Created",
+          "Url": "/zone/4664/commandprocessor",
+          "ClientTag": "lt-20"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/4664/status",
+            "Level": 50,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "Availability": "Available"
+          }
+        }
+      },
+      {
+        "seq": 21,
+        "atIso": "2026-08-11T21:08:09.083Z",
+        "atMs": 3907,
+        "msAfterLevelChange": 247,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /area/1340/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneAreaStatus",
+          "StatusCode": "200 OK",
+          "Url": "/area/1340/status",
+          "ClientTag": "lt-19"
+        },
+        "body": {
+          "AreaStatus": {
+            "href": "/area/1340/status",
+            "CurrentScene": null
+          }
+        }
+      },
+      {
+        "seq": 22,
+        "atIso": "2026-08-11T21:08:09.096Z",
+        "atMs": 3920,
+        "msAfterLevelChange": 260,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-18"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/4664/status",
+              "Level": 50,
+              "Zone": {
+                "href": "/zone/4664"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 23,
+        "atIso": "2026-08-11T21:08:28.919Z",
+        "atMs": 23743,
+        "msAfterLevelChange": 20083,
+        "classification": "response",
+        "matchedRequest": "CreateRequest /zone/4664/commandprocessor",
+        "deliveredToOnEvent": false,
+        "communiqueType": "CreateResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "201 Created",
+          "Url": "/zone/4664/commandprocessor",
+          "ClientTag": "lt-21"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/4664/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "Availability": "Available"
+          }
+        }
+      },
+      {
+        "seq": 24,
+        "atIso": "2026-08-11T21:08:29.090Z",
+        "atMs": 23914,
+        "msAfterLevelChange": 20254,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /area/1340/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneAreaStatus",
+          "StatusCode": "200 OK",
+          "Url": "/area/1340/status",
+          "ClientTag": "lt-19"
+        },
+        "body": {
+          "AreaStatus": {
+            "href": "/area/1340/status",
+            "CurrentScene": {
+              "href": "/areascene/1344"
+            }
+          }
+        }
+      },
+      {
+        "seq": 25,
+        "atIso": "2026-08-11T21:08:29.095Z",
+        "atMs": 23919,
+        "msAfterLevelChange": 20259,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-18"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/4664/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4664"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 26,
+        "atIso": "2026-08-11T21:08:31.447Z",
+        "atMs": 26271,
+        "msAfterLevelChange": 22611,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/4664/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/4664/status",
+          "ClientTag": "lt-22"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/4664/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          }
+        }
+      }
+    ],
+    "restore": {
+      "attempted": true,
+      "verifiedLevel": 0,
+      "ok": true,
+      "originalLevel": 0
+    },
+    "finishedAt": "2026-08-11T21:08:31.447Z",
+    "sentRequests": [
+      {
+        "tag": "lt-1",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/4664",
+        "sentAtMs": 1,
+        "answeredAtMs": 29
+      },
+      {
+        "tag": "lt-2",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/4664/status",
+        "sentAtMs": 29,
+        "answeredAtMs": 60
+      },
+      {
+        "tag": "lt-3",
+        "communiqueType": "ReadRequest",
+        "url": "/area",
+        "sentAtMs": 60,
+        "answeredAtMs": 85
+      },
+      {
+        "tag": "lt-4",
+        "communiqueType": "ReadRequest",
+        "url": "/area/32/associatedzone",
+        "sentAtMs": 85,
+        "answeredAtMs": 120
+      },
+      {
+        "tag": "lt-5",
+        "communiqueType": "ReadRequest",
+        "url": "/area/912/associatedzone",
+        "sentAtMs": 120,
+        "answeredAtMs": 156
+      },
+      {
+        "tag": "lt-6",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1208/associatedzone",
+        "sentAtMs": 156,
+        "answeredAtMs": 184
+      },
+      {
+        "tag": "lt-7",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1220/associatedzone",
+        "sentAtMs": 184,
+        "answeredAtMs": 214
+      },
+      {
+        "tag": "lt-8",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1232/associatedzone",
+        "sentAtMs": 214,
+        "answeredAtMs": 248
+      },
+      {
+        "tag": "lt-9",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1244/associatedzone",
+        "sentAtMs": 248,
+        "answeredAtMs": 278
+      },
+      {
+        "tag": "lt-10",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1256/associatedzone",
+        "sentAtMs": 278,
+        "answeredAtMs": 310
+      },
+      {
+        "tag": "lt-11",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1268/associatedzone",
+        "sentAtMs": 310,
+        "answeredAtMs": 347
+      },
+      {
+        "tag": "lt-12",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1280/associatedzone",
+        "sentAtMs": 347,
+        "answeredAtMs": 376
+      },
+      {
+        "tag": "lt-13",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1292/associatedzone",
+        "sentAtMs": 376,
+        "answeredAtMs": 408
+      },
+      {
+        "tag": "lt-14",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1304/associatedzone",
+        "sentAtMs": 408,
+        "answeredAtMs": 439
+      },
+      {
+        "tag": "lt-15",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1316/associatedzone",
+        "sentAtMs": 439,
+        "answeredAtMs": 478
+      },
+      {
+        "tag": "lt-16",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1328/associatedzone",
+        "sentAtMs": 478,
+        "answeredAtMs": 512
+      },
+      {
+        "tag": "lt-17",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1340/associatedzone",
+        "sentAtMs": 512,
+        "answeredAtMs": 547
+      },
+      {
+        "tag": "lt-18",
+        "communiqueType": "SubscribeRequest",
+        "url": "/zone/status",
+        "sentAtMs": 547,
+        "answeredAtMs": 651
+      },
+      {
+        "tag": "lt-19",
+        "communiqueType": "SubscribeRequest",
+        "url": "/area/1340/status",
+        "sentAtMs": 651,
+        "answeredAtMs": 658
+      },
+      {
+        "tag": "lt-20",
+        "communiqueType": "CreateRequest",
+        "url": "/zone/4664/commandprocessor",
+        "sentAtMs": 3660,
+        "answeredAtMs": 3702
+      },
+      {
+        "tag": "lt-21",
+        "communiqueType": "CreateRequest",
+        "url": "/zone/4664/commandprocessor",
+        "sentAtMs": 23703,
+        "answeredAtMs": 23743
+      },
+      {
+        "tag": "lt-22",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/4664/status",
+        "sentAtMs": 26245,
+        "answeredAtMs": 26271
+      }
+    ]
+  },
+  "ra3-push-pad-7": {
+    "host": "<ipv4-2>",
+    "zone": 4664,
+    "pad": 7,
+    "padUrl": "/project",
+    "startedAt": "2026-08-11T21:08:46.297Z",
+    "note": "single connection: subscribe, level change, hold, restore",
+    "zoneName": "<name-94>",
+    "originalLevel": 0,
+    "targetLevel": 50,
+    "areaId": 1340,
+    "padTags": [
+      "lt-18",
+      "lt-19",
+      "lt-20",
+      "lt-21",
+      "lt-22",
+      "lt-23",
+      "lt-24"
+    ],
+    "subscriptions": [
+      {
+        "url": "/zone/status",
+        "tag": "lt-25",
+        "status": "200 OK",
+        "communiqueType": "SubscribeResponse"
+      },
+      {
+        "url": "/area/1340/status",
+        "tag": "lt-26",
+        "status": "200 OK",
+        "communiqueType": "SubscribeResponse"
+      }
+    ],
+    "commandTag": "lt-27",
+    "commandStatus": "201 Created",
+    "levelChangeSentAtMs": 3781,
+    "frames": [
+      {
+        "seq": 1,
+        "atIso": "2026-08-11T21:08:46.530Z",
+        "atMs": 23,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/4664",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/zone/4664",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "Zone": {
+            "href": "/zone/4664",
+            "XID": "<xid-125>",
+            "Name": "<name-94>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "",
+              "IsLight": true
+            },
+            "AssociatedArea": {
+              "href": "/area/1340"
+            },
+            "SortOrder": 0,
+            "ControlType": "Dimmed"
+          }
+        }
+      },
+      {
+        "seq": 2,
+        "atIso": "2026-08-11T21:08:46.553Z",
+        "atMs": 46,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/4664/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/4664/status",
+          "ClientTag": "lt-2"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/4664/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          }
+        }
+      },
+      {
+        "seq": 3,
+        "atIso": "2026-08-11T21:08:46.576Z",
+        "atMs": 69,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleAreaDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area",
+          "ClientTag": "lt-3"
+        },
+        "body": {
+          "Areas": [
+            {
+              "href": "/area/3",
+              "XID": "<xid-25>",
+              "Name": "<name-1>",
+              "SortOrder": 0,
+              "IsLeaf": false
+            },
+            {
+              "href": "/area/32",
+              "XID": "<xid-26>",
+              "Name": "<name-8>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 3,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/912",
+              "XID": "<xid-27>",
+              "Name": "<name-66>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 4,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1208",
+              "XID": "<xid-28>",
+              "Name": "<name-10>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 6,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1220",
+              "XID": "<xid-29>",
+              "Name": "<name-11>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 7,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1232",
+              "XID": "<xid-30>",
+              "Name": "<name-12>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 13,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1244",
+              "XID": "<xid-72>",
+              "Name": "<name-82>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 16,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1256",
+              "XID": "<xid-31>",
+              "Name": "<name-13>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 17,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1268",
+              "XID": "<xid-73>",
+              "Name": "<name-75>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 14,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1280",
+              "XID": "<xid-32>",
+              "Name": "<name-14>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 0,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1292",
+              "XID": "<xid-74>",
+              "Name": "<name-77>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 5,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1304",
+              "XID": "<xid-33>",
+              "Name": "<name-15>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 10,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1316",
+              "XID": "<xid-34>",
+              "Name": "<name-16>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 11,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1328",
+              "XID": "<xid-35>",
+              "Name": "<name-17>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 12,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1340",
+              "XID": "<xid-75>",
+              "Name": "<name-197>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 15,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1352",
+              "XID": "<xid-76>",
+              "Name": "<name-85>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 2,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/1617",
+              "XID": "<xid-36>",
+              "Name": "<name-18>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 8,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/13719",
+              "XID": "<xid-77>",
+              "Name": "<name-198>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 1,
+              "IsLeaf": true
+            },
+            {
+              "href": "/area/13735",
+              "XID": "<xid-78>",
+              "Name": "<name-93>",
+              "Parent": {
+                "href": "/area/3"
+              },
+              "SortOrder": 9,
+              "IsLeaf": true
+            }
+          ]
+        }
+      },
+      {
+        "seq": 4,
+        "atIso": "2026-08-11T21:08:46.609Z",
+        "atMs": 102,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/32/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/32/associatedzone",
+          "ClientTag": "lt-4"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/518",
+              "XID": "<xid-37>",
+              "Name": "<name-19>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/32"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/546",
+              "XID": "<xid-38>",
+              "Name": "<name-20>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/32"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/574",
+              "XID": "<xid-39>",
+              "Name": "<name-21>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/32"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/3663",
+              "XID": "<xid-40>",
+              "Name": "<name-38>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/32"
+              },
+              "SortOrder": 3,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 5,
+        "atIso": "2026-08-11T21:08:46.645Z",
+        "atMs": 137,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/912/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/912/associatedzone",
+          "ClientTag": "lt-5"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/988",
+              "XID": "<xid-42>",
+              "Name": "<name-21>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/1129",
+              "XID": "<xid-43>",
+              "Name": "<name-19>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/4005",
+              "XID": "<xid-94>",
+              "Name": "<name-38>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/4901",
+              "XID": "<xid-95>",
+              "Name": "<name-223>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 4,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/5222",
+              "XID": "<xid-96>",
+              "Name": "<name-224>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/912"
+              },
+              "SortOrder": 3,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 6,
+        "atIso": "2026-08-11T21:08:46.676Z",
+        "atMs": 169,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1208/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1208/associatedzone",
+          "ClientTag": "lt-6"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1512",
+              "XID": "<xid-44>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1208"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/3978",
+              "XID": "<xid-97>",
+              "Name": "<name-225>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1208"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/11113",
+              "XID": "<xid-98>",
+              "Name": "<name-224>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1208"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 7,
+        "atIso": "2026-08-11T21:08:46.707Z",
+        "atMs": 200,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1220/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1220/associatedzone",
+          "ClientTag": "lt-7"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1743",
+              "XID": "<xid-46>",
+              "Name": "<name-19>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1220"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/4274",
+              "XID": "<xid-99>",
+              "Name": "<name-67>",
+              "Category": {
+                "Type": "ExhaustFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1220"
+              },
+              "SortOrder": 1,
+              "ControlType": "Switched"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 8,
+        "atIso": "2026-08-11T21:08:46.738Z",
+        "atMs": 231,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1232/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1232/associatedzone",
+          "ClientTag": "lt-8"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1878",
+              "XID": "<xid-47>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1232"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 9,
+        "atIso": "2026-08-11T21:08:46.770Z",
+        "atMs": 263,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1244/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1244/associatedzone",
+          "ClientTag": "lt-9"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/6552",
+              "XID": "<xid-100>",
+              "Name": "<name-19>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1244"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 10,
+        "atIso": "2026-08-11T21:08:46.799Z",
+        "atMs": 292,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1256/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1256/associatedzone",
+          "ClientTag": "lt-10"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1840",
+              "XID": "<xid-48>",
+              "Name": "<name-34>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1256"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/2307",
+              "XID": "<xid-49>",
+              "Name": "<name-35>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1256"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 11,
+        "atIso": "2026-08-11T21:08:46.834Z",
+        "atMs": 327,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1268/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1268/associatedzone",
+          "ClientTag": "lt-11"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/5656",
+              "XID": "<xid-126>",
+              "Name": "<name-228>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1268"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/5682",
+              "XID": "<xid-127>",
+              "Name": "<name-74>",
+              "Category": {
+                "Type": "ExhaustFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1268"
+              },
+              "SortOrder": 1,
+              "ControlType": "Switched"
+            },
+            {
+              "href": "/zone/11346",
+              "XID": "<xid-128>",
+              "Name": "<name-229>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1268"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 12,
+        "atIso": "2026-08-11T21:08:46.875Z",
+        "atMs": 368,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1280/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1280/associatedzone",
+          "ClientTag": "lt-12"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/1931",
+              "XID": "<xid-50>",
+              "Name": "<name-36>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/1956",
+              "XID": "<xid-51>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/1982",
+              "XID": "<xid-52>",
+              "Name": "<name-37>",
+              "Category": {
+                "Type": "CeilingFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 2,
+              "ControlType": "FanSpeed"
+            },
+            {
+              "href": "/zone/4042",
+              "XID": "<xid-129>",
+              "Name": "<name-230>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 3,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/10000",
+              "XID": "<xid-130>",
+              "Name": "<name-231>",
+              "Category": {
+                "Type": "ExhaustFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 5,
+              "ControlType": "Switched"
+            },
+            {
+              "href": "/zone/10470",
+              "XID": "<xid-131>",
+              "Name": "<name-232>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1280"
+              },
+              "SortOrder": 4,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 13,
+        "atIso": "2026-08-11T21:08:46.904Z",
+        "atMs": 397,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1292/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1292/associatedzone",
+          "ClientTag": "lt-13"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/6712",
+              "XID": "<xid-132>",
+              "Name": "<name-228>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1292"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/6730",
+              "XID": "<xid-133>",
+              "Name": "<name-74>",
+              "Category": {
+                "Type": "ExhaustFan",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1292"
+              },
+              "SortOrder": 1,
+              "ControlType": "Switched"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 14,
+        "atIso": "2026-08-11T21:08:46.936Z",
+        "atMs": 429,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1304/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1304/associatedzone",
+          "ClientTag": "lt-14"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/2154",
+              "XID": "<xid-54>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1304"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/2202",
+              "XID": "<xid-55>",
+              "Name": "<name-41>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1304"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/3025",
+              "XID": "<xid-56>",
+              "Name": "<name-42>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1304"
+              },
+              "SortOrder": 2,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 15,
+        "atIso": "2026-08-11T21:08:46.972Z",
+        "atMs": 465,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1316/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1316/associatedzone",
+          "ClientTag": "lt-15"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/2127",
+              "XID": "<xid-57>",
+              "Name": "<name-29>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1316"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/2448",
+              "XID": "<xid-59>",
+              "Name": "<name-44>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1316"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/2520",
+              "XID": "<xid-60>",
+              "Name": "<name-45>",
+              "Category": {
+                "Type": "",
+                "IsLight": false
+              },
+              "AssociatedArea": {
+                "href": "/area/1316"
+              },
+              "SortOrder": 2,
+              "ControlType": "CCO"
+            },
+            {
+              "href": "/zone/13008",
+              "XID": "<xid-134>",
+              "Name": "<name-233>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1316"
+              },
+              "SortOrder": 3,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 16,
+        "atIso": "2026-08-11T21:08:47.003Z",
+        "atMs": 496,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1328/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1328/associatedzone",
+          "ClientTag": "lt-16"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/2065",
+              "XID": "<xid-61>",
+              "Name": "<name-48>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1328"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/10508",
+              "XID": "<xid-135>",
+              "Name": "<name-234>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1328"
+              },
+              "SortOrder": 1,
+              "ControlType": "Dimmed"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 17,
+        "atIso": "2026-08-11T21:08:47.033Z",
+        "atMs": 526,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/1340/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area/1340/associatedzone",
+          "ClientTag": "lt-17"
+        },
+        "body": {
+          "Zones": [
+            {
+              "href": "/zone/4664",
+              "XID": "<xid-125>",
+              "Name": "<name-94>",
+              "AvailableControlTypes": [
+                "Dimmed"
+              ],
+              "Category": {
+                "Type": "",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1340"
+              },
+              "SortOrder": 0,
+              "ControlType": "Dimmed"
+            },
+            {
+              "href": "/zone/6570",
+              "XID": "<xid-136>",
+              "Name": "<name-70>",
+              "Category": {
+                "Type": "OtherAmbient",
+                "IsLight": true
+              },
+              "AssociatedArea": {
+                "href": "/area/1340"
+              },
+              "SortOrder": 1,
+              "ControlType": "Switched"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 18,
+        "atIso": "2026-08-11T21:08:47.056Z",
+        "atMs": 549,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /project",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneProjectDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/project",
+          "ClientTag": "lt-18"
+        },
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      },
+      {
+        "seq": 19,
+        "atIso": "2026-08-11T21:08:47.080Z",
+        "atMs": 573,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /project",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneProjectDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/project",
+          "ClientTag": "lt-19"
+        },
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      },
+      {
+        "seq": 20,
+        "atIso": "2026-08-11T21:08:47.101Z",
+        "atMs": 594,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /project",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneProjectDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/project",
+          "ClientTag": "lt-20"
+        },
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      },
+      {
+        "seq": 21,
+        "atIso": "2026-08-11T21:08:47.126Z",
+        "atMs": 619,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /project",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneProjectDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/project",
+          "ClientTag": "lt-21"
+        },
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      },
+      {
+        "seq": 22,
+        "atIso": "2026-08-11T21:08:47.146Z",
+        "atMs": 639,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /project",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneProjectDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/project",
+          "ClientTag": "lt-22"
+        },
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      },
+      {
+        "seq": 23,
+        "atIso": "2026-08-11T21:08:47.167Z",
+        "atMs": 660,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /project",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneProjectDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/project",
+          "ClientTag": "lt-23"
+        },
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      },
+      {
+        "seq": 24,
+        "atIso": "2026-08-11T21:08:47.188Z",
+        "atMs": 681,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /project",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneProjectDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/project",
+          "ClientTag": "lt-24"
+        },
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      },
+      {
+        "seq": 25,
+        "atIso": "2026-08-11T21:08:47.276Z",
+        "atMs": 769,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-25"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/988/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/988"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1129/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1129"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1512/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1512"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1594/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/1594"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1743/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1743"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1840/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1840"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1878/status",
+              "Level": 25,
+              "Zone": {
+                "href": "/zone/1878"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1931/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1931"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1956/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1956"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1982/status",
+              "FanSpeed": "High",
+              "Zone": {
+                "href": "/zone/1982"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/2017/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/2017"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2065/status",
+              "Level": 25,
+              "Zone": {
+                "href": "/zone/2065"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2127/status",
+              "Level": 10,
+              "Zone": {
+                "href": "/zone/2127"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2154/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2154"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2202/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2202"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2307/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/2307"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2448/status",
+              "Level": 35,
+              "Zone": {
+                "href": "/zone/2448"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2520/status",
+              "CCOLevel": "Open",
+              "Zone": {
+                "href": "/zone/2520"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/3025/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/3025"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/3663/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3663"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/3978/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3978"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4005/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4005"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4042/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/4042"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4247/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4247"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4274/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/4274"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4639/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4639"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4664/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4664"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4901/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4901"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5222/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/5222"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5656/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/5656"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5682/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/5682"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5763/status",
+              "Level": 65,
+              "Zone": {
+                "href": "/zone/5763"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5788/status",
+              "Level": 100,
+              "SwitchedLevel": "On",
+              "Zone": {
+                "href": "/zone/5788"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6552/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/6552"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6570/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/6570"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6712/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/6712"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6730/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/6730"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10000/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/10000"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10470/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/10470"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10508/status",
+              "Level": 20,
+              "Zone": {
+                "href": "/zone/10508"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/11113/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/11113"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/11346/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/11346"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/13008/status",
+              "Level": 35,
+              "Zone": {
+                "href": "/zone/13008"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 26,
+        "atIso": "2026-08-11T21:08:47.286Z",
+        "atMs": 779,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "SubscribeRequest /area/1340/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "MessageBodyType": "OneAreaStatus",
+          "StatusCode": "200 OK",
+          "Url": "/area/1340/status",
+          "ClientTag": "lt-26"
+        },
+        "body": {
+          "AreaStatus": {
+            "href": "/area/1340/status",
+            "Level": 0,
+            "OccupancyStatus": "Unoccupied",
+            "CurrentScene": {
+              "href": "/areascene/1344"
+            }
+          }
+        }
+      },
+      {
+        "seq": 27,
+        "atIso": "2026-08-11T21:08:50.326Z",
+        "atMs": 3819,
+        "msAfterLevelChange": 38,
+        "classification": "response",
+        "matchedRequest": "CreateRequest /zone/4664/commandprocessor",
+        "deliveredToOnEvent": false,
+        "communiqueType": "CreateResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "201 Created",
+          "Url": "/zone/4664/commandprocessor",
+          "ClientTag": "lt-27"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/4664/status",
+            "Level": 50,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "Availability": "Available"
+          }
+        }
+      },
+      {
+        "seq": 28,
+        "atIso": "2026-08-11T21:08:50.494Z",
+        "atMs": 3987,
+        "msAfterLevelChange": 206,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /area/1340/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneAreaStatus",
+          "StatusCode": "200 OK",
+          "Url": "/area/1340/status",
+          "ClientTag": "lt-26"
+        },
+        "body": {
+          "AreaStatus": {
+            "href": "/area/1340/status",
+            "CurrentScene": null
+          }
+        }
+      },
+      {
+        "seq": 29,
+        "atIso": "2026-08-11T21:08:50.502Z",
+        "atMs": 3995,
+        "msAfterLevelChange": 214,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-25"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/4664/status",
+              "Level": 50,
+              "Zone": {
+                "href": "/zone/4664"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 30,
+        "atIso": "2026-08-11T21:09:10.365Z",
+        "atMs": 23858,
+        "msAfterLevelChange": 20077,
+        "classification": "response",
+        "matchedRequest": "CreateRequest /zone/4664/commandprocessor",
+        "deliveredToOnEvent": false,
+        "communiqueType": "CreateResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "201 Created",
+          "Url": "/zone/4664/commandprocessor",
+          "ClientTag": "lt-28"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/4664/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "Availability": "Available"
+          }
+        }
+      },
+      {
+        "seq": 31,
+        "atIso": "2026-08-11T21:09:10.511Z",
+        "atMs": 24004,
+        "msAfterLevelChange": 20223,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /area/1340/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneAreaStatus",
+          "StatusCode": "200 OK",
+          "Url": "/area/1340/status",
+          "ClientTag": "lt-26"
+        },
+        "body": {
+          "AreaStatus": {
+            "href": "/area/1340/status",
+            "CurrentScene": {
+              "href": "/areascene/1344"
+            }
+          }
+        }
+      },
+      {
+        "seq": 32,
+        "atIso": "2026-08-11T21:09:10.513Z",
+        "atMs": 24006,
+        "msAfterLevelChange": 20225,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-25"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/4664/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4664"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 33,
+        "atIso": "2026-08-11T21:09:12.891Z",
+        "atMs": 26384,
+        "msAfterLevelChange": 22603,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/4664/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/4664/status",
+          "ClientTag": "lt-29"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/4664/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/4664"
+            },
+            "StatusAccuracy": "Good",
+            "ZoneLockState": "Unlocked"
+          }
+        }
+      }
+    ],
+    "restore": {
+      "attempted": true,
+      "verifiedLevel": 0,
+      "ok": true,
+      "originalLevel": 0
+    },
+    "finishedAt": "2026-08-11T21:09:12.891Z",
+    "sentRequests": [
+      {
+        "tag": "lt-1",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/4664",
+        "sentAtMs": 0,
+        "answeredAtMs": 24
+      },
+      {
+        "tag": "lt-2",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/4664/status",
+        "sentAtMs": 24,
+        "answeredAtMs": 46
+      },
+      {
+        "tag": "lt-3",
+        "communiqueType": "ReadRequest",
+        "url": "/area",
+        "sentAtMs": 46,
+        "answeredAtMs": 69
+      },
+      {
+        "tag": "lt-4",
+        "communiqueType": "ReadRequest",
+        "url": "/area/32/associatedzone",
+        "sentAtMs": 70,
+        "answeredAtMs": 102
+      },
+      {
+        "tag": "lt-5",
+        "communiqueType": "ReadRequest",
+        "url": "/area/912/associatedzone",
+        "sentAtMs": 102,
+        "answeredAtMs": 138
+      },
+      {
+        "tag": "lt-6",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1208/associatedzone",
+        "sentAtMs": 138,
+        "answeredAtMs": 169
+      },
+      {
+        "tag": "lt-7",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1220/associatedzone",
+        "sentAtMs": 169,
+        "answeredAtMs": 200
+      },
+      {
+        "tag": "lt-8",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1232/associatedzone",
+        "sentAtMs": 200,
+        "answeredAtMs": 231
+      },
+      {
+        "tag": "lt-9",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1244/associatedzone",
+        "sentAtMs": 231,
+        "answeredAtMs": 263
+      },
+      {
+        "tag": "lt-10",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1256/associatedzone",
+        "sentAtMs": 263,
+        "answeredAtMs": 292
+      },
+      {
+        "tag": "lt-11",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1268/associatedzone",
+        "sentAtMs": 292,
+        "answeredAtMs": 327
+      },
+      {
+        "tag": "lt-12",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1280/associatedzone",
+        "sentAtMs": 327,
+        "answeredAtMs": 368
+      },
+      {
+        "tag": "lt-13",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1292/associatedzone",
+        "sentAtMs": 368,
+        "answeredAtMs": 397
+      },
+      {
+        "tag": "lt-14",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1304/associatedzone",
+        "sentAtMs": 397,
+        "answeredAtMs": 429
+      },
+      {
+        "tag": "lt-15",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1316/associatedzone",
+        "sentAtMs": 429,
+        "answeredAtMs": 465
+      },
+      {
+        "tag": "lt-16",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1328/associatedzone",
+        "sentAtMs": 465,
+        "answeredAtMs": 496
+      },
+      {
+        "tag": "lt-17",
+        "communiqueType": "ReadRequest",
+        "url": "/area/1340/associatedzone",
+        "sentAtMs": 496,
+        "answeredAtMs": 527
+      },
+      {
+        "tag": "lt-18",
+        "communiqueType": "ReadRequest",
+        "url": "/project",
+        "sentAtMs": 527,
+        "answeredAtMs": 549
+      },
+      {
+        "tag": "lt-19",
+        "communiqueType": "ReadRequest",
+        "url": "/project",
+        "sentAtMs": 549,
+        "answeredAtMs": 573
+      },
+      {
+        "tag": "lt-20",
+        "communiqueType": "ReadRequest",
+        "url": "/project",
+        "sentAtMs": 573,
+        "answeredAtMs": 594
+      },
+      {
+        "tag": "lt-21",
+        "communiqueType": "ReadRequest",
+        "url": "/project",
+        "sentAtMs": 594,
+        "answeredAtMs": 619
+      },
+      {
+        "tag": "lt-22",
+        "communiqueType": "ReadRequest",
+        "url": "/project",
+        "sentAtMs": 619,
+        "answeredAtMs": 639
+      },
+      {
+        "tag": "lt-23",
+        "communiqueType": "ReadRequest",
+        "url": "/project",
+        "sentAtMs": 639,
+        "answeredAtMs": 660
+      },
+      {
+        "tag": "lt-24",
+        "communiqueType": "ReadRequest",
+        "url": "/project",
+        "sentAtMs": 660,
+        "answeredAtMs": 681
+      },
+      {
+        "tag": "lt-25",
+        "communiqueType": "SubscribeRequest",
+        "url": "/zone/status",
+        "sentAtMs": 681,
+        "answeredAtMs": 769
+      },
+      {
+        "tag": "lt-26",
+        "communiqueType": "SubscribeRequest",
+        "url": "/area/1340/status",
+        "sentAtMs": 770,
+        "answeredAtMs": 779
+      },
+      {
+        "tag": "lt-27",
+        "communiqueType": "CreateRequest",
+        "url": "/zone/4664/commandprocessor",
+        "sentAtMs": 3781,
+        "answeredAtMs": 3819
+      },
+      {
+        "tag": "lt-28",
+        "communiqueType": "CreateRequest",
+        "url": "/zone/4664/commandprocessor",
+        "sentAtMs": 23820,
+        "answeredAtMs": 23858
+      },
+      {
+        "tag": "lt-29",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/4664/status",
+        "sentAtMs": 26359,
+        "answeredAtMs": 26384
+      }
+    ]
+  },
+  "caseta-push-pad-0": {
+    "host": "<ipv4-6>",
+    "zone": 2,
+    "pad": 0,
+    "padUrl": null,
+    "startedAt": "2026-08-11T21:11:46.802Z",
+    "note": "single connection: subscribe, level change, hold, restore",
+    "zoneName": "<name-69>",
+    "originalLevel": 0,
+    "targetLevel": 50,
+    "areaId": null,
+    "padTags": [],
+    "subscriptions": [
+      {
+        "url": "/zone/status",
+        "tag": "lt-5",
+        "status": "200 OK",
+        "communiqueType": "SubscribeResponse"
+      }
+    ],
+    "commandTag": "lt-6",
+    "commandStatus": "201 Created",
+    "levelChangeSentAtMs": 3139,
+    "frames": [
+      {
+        "seq": 1,
+        "atIso": "2026-08-11T21:11:47.046Z",
+        "atMs": 5,
+        "msAfterLevelChange": null,
+        "classification": "push-untagged",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "StatusCode": "204 NoContent",
+          "Url": "/device/status/deviceheard"
+        },
+        "body": null
+      },
+      {
+        "seq": 2,
+        "atIso": "2026-08-11T21:11:47.060Z",
+        "atMs": 18,
+        "msAfterLevelChange": null,
+        "classification": "push-untagged",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "StatusCode": "204 NoContent",
+          "Url": "/zone/status/deprecated/level"
+        },
+        "body": null
+      },
+      {
+        "seq": 3,
+        "atIso": "2026-08-11T21:11:47.067Z",
+        "atMs": 26,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/2",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/zone/2",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "Zone": {
+            "href": "/zone/2",
+            "Name": "<name-69>",
+            "AvailableControlTypes": [
+              "Dimmed"
+            ],
+            "Category": {
+              "Type": "CeilingMain",
+              "IsLight": true
+            },
+            "Device": {
+              "href": "/device/3"
+            },
+            "TuningSettings": {
+              "href": "/zone/2/tuningsettings"
+            },
+            "ControlType": "Dimmed"
+          }
+        }
+      },
+      {
+        "seq": 4,
+        "atIso": "2026-08-11T21:11:47.100Z",
+        "atMs": 59,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/2/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/2/status",
+          "ClientTag": "lt-2"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/2/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/2"
+            },
+            "StatusAccuracy": "Good"
+          }
+        }
+      },
+      {
+        "seq": 5,
+        "atIso": "2026-08-11T21:11:47.120Z",
+        "atMs": 79,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleAreaDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/area",
+          "ClientTag": "lt-3"
+        },
+        "body": {
+          "Areas": [
+            {
+              "href": "/area/1",
+              "Name": "<name-226>",
+              "LoadShedding": {
+                "href": "/area/1/loadshedding"
+              },
+              "IsLeaf": false
+            },
+            {
+              "href": "/area/2",
+              "Name": "<name-15>",
+              "Parent": {
+                "href": "/area/1"
+              },
+              "Category": {
+                "Type": "Kitchen"
+              },
+              "AssociatedDevices": [
+                {
+                  "href": "/device/3"
+                }
+              ],
+              "AssociatedOccupancyGroups": [
+                {
+                  "href": "/occupancygroup/1"
+                }
+              ],
+              "LoadShedding": {
+                "href": "/area/2/loadshedding"
+              },
+              "OccupancySettings": {
+                "href": "/area/2/occupancysettings"
+              },
+              "OccupancySensorSettings": {
+                "href": "/area/2/occupancysensorsettings"
+              },
+              "DaylightingGainSettings": {
+                "href": "/area/2/daylightinggainsettings"
+              },
+              "IsLeaf": true
+            }
+          ]
+        }
+      },
+      {
+        "seq": 6,
+        "atIso": "2026-08-11T21:11:47.144Z",
+        "atMs": 103,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /area/2/associatedzone",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "StatusCode": "204 NoContent",
+          "Url": "/area/2/associatedzone",
+          "ClientTag": "lt-4"
+        },
+        "body": null
+      },
+      {
+        "seq": 7,
+        "atIso": "2026-08-11T21:11:47.178Z",
+        "atMs": 137,
+        "msAfterLevelChange": null,
+        "classification": "response",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-5"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/2/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/2"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 8,
+        "atIso": "2026-08-11T21:11:50.266Z",
+        "atMs": 3225,
+        "msAfterLevelChange": 86,
+        "classification": "response",
+        "matchedRequest": "CreateRequest /zone/2/commandprocessor",
+        "deliveredToOnEvent": false,
+        "communiqueType": "CreateResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "201 Created",
+          "Url": "/zone/2/commandprocessor",
+          "ClientTag": "lt-6"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/2/status",
+            "Level": 50,
+            "Zone": {
+              "href": "/zone/2"
+            },
+            "StatusAccuracy": "Good",
+            "Availability": "Available"
+          }
+        }
+      },
+      {
+        "seq": 9,
+        "atIso": "2026-08-11T21:11:50.332Z",
+        "atMs": 3291,
+        "msAfterLevelChange": 152,
+        "classification": "push-untagged",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/2/status/level"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/2/status",
+            "Level": 50,
+            "Zone": {
+              "href": "/zone/2"
+            },
+            "StatusAccuracy": "Good"
+          }
+        }
+      },
+      {
+        "seq": 10,
+        "atIso": "2026-08-11T21:11:50.378Z",
+        "atMs": 3337,
+        "msAfterLevelChange": 198,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-5"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/2/status",
+              "Level": 50,
+              "Zone": {
+                "href": "/zone/2"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 11,
+        "atIso": "2026-08-11T21:12:10.306Z",
+        "atMs": 23265,
+        "msAfterLevelChange": 20126,
+        "classification": "response",
+        "matchedRequest": "CreateRequest /zone/2/commandprocessor",
+        "deliveredToOnEvent": false,
+        "communiqueType": "CreateResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "201 Created",
+          "Url": "/zone/2/commandprocessor",
+          "ClientTag": "lt-7"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/2/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/2"
+            },
+            "StatusAccuracy": "Good",
+            "Availability": "Available"
+          }
+        }
+      },
+      {
+        "seq": 12,
+        "atIso": "2026-08-11T21:12:10.322Z",
+        "atMs": 23281,
+        "msAfterLevelChange": 20142,
+        "classification": "push-untagged",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/2/status/level"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/2/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/2"
+            },
+            "StatusAccuracy": "Good"
+          }
+        }
+      },
+      {
+        "seq": 13,
+        "atIso": "2026-08-11T21:12:10.341Z",
+        "atMs": 23300,
+        "msAfterLevelChange": 20161,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-5"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/2/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/2"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 14,
+        "atIso": "2026-08-11T21:12:12.834Z",
+        "atMs": 25793,
+        "msAfterLevelChange": 22654,
+        "classification": "response",
+        "matchedRequest": "ReadRequest /zone/2/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/2/status",
+          "ClientTag": "lt-8"
+        },
+        "body": {
+          "ZoneStatus": {
+            "href": "/zone/2/status",
+            "Level": 0,
+            "Zone": {
+              "href": "/zone/2"
+            },
+            "StatusAccuracy": "Good"
+          }
+        }
+      }
+    ],
+    "restore": {
+      "attempted": true,
+      "verifiedLevel": 0,
+      "ok": true,
+      "originalLevel": 0
+    },
+    "finishedAt": "2026-08-11T21:12:12.834Z",
+    "sentRequests": [
+      {
+        "tag": "lt-1",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/2",
+        "sentAtMs": 1,
+        "answeredAtMs": 27
+      },
+      {
+        "tag": "lt-2",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/2/status",
+        "sentAtMs": 27,
+        "answeredAtMs": 59
+      },
+      {
+        "tag": "lt-3",
+        "communiqueType": "ReadRequest",
+        "url": "/area",
+        "sentAtMs": 59,
+        "answeredAtMs": 80
+      },
+      {
+        "tag": "lt-4",
+        "communiqueType": "ReadRequest",
+        "url": "/area/2/associatedzone",
+        "sentAtMs": 80,
+        "answeredAtMs": 103
+      },
+      {
+        "tag": "lt-5",
+        "communiqueType": "SubscribeRequest",
+        "url": "/zone/status",
+        "sentAtMs": 103,
+        "answeredAtMs": 137
+      },
+      {
+        "tag": "lt-6",
+        "communiqueType": "CreateRequest",
+        "url": "/zone/2/commandprocessor",
+        "sentAtMs": 3139,
+        "answeredAtMs": 3225
+      },
+      {
+        "tag": "lt-7",
+        "communiqueType": "CreateRequest",
+        "url": "/zone/2/commandprocessor",
+        "sentAtMs": 23226,
+        "answeredAtMs": 23265
+      },
+      {
+        "tag": "lt-8",
+        "communiqueType": "ReadRequest",
+        "url": "/zone/2/status",
+        "sentAtMs": 25766,
+        "answeredAtMs": 25793
+      }
+    ]
+  },
+  "ra3-keypad-press": {
+    "host": "<ipv4-2>",
+    "startedAt": "2026-08-12T19:52:34.055Z",
+    "finishedAt": "2026-08-12T20:02:37.398Z",
+    "tlsHandshakeMs": 217,
+    "holdSeconds": 3,
+    "tailSeconds": 600,
+    "requestsIssued": [],
+    "subscribesIssued": [
+      "/zone/status",
+      "/device",
+      "/project"
+    ],
+    "note": "single connection: silent hold, then SubscribeRequests and/or ReadRequests only — no mutating verb is reachable",
+    "frames": [
+      {
+        "seq": 1,
+        "atIso": "2026-08-12T19:52:37.367Z",
+        "atMs": 3094,
+        "classification": "response",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": false,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/988/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/988"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1129/status",
+              "Level": 50,
+              "Zone": {
+                "href": "/zone/1129"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1512/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1512"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1594/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/1594"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1743/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1743"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1840/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1840"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1878/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/1878"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1931/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1931"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1956/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1956"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1982/status",
+              "FanSpeed": "Off",
+              "Zone": {
+                "href": "/zone/1982"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/2017/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2017"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2065/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2065"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2127/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2127"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2154/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2154"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2202/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2202"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2307/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/2307"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2448/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2448"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2520/status",
+              "CCOLevel": "Open",
+              "Zone": {
+                "href": "/zone/2520"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/3025/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/3025"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/3663/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3663"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/3978/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3978"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4005/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4005"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4042/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4042"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4247/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4247"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4274/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/4274"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4639/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4639"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4664/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4664"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4901/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/4901"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5222/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/5222"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5656/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/5656"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5682/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/5682"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5763/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/5763"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5788/status",
+              "Level": 100,
+              "SwitchedLevel": "On",
+              "Zone": {
+                "href": "/zone/5788"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6552/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/6552"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6570/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/6570"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6712/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/6712"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6730/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/6730"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10000/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/10000"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10470/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/10470"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10508/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/10508"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/11113/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/11113"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/11346/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/11346"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/13008/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/13008"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 2,
+        "atIso": "2026-08-12T19:52:37.370Z",
+        "atMs": 3097,
+        "classification": "response",
+        "matchedRequest": "SubscribeRequest /device",
+        "deliveredToOnEvent": false,
+        "communiqueType": "ExceptionResponse",
+        "header": {
+          "MessageBodyType": "ExceptionDetail",
+          "StatusCode": "405 MethodNotAllowed",
+          "Url": "/device",
+          "ClientTag": "lt-2"
+        },
+        "body": {
+          "Message": "This request is not supported"
+        }
+      },
+      {
+        "seq": 3,
+        "atIso": "2026-08-12T19:52:37.392Z",
+        "atMs": 3119,
+        "classification": "response",
+        "matchedRequest": "SubscribeRequest /project",
+        "deliveredToOnEvent": false,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "MessageBodyType": "OneProjectDefinition",
+          "StatusCode": "200 OK",
+          "Url": "/project",
+          "ClientTag": "lt-3"
+        },
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      },
+      {
+        "seq": 4,
+        "atIso": "2026-08-12T19:53:13.560Z",
+        "atMs": 39287,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/3663/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3663"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 5,
+        "atIso": "2026-08-12T19:53:16.952Z",
+        "atMs": 42679,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 6,
+        "atIso": "2026-08-12T19:53:21.964Z",
+        "atMs": 47691,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 26,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 26,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 26,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 7,
+        "atIso": "2026-08-12T19:53:24.166Z",
+        "atMs": 49893,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 48,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 48,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 48,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 8,
+        "atIso": "2026-08-12T19:53:26.155Z",
+        "atMs": 51882,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/546/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 9,
+        "atIso": "2026-08-12T19:53:28.353Z",
+        "atMs": 54080,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/4005/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4005"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 10,
+        "atIso": "2026-08-12T19:53:29.954Z",
+        "atMs": 55681,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/546/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 11,
+        "atIso": "2026-08-12T19:53:32.785Z",
+        "atMs": 58512,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 25,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 25,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 25,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 12,
+        "atIso": "2026-08-12T19:53:36.373Z",
+        "atMs": 62100,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/3663/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3663"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 13,
+        "atIso": "2026-08-12T19:53:40.610Z",
+        "atMs": 66337,
+        "classification": "push-on-request-tag",
+        "matchedRequest": "SubscribeRequest /zone/status",
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "MultipleZoneStatus",
+          "StatusCode": "200 OK",
+          "Url": "/zone/status",
+          "ClientTag": "lt-1"
+        },
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/3663/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/3663"
+              },
+              "StatusAccuracy": "Good"
+            }
+          ]
+        }
+      }
+    ],
+    "subscriptions": [
+      {
+        "url": "/zone/status",
+        "tag": "lt-1",
+        "status": "200 OK",
+        "communiqueType": "SubscribeResponse",
+        "body": {
+          "ZoneStatuses": [
+            {
+              "href": "/zone/518/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/518"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/546/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/546"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/574/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/574"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/988/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/988"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1129/status",
+              "Level": 50,
+              "Zone": {
+                "href": "/zone/1129"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1512/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1512"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1594/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/1594"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1743/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1743"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1840/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1840"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1878/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/1878"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1931/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1931"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1956/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/1956"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/1982/status",
+              "FanSpeed": "Off",
+              "Zone": {
+                "href": "/zone/1982"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/2017/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2017"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2065/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2065"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2127/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2127"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2154/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2154"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2202/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2202"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2307/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/2307"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2448/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/2448"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/2520/status",
+              "CCOLevel": "Open",
+              "Zone": {
+                "href": "/zone/2520"
+              },
+              "StatusAccuracy": "Good"
+            },
+            {
+              "href": "/zone/3025/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/3025"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/3663/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3663"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/3978/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/3978"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4005/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4005"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4042/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4042"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4247/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4247"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4274/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/4274"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4639/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4639"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4664/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/4664"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/4901/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/4901"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5222/status",
+              "Level": 75,
+              "Zone": {
+                "href": "/zone/5222"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5656/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/5656"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5682/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/5682"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5763/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/5763"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/5788/status",
+              "Level": 100,
+              "SwitchedLevel": "On",
+              "Zone": {
+                "href": "/zone/5788"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6552/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/6552"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6570/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/6570"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6712/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/6712"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/6730/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/6730"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10000/status",
+              "Level": 0,
+              "SwitchedLevel": "Off",
+              "Zone": {
+                "href": "/zone/10000"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10470/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/10470"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/10508/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/10508"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/11113/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/11113"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/11346/status",
+              "Level": 0,
+              "Zone": {
+                "href": "/zone/11346"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            },
+            {
+              "href": "/zone/13008/status",
+              "Level": 100,
+              "Zone": {
+                "href": "/zone/13008"
+              },
+              "StatusAccuracy": "Good",
+              "ZoneLockState": "Unlocked"
+            }
+          ]
+        }
+      },
+      {
+        "url": "/device",
+        "tag": "lt-2",
+        "status": "405 MethodNotAllowed",
+        "communiqueType": "ExceptionResponse",
+        "body": {
+          "Message": "This request is not supported"
+        }
+      },
+      {
+        "url": "/project",
+        "tag": "lt-3",
+        "status": "200 OK",
+        "communiqueType": "SubscribeResponse",
+        "body": {
+          "Project": {
+            "href": "/project",
+            "Name": "<name-1>",
+            "ProductType": "Lutron HWQS Project",
+            "MasterDeviceList": {
+              "Devices": [
+                {
+                  "href": "/device/435"
+                }
+              ]
+            },
+            "Contacts": [
+              {
+                "href": "/contactinfo/102"
+              }
+            ],
+            "TimeclockEventRules": {
+              "href": "/project/timeclockeventrules"
+            },
+            "ProjectModifiedTimestamp": {
+              "Year": 2026,
+              "Month": 8,
+              "Day": 10,
+              "Hour": 2,
+              "Minute": 18,
+              "Second": 18,
+              "Utc": "0"
+            }
+          }
+        }
+      }
+    ],
+    "reads": []
+  },
+  "caseta-device-join": {
+    "host": "<ipv4-6>",
+    "startedAt": "2026-08-12T01:31:26.193Z",
+    "finishedAt": "2026-08-12T01:46:26.416Z",
+    "tlsHandshakeMs": 239,
+    "holdSeconds": 900,
+    "tailSeconds": 20,
+    "requestsIssued": [],
+    "note": "single connection, zero requests sent: every frame is unprompted",
+    "frames": [
+      {
+        "seq": 1,
+        "atIso": "2026-08-12T01:31:26.445Z",
+        "atMs": 11,
+        "classification": "unprompted-pre-read",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "StatusCode": "204 NoContent",
+          "Url": "/device/status/deviceheard"
+        },
+        "body": null
+      },
+      {
+        "seq": 2,
+        "atIso": "2026-08-12T01:31:26.447Z",
+        "atMs": 13,
+        "classification": "unprompted-pre-read",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "StatusCode": "204 NoContent",
+          "Url": "/zone/status/deprecated/level"
+        },
+        "body": null
+      },
+      {
+        "seq": 3,
+        "atIso": "2026-08-12T01:33:04.933Z",
+        "atMs": 98499,
+        "classification": "unprompted-pre-read",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "ReadResponse",
+        "header": {
+          "MessageBodyType": "OneDeviceStatus",
+          "StatusCode": "200 OK",
+          "Url": "/device/status/deviceheard"
+        },
+        "body": {
+          "DeviceStatus": {
+            "DeviceHeard": {
+              "DiscoveryMechanism": "UserInteraction",
+              "ModelNumber": "PJ2-3BRL-GXX-X01",
+              "DeviceType": "Pico3ButtonRaiseLower",
+              "SerialNumber": 0,
+              "DeviceClass": {
+                "HexadecimalEncoding": "1070206"
+              },
+              "Link": {
+                "href": "/link/1"
+              },
+              "ProductId": "17235974"
+            }
+          }
+        }
+      }
+    ],
+    "reads": []
+  },
+  "caseta-connect-observe": {
+    "host": "<ipv4-6>",
+    "startedAt": "2026-08-11T22:25:06.648Z",
+    "finishedAt": "2026-08-11T22:25:36.889Z",
+    "tlsHandshakeMs": 237,
+    "holdSeconds": 30,
+    "tailSeconds": 5,
+    "requestsIssued": [],
+    "note": "single connection, zero requests sent: every frame is unprompted",
+    "frames": [
+      {
+        "seq": 1,
+        "atIso": "2026-08-11T22:25:06.894Z",
+        "atMs": 8,
+        "classification": "unprompted-pre-read",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "StatusCode": "204 NoContent",
+          "Url": "/device/status/deviceheard"
+        },
+        "body": null
+      },
+      {
+        "seq": 2,
+        "atIso": "2026-08-11T22:25:06.897Z",
+        "atMs": 11,
+        "classification": "unprompted-pre-read",
+        "matchedRequest": null,
+        "deliveredToOnEvent": true,
+        "communiqueType": "SubscribeResponse",
+        "header": {
+          "StatusCode": "204 NoContent",
+          "Url": "/zone/status/deprecated/level"
+        },
+        "body": null
+      }
+    ],
+    "reads": []
+  }
+}

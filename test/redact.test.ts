@@ -279,3 +279,46 @@ describe("capture manifest", () => {
     );
   });
 });
+
+// `fixtures/push-experiments.json` is a frame-log fixture, so it is not in
+// captures.json and the conformance suite never opens it -- nothing else in
+// this repository would notice if a run vanished from it or arrived empty.
+// `tools/redact.ts` refuses to write the file unless every pinned run
+// resolves to exactly one capture, but that check runs where the captures
+// are, and CI has no access to them. These two assert the same properties of
+// the committed artifact, which is what CI can actually see.
+describe("push-experiments frame-log fixture", () => {
+  const RUNS = [
+    "ra3-push-pad-0",
+    "ra3-push-pad-7",
+    "caseta-push-pad-0",
+    "ra3-keypad-press",
+    "caseta-device-join",
+    "caseta-connect-observe",
+  ];
+
+  test("holds exactly the six pinned runs, each with frames", () => {
+    const doc = JSON.parse(
+      readFileSync("fixtures/push-experiments.json", "utf8"),
+    ) as Record<string, { frames?: unknown[] }>;
+    assert.deepEqual(Object.keys(doc), RUNS);
+    for (const run of RUNS) {
+      const frames = doc[run]?.frames;
+      assert.ok(
+        Array.isArray(frames) && frames.length > 0,
+        `${run} has no frames`,
+      );
+    }
+  });
+
+  test("embeds no dotted-quad address", () => {
+    // Every one of these logs carries the probed processor's address in a
+    // top-level `host` field, so this is the fixture in the tree most likely
+    // to publish one if redactTree's IPv4 rule ever stopped reaching it.
+    const raw = readFileSync("fixtures/push-experiments.json", "utf8");
+    assert.ok(
+      !/\b\d{1,3}(\.\d{1,3}){3}\b/.test(raw),
+      "frame-log fixture must not contain a device IP",
+    );
+  });
+});
