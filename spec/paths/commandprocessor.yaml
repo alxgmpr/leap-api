@@ -20,14 +20,19 @@
 #     iOS app v26.0.0 (com.lutron.lsb, build 8).
 #
 # The probe-set corpora in `captures.json` contain no *command* traffic for
-# these ten paths. They do contain probes of them: 119 commandprocessor URLs
-# were requested across the six manifest corpora, and every one came back
-# `400 BadRequest`. 117 of the 119 match one of the ten templates below --
+# these ten paths. They do contain probes of them: 157 commandprocessor URLs
+# were requested across the seven manifest corpora, and every one came back
+# `400 BadRequest`. 155 of the 157 match one of the ten templates below --
 # 8 of the ten were reached, `/loadcontroller/{id}/commandprocessor` and
 # `/naturalshow/{id}/commandprocessor` were not -- and the remaining 2 are
 # `/device/commandprocessor`, a bare collection form this specification does
 # not declare. What was never sent during a probe sweep is a `CreateRequest`
 # that actually executes a command; the sweeps issue reads.
+#
+# (Those counts were 119 and 117 over six corpora before the bare-bridge
+# corpus was imported, which contributed 38 more -- every one a `400`, on
+# the same 8 templates. The two substantive claims did not move: still every
+# probe refused, still 8 of the ten templates reached.)
 #
 # Those refusals do not change the coverage accounting: `tools/check-
 # coverage.ts:34` adds a path to `probedPaths` only
@@ -35,15 +40,25 @@
 # counted as covered. These ten therefore stay a `specWithoutFixture` entry
 # in `npm run coverage` -- by design, not a gap to chase.
 #
-# One command exchange was captured outside those corpora, in
-# `fixtures/push-probe.json`: two `CreateRequest`s to
-# `/zone/4664/commandprocessor` and both of their responses, with bodies.
-# That is where `/zone/{zoneId}/commandprocessor`'s `201` response below
-# comes from. It is the only response to a *command* this project has
-# captured -- the 119 probes above are refusals, and 76 of them do carry a
-# body, the uniform `{"Message": "This request is not supported"}`, which
-# describes the refusal rather than any command's result. So the other nine
-# paths keep an unschema'd `200` and nothing more.
+# Command exchanges were captured outside those corpora, in the frame logs:
+# `fixtures/push-probe.json` has two `CreateRequest`s to
+# `/zone/4664/commandprocessor` with both responses, and
+# `fixtures/push-experiments.json` has six more -- two each in
+# `ra3-push-pad-0` and `ra3-push-pad-7` on the same RA3 route, and two in
+# `caseta-push-pad-0` on `/zone/2/commandprocessor`. That is where
+# `/zone/{zoneId}/commandprocessor`'s `201` response below comes from, and
+# it is now corroborated on both platforms rather than one: all 8 replies
+# are `CommuniqueType: CreateResponse`, `201 Created`,
+# `MessageBodyType: OneZoneStatus`, with a `ZoneStatus` body.
+#
+# They remain the only responses to a *command* this project has captured,
+# and they are all on the same one of the ten paths. The 157 probes above
+# are refusals; 114 of them carry a body, and it is uniformly
+# `{"Message": "This request is not supported"}` -- one distinct body across
+# all 114, which describes the refusal rather than any command's result. (The
+# 114 are exactly the three coverage-blind spec probes' 38 each; the two
+# original campaign corpora record no body for their refusals.) So the other
+# nine paths keep an unschema'd `200` and nothing more.
 #
 # One of the ten,
 # `/virtualbutton/{virtualbuttonId}/commandprocessor`, is corroborated more
