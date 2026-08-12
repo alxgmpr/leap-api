@@ -44,8 +44,8 @@ OpenAPI document cannot express on its own:
 |---|---|
 | `docs/protocol.md` | The real wire protocol: envelope, NDJSON framing, `ClientTag` correlation, all 14 `CommuniqueType`s, status codes, every transport (not just LEAP TLS 8081), and mutual TLS. |
 | `docs/mapping.md` | The full LEAP-to-OpenAPI mapping: the verb table, the `leaps://` scheme, the five `x-leap-*` vendor extensions, and the flat 57-field `Command` model with its full `CommandType`-to-field pairing table. |
-| `docs/subscriptions.md` | The subscription lifecycle; the `ClientTag` question on pushed frames, now answered by a live push probe against a single RA3 processor (`fixtures/push-probe.json`) — pushes reuse the originating `SubscribeRequest`'s tag, arrive as `ReadResponse` a couple hundred milliseconds after the write, and carry field-level deltas rather than snapshots, all kept explicitly distinct from the separate asynchronous-*response* tag reuse in `docs/protocol.md`; and the 19 routes this specification marks `x-leap-subscribable`, with each route's live probe result — of which only 6 are confirmed to accept a subscription on hardware, 7 are refused by the same processor, and 6 are untested or inconclusive — and the correction that per-zone status is not subscribable, the collection `/zone/status` is. |
-| `docs/platforms.md` | Where RA3, Caseta, Vive, and the cloud proxy diverge — a generated table of every path where RA3 and Caseta disagree, RA3's area-walk navigation vs. Caseta's flat lists, why every schema in this specification is RA3-derived, a second RA3 corpus's probe sweep showing that firmware route-table presence does not imply a live implementation, and the two-platform test of that finding — over the 187 paths the coverage-blind prober reached on both an RA3 processor and a Caseta bridge, RA3 refuses 59 and Caseta refuses 56 of the same 59. |
+| `docs/subscriptions.md` | The subscription lifecycle; the `ClientTag` question on pushed frames, answered by live push probes (`fixtures/push-probe.json`, `fixtures/push-experiments.json`) — the tag is copied from the originating `SubscribeRequest`, proved by a pair of runs whose subscribes land on different tags, and pushes arrive as `ReadResponse` a couple hundred milliseconds after the write carrying field-level deltas rather than snapshots, all kept explicitly distinct from the separate asynchronous-*response* tag reuse in `docs/protocol.md`; that a change this client did not command pushes too, so a subscription observes the system rather than echoing your own writes; and the 20 routes this specification marks `x-leap-subscribable`, with each route's live probe result — of which only 6 are confirmed to accept a subscription on hardware, 7 are refused by the same processor, and 7 are untested, inconclusive, or (in one case) never requested yet confirmed pushing — and the correction that per-zone status is not subscribable, the collection `/zone/status` is. |
+| `docs/platforms.md` | Where RA3, Caseta, Vive, and the cloud proxy diverge — a generated table of every path where RA3 and Caseta disagree, RA3's area-walk navigation vs. Caseta's flat lists, why every schema in this specification is RA3-derived, a second RA3 corpus's probe sweep showing that firmware route-table presence does not imply a live implementation, and the two-platform test of that finding — over the 187 paths the coverage-blind prober reached on both an RA3 processor and a Caseta bridge, RA3 refuses 59 and Caseta refuses 56 of the same 59; a bare-bridge baseline separating "nothing configured" from "not implemented", from the same Caseta bridge probed again with zero devices provisioned; and the connect-time auto-subscribe that turns out to be Caseta-only. |
 | `docs/discovery.md` | mDNS discovery (`_lutron._tcp`, its TXT record fields), and how a client obtains a certificate to pair with each platform. |
 
 ## What this is not
@@ -177,14 +177,21 @@ the two should not be conflated.
    single-processor RA3 probe sweep,
    `fixtures/sweep-read.json` and `fixtures/sweep-write.json`, and, from the
    coverage-blind replay of the specification's own path list, against RA3
-   firmware v03.249 and against a Caseta bridge, `fixtures/spec-read.json` and
-   `fixtures/spec-read-caseta.json` — six manifest entries in all, plus
-   three non-`{path: {status, body}}` artifacts outside that manifest:
+   firmware v03.249 and against a Caseta bridge twice — once provisioned and
+   once after a factory reset with no devices at all —
+   `fixtures/spec-read.json`, `fixtures/spec-read-caseta.json` and
+   `fixtures/spec-read-caseta-bare.json` — seven manifest entries in all, plus
+   four non-`{path: {status, body}}` artifacts outside that manifest:
    `fixtures/subscriptions.json` (a subscribe-attempt log),
    `fixtures/late-frames.json` (asynchronous-response evidence — see
-   `docs/protocol.md`) and `fixtures/push-probe.json` (a subscription-push
-   frame log — see `docs/subscriptions.md`). These are the corpus every
-   generated schema is checked against.
+   `docs/protocol.md`), `fixtures/push-probe.json` (a subscription-push
+   frame log — see `docs/subscriptions.md`) and
+   `fixtures/push-experiments.json` (six more single-connection frame logs,
+   keyed by run: the tag-padding pair that settles how a push's `ClientTag`
+   is derived, the first Caseta push evidence, a physical keypad press, a
+   device join, and a silent connect — see `docs/subscriptions.md` and
+   `docs/platforms.md`). These are the corpus every generated schema is
+   checked against.
 4. **Hand-refine** a subset of the generated paths and schemas — 24 of 170
    generated path families, 259 of 636 generated schemas as of this writing
    (see "What is and is not covered" above; `spec/paths/` ships one more
