@@ -6,9 +6,21 @@
 # 200 response is `{"Facades": [...]}` (8 instances). RA3 v03.247 returns
 # 204 NoContent on this route.
 #
-# /facade/{facadeId} has no fixture coverage in either platform (both
-# probed only via the /zone/{zoneId}/facade sub-route, which is a distinct,
-# always-400 route in this corpus), so it's left as generated.
+# /facade/{facadeId} IS fixture-covered, and this comment said otherwise
+# until now. It was written when the only corpora were the two campaign
+# captures, which reached the route only via the /zone/{zoneId}/facade
+# sub-route -- a distinct, always-400 route. The coverage-blind spec probes
+# request /facade/{1..8} directly, and Caseta answers all 8 with a body on
+# both the v01.123 and the v01.124 bare-bridge corpus (RA3 v03.249 answers
+# all 8 `404 NotFound`); the bodies are `{"Facade": {"href": ...,
+# "FacingDirection": {"Degrees": N}}}`. So 16 observed Facade objects, not
+# zero.
+#
+# The path is still left as generated, but now for a different reason: the
+# generated schema already describes those bodies, and conformance validates
+# all 16 against it without a deviation to record. The 8 facades a bare
+# bridge ships are also why /facade is one of the routes docs/platforms.md
+# names as answering 200 before any device exists.
 /facade:
   get:
     operationId: getFacade
