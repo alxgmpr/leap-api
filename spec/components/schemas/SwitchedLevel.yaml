@@ -48,9 +48,15 @@ description: |
   directly.
 
   A two-member set is what the concept suggests, but this is still recorded
-  as a lower bound: the sibling level types on the same status object
-  (CCOLevel, ReceptacleLevel, FanSpeed) each have at most one observed value
-  and remain open strings for exactly that reason.
+  as a lower bound, and the sibling level types on the same status object
+  show why. `CCOLevel` has one observed value and `ReceptacleLevel` none, so
+  both remain open strings. `FanSpeed` now has two -- `High` and `Off`, the
+  same fan zone at two different moments -- and remains an open string
+  anyway, which is the point: a two-member set is not evidence that the type
+  has two members. This schema is closed on `On`/`Off` because a *binary*
+  level is a claim about the concept, not a count of what was seen; nothing
+  about `FanSpeed` reaching two supports closing it, and nothing here
+  weakens the argument for leaving the siblings open.
 enum:
   - "On"
   - "Off"

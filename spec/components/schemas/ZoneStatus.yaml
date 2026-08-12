@@ -18,10 +18,15 @@ description: |
   ReceptacleLevel, FanSpeed, StatusAccuracy, ZoneLockState -- are open on
   purpose, not for want of looking. Each is a real firmware type whose
   members the extraction failed to recover, and hardware has produced at
-  most one value for each across every corpus. One observed value does not
-  distinguish an enum from a constant, and closing on it asserts the concept
-  is single-valued: an accuracy that is only ever `Good`, a lock state that
-  is only ever `Unlocked`, a CCO that is only ever `Open`.
+  most **two** distinct values for any of them across every corpus: FanSpeed
+  has two (`High` and `Off`, the same fan zone at different moments) and the
+  other four have one each, ReceptacleLevel none at all. One observed value
+  does not distinguish an enum from a constant, and closing on it asserts
+  the concept is single-valued: an accuracy that is only ever `Good`, a lock
+  state that is only ever `Unlocked`, a CCO that is only ever `Open`. Two
+  values from one physical device does not establish the type's vocabulary
+  either -- a fan that has been seen off and on high says nothing about
+  whether low and medium exist.
 
   This specification has made that assertion before, five times, all of them
   predating this pass and all still shipping closed on a single distinct
@@ -77,13 +82,34 @@ properties:
     type: string
     description: |
       TODO(enum): members of FanSpeed were not recovered from the firmware
-      extraction, and hardware has produced exactly one: `High`, 3
-      observations across the two RA3 corpora (/zone/status and
-      /zone/1982/status, the single observed fan zone; neither Caseta
-      corpus reaches one). One fan at one moment is not the
-      vocabulary of the type; off/low/medium counterparts are expected.
+      extraction, and hardware has produced two, both from
+      /zone/1982/status -- the single observed fan zone, on the RA3 side;
+      neither Caseta corpus reaches one, nor does any Caseta frame log.
+
+      `High`, 6 observations: 3 in the read corpora (`fixtures/ra3.json`
+      via /zone/status and /zone/1982/status, `fixtures/spec-read.json` via
+      /zone/status) and 3 more in subscribe-time snapshots
+      (`fixtures/push-probe.json`, and `ra3-push-pad-0` and `ra3-push-pad-7`
+      in `fixtures/push-experiments.json`). One further `High` comes through
+      /zone/1982/status/expanded and is counted separately as
+      ZoneExpandedStatus, the same convention `SwitchedLevel.yaml` uses.
+
+      `Off`, 1 observation: the /zone/status subscribe snapshot of
+      `ra3-keypad-press` in `fixtures/push-experiments.json`. The fixture
+      stores that snapshot twice -- once as `frames[0]` and once as
+      `subscriptions[0].body` -- so it is two sites and one observation.
+
+      Every one of the seven is a **snapshot or a read**; no push in any
+      capture carries a `FanSpeed` at all, since pushes are field-level
+      deltas and no fan changed while a capture was open. See
+      `docs/subscriptions.md`.
+
+      Two values on one physical fan at two different moments is a lower
+      bound, not the vocabulary of the type: low and medium counterparts
+      are expected and unobserved, which is why this stays an open string.
     x-observed-values:
       - High
+      - "Off"
   Zone:
     $ref: "#/components/schemas/HyperReference"
   StatusAccuracy:
