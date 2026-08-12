@@ -94,13 +94,33 @@ const SWEEP_FRAME_LOG_PATTERN =
 // the response bodies says "this bridge has no devices" in a way that is
 // stable to classify on (an empty collection is a 204, and a provisioned
 // bridge can also 204 a collection it happens not to use). So the pattern
-// carries an optional `-bare-<firmware>` token between the address and the
-// phase suffix, and the label becomes `<phase>-<platform>-<variant>`. A
+// carries an optional `-<variant>-<firmware>` token between the address and
+// the phase suffix, and the label becomes `<phase>-<platform>-<variant>`. A
 // capture without the token keeps exactly the label it had before, so the
-// two existing spec-probe fixtures are untouched.
+// two original spec-probe fixtures are untouched.
+//
+// The variant is `([a-z0-9]+)`, NOT the literal `bare`, and that generality
+// is the point. The bug this whole block exists to fix was a capture the
+// pattern did not match being skipped in silence -- `npm run redact` exited
+// 0 having ignored it. Hard-coding `bare` would leave that bug intact for
+// every variant but the one already filed, and the next one is named in the
+// private repo's own plan: claim the bridge in the app but stop before
+// adding devices, then re-probe. A `-claimed-` capture would vanish exactly
+// as the bare one did.
+//
+// Generality alone still would not close it -- a typo, or a variant token
+// that does not fit the shape, silently drops the file again. So the loop
+// below ALSO hard-errors on any `*-spec-read.json` in this directory that
+// the pattern fails to match, the same way an unclassifiable platform
+// hard-errors rather than being skipped. Between them: a capture in this
+// directory is either published or the run dies saying why.
 const SPEC_PROBE_DIR = "/Users/alex/lutron-protocols/data/spec-probe";
 const SPEC_PROBE_PATTERN =
-  /^\d{1,3}(?:\.\d{1,3}){3}(?:-(bare)-\d+\.\d+)?-(spec-read)\.json$/;
+  /^\d{1,3}(?:\.\d{1,3}){3}(?:-([a-z0-9]+)-\d+\.\d+)?-(spec-read)\.json$/;
+// Anything in SPEC_PROBE_DIR that looks like a spec-probe capture at all.
+// A file matching this but not SPEC_PROBE_PATTERN is a filing mistake, not
+// a file to ignore.
+const SPEC_PROBE_CANDIDATE = /-spec-read\.json$/;
 
 // Push-behaviour probe: a single-connection experiment (subscribe, change a
 // level, hold, restore) against the same processor, filed in the general
@@ -244,7 +264,17 @@ for (const file of readdirSync(SWEEP_DIR)) {
 // two platforms, and neither signal alone separates them without colliding).
 for (const file of readdirSync(SPEC_PROBE_DIR).sort()) {
   const match = SPEC_PROBE_PATTERN.exec(file);
-  if (!match) continue;
+  if (!match) {
+    if (SPEC_PROBE_CANDIDATE.test(file)) {
+      throw new Error(
+        `redact: ${maskFilename(file)} is in the spec-probe directory and ` +
+          "ends -spec-read.json, but does not match SPEC_PROBE_PATTERN " +
+          "(<ip>[-<variant>-<firmware>]-spec-read.json); refusing to skip " +
+          "it silently. Fix the filename or widen the pattern.",
+      );
+    }
+    continue;
+  }
   const variant = match[1];
   const phase = match[2] as string;
   const probes = readProbeSet(SPEC_PROBE_DIR, file);
@@ -355,7 +385,27 @@ for (const file of pushProbeFiles) {
 // This block is LAST on purpose. `lib/redact.ts`'s placeholder counter is
 // module-level and shared across every redactTree call in a run, so a block
 // that allocates a new placeholder renumbers everything written after it.
-// Appending here is what keeps the nine fixtures above byte-identical.
+// Appending here is what keeps the ten fixtures above byte-identical.
+//
+// The mechanism is FRESH ALLOCATION, not use. `lib/redact.ts` keys `counters`
+// by kind and `memo` by `kind:original`, so a fixture is only at risk from an
+// upstream block if that block extends a pool in which the fixture itself
+// makes a fresh allocation. Measured over the write order above:
+//
+//   fixtures/spec-read-caseta-bare.json  fresh {"guid":1}
+//   fixtures/push-probe.json             fresh {"xid":12,"name":7}
+//   fixtures/push-experiments.json       fresh {}
+//
+// So push-probe.json is exposed to a future corpus that introduces a new
+// `name` or `xid` value, and NOT to one that introduces a new `ipv4` -- even
+// though it contains `<ipv4-2>`, because that token is memoised from
+// fixtures/ra3.json, upstream of everything. push-experiments.json allocates
+// nothing fresh at all, so nothing upstream can move it.
+//
+// When re-running that sweep, match tokens with `<[a-z0-9]+-[0-9]+>`. The
+// obvious `<[a-z]*-[0-9]*>` cannot match the `4` in `ipv4` and silently
+// omits that entire pool; this comment's first version was written from
+// exactly that mistake.
 const pushExperiments: Record<string, unknown> = {};
 
 for (const [run, pattern] of Object.entries(PUSH_EXPERIMENT_PATTERNS)) {
