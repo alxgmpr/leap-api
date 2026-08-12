@@ -230,6 +230,54 @@ several routes appears to be an RA3-family concept. This falsified
 `LoadController.yaml`); `ControlStation` still requires it, because no Caseta
 capture returns a control station at all and so nothing has falsified it.
 
+## `fixtures/sweep-write.json` is write traffic, and the format does not say so
+
+Every probe set in `captures.json` is `{url: {status, body}}`. There is no
+verb field. `fixtures/sweep-write.json` is the write phase of the sweep
+campaign described above, and the only one of the six that is not a read
+probe: `tools/bundle.ts` records `ra3` and `caseta` as ReadRequest-only,
+`tools/redact.ts` describes the two coverage-blind captures as a read-only
+replay, and `sweep-read` is the read phase of the same two-phase sweep that
+produced this file. Nothing inside the file records that. Its 30 entries
+are identical in shape to the 206 read entries of
+`fixtures/sweep-read.json`; the file name is the only marker.
+
+**A status taken from that corpus is a status for a write.** `/device/435`
+answers `405 MethodNotAllowed` there and `200 OK` to a read in
+`fixtures/spec-read.json`. `/clientsetting` answers `400 BadRequest` there,
+body `{"Message": "ClientMinorVersion is not modifiable"}`, and `200 OK` to
+a read in both `fixtures/sweep-read.json` and `fixtures/spec-read.json`.
+**And any premise of the form "every probe in this project sends only reads"
+is false**: this corpus is one counterexample and `fixtures/push-probe.json`
+is the other. `spec/paths/server.yaml` states the narrow version of that
+premise which does hold, and shows why narrowing it to the six
+`captures.json` corpora would not repair it: `sweep-write` is one of the six.
+
+The write traffic is invisible to a body-level comparison because where
+these writes succeeded they returned the same body a read of that URL
+returns. Of the 30 entries, 22 are `200 OK`, 7 are `400 BadRequest` and 1 is
+`405 MethodNotAllowed`. All 30 URLs also appear in a read corpus (16 in
+`fixtures/sweep-read.json`, 27 in `fixtures/spec-read.json`), and the 22
+successes are byte-identical to every read corpus that holds the same URL.
+The 8 bodies that differ are exactly the 7 `400`s and the 1 `405` — server
+refusal messages, not objects.
+
+What that means for the tools that read `captures.json`:
+
+- `test/conformance.test.ts` validates `200` bodies only, so it checks this
+  corpus's 22 successes against the same response schemas as any read
+  corpus. That is sound here precisely because those 22 bodies are
+  byte-identical to reads; it is not a general licence to treat the corpus
+  as read data.
+- `tools/check-coverage.ts` marks a path probed on any `200`, so a
+  successful *write* counts toward coverage. Nothing currently rests on
+  that: the 22 successes collapse to three templates — `/area/{areaId}`,
+  `/button/{buttonId}` and `/controlstation/{controlstationId}` — and all
+  three are reached at `200` by a read corpus as well.
+- The divergence table below and `x-leap-platforms` are unaffected:
+  `tools/bundle.ts` builds its matrix from `fixtures/ra3.json` and
+  `fixtures/caseta.json` only.
+
 ## RA3 vs. Caseta: two different navigation models
 
 The single largest structural difference between the two platforms this
