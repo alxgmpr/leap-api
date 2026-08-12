@@ -232,14 +232,31 @@ worth naming so they are not mistaken for counterexamples:
 `requestTag`, `subscribeStatus`, `frames`); `fixtures/late-frames.json`'s five
 frames are all `OneFirmwareImageDefinition` reads of `/firmwareimage/{id}`, an
 object type that carries no `XID` on either platform; and `ra3-keypad-press`,
-inside the mixed file below, issues no read at all. Read the
+inside the mixed file below, receives no body of an XID-bearing type. Read the
 `push-experiments.json` line with care — it is the one **mixed** file, three
 RA3 runs and three Caseta ones, so its 120 is not a per-platform figure. It
 splits 60 in `ra3-push-pad-0`, 60 in `ra3-push-pad-7`, and **0 in the other
 four**, including all three Caseta runs. The two RA3 runs that carry XIDs are
-the ones that read `/area/{id}/associatedzone` fourteen times each; the third
-RA3 run (`ra3-keypad-press`) issues no read at all, which is why it
-contributes none and why its `0` is not a Caseta-like absence.
+the ones that read `/area/{id}/associatedzone` fourteen times each.
+
+The third RA3 run, `ra3-keypad-press`, reads `0` for a reason worth getting
+right, because "it issued no read" is true and is not the cause. It is not
+bodiless: it received three subscribe snapshots, two of them substantial — a
+46-entry `/zone/status` and a full `Project` — and those bodies were counted
+by the `grep` above. They contain no `XID` because **neither object type
+carries one on RA3 either**:
+
+```
+$ npx tsx -e '...ZoneStatus bodies across ra3.json + spec-read.json...'
+/zone/{id}/status bodies: 35 with XID: 0
+ra3 /project keys: href,Name,ProductType,MasterDeviceList,Contacts,
+                   TimeclockEventRules,ProjectModifiedTimestamp
+```
+
+So its `0` is a statement about `ZoneStatus` and `Project`, not about the
+platform, and still not a Caseta-like absence. `XID` appears on areas, zones,
+control stations and load controllers — the *definition* objects — and not on
+the status objects that report their state.
 
 Sizing the Caseta side of that: the original Caseta capture returned 14
 zones, 24 devices and 25 areas (`/zone`, `/device`, `/area` collection
@@ -325,8 +342,10 @@ bare one, which is the "two areas versus one" behind the `405` and `500`
 differences noted above.
 
 **`/link/1` is the one difference running the other way, and it is
-confounded.** `GET /link` returns the same one-element `Links` array on both
-bridges, advertising `/link/1`; `GET /link/1` answers `404 NotFound` on the
+confounded.** `GET /link` returns a one-element `Links` array advertising
+`/link/1` on both bridges — not the *same* array, since
+`RFProperties.DefaultChannel` reads `26` provisioned and `255` bare, while
+`Channel` is `26` in both; `GET /link/1` answers `404 NotFound` on the
 provisioned run and `200 OK` on the bare one. A collection that lists an href
 its own per-item route then denies is a firmware inconsistency worth
 recording — but **provisioning and firmware changed together here** (01.123 →
@@ -420,9 +439,9 @@ carry no `ClientTag`.
 
 Every probe set in `captures.json` is `{url: {status, body}}`. There is no
 verb field. `fixtures/sweep-write.json` is the write phase of the sweep
-campaign described above, and the only one of the six that is not a read
+campaign described above, and the only one of the seven that is not a read
 probe: `tools/bundle.ts` records `ra3` and `caseta` as ReadRequest-only,
-`tools/redact.ts` describes the two coverage-blind captures as a read-only
+`tools/redact.ts` describes the coverage-blind captures as a read-only
 replay, and `sweep-read` is the read phase of the same two-phase sweep that
 produced this file. Nothing inside the file records that. Its 30 entries
 are identical in shape to the 206 read entries of
@@ -434,10 +453,12 @@ answers `405 MethodNotAllowed` there and `200 OK` to a read in
 body `{"Message": "ClientMinorVersion is not modifiable"}`, and `200 OK` to
 a read in both `fixtures/sweep-read.json` and `fixtures/spec-read.json`.
 **And any premise of the form "every probe in this project sends only reads"
-is false**: this corpus is one counterexample and `fixtures/push-probe.json`
-is the other. `spec/paths/server.yaml` states the narrow version of that
-premise which does hold, and shows why narrowing it to the six
-`captures.json` corpora would not repair it: `sweep-write` is one of the six.
+is false**: this corpus is one counterexample, and `fixtures/push-probe.json`
+and `fixtures/push-experiments.json` are the others — between them eight
+`CreateRequest`s to a `/zone/{id}/commandprocessor`, on both platforms.
+`spec/paths/server.yaml` states the narrow version of that premise which does
+hold, and shows why narrowing it to the seven `captures.json` corpora would
+not repair it: `sweep-write` is one of the seven.
 
 The write traffic is invisible to a body-level comparison because where
 these writes succeeded they returned the same body a read of that URL
