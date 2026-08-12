@@ -46,8 +46,17 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run bundle && npm run build:site
-      # enablement:true lets the workflow turn Pages on itself, so a fresh
-      # clone or a new fork does not need the repo setting flipped by hand.
+      # enablement:true keeps Pages configured once a site already exists. It
+      # does NOT create the first one: on a fresh repo or a new fork this step
+      # fails with "Create Pages site failed. Error: Resource not accessible by
+      # integration", because the Actions token is not permitted to create a
+      # Pages site even with `pages: write` declared above. Someone with repo
+      # admin rights has to create it once -- Settings -> Pages, or
+      # `gh api repos/<owner>/<repo>/pages -X POST -f build_type=workflow` --
+      # after which this job succeeds unchanged. Observed on this repository
+      # after it was deleted and recreated: `check` passed, `publish` failed
+      # with exactly that error, and a re-run of the same commit went green
+      # once the site had been created out of band.
       - uses: actions/configure-pages@v5
         with:
           enablement: true
