@@ -188,8 +188,9 @@ the two should not be conflated.
    frame log — see `docs/subscriptions.md`) and
    `fixtures/push-experiments.json` (six more single-connection frame logs,
    keyed by run: the tag-padding pair that settles how a push's `ClientTag`
-   is derived, the first Caseta push evidence, a physical keypad press, a
-   device join, and a silent connect — see `docs/subscriptions.md` and
+   is derived, the first Caseta push evidence, a run in which zones moved
+   with no write issued by the client, a device join, and a silent connect —
+   see `docs/subscriptions.md` and
    `docs/platforms.md`). These are the corpus every generated schema is
    checked against.
 4. **Hand-refine** a subset of the generated paths and schemas — 24 of 170
