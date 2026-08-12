@@ -85,8 +85,8 @@ description: |
   the specification. So requiring it on astronomic events is a restatement
   of the firmware's `AstronomicEventType` rule *plus* a strengthening the
   firmware does not back. The strengthening rests on 6/6: every astronomic
-  TimeclockEvent in either RA3 corpus carries the offset, and so do all 4
-  NLOTime instances across the two Caseta corpora.
+  TimeclockEvent in either RA3 corpus carries the offset, and so do all 6
+  NLOTime instances across the three Caseta corpora.
 
   No converse rule is asserted for `FixedTime`, and the difference is the
   sample size, not the direction of the rule. `TimeOfDay` was present on the
@@ -162,7 +162,7 @@ description: |
   That last step is the residual, and it is the only leg of the argument
   with no independent support. Second, points 3 and 4 come from
   **different platforms and never co-occur**: those 16 occurrences, and all
-  7 objects behind them, are RA3's (both Caseta corpora answer
+  7 objects behind them, are RA3's (all three Caseta corpora answer
   `/timeclockevent` `204 NoContent`), while the rules endpoint is
   Caseta-only (RA3 v03.249 answers it `404 NotFound`). So "Caseta reports a bound of 0 and correspondingly has no
   dates" is *not* what the fixtures show -- it is one platform's bound and

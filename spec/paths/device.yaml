@@ -27,9 +27,11 @@
 #
 # 3. GET /device/{deviceId}/ledsettings had its marker resolved -- a gap
 #    fill, the route table records no responseType. Caseta-only evidence: 15
-#    distinct LEDSettings objects across the two Caseta corpora, and `500
-#    InternalServerError` from both RA3 corpora on every device id they
-#    requested. Two schemas were brought in, LEDSettings verbatim and
+#    distinct LEDSettings objects across the two v01.123 Caseta corpora, and
+#    `500 InternalServerError` from both RA3 corpora on every device id they
+#    requested. The v01.124 bare-bridge corpus adds none -- `404 NotFound`
+#    on all 8 device ids it asked, which is what a bridge with no devices
+#    should say and is not a platform statement. Two schemas were brought in, LEDSettings verbatim and
 #    LEDSpecificSettings with its `EnabledState` pointed at the shared enum
 #    schema on firmware type identity.
 #

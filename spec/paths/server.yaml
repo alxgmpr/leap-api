@@ -32,8 +32,10 @@
 #
 #      - `getServerLEAPIntegratorPairing` (GET /server/leap/integrator/pairing)
 #        was asked and refused: `400 BadRequest`, body `{"Message": "This
-#        request is not supported"}`, on both spec probes. A genuine read
-#        refusal, and the only one of the five.
+#        request is not supported"}`, on all three spec probes -- both
+#        platforms, and a Caseta bridge with nothing provisioned, so the
+#        refusal is not a configuration state. A genuine read refusal, and
+#        the only one of the five.
 #      - `getServerLEAPPairingID` and `updateServerLEAPPairingID`
 #        (/server/leap/pairing/{id}) were never requested by any corpus.
 #      - `createServerLEAPPairing` (POST /server/leap/pairing) has had only

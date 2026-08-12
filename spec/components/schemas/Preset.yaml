@@ -8,18 +8,22 @@
 # `/preset/{presetId}` URL or any of its `*assignment` sub-routes, so for
 # those the campaign corpora are silent, not refusing.
 #
-# The two coverage-blind spec probes did ask: 208 URLs each under the
+# The three coverage-blind spec probes did ask: 208 URLs each under the
 # `/preset` path segment, across 26 templates -- 8 `/preset/{presetId}` plus
 # 8 for each of its 25 `*assignment` sub-routes. (Path segment, not glob:
 # `/presetassignment` and `/presetassignment/deprecated` are also present in
-# both probes and are NOT among the 208.) Notably absent is the bare
-# `/preset` collection, which neither spec probe requested.
+# all three probes and are NOT among the 208.) Notably absent is the bare
+# `/preset` collection, which no spec probe requested.
 #
 # What they got back is mostly not a refusal either. On the 25
 # `/preset/{presetId}/*assignment` sub-routes (8 preset ids each, 200
 # requests per probe): RA3 v03.249 answers `404 NotFound` x192 and `204
-# NoContent` x8; Caseta v01.123 answers `204 NoContent` x160, `405
-# MethodNotAllowed` x32 and `404 NotFound` x8. A `204` is the route working
+# NoContent` x8; Caseta answers `204 NoContent` x160, `405
+# MethodNotAllowed` x32 and `404 NotFound` x8 -- on v01.123 and, entry for
+# entry, on the v01.124 bare bridge too, which is a useful negative: the
+# whole preset surface answers identically whether or not the bridge has
+# any devices, so none of these statuses is reporting a configuration
+# state. A `204` is the route working
 # with nothing to report, which this project distinguishes carefully from
 # the `400 BadRequest` + `{"Message": "This request is not supported"}`
 # refusal (see docs/platforms.md). The point the count actually supports is
@@ -29,14 +33,16 @@
 # different route, is a 200 on the original Caseta capture, which is where
 # the only PresetAssignment objects in this project come from.
 #
-# The `/preset/{presetId}` route itself is where the coverage came from: Caseta
-# v01.123 answers `200 OK` on all 8 preset ids the probe requested, RA3
-# v03.249 `404 NotFound` on all 8, and the programmingmodel family added 9
+# The `/preset/{presetId}` route itself is where the coverage came from: both
+# Caseta probes answer `200 OK` on all 8 preset ids they requested, RA3
+# v03.249 `404 NotFound` on all 8, and the programmingmodel family added
 # more Preset objects through /programmingmodel/{programmingmodelId}/preset.
 #
-# What the evidence shows is thin but consistent: 17 Preset occurrences, 10
+# What the evidence shows is thin but consistent: 33 Preset occurrences, 17
 # distinct by `href` (the two routes overlap -- the same preset is reachable
-# both directly and through its programming model), and every one carries
+# both directly and through its programming model -- and the two Caseta
+# probes sampled different preset ids, which is where most of the growth
+# from the earlier 17/10 figure comes from), and every one carries
 # exactly `href` and `Parent` and nothing else. None of the 26 array
 # properties below has ever been populated on the wire. That is not grounds to
 # change anything: all 26 are optional already (firmware types them as

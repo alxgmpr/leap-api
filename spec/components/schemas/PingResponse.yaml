@@ -19,16 +19,20 @@ type: object
 description: |
   The `/server/status/ping` reply. Both platforms answer, and the body is a
   single field: RA3 v03.249 sends `{"LEAPVersion": 3.249}`, Caseta v01.123
-  sends `{"LEAPVersion": 1.123}`.
+  sends `{"LEAPVersion": 1.123}`, and the same Caseta bridge on v01.124
+  sends `{"LEAPVersion": 1.124}`.
 
   `LEAPVersion` is a JSON **number**, not a string -- firmware types it
-  `json.Number`, and both observed values are unquoted. That makes it a
+  `json.Number`, and all three observed values are unquoted. That makes it a
   different encoding of the same build than `Server.ProtocolVersion`, which
-  is the zero-padded string `"03.249"` / `"01.123"` in the `/server` body of
-  the very same corpus. A client comparing the two must not compare them as
-  strings.
+  is the zero-padded string `"03.249"` / `"01.123"` / `"01.124"` in the
+  `/server` body of the very same corpus. A client comparing the two must
+  not compare them as strings -- and the third value shows why the mapping
+  is not merely cosmetic: `1.124` and `"01.124"` differ in leading zero and
+  in type, and a numeric comparison of `1.123` against `1.124` orders the
+  builds correctly only because these two share a major version.
 
-  Only the two coverage-blind spec probes requested this route. The original
+  Only the three coverage-blind spec probes requested this route. The original
   campaign corpora never did, and `fixtures/sweep-read.json` reached only the
   neighbouring `/legacyserverstatusping`, which that processor refused with
   `400 BadRequest`, body `{"Message": "This request is not supported"}`.

@@ -3,27 +3,34 @@
 # docs/platforms.md draws for the Caseta XID denominators:
 #
 #   A. STATUS OBJECTS -- each counted once, at its own URL
-#      /device/{deviceId}/status. 65 across the four read corpora that
-#      return one: RA3 32 + 7, Caseta 24 + 2.
+#      /device/{deviceId}/status. 66 across the five read corpora that
+#      return one: RA3 32 + 7, Caseta 24 + 2 + 1.
 #   B. OBJECT OCCURRENCES -- basis A plus every route that re-serves the
 #      same object, which here is the /device/status collection. Only the
-#      two Caseta corpora return a body for it; both RA3 corpora answer
-#      204 NoContent, so basis B adds nothing on RA3. 91 in all:
-#      RA3 32 + 7, Caseta 48 + 4.
+#      three Caseta corpora return a body for it; both RA3 corpora answer
+#      204 NoContent, so basis B adds nothing on RA3. 93 in all:
+#      RA3 32 + 7, Caseta 48 + 4 + 2.
 #
 # The `required` argument below is on basis A. The per-field observation
-# counts under `x-observed-values` are on basis B. That is why 89 exceeds
-# 65, and why dividing one by the other means nothing.
+# counts under `x-observed-values` are on basis B. That is why 91 exceeds
+# 66, and why dividing one by the other means nothing.
+#
+# The bare-bridge corpus contributes the third Caseta figure in each basis:
+# one status object, the bridge reporting on itself, served once at
+# /device/1/status and once through the collection. Small, and it moves
+# every count in this file, which is why they are all restated rather than
+# left as "the two Caseta corpora".
 #
 # `required` dropped entirely: the firmware marks ConfigurationTransferStatus,
 # Availability, and StatusAccuracy all non-pointer, but none is universal
-# across the 65 status objects of basis A.
-# ConfigurationTransferStatus is absent on 2/65 -- /device/435/status, the
+# across the 66 status objects of basis A.
+# ConfigurationTransferStatus is absent on 2/66 -- /device/435/status, the
 # RA3 processor's own status, once per RA3 corpus. Availability is absent on
-# 2/65 -- /device/1/status, the Caseta bridge's own status, once per Caseta
-# corpus. StatusAccuracy is absent on 28/65: entirely absent from every
-# Caseta status (0/26) and present on all but one status per RA3 corpus
-# (37/39, the exception being /device/435/status again).
+# 3/66 -- /device/1/status, the Caseta bridge's own status, once per Caseta
+# corpus, and there are now three. StatusAccuracy is absent on 29/66:
+# entirely absent from every Caseta status (0/27) and present on all but one
+# status per RA3 corpus (37/39, the exception being /device/435/status
+# again).
 #
 # `Availability` points at the shared Availability schema (firmware type
 # `leapobj.Availability`, shared with ZoneStatus.Availability): present on 87
@@ -45,8 +52,8 @@ properties:
     description: |
       TODO(enum): members of ConfigurationTransferStatus were not recovered
       from the firmware extraction, and hardware has produced exactly one:
-      `NotRequired`, 89 of the 91 object occurrences on basis B (see this
-      schema's header comment), across both platforms and all four read
+      `NotRequired`, 91 of the 93 object occurrences on basis B (see this
+      schema's header comment), across both platforms and all five read
       corpora that return a device status. Every probed system was
       already in sync; whatever this
       field reports mid-transfer was never captured, so the set stays open.
@@ -66,10 +73,11 @@ properties:
       TODO(enum): members of StatusAccuracy were not recovered from the
       firmware extraction, and hardware has produced exactly one: `Good`,
       37 observations (RA3 v03.247 31, RA3 v03.249 6; absent from every
-      Caseta device status, on both Caseta corpora). This is the one count
-      in this file that is the same on both bases: only the RA3 corpora
-      carry the field, and both answer 204 NoContent on the /device/status
-      collection that makes basis B larger elsewhere. Same firmware type as
+      Caseta device status, on all three Caseta corpora). This is the one
+      count in this file that is the same on both bases, and the one the
+      bare-bridge corpus did not move: only the RA3 corpora carry the field,
+      and both answer 204 NoContent on the /device/status collection that
+      makes basis B larger elsewhere. Same firmware type as
       ZoneStatus.StatusAccuracy, which adds 138 more observations of the
       same single value -- see that field for why one value is not a set.
     x-observed-values:

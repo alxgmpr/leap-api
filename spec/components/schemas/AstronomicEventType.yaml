@@ -5,9 +5,11 @@ description: |
   from hardware, and unlisted values are possible.
 
   Observed on TimeclockEventBase.AstronomicEventType, flattened onto both
-  types that embed it: 4 NLOTime instances on Caseta v01.123 (`Sunrise` and
+  types that embed it: 6 NLOTime instances on Caseta (`Sunrise` and
   `Sunset` via /system/naturallightoptimization, the same pair in each of
-  the two Caseta corpora -- the original source of these two members) and
+  the three Caseta corpora -- the original source of these two members, and
+  identical on the bare bridge, which ships this optimization configured
+  before any device exists) and
   14 TimeclockEvent observations across the two RA3 corpora (`Sunset` 9,
   `Sunrise` 5, via /timeclockevent and
   /timeclockevent/{timeclockeventId}), which the coverage-blind spec probe

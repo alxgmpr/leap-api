@@ -30,8 +30,11 @@ description: |
   probe returned. The zone family added a third, CountdownTimer.EnabledState
   (11 x `Enabled`, every countdown timer in the original Caseta capture),
   and the device family a fourth, LEDSpecificSettings.EnabledState -- 30
-  values across the two Caseta corpora (`Enabled` 26, `Disabled` 4), the
-  best-covered of the type-identity additions.
+  values across the two **v01.123** Caseta corpora (`Enabled` 26,
+  `Disabled` 4), the best-covered of the type-identity additions. The
+  v01.124 bare-bridge corpus adds none of those: it answers
+  /device/{deviceId}/ledsettings `404 NotFound` on all 8 ids it asked, so
+  the count is unchanged and the qualifier is what moved.
 enum:
   - Enabled
   - Disabled

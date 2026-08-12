@@ -7,8 +7,9 @@ description: |
   evidence, and the thinnest of the zone family: 2 objects, `/zone/41` and
   `/zone/42`, both from `fixtures/caseta.json` (Caseta v01.123). Every other
   probed zone `404`s on both platforms -- 12 more on that same Caseta
-  capture, 27 on `fixtures/ra3.json`, and 8 each on the two coverage-blind
-  spec probes, which reach no phase-settings zone at all.
+  capture, 27 on `fixtures/ra3.json`, and 8 each on the three coverage-blind
+  spec probes, which reach no phase-settings zone at all -- including the
+  bare-bridge probe, whose 8 are `404 NotFound` because it has no zones.
 properties:
   href:
     type: string

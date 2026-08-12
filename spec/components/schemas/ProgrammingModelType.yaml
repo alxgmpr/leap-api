@@ -31,11 +31,16 @@ description: |
     `sweep-write`) both found it. Note the two RA3 corpora report the same
     project at different firmware builds, so "a differently programmed
     installation" is not an available explanation here either way.
-  - **Caseta v01.123: an unexplained platform gap.** Caseta's coverage is
+  - **Caseta: an unexplained platform gap.** Caseta's coverage is
     not the problem: `/programmingmodel` is a fully enumerated collection
-    on both Caseta corpora (178 entries on the original capture, 109 on the
-    spec probe), and across 295 `ProgrammingModelType` observations neither
-    returns this member. The Caseta spec probe also asked 8
+    on all three Caseta corpora (178 entries on the original v01.123
+    capture, 109 on the v01.123 spec probe, 108 on the v01.124 bare-bridge
+    probe), and across 411 `ProgrammingModelType` observations none of the
+    three returns this member. The bare corpus is the sharpest of them:
+    116 observations, every one `SingleActionProgrammingModel`, on a bridge
+    with no devices at all -- so the 108 programming models a Caseta bridge
+    ships with are a single kind, and this member is not among the ones the
+    firmware pre-populates. The Caseta spec probe also asked 8
     `/button/{buttonId}` routes and got `404 NotFound` on all 8. Whether
     Caseta's firmware lacks the concept or simply has none configured is
     not established here.

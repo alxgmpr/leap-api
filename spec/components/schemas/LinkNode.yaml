@@ -1,8 +1,11 @@
 # `LinkType` points at the shared LinkType schema (firmware type
 # `leapobj.LinkType`, shared with Link.LinkType): 102 observed link nodes
 # across the two RA3 corpora give `ClearConnectTypeX` 58 and `RF` 44, and
-# the two Caseta corpora add 26 more `RF` through LinkNodeExpanded, which is
-# an allOf against this schema. See LinkType.yaml.
+# the three Caseta corpora add 27 more `RF` through LinkNodeExpanded, which
+# is an allOf against this schema -- 24 from the original capture, 2 from
+# the v01.123 spec probe and 1 from the v01.124 bare-bridge probe, whose
+# single link node is the bridge's own. Caseta has produced no other
+# LinkType on any route. See LinkType.yaml.
 type: object
 properties:
   href:

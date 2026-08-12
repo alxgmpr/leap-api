@@ -23,7 +23,8 @@ description: |
   two limit names onto the four fields is a reading of the names, not
   something the wire states. And Caseta's bound of `0` does not explain
   Caseta's timeclock events: **this bridge returns no TimeclockEvent at
-  all** (`/timeclockevent` is `204 NoContent` on both Caseta corpora). The
+  all** (`/timeclockevent` is `204 NoContent` on all three Caseta corpora,
+  including the bare bridge, which ships a timeclock and no events). The
   observed TimeclockEvents -- 16 occurrences of 7 distinct objects, all
   `ScheduleType: "DayOfWeek"` and none carrying any of the four fields --
   are RA3's, and RA3 answers this rules route `404 NotFound`. The bound and

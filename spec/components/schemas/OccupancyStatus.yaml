@@ -5,9 +5,12 @@ description: |
   value observed on the wire, and unlisted values are possible.
 
   This schema shipped with a single member, `Unknown`, recovered from
-  OccupancyGroupStatus.OccupancyStatus on Caseta v01.123 (25 instances
-  across the two Caseta corpora -- 24 from the original capture and 1 from
-  the coverage-blind spec probe -- via /occupancygroup/status,
+  OccupancyGroupStatus.OccupancyStatus on Caseta v01.123 (25 instances,
+  still, across the three Caseta corpora -- 24 from the original capture
+  and 1 from the v01.123 coverage-blind spec probe; the v01.124 bare-bridge
+  probe adds none, because a bridge with no devices has no occupancy groups
+  and answers /occupancygroup/status `204 NoContent`) via
+  /occupancygroup/status,
   hand-authored, see occupancygroup.yaml; never observed on RA3, which
   answers 204 NoContent on that route). Its
   description called that a single-value, single-platform sample and said
