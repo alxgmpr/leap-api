@@ -249,8 +249,8 @@ the same length passes straight through it.
 
 The method that has caught every leak so far is a cross-reference — harvest
 the literal values out of the raw captures, then search the tracked tree for
-each one. Two refinements are load-bearing, and both were learned from leaks
-that survived an earlier sweep which had declared the tree clean.
+each one. Three refinements are load-bearing, and each was learned from a
+leak that survived an earlier sweep which had declared the tree clean.
 
 1. **Harvest from every key, not just the sensitive ones.** One leak sat
    under a `GUID` key. `GUID` is not in `SENSITIVE_STRING_KEYS`
@@ -265,14 +265,43 @@ that survived an earlier sweep which had declared the tree clean.
    of the form `"<real name> Bedroom"`, which whole-value comparison cannot
    see — and they sat in test inputs and code comments, so there was no JSON
    to parse in the first place.
+3. **Sweep the commit messages, as a separate pass.** Messages and code
+   comments are published content too. The fifth leak was in a commit message
+   whose stated purpose was removing real values from a test file: the file it
+   changed came out clean, and the message explaining what it had removed
+   quoted them — two room/device names and a personal email address. Three
+   properties kept it invisible to every sweep before it, and each is its own
+   trap. First, the sweep read file contents only: `git grep` searches tracked
+   blobs and does not read commit messages, so no variation of it can find
+   this. Sweeping messages is a separate command — `git log --all --format=%B`
+   — not a flag on the same one. Second, the harvested literal set had been
+   built from `Text` keys while the values sat under `Name` and
+   `FullyQualifiedName`, the same narrowing refinement 1 describes, so they
+   were never candidates to search for. Third, the blob-purge rules could not
+   have matched them even if they had been in the set: those rules were
+   deliberately anchored to JSON syntax (`"Key": "value"`) so they could not
+   corrupt a YAML enum member that happens to share a word with a room name,
+   and anchoring to JSON syntax means, by construction, that they cannot match
+   prose.
 
-Two rules follow from the same reasoning:
+Purging a message is a different operation from purging a file, too.
+`git filter-repo --replace-text <rules>` rewrites blob contents;
+`--replace-message <rules>` rewrites commit and tag messages. They take the
+same expression-file syntax, but neither implies the other — a history
+rewrite that purges files leaves every message exactly as it was, so both
+passes have to be run.
 
-- **Check replacements the same way before using them.** A synthetic
-  stand-in that happens to occur in the captures is not a fix.
-- **Commit messages and code comments are published content.** The sweep
-  covers the whole tracked tree and the messages that ship with it, not just
-  the data files.
+Write those message rules against composite values, not fragments of them.
+Getting this wrong damages history rather than merely missing a leak. The
+naive rule set derived from the leak above included two six-character
+fragments. One was a word inside a longer real value and was already covered
+by the longer rule. The other was a vendor product-family token that also
+occurs as ordinary prose in an unrelated commit message; replacing it would
+have corrupted a legitimate message to remove nothing.
+
+One rule follows from the same reasoning as the three above: **check
+replacements the same way before using them.** A synthetic stand-in that
+happens to occur in the captures is not a fix.
 
 When a value has to be explained, describe the category and never quote an
 instance. `lib/redact.ts`'s comment on the `Text` key is the model: it says
