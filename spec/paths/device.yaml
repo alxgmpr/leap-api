@@ -165,10 +165,30 @@
   #
   # NOTE on `required`: the observed DeviceHeard omits `RelationshipStatus`
   # and `EngravingKit`, both of which DeviceHeard.yaml requires on firmware
-  # evidence. That does NOT falsify them and nothing is relaxed here -- a
-  # push body is a partial (docs/subscriptions.md, "Push bodies are deltas"),
-  # so an absence in one is not an absence on a read, and this route has
-  # never been read.
+  # evidence. Nothing is relaxed here, and the reason is narrower than the
+  # obvious one.
+  #
+  # The obvious one does not apply. docs/subscriptions.md's delta rule is a
+  # statement about a push measured against the snapshot its own
+  # SubscribeResponse delivered -- that is what "the push omits a field the
+  # snapshot carried" means, and it is how the rule was established, on
+  # ZoneStatus and AreaStatus. There is no snapshot here: the auto-subscribe
+  # answered `204 NoContent` with no body at all, so this frame is the first
+  # and only content ever seen on the route and cannot be a delta OF
+  # anything. Calling it "a partial" would import a rule from a case whose
+  # defining feature is absent.
+  #
+  # What actually holds is simpler and weaker, and it is enough. `required`
+  # in these schemas describes a READ response (see ZoneStatus.yaml, which
+  # says so for the same reason). This route has never been read -- it has no
+  # GET, in the firmware or here -- so no read of it can have contradicted
+  # anything, and one push frame is not a read. The two fields stay required
+  # until a read contradicts them, which on present evidence can never
+  # happen; that is an argument for leaving them alone, not for trusting
+  # them.
+  #
+  # If a client is ever seen subscribing to this route itself and receiving a
+  # snapshot, that snapshot is the evidence that settles it.
   x-leap-subscribable: true
   x-leap-event-schema:
     $ref: "#/components/schemas/DeviceStatus"
