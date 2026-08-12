@@ -113,18 +113,27 @@ one processor does not?**
 A later, *coverage-blind* probe was built to answer exactly that. It ignores
 what the sweep had already covered and replays the specification's **own**
 path list — every URL this document declares — against a live unit,
-recording status and body for each. It has now been run twice:
+recording status and body for each. It has now been run three times:
 
 | Corpus | Target | URLs | Statuses |
 |---|---|---|---|
 | `fixtures/spec-read.json` | RA3 v03.249 (`/server` `ProtocolVersion`). Same project as the sweep corpora: of the 206 URLs `fixtures/sweep-read.json` probed, 47 were probed by this corpus too, and **all 47 return byte-identical bodies** — 45 as `200 OK`, 2 as matching `404 NotFound`s. Same `/clientsetting` version pair too, `3` / `249` | 864 | 226 × `200`, 61 × `204`, 192 × `400`, 366 × `404`, 11 × `405`, 8 × `500` |
 | `fixtures/spec-read-caseta.json` | Caseta v01.123 (`L-BDG2-WH`), a bridge re-paired after a factory reset | 848 | 104 × `200`, 195 × `204`, 191 × `400`, 317 × `404`, 38 × `405`, 3 × `500` |
+| `fixtures/spec-read-caseta-bare.json` | Caseta v01.124 — the **same bridge** (`/networkinterface/1` `IPv4Properties.IP` is `<ipv4-6>` in both), factory-reset again and left with **zero devices provisioned** | 848 | 78 × `200`, 196 × `204`, 191 × `400`, 344 × `404`, 37 × `405`, 2 × `500` |
 
-Both are `{path: {status, body}}` probe sets in `captures.json`, so the
+All three are `{path: {status, body}}` probe sets in `captures.json`, so the
 conformance suite validates their bodies against this specification's schemas
 like any other corpus. `ServiceType.yaml`, `ServerType.yaml`,
-`Organization.yaml` and `LoadController.yaml` all cite one of them as the
-evidence for a firmware-derived assertion that hardware falsified.
+`Organization.yaml` and `LoadController.yaml` all cite one of the first two as
+the evidence for a firmware-derived assertion that hardware falsified. The
+third falsified nothing — all 78 of its `200` bodies validated on import —
+which is what a strict subset of already-validated routes should do.
+
+The two-platform comparison below uses the first two, not the bare corpus:
+the point of that comparison is what two *different* firmwares refuse, and
+the bare corpus is the same bridge as the second. What the bare corpus is for
+is a different question — separating "nothing configured" from "not
+implemented" — and it has its own section further down.
 
 ### The two-platform refusal test
 
@@ -201,20 +210,29 @@ while RA3 returns it on areas, zones, control stations and load controllers:
 
 ```
 $ for f in fixtures/*.json; do
-    printf '%-32s %s\n' "$f" "$(grep -o '"XID"' "$f" | wc -l | tr -d ' ')"
+    printf '%-34s %s\n' "$f" "$(grep -o '"XID"' "$f" | wc -l | tr -d ' ')"
   done
-fixtures/caseta.json             0
-fixtures/late-frames.json        0
-fixtures/push-probe.json         60
-fixtures/ra3.json                191
-fixtures/spec-read-caseta.json   0
-fixtures/spec-read.json          193
-fixtures/subscriptions.json      0
-fixtures/sweep-read.json         31
-fixtures/sweep-write.json        15
+fixtures/caseta.json               0
+fixtures/late-frames.json          0
+fixtures/push-experiments.json     120
+fixtures/push-probe.json           60
+fixtures/ra3.json                  191
+fixtures/spec-read-caseta-bare.json 0
+fixtures/spec-read-caseta.json     0
+fixtures/spec-read.json            193
+fixtures/subscriptions.json        0
+fixtures/sweep-read.json           31
+fixtures/sweep-write.json          15
 ```
 
-Both Caseta corpora are `0`; every RA3-sourced corpus is not.
+All three Caseta corpora are `0`; every RA3-sourced corpus is not. Read the
+`push-experiments.json` line with care — it is the one **mixed** file, three
+RA3 runs and three Caseta ones, so its 120 is not a per-platform figure. It
+splits 60 in `ra3-push-pad-0`, 60 in `ra3-push-pad-7`, and **0 in the other
+four**, including all three Caseta runs. The two RA3 runs that carry XIDs are
+the ones that read `/area/{id}/associatedzone` fourteen times each; the third
+RA3 run (`ra3-keypad-press`) issues no read at all, which is why it
+contributes none and why its `0` is not a Caseta-like absence.
 
 Sizing the Caseta side of that: the original Caseta capture returned 14
 zones, 24 devices and 25 areas (`/zone`, `/device`, `/area` collection
@@ -229,6 +247,165 @@ several routes appears to be an RA3-family concept. This falsified
 `LoadController`'s firmware-derived `required: XID` (see
 `LoadController.yaml`); `ControlStation` still requires it, because no Caseta
 capture returns a control station at all and so nothing has falsified it.
+
+## The bare-bridge baseline: separating "nothing configured" from "not implemented"
+
+The caveat two sections up — that a `404` from a nearly-empty bridge usually
+means "nothing of that kind exists here", not "the platform lacks the
+concept" — is the single largest source of over-reading in this document.
+`fixtures/spec-read-caseta-bare.json` exists to bound it. It is the **same
+bridge** as `fixtures/spec-read-caseta.json`, probed by the same
+coverage-blind prober over the same 848-URL path list, after a factory reset
+that left it with zero devices provisioned.
+
+**The refusals do not move.** Collapsing both corpora to templates, the set of
+templates answering `400 BadRequest` is identical between them, and so is the
+set answering `405 MethodNotAllowed` and the set answering
+`500 InternalServerError`:
+
+```
+node --import tsx -e '
+import { readFileSync } from "node:fs";
+import { templatePath } from "./lib/platform-matrix.ts";
+const load = (f) => JSON.parse(readFileSync(f, "utf8"));
+const bare = load("fixtures/spec-read-caseta-bare.json");
+const prov = load("fixtures/spec-read-caseta.json");
+const code = (s) => s.split(" ")[0];
+const tmpl = (o, c) => new Set(Object.keys(o).filter(k => code(o[k].status) === c).map(templatePath));
+for (const c of ["400", "405", "500"]) {
+  const b = tmpl(bare, c), p = tmpl(prov, c);
+  console.log(c, "templates bare", b.size, "prov", p.size,
+    "| only bare:", [...b].filter(x => !p.has(x)),
+    "| only prov:", [...p].filter(x => !b.has(x)));
+}'
+
+400 templates bare 55 prov 55 | only bare: [] | only prov: []
+405 templates bare 9 prov 9 | only bare: [] | only prov: []
+500 templates bare 2 prov 2 | only bare: [] | only prov: []
+```
+
+**Say "templates", not "instances", and the distinction is load-bearing.**
+The `400` counts happen to agree at instance level too (191 in each), but the
+`405`s do not (38 provisioned, 37 bare) and neither do the `500`s (3 versus
+2). Both differences come from the same place and neither is about method
+support: `/area/{areaId}/associateddevice` `405`s and `/area/{areaId}/status`
+`500`s once per *existing* area, and the provisioned bridge had two areas
+where the bare one has one. Quoting the instance counts as if they were the
+refusal sets would turn "the bridge has fewer areas" into "the firmware
+changed".
+
+**What does move is `200 → 204` on collections a bare bridge cannot fill.**
+Restricting to the 573 URLs both runs actually requested (the prober samples
+concrete ids from the live inventory, so 275 of each run's 848 URLs name ids
+that only exist in that run):
+
+| Transition | Count | URLs |
+|---|---|---|
+| `200 → 204` | 10 | `/zone`, `/zone/status`, `/zone/tuningsettings`, `/occupancygroup`, `/occupancygroup/status`, `/area/daylightinggainsettings`, `/area/occupancysensorsettings`, `/area/occupancysettings`, `/area/1/childarea/summary`, `/project/contactinfo` |
+| `200 → 404` | 1 | `/occupancygroup/1` |
+| `404 → 200` | 1 | `/link/1` |
+| unchanged | 561 | |
+
+Every one of the ten is a collection or settings route with nothing left to
+list. `/project/contactinfo` is the one that is not device-derived: the
+provisioned run returns a one-element `Contacts` array with an `Installer`
+role, and the bare run returns `204`, so the reset took the installer record
+with it. None of the ten is a route that stopped working.
+
+`/area` is the reason two of the instance counts moved: it returns
+`/area/1` and `/area/2` on the provisioned bridge and only `/area/1` on the
+bare one, which is the "two areas versus one" behind the `405` and `500`
+differences noted above.
+
+**`/link/1` is the one difference running the other way, and it is
+confounded.** `GET /link` returns the same one-element `Links` array on both
+bridges, advertising `/link/1`; `GET /link/1` answers `404 NotFound` on the
+provisioned run and `200 OK` on the bare one. A collection that lists an href
+its own per-item route then denies is a firmware inconsistency worth
+recording — but **provisioning and firmware changed together here** (01.123 →
+01.124), so this is not evidence of a firmware fix, and it is not evidence of
+a provisioning effect either. It is one observation with two candidate causes
+and no way to separate them from these two corpora. The same confound applies
+to every row of the table above; the `200 → 204` set is *readable* as a
+provisioning effect because the routes are exactly the ones a device list
+feeds, not because the comparison isolates provisioning.
+
+**And the most directly useful thing here: a 200 is not proof of
+provisioning.** A Caseta bridge with zero devices still answers `200 OK`
+with real content on a great many routes:
+
+```
+node -e '
+const p = JSON.parse(require("fs").readFileSync("fixtures/spec-read-caseta-bare.json","utf8"));
+const n = (u) => { const b = p[u].body; const k = Object.keys(b)[0];
+  return `${u}: ${p[u].status} ${k}=${b[k].length}`; };
+["/virtualbutton","/programmingmodel","/facade","/timeclock","/device","/area",
+ "/device/1/buttongroup"].forEach(u => console.log(n(u)));
+console.log("/zone:", p["/zone"].status);'
+
+/virtualbutton: 200 OK VirtualButtons=100
+/programmingmodel: 200 OK ProgrammingModels=108
+/facade: 200 OK Facades=8
+/timeclock: 200 OK Timeclocks=1
+/device: 200 OK Devices=1
+/area: 200 OK Areas=1
+/device/1/buttongroup: 200 OK ButtonGroups=1
+/zone: 204 NoContent
+```
+
+100 virtual buttons, 108 programming models, 8 facades, a timeclock, and a
+button group on `/device/1` — all present before a single device exists. The
+one `Device` is the bridge itself and the one `Area` is the root. Anything
+that infers "this system is configured" from a `200` on those routes will be
+wrong on every bare bridge. `/zone` is the honest signal here: no zones, so
+`204`.
+
+## The connect-time auto-subscribe is Caseta-only
+
+A Caseta bridge sends two frames the client never asked for, within 18 ms of
+the connection opening, on all three connections captured here: untagged
+`SubscribeResponse` `204 NoContent` for `/device/status/deviceheard` and for
+`/zone/status/deprecated/level`. An RA3 processor sends nothing at all until
+it is asked.
+
+The easy mistake with this one is to file it as LEAP firmware behaviour —
+"the protocol pushes a couple of subscriptions at you on connect". It is not
+that. The committed frame logs separate the two platforms cleanly: **four RA3
+connections send zero unprompted frames; three Caseta connections each send
+the same two.**
+
+```
+node -e '
+const d = JSON.parse(require("fs").readFileSync("fixtures/push-experiments.json","utf8"));
+d["push-probe"] = JSON.parse(require("fs").readFileSync("fixtures/push-probe.json","utf8"));
+for (const [k, r] of Object.entries(d))
+  console.log(k.padEnd(24), "host=" + r.host,
+    "unprompted frames:", r.frames.filter(f => f.header.ClientTag === undefined).length);'
+
+ra3-push-pad-0           host=<ipv4-2> unprompted frames: 0
+ra3-push-pad-7           host=<ipv4-2> unprompted frames: 0
+caseta-push-pad-0        host=<ipv4-6> unprompted frames: 4
+ra3-keypad-press         host=<ipv4-2> unprompted frames: 0
+caseta-device-join       host=<ipv4-6> unprompted frames: 3
+caseta-connect-observe   host=<ipv4-6> unprompted frames: 2
+push-probe               host=<ipv4-2> unprompted frames: 0
+```
+
+`caseta-connect-observe` is the control: 30 s of connection, **zero requests
+sent**, and exactly two frames on the whole socket — the auto-subscribe pair,
+at 8 ms and 11 ms. `caseta-device-join` is the same experiment held for
+900 s, and its third and only other frame is a push on one of those two
+subscribed routes. The Caseta counts above are 4 and 3 rather than 2 because
+those runs also received untagged *pushes* later; the connect-time pair is 2
+in all three.
+
+**Scope.** Three Caseta connections and four RA3 ones, one bridge and one
+processor. This says the two platforms differ, and it does not say every
+Caseta firmware does it or that no RA3 firmware ever will. It also does not
+say a client may subscribe to those two routes itself — nothing in this
+project has ever tried. See `docs/subscriptions.md` for the consequence a
+client actually has to handle, which is that pushes arriving on those routes
+carry no `ClientTag`.
 
 ## `fixtures/sweep-write.json` is write traffic, and the format does not say so
 
