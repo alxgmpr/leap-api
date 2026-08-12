@@ -212,8 +212,13 @@ addFormats(ajv);
 // which is what a subset of already-validated routes should do and is
 // evidence of nothing beyond that.
 //
-// `npm run coverage` is unchanged by this import (0 / 116 / 76 / 140) for the
-// same reason: no route here was unreached before.
+// `npm run coverage` is unchanged by this import, at 0 / 116 / 76 / 140, for
+// the same reason: no route here was unreached before. That tuple is the one
+// this import produced and is no longer what the command prints -- two
+// commits later `/device/status/deviceheard` was added, and a subscribe-only
+// route can never appear in a probe set, so the second figure became 117
+// permanently. See `spec/paths/device.yaml`. Both numbers are re-derivable;
+// neither is a regression.
 const EXPECTED_MATCHED_CASES = 925;
 let matchedCases = 0;
 
