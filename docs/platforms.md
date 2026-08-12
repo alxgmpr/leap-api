@@ -225,7 +225,14 @@ fixtures/sweep-read.json           31
 fixtures/sweep-write.json          15
 ```
 
-All three Caseta corpora are `0`; every RA3-sourced corpus is not. Read the
+All three Caseta corpora are `0`, and every RA3-sourced corpus that reads an
+XID-bearing object is not. Three RA3-sourced files also read `0`, and they are
+worth naming so they are not mistaken for counterexamples:
+`fixtures/subscriptions.json` stores no bodies at all (its entries are `url`,
+`requestTag`, `subscribeStatus`, `frames`); `fixtures/late-frames.json`'s five
+frames are all `OneFirmwareImageDefinition` reads of `/firmwareimage/{id}`, an
+object type that carries no `XID` on either platform; and `ra3-keypad-press`,
+inside the mixed file below, issues no read at all. Read the
 `push-experiments.json` line with care — it is the one **mixed** file, three
 RA3 runs and three Caseta ones, so its 120 is not a per-platform figure. It
 splits 60 in `ra3-push-pad-0`, 60 in `ra3-push-pad-7`, and **0 in the other
@@ -355,10 +362,12 @@ console.log("/zone:", p["/zone"].status);'
 
 100 virtual buttons, 108 programming models, 8 facades, a timeclock, and a
 button group on `/device/1` — all present before a single device exists. The
-one `Device` is the bridge itself and the one `Area` is the root. Anything
-that infers "this system is configured" from a `200` on those routes will be
-wrong on every bare bridge. `/zone` is the honest signal here: no zones, so
-`204`.
+one `Device` is the bridge itself (`DeviceType: SmartBridge`) and the one
+`Area` is `/area/1`, the only area in either corpus with no `Parent`; on the
+bare bridge it reports `IsLeaf: true`, and on the provisioned one
+`IsLeaf: false`, because there it has `/area/2` under it. Anything that infers
+"this system is configured" from a `200` on those routes will be wrong on
+every bare bridge. `/zone` is the honest signal here: no zones, so `204`.
 
 ## The connect-time auto-subscribe is Caseta-only
 
