@@ -39,6 +39,26 @@
 #    no responseType. Three observed bodies, two platforms. LinkType.yaml
 #    counted these three already and noted that conformance never saw them
 #    -- that note is now stale and is corrected in the same commit.
+#
+# 5. /device/status/deviceheard is HAND-AUTHORED and SUBSCRIBE-ONLY, added
+#    from wire evidence. It is the first path in this specification whose
+#    subscription markers sit on the path item rather than on a `get`,
+#    because it has no `get` at all -- see its own comment below. Its two
+#    consequences for counts elsewhere: it is the 20th x-leap-subscribable
+#    route (docs/subscriptions.md's arithmetic and docs/mapping.md's count
+#    are updated with it), and it raises check-coverage's "in spec but no
+#    fixture" figure from 116 to 117 permanently. That tool compares spec
+#    paths against probe-set URLs, and a route with no GET can never appear
+#    in a probe set, so this entry is a structural one rather than a gap
+#    anyone can close by probing harder.
+#
+# 6. GET /device gained a description recording that the one processor asked
+#    refuses the SUBSCRIBE its x-leap-subscribable marker records. The
+#    marker is deliberately kept: it means "the firmware route table has a
+#    SUBSCRIBE verb here" (docs/mapping.md), which is still true, and six
+#    other marked routes are refused by the same processor without losing
+#    theirs. Deleting it would assert an absence on Caseta, which has never
+#    been asked.
 /device:
   post:
     operationId: createDevice
@@ -60,6 +80,26 @@
       - device
     x-leap-communique-type: ReadRequest
     x-leap-body-type: Devices
+    description: >-
+      `x-leap-subscribable` here records the firmware route table's
+      `SUBSCRIBE` verb, not a live processor's willingness to honor it, and
+      on the one processor that has been asked it is not honored:
+      `SubscribeRequest /device` was refused `405 MethodNotAllowed`, with
+      `CommuniqueType: ExceptionResponse` and body
+      `{"Message": "This request is not supported"}` (the `ra3-keypad-press`
+      run of `fixtures/push-experiments.json`, tag `lt-2`). That run's `host`
+      is `<ipv4-2>`, which is the RA3 processor's own
+      `/networkinterface/1` address in `fixtures/spec-read.json`; the frame
+      log itself records no `ProtocolVersion`, so the platform is
+      established and the firmware version is not. The same refusal status
+      was recorded once before, without a body, in
+      `fixtures/subscriptions.json`. **Read scope: RA3 only.** No Caseta
+      subscribe attempt on this route exists in any corpus here, so nothing
+      is claimed about it, and the marker is left in place rather than
+      deleted for exactly that reason -- deleting it would assert an absence
+      on both platforms that only one platform has been tested for. Six
+      other marked routes are refused by the same processor; see
+      `docs/subscriptions.md` for the route-by-route table.
     responses:
       "200":
         description: Success
@@ -95,6 +135,55 @@
     x-leap-event-schema:
       $ref: "#/components/schemas/DeviceStatus"
     summary: List all device statuses
+/device/status/deviceheard:
+  # HAND-AUTHORED (wire-derived), and the first path in this specification
+  # to carry its subscription markers on the PATH ITEM rather than on a
+  # `get` -- the fallback docs/mapping.md describes for a route with no GET
+  # operation, which until now did not occur. There is no GET here because
+  # there is no GET on the wire and none in the firmware: the route table
+  # records only the mangled, concatenated form `/devicestatus/deviceheard`,
+  # `SUBSCRIBE`-only. That is why no read sweep in this project ever found
+  # it -- every sweep probes GET, and the correctly-slashed path was never
+  # in any sweep's path list.
+  #
+  # The wire supplies both the corrected path and the pushed body. In the
+  # `caseta-device-join` run of `fixtures/push-experiments.json`, the Caseta
+  # bridge auto-subscribed the client to this URL at connect
+  # (untagged `SubscribeResponse 204`, 11 ms after TLS) and 98 s later
+  # pushed an untagged frame on it, `Header.Url: /device/status/deviceheard`,
+  # `MessageBodyType: OneDeviceStatus`, body `{"DeviceStatus":
+  # {"DeviceHeard": {...}}}` -- a `DeviceStatus` wrapping a `DeviceHeard`,
+  # which is why x-leap-event-schema points at DeviceStatus and not at
+  # DeviceHeard. Same route, same auto-subscribe, in the
+  # `caseta-connect-observe` run.
+  #
+  # SCOPE: every frame behind this path is Caseta. The auto-subscribe is a
+  # platform divergence (docs/platforms.md), and no RA3 capture in this
+  # project subscribes to this route or receives a frame on it. What is
+  # asserted here is that the route exists and pushes DeviceStatus bodies,
+  # not that both platforms implement it.
+  #
+  # NOTE on `required`: the observed DeviceHeard omits `RelationshipStatus`
+  # and `EngravingKit`, both of which DeviceHeard.yaml requires on firmware
+  # evidence. That does NOT falsify them and nothing is relaxed here -- a
+  # push body is a partial (docs/subscriptions.md, "Push bodies are deltas"),
+  # so an absence in one is not an absence on a read, and this route has
+  # never been read.
+  x-leap-subscribable: true
+  x-leap-event-schema:
+    $ref: "#/components/schemas/DeviceStatus"
+  description: >-
+    Subscribe-only. The processor pushes a `DeviceStatus` carrying a
+    `DeviceHeard` when a device is heard on the RF link -- observed once,
+    for a `Pico3ButtonRaiseLower` (`DiscoveryMechanism: UserInteraction`).
+    There is no `GET`: the firmware route table marks this route
+    `SUBSCRIBE` and nothing else, under the concatenated spelling
+    `/devicestatus/deviceheard`. The Caseta bridge auto-subscribes a client
+    to this URL at connect without being asked, so pushes on it arrive
+    **untagged**; a client keyed purely on `ClientTag` will drop them. See
+    `fixtures/push-experiments.json` (`caseta-device-join`,
+    `caseta-connect-observe`) and `docs/subscriptions.md`.
+  summary: Device-heard events
 /device/{deviceId}:
   delete:
     operationId: deleteDeviceID

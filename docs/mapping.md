@@ -131,10 +131,12 @@ rather than to every operation like the three above — see
   records no `GET` verb for it at all — see `spec/paths/area.yaml`'s
   hand-authored `GET /area`); the fallback of placing it on the path item
   itself is for a route with no `GET` operation in the finished
-  specification at all, which does not currently occur. 19 routes carry this
+  specification at all, and exactly one route now takes it —
+  `/device/status/deviceheard`, which is `SUBSCRIBE`-only in the firmware
+  route table and has never been read on the wire. 20 routes carry this
   marker in the finished specification. The marker records the firmware route
   table's `SUBSCRIBE` verb, which is not the same claim as "a live processor
-  will accept a `SubscribeRequest` here" — 7 of the 19 were refused (`405`,
+  will accept a `SubscribeRequest` here" — 7 of the 20 were refused (`405`,
   one `400`) by the probed RA3 unit. `docs/subscriptions.md` has the
   route-by-route probe result.
 - **`x-leap-event-schema`** — a `$ref` to the schema of the *resource* the
@@ -150,7 +152,7 @@ rather than to every operation like the three above — see
   `docs/subscriptions.md`. It sits in the same place as
   `x-leap-subscribable` — the `get` operation, or the path item when there is
   none. It is present only where a subscribable route also has a known
-  response type recovered from the firmware extraction: 16 of the 19
+  response type recovered from the firmware extraction: 17 of the 20
   subscribable routes carry one. The 3 that don't
   (`/area/{areaId}/occupancysensorsettings`,
   `/service/bacnetnetworksettings/{bacnetnetworksettingsId}`,

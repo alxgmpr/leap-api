@@ -353,7 +353,7 @@ Stated explicitly rather than left as a confident-sounding gap:
 This specification's bundled OpenAPI document is generated from the firmware
 route extraction, which recorded **40** raw `SUBSCRIBE`-verb markers before
 hand-refinement. That number should not be quoted as the size of the final,
-correct subscribable surface. The accounting from 40 to 19 is:
+correct subscribable surface. The accounting from 40 to 20 is:
 
 - **18 excluded as mangled/concatenated path forms** — the class described
   in `docs/mapping.md`: `/areastatus`, `/devicestatus`,
@@ -363,7 +363,10 @@ correct subscribable surface. The accounting from 40 to 19 is:
   `/rentablespacestatus`, `/systemloadsheddingstatus`, `/systemstatus`,
   `/temperaturesensorstatus`, `/timeclockeventstatus`, `/timeclockstatus`,
   `/v2operationstatus`, `/zonetypegroupstatus`. Each was excluded in favour
-  of its probe-confirmed, correctly-slashed equivalent where one exists.
+  of its correctly-slashed equivalent where one exists. Note that
+  "correctly-slashed equivalent" no longer means "probe-confirmed" for all
+  of them: `/device/status/deviceheard` was added from a **pushed frame**,
+  not from a probe, because it has no `GET` for a probe to reach.
 - **7 further firmware `SUBSCRIBE` routes not carried into the bundle**, and
   these are ordinary, correctly-slashed routes rather than mangled ones:
   `/emergency/{id}/status`, `/loadcontroller/{id}/status`,
@@ -372,11 +375,11 @@ correct subscribable surface. The accounting from 40 to 19 is:
   Their absence is a genuine open gap in this specification, not a
   refinement — see the `/loadcontroller/{id}/status` note at the end of this
   section, which is one of these 7.
-- **4 hand-authored corrected paths added**: `/device/status`,
-  `/system/loadshedding/status`, `/system/naturallightoptimization/status`,
-  `/zone/status`.
+- **5 hand-authored corrected paths added**: `/device/status`,
+  `/device/status/deviceheard`, `/system/loadshedding/status`,
+  `/system/naturallightoptimization/status`, `/zone/status`.
 
-40 − 25 + 4 = 19. Reproduce with:
+40 − 25 + 5 = 20. Reproduce with:
 
 ```
 node --import tsx -e '
@@ -426,17 +429,19 @@ console.log([...new Set(subs)].sort().join("\n"));
 '
 ```
 
-**19 routes carry `x-leap-subscribable`** in the finished specification. That
+**20 routes carry `x-leap-subscribable`** in the finished specification. That
 is a count of what the document marks, and it is not the same thing as the
 count of routes a live processor will actually accept a `SubscribeRequest`
 on. The `Probe` column below is the second number, taken from
-`fixtures/subscriptions.json` (41 subscribe attempts on one RA3 processor)
-and `fixtures/push-probe.json`. **Of the 19 marked routes, 6 are
-probe-confirmed, 7 are contradicted by the same processor, and 6 are
-neither** — 5 never probed at the specification's own path, and 1
-inconclusive. The marker records the firmware route table's `SUBSCRIBE` verb,
-and per `docs/platforms.md`, presence in that table does not imply a live
-implementation.
+`fixtures/subscriptions.json` (41 subscribe attempts on one RA3 processor),
+`fixtures/push-probe.json` and `fixtures/push-experiments.json`. **Of the 20
+marked routes, 6 are probe-confirmed, 7 are contradicted by the same
+processor, and 7 are neither** — 5 never probed at the specification's own
+path, 1 inconclusive, and 1 (`/device/status/deviceheard`) never requested by
+this project at all, yet confirmed to push, because a Caseta bridge
+subscribed the client to it unasked. The marker records the firmware route
+table's `SUBSCRIBE` verb, and per `docs/platforms.md`, presence in that table
+does not imply a live implementation.
 
 | Path | Probe | Notes |
 |---|---|---|
@@ -446,6 +451,7 @@ implementation.
 | `/area/{areaId}/status` | `200 OK` | Confirmed twice, and the source of 3 of the 5 pushes in `fixtures/push-probe.json`. |
 | `/device` | **`405`** | `405 MethodNotAllowed`. |
 | `/device/status` | untested | Only the firmware's mangled form `/devicestatus` was probed (`400 BadRequest`). The corrected collection path — hand-authored, see the mangled-path defect in `docs/mapping.md` — was never subscribed to. |
+| `/device/status/deviceheard` | never requested | **Confirmed pushing without ever being asked.** The Caseta bridge auto-subscribed the client to this URL 11 ms after TLS (untagged `SubscribeResponse 204`) and, 98 s later, pushed an untagged `ReadResponse` on it — `MessageBodyType: OneDeviceStatus`, body `{"DeviceStatus": {"DeviceHeard": {…}}}` — reporting a `Pico3ButtonRaiseLower` with `DiscoveryMechanism: UserInteraction` (`caseta-device-join` in `fixtures/push-experiments.json`). Subscribe-only: the route has no `GET` in the firmware table and none here, which is why no read sweep ever reached it. No `SubscribeRequest` for it was sent by this project on either platform, so nothing is established about whether a client may subscribe to it itself, and no RA3 frame on it exists at all. |
 | `/device/{deviceId}` | `200 OK` | Confirmed on `/device/435`. (`/device/532` returned `404`: that instance does not exist.) |
 | `/link/{linkId}/memberdiscoverysession/{memberdiscoverysessionId}/status` | untested | Never probed; requires a live discovery session. |
 | `/link/{linkId}/status` | `200 OK` | Confirmed twice (`/link/439`, `/link/437`). |
