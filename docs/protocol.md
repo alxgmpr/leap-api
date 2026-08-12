@@ -143,13 +143,16 @@ tag. The routing rule above is unaffected — the subscription's tag is no
 longer pending by the time a push arrives, because the `SubscribeResponse`
 already resolved and removed it — but the reuse means a client must not
 recycle `ClientTag` values within a session, or a fresh request could be
-resolved by an unrelated subscription's push. This is a value-equality
-claim, not a claim about how the processor derives the tag: the one
-committed run subscribes at `lt-18` after a fixed-length 17-read prelude, so
-"copied from the subscribe request" and "a function of sequence position"
-are not separated by it. See `docs/subscriptions.md` for the evidence, that
-caveat in full, the delta-versus-snapshot shape of push bodies, and the
-limits of a single-processor sample.
+resolved by an unrelated subscription's push. **How the processor derives
+the value is now settled too**, which it was not when only
+`fixtures/push-probe.json` existed: `fixtures/push-experiments.json` runs the
+same experiment twice with preludes of different lengths, moving the
+subscribes from `lt-18`/`lt-19` to `lt-25`/`lt-26`, and every push moves with
+them while `lt-18`/`lt-19` — issued as ordinary reads in the second run —
+push nothing. The tag is copied from the `SubscribeRequest`, not derived from
+sequence position. See `docs/subscriptions.md` for that pair in full, the
+scope limit that still applies (one connection; nothing about reconnects),
+the delta-versus-snapshot shape of push bodies, and what the Caseta runs add.
 
 ## The 14 CommuniqueTypes
 
@@ -174,8 +177,52 @@ set:
 | `SubscribeResponse` | server → client | Reply to a `SubscribeRequest`, carrying the initial state. |
 | `UnsubscribeRequest` | client → server | End a subscription. |
 | `UnsubscribeResponse` | server → client | Reply to an `UnsubscribeRequest`. |
-| `ExceptionResponse` | server → client | An error reply distinct from a normal response with an error `StatusCode`. Named in the firmware's own communique-type count; no capture in this project's corpus shows one on the wire, so its exact shape is not established here. |
-| `CommandResponse` | server → client | Named in the firmware's own communique-type count, and never seen on the wire in this project's corpus. The one captured command-processor exchange answered as `CreateResponse`: `fixtures/push-probe.json` `seq` 20 and 24, two `CreateRequest`s to `/zone/4664/commandprocessor`, both replied to with `CommuniqueType: CreateResponse`, `StatusCode: 201 Created`, `MessageBodyType: OneZoneStatus` and a `ZoneStatus` body. That narrows the question without closing it — one processor, one route, two frames say nothing about whether `CommandResponse` is used elsewhere, or is a distinct reply type this corpus never provoked. See `docs/mapping.md`'s Commands section for why the rest of the write surface is app RE rather than captured traffic. |
+| `ExceptionResponse` | server → client | An error reply distinct from a normal response with an error `StatusCode`. **Now observed**, once — see below. |
+| `CommandResponse` | server → client | Named in the firmware's own communique-type count, and still never seen on the wire in this project's corpus. Every captured command-processor exchange answered as `CreateResponse` instead — 8 in all now, `fixtures/push-probe.json` `seq` 20 and 24 plus 6 more in `fixtures/push-experiments.json`, and all 8 identical in form: `CommuniqueType: CreateResponse`, `StatusCode: 201 Created`, `MessageBodyType: OneZoneStatus`, a `ZoneStatus` body. Two devices and two platforms now (`/zone/4664/commandprocessor` on the RA3 processor, `/zone/2/commandprocessor` on the Caseta bridge), which is broader than the original two frames — but it is still one route family, and says nothing about whether `CommandResponse` is used elsewhere or is a distinct reply type this corpus never provoked. See `docs/mapping.md`'s Commands section for why the rest of the write surface is app RE rather than captured traffic. |
+
+### `ExceptionResponse`, observed
+
+This document said, until `fixtures/push-experiments.json` landed, that
+`ExceptionResponse` was named in the firmware and never seen. It has now been
+seen — once, in the `ra3-keypad-press` run, answering a `SubscribeRequest` to
+`/device`:
+
+```json
+{
+  "communiqueType": "ExceptionResponse",
+  "header": {
+    "MessageBodyType": "ExceptionDetail",
+    "StatusCode": "405 MethodNotAllowed",
+    "Url": "/device",
+    "ClientTag": "lt-2"
+  },
+  "body": { "Message": "This request is not supported" }
+}
+```
+
+Four things it settles, and one it does not.
+
+- It **is** correlated like any other reply: `ClientTag` `lt-2` matches the
+  `SubscribeRequest` that provoked it, and the frame log records
+  `"deliveredToOnEvent": false`, so a client's ordinary pending-request map
+  resolves it. A client that only switches on `CommuniqueType` and has no
+  `ExceptionResponse` branch will not lose the frame; it will fail to
+  recognise it.
+- Its `MessageBodyType` is `ExceptionDetail`, a body type this project had
+  never seen either.
+- Its body is `{"Message": "<string>"}` — the same shape the ordinary error
+  bodies in the probe corpora carry, e.g. `{"Message": "This resource does
+  not exist : /area/32"}` in `fixtures/spec-read-caseta.json`.
+- It carries an error `StatusCode` as well, so the distinction the row above
+  draws — "an error reply distinct from a normal response with an error
+  `StatusCode`" — is a distinction of `CommuniqueType`, not of whether a
+  status code is present.
+
+What it does not settle is **when** the server chooses `ExceptionResponse`
+over a plain response with an error status. `fixtures/spec-read-caseta.json`
+alone holds 191 `400`s and 38 `405`s, and being a probe set rather than a
+frame log it records no `CommuniqueType` at all — so nothing in it says which
+form any of those answers took. One frame is not a rule.
 
 Unsolicited subscription pushes are not a distinct `CommuniqueType` in this
 list — they arrive with the same `CommuniqueType`/`Header`/`Body` shape as any
