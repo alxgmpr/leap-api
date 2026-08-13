@@ -140,6 +140,8 @@ function renderExchange(operation: Operation, model: LeapModel): string {
   }
   const replies = [...byPlatform.values()];
 
+  const isCommand = operation.url.endsWith("/commandprocessor");
+
   const notes = [
     operation.summary ? `<p class="summary">${esc(operation.summary)}</p>` : "",
     operation.bodyType
@@ -149,7 +151,6 @@ function renderExchange(operation: Operation, model: LeapModel): string {
       ? `<p class="meta">Subscribing pushes <a href="${ROOT}schema/${esc(operation.eventSchema)}/index.html">${esc(operation.eventSchema)}</a>, a partial carrying only changed fields. <a href="${ROOT}docs/subscriptions/index.html">Subscriptions</a>.</p>`
       : "",
     prose ? `<div class="prose opdesc">${renderMarkdown(prose)}</div>` : "",
-    composer(operation, model),
     observationTable(operation),
     operation.responseSchema
       ? `<p class="meta">Payload schema <a href="${ROOT}schema/${esc(operation.responseSchema)}/index.html">${esc(operation.responseSchema)}</a>.</p>`
@@ -157,7 +158,6 @@ function renderExchange(operation: Operation, model: LeapModel): string {
     operation.requestSchema
       ? `<p class="meta">Request payload schema <a href="${ROOT}schema/${esc(operation.requestSchema)}/index.html">${esc(operation.requestSchema)}</a>.</p>`
       : "",
-    `<p class="meta openapi-mapping">In <code>dist/openapi.yaml</code>: <code>${esc(operation.httpVerb || "no HTTP verb — subscribe-only")} ${esc(operation.url)}</code>${operation.operationId ? `, operationId <code>${esc(operation.operationId)}</code>` : ""}. <a href="${ROOT}docs/mapping/index.html">Mapping</a>.</p>`,
   ]
     .filter(Boolean)
     .join("\n");
@@ -170,7 +170,8 @@ ${
     ? replies.map((frame) => renderReply(frame)).join("")
     : '<div class="reply reply-none"><span class="dir" aria-hidden="true">←</span><span class="shape">no captured reply</span></div>'
 }
-<details class="more"><summary>Details, evidence and composer</summary>${notes}</details>
+<details class="compose"${isCommand ? " open" : ""}><summary>Compose a frame</summary>${composer(operation, model)}</details>
+<details class="more"><summary>Evidence and notes</summary>${notes}</details>
 </article>`;
 }
 

@@ -16,19 +16,20 @@ export function renderCoveragePage(model: LeapModel): Page[] {
 numbers.</p>
 
 <dl class="coverage">
-<dt>Bundled</dt>
+<dt>Covered</dt>
 <dd>${operations} operations across ${model.resources.length} resources, and ${model.schemas.length} schemas.</dd>
 
 <dt>Firmware routes not covered</dt>
 <dd>228 of the 410 route templates the firmware extraction recovered are absent
-from the bundle. 4 of those are <code>{xid}</code> twins whose <code>{id}</code>
-form is bundled — OpenAPI forbids two paths differing only in parameter name, so
-they are represented rather than missing — leaving 224 genuinely not covered.</dd>
+from this reference. 4 of those are <code>{xid}</code> twins whose
+<code>{id}</code> form is covered — the two forms address the same resource and
+cannot be stated separately, so they are represented rather than missing —
+leaving 224 genuinely not covered.</dd>
 
-<dt>Probed but missing from the specification</dt>
+<dt>Probed but missing from this reference</dt>
 <dd>${coverage.probedNotInSpec.length}${coverage.probedNotInSpec.length === 0 ? " — every path a corpus answered 200 on is documented." : ""}</dd>
 
-<dt>Bundled with no 200 capture</dt>
+<dt>Covered with no 200 capture</dt>
 <dd>${coverage.specWithoutFixture.length}. Mostly "asked and not answered 200",
 not "hardware refused it" — the two should not be conflated. Each operation's
 own page shows what every corpus actually answered.</dd>

@@ -430,6 +430,7 @@ div.reply {
 /* ---------- disclosures ---------- */
 
 .more,
+.compose,
 .links {
   margin: 10px 0 0 calc(1.2em + 9px);
   font-size: 0.9rem;
@@ -441,6 +442,7 @@ div.reply {
 }
 
 .more > summary,
+.compose > summary,
 .links > summary,
 .frame-body > summary {
   cursor: pointer;
@@ -451,12 +453,14 @@ div.reply {
 }
 
 .more > summary:hover,
+.compose > summary:hover,
 .links > summary:hover,
 .frame-body > summary:hover {
   color: var(--live);
 }
 
 .more > *:not(summary),
+.compose > *:not(summary),
 .links > *:not(summary) {
   margin-top: 10px;
 }
@@ -489,6 +493,10 @@ div.reply {
 }
 
 /* ---------- composer ---------- */
+
+.compose[open] > summary {
+  color: var(--live);
+}
 
 .composer {
   padding: 12px;

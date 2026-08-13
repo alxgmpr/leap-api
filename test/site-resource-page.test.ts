@@ -13,14 +13,16 @@ describe("resource pages", () => {
     assert.ok(zone);
   });
 
-  test("leads with CommuniqueType, not the HTTP verb", () => {
+  test("leads with CommuniqueType and never shows an HTTP verb", () => {
     const html = zone?.html ?? "";
-    const communique = html.indexOf("ReadRequest");
-    const verb = html.indexOf("OpenAPI mapping");
-    assert.ok(communique > -1);
+    // The markup carries the CommuniqueType; the uppercasing is presentational.
+    assert.match(html, /class="ct">Read</);
+    assert.match(html, /class="ct">Update</);
     assert.ok(
-      verb === -1 || communique < verb,
-      "CommuniqueType must come first",
+      !/\bGET\b|\bPOST\b|\bPUT\b|\bDELETE\b/.test(
+        html.replace(/<div class="prose opdesc">[\s\S]*?<\/div>/g, ""),
+      ),
+      "HTTP verbs are not part of this protocol's vocabulary",
     );
   });
 
@@ -170,14 +172,38 @@ describe("resource pages", () => {
     assert.match(html, /class="shape">ZoneStatuses · \d+ items/);
   });
 
-  test("keeps the composer, evidence and OpenAPI mapping behind one disclosure", () => {
+  test("gives the composer its own affordance, separate from the evidence", () => {
     const html = zone?.html ?? "";
     assert.match(
       html,
-      /<details class="more"><summary>Details, evidence and composer/,
+      /<details class="compose"[^>]*><summary>Compose a frame/,
     );
+    assert.match(html, /<details class="more"><summary>Evidence and notes/);
     assert.match(html, /class="composer"/);
     assert.match(html, /class="observations"/);
-    assert.match(html, /openapi-mapping/);
+  });
+
+  test("opens the composer where composing is the point", () => {
+    const html = zone?.html ?? "";
+    // A command processor's whole surface is the frame you build; a read's is
+    // the frame already shown above it.
+    const opened = (html.match(/<details class="compose" open>/g) ?? []).length;
+    const commandProcessors = (
+      model.resources.find((r) => r.name === "zone")?.operations ?? []
+    ).filter((o) => o.url.endsWith("/commandprocessor")).length;
+    assert.ok(commandProcessors > 0);
+    assert.equal(opened, commandProcessors);
+  });
+
+  test("does not route the reader through OpenAPI in its own voice", () => {
+    // Authored spec prose may still mention it; the site's own chrome may not.
+    const chrome = (zone?.html ?? "").replace(
+      /<div class="prose opdesc">[\s\S]*?<\/div>/g,
+      "",
+    );
+    assert.ok(
+      !/openapi/i.test(chrome),
+      "the site's own labels and links must not lean on OpenAPI",
+    );
   });
 });

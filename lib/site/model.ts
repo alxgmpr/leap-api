@@ -57,7 +57,7 @@ const HTTP_VERBS = ["get", "post", "put", "delete"] as const;
 
 const DOC_TITLES: Record<string, string> = {
   protocol: "The wire protocol",
-  mapping: "Mapping LEAP onto OpenAPI",
+  mapping: "Conventions and extensions",
   subscriptions: "Subscriptions",
   platforms: "Platform divergence",
   discovery: "Discovery and pairing",
