@@ -3,11 +3,12 @@ import { dirname, join } from "node:path";
 import { buildModel } from "../lib/site/model.ts";
 import { renderHome } from "../lib/site/render/home.ts";
 import type { Page } from "../lib/site/render/layout.ts";
+import { renderResourcePages } from "../lib/site/render/resource.ts";
 
 const OUT = "site";
 
 const model = buildModel();
-const pages: Page[] = [...renderHome(model)];
+const pages: Page[] = [...renderHome(model), ...renderResourcePages(model)];
 
 rmSync(OUT, { recursive: true, force: true });
 for (const p of pages) {
