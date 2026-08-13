@@ -265,11 +265,42 @@ npm run redact        # re-redact fixtures/ from source probe data (requires the
 npm run bundle         # merge spec/ into dist/openapi.yaml
 npm run build:site     # generate the documentation site into site/
 npm run coverage       # report probe-vs-spec and TODO-marker coverage
+npm run fields         # report fields observed on the wire but not declared
 ```
 
 `npm test` reads build artifacts directly, so run `npm run bundle && npm run
 build:site` before it — `test/bundle.test.ts` has always required the former,
 and the site tests require the latter.
+
+## Declared versus observed
+
+`npm run coverage` answers "which routes have we asked about". It does not
+answer "does a schema describe everything the hardware actually sends", and
+neither does anything else here: `test/conformance.test.ts` validates captured
+bodies *against* these schemas, and JSON Schema permits undeclared properties,
+so a schema missing a field passes every test in this repository while being
+incomplete.
+
+`npm run fields` (`lib/observed-fields.ts`) is that check. For every captured
+`200`, it resolves the operation's response schema, walks the body, and reports
+any field the schema does not accept. It exits non-zero when the list is not
+empty, and CI runs it.
+
+The subtlety is composition, and it is the whole difficulty. `Device` declares
+25 properties and inherits eight more -- `href`, `Name`, `SerialNumber`,
+`DeviceType` among them -- through an `allOf` against `DeviceBase` and
+`DeviceMiniDefinitionForMasterDeviceList`, the deliberate flattening of two
+anonymous Go embeds described in that schema's own header. A check that reads
+`properties` alone reports all eight as undeclared and is wrong about every
+one; an early draft of this tool reported 44 such phantoms across 7 schemas.
+With `allOf`/`anyOf`/`oneOf` resolved, one real gap remained.
+
+That gap was `Device.ProductId`: a string, `"134479872"`, on 3 of 95 device
+instances, all of them the bare Caseta bridge (firmware v01.124) describing
+itself. No firmware type declares it -- it is absent from all 636 recovered
+struct definitions -- so it is a wire-only field in the same class as the
+plural collection wrappers `docs/mapping.md` describes. It is now declared,
+with its evidence, in `Device.yaml`.
 
 ## The documentation site
 

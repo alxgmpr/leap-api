@@ -32,11 +32,38 @@
 #    and all four read corpora that return a Device produce exactly those two
 #    -- `Addressed` 92, `Unaddressed` 1 (/device/3681, RA3 v03.247).
 #    See AddressedState.yaml.
+#
+# 4. `ProductId` ADDED, from the wire alone. The firmware extraction has no
+#    such field on any of its 636 types -- `grep ProductId vendor/
+#    leap-types.json` returns nothing -- and no other schema in this
+#    specification declares one. It is a wire-only field in the same class as
+#    the plural collection wrappers (see docs/mapping.md): observed, and
+#    absent from the extraction the rest of this schema is generated from.
+#    3 observations, all on the bare Caseta bridge (firmware v01.124,
+#    `fixtures/spec-read-caseta-bare.json`, `/device` and `/device/1`), all
+#    the bridge describing itself -- `DeviceType: SmartBridge` -- and all the
+#    same value, the string "134479872". Typed `string` because that is what
+#    the wire shows; it looks like a packed integer, and nothing here
+#    establishes that it is one. Optional: 3 of 95 device instances across
+#    every corpus carry it, and the other 92 do not.
+#
+#    Found by `npm run fields`, which was written because nothing could see
+#    this: the conformance suite validates captured bodies *against* these
+#    schemas, and JSON Schema permits undeclared properties, so a schema
+#    missing a field the hardware sends passes every test.
 type: object
 allOf:
   - $ref: "#/components/schemas/DeviceBase"
   - $ref: "#/components/schemas/DeviceMiniDefinitionForMasterDeviceList"
 properties:
+  ProductId:
+    type: string
+    description: |
+      Wire-only: no firmware type declares this field. Observed 3 times, all
+      on the bare Caseta bridge (v01.124) describing itself, all
+      `"134479872"`. See the header note.
+    x-observed-values:
+      - "134479872"
   FullyQualifiedName:
     type: array
     items:
