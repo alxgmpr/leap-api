@@ -404,3 +404,24 @@ describe("collection alternations", () => {
     );
   });
 });
+
+describe("traversal depth", () => {
+  test("the default depth is past the point the walk saturates", () => {
+    // The bound exists to stop a cyclic body, not to sample. If a future
+    // corpus nests deeper than the default, this fails rather than quietly
+    // checking less than it reports.
+    const count = (maxDepth?: number) => {
+      const { instances } = collectInstances({ maxDepth });
+      let total = 0;
+      for (const seen of instances.values()) total += seen.length;
+      return total;
+    };
+    const atDefault = count();
+    assert.equal(atDefault, count(16), "deeper traversal must find no more");
+    assert.ok(
+      atDefault > count(3),
+      "a depth of 3 was the old cap and dropped instances; if this no longer " +
+        "holds the corpora changed shape and the default deserves re-checking",
+    );
+  });
+});

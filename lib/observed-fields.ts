@@ -31,7 +31,7 @@ export type RequiredIssue = {
     | "candidate";
 };
 
-type Options = { bundle?: string; manifest?: string };
+type Options = { bundle?: string; manifest?: string; maxDepth?: number };
 
 function refName(node: unknown): string | null {
   const ref = (node as SchemaNode | null)?.$ref;
@@ -119,6 +119,11 @@ export function collectInstances(options?: Options): {
   };
   const schemas = doc.components.schemas;
   const instances = new Map<string, Instance[]>();
+  // Deep enough that the traversal saturates: raising it to 5 finds 124 more
+  // instances, and 8 and 12 find nothing further. The bound exists only to
+  // stop a cyclic body, not to sample -- the previous value of 3 was an
+  // arbitrary cap that silently dropped those 124.
+  const maxDepth = options?.maxDepth ?? 8;
 
   const walk = (
     name: string | null,
@@ -126,7 +131,8 @@ export function collectInstances(options?: Options): {
     corpus: string,
     depth = 0,
   ): void => {
-    if (!name || depth > 3 || !value || typeof value !== "object") return;
+    if (!name || depth > maxDepth || !value || typeof value !== "object")
+      return;
     const schema = schemas[name];
 
     // A collection may be expressed as an alternation rather than a bare
