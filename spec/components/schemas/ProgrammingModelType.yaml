@@ -20,8 +20,8 @@ description: |
   `/buttongroup/1609/button`) -- 3 occurrences out of 43
   `ProgrammingModelType` values in that corpus.
 
-  It appears in neither the original RA3 capture nor either Caseta corpus,
-  and those two absences have different explanations:
+  It appears in neither the original RA3 capture nor any of the three Caseta
+  corpora, and those two absences have different explanations:
 
   - **RA3 v03.247: a coverage artifact.** That capture never reached a
     per-button route at all -- its `/button` collection returns a bare

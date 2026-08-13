@@ -175,9 +175,10 @@
   # which is why x-leap-event-schema points at DeviceStatus and not at
   # DeviceHeard. The same auto-subscribe on the same route opens the other
   # two Caseta connections in that file as well, `caseta-connect-observe` and
-  # `caseta-push-pad-0` -- all three of them, which is the count
-  # docs/platforms.md gives for the connect-time pair. Only
-  # `caseta-device-join` went on to push a body.
+  # `caseta-push-pad-0` -- all three of the Caseta connections
+  # docs/platforms.md counts, each of which opens with the same two-frame
+  # connect-time pair (this route and /zone/status/deprecated/level). Only
+  # `caseta-device-join` went on to push a body on this one.
   #
   # SCOPE: every frame behind this path is Caseta. The auto-subscribe is a
   # platform divergence (docs/platforms.md), and no RA3 capture in this
@@ -224,9 +225,12 @@
     `SUBSCRIBE` and nothing else, under the concatenated spelling
     `/devicestatus/deviceheard`. The Caseta bridge auto-subscribes a client
     to this URL at connect without being asked, so pushes on it arrive
-    **untagged**; a client keyed purely on `ClientTag` will drop them. See
-    `fixtures/push-experiments.json` (`caseta-device-join`,
-    `caseta-connect-observe`) and `docs/subscriptions.md`.
+    **untagged**; a client keyed purely on `ClientTag` will drop them. That
+    auto-subscribe opens all three Caseta connections in
+    `fixtures/push-experiments.json` -- `caseta-device-join`,
+    `caseta-connect-observe` and `caseta-push-pad-0` -- and only the first
+    went on to push a body on this route, which is the one observation
+    above. See also `docs/subscriptions.md`.
   summary: Device-heard events
 /device/{deviceId}:
   delete:

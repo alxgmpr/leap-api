@@ -103,9 +103,12 @@ description: |
 
   **Hardware has falsified four closed sets across this specification's
   history, three of them from the strong end of ground one.** That is all of
-  them. No other `enum` in `spec/components/schemas/` has ever gained a
-  member, and the only ones that ever lost one are the five this pass
-  opened -- which lost theirs to the ruling above, not to hardware.
+  them, and the check behind it is exhaustive rather than a recollection:
+  replaying every revision of all 344 top-level files in
+  `spec/components/schemas/` (the staging tree below it holds no `enum` node
+  at all) gives nine `enum` member-list changes in the whole history --
+  these four, and the five one-member sets this pass opened. Nothing else
+  has ever changed.
 
   - `ServiceType` declared 8 -- Alexa, GoogleHome, BACnet, HomeKit, IFTTT,
     Sonos, NTPServer, AutoProgrammer -- every one independently observed,
