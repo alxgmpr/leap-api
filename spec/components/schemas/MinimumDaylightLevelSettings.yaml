@@ -11,12 +11,19 @@ properties:
     description: |
       TODO(enum): members of MinimumDaylightLevelType were not recovered
       from the firmware extraction, and hardware has produced exactly one:
-      `Off`, on the single observed DaylightingGainSettings. One value does
+      `Off`, on the single observed DaylightingGainSettings -- which the one
+      corpus that carries it serves twice, at /area/2/daylightinggainsettings
+      and again as the sole element of the /area/daylightinggainsettings
+      collection, so `x-observed-census` counts 2 occurrences of the one
+      object. One value does
       not distinguish an enum from a constant -- a minimum-daylight-level
       type that is only ever `Off` is exactly what a switched-off setting
       looks like, and says nothing about the vocabulary of the type. Stays
       an open string.
     x-observed-values:
       - "Off"
+    x-observed-census:
+      "Off":
+        spec-read-caseta: 2
 required:
   - LevelType

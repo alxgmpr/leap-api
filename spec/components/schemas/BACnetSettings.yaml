@@ -32,13 +32,19 @@ properties:
     description: |
       TODO(enum): members of BACnetInstanceStrategy were not recovered from
       the firmware extraction, and hardware has produced exactly one:
-      `Custom`, 3 observations on RA3 (v03.247 via /service; v03.249 via
-      /service and /service/bacnet). A named firmware enum with one observed
-      value stays an open string -- the field is called a *strategy*, so
-      whatever the non-custom strategies are named, this corpus never
-      provoked one.
+      `Custom`, on RA3 only -- v03.247 via /service, v03.249 via /service and
+      /service/bacnet, which is the extra route the coverage-blind probe adds.
+      Both Caseta spec probes ask /service/bacnet and get `404 NotFound`.
+      Occurrence counts per corpus are under `x-observed-census`. A named
+      firmware enum with one observed value stays an open string -- the field
+      is called a *strategy*, so whatever the non-custom strategies are named,
+      this corpus never provoked one.
     x-observed-values:
       - Custom
+    x-observed-census:
+      Custom:
+        ra3: 1
+        spec-read-ra3: 2
 required:
   - Enabled
   - NetworkNumber

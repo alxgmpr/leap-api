@@ -8,12 +8,14 @@ description: |
   Device/ButtonGroupExpanded/LinkNodeExpanded (Task 12a), NLOTime (Task
   12b) and TimeclockEvent.
 
-  Decided from the wire body, not from the name==type shape. Both observed
-  instances are `/networkinterface/1` from the coverage-blind spec probe,
-  one per platform -- RA3 v03.249 and Caseta v01.123, the only two 200 OKs
-  any corpus has for this route; every `/device/{deviceId}/networkinterface`
+  Decided from the wire body, not from the name==type shape. All three
+  observed instances are `/networkinterface/1` from a coverage-blind spec
+  probe -- RA3 v03.249 once, Caseta twice (v01.123 and, after the bridge was
+  reset, v01.124), the only 200 OKs any corpus has for this route; every
+  `/device/{deviceId}/networkinterface`
   probe on both platforms answers `400 BadRequest "This request is not
-  supported"`, as does the bare `/networkinterface` collection. Both put
+  supported"`, as does the undecorated `/networkinterface` collection. All
+  three put
   `MACAddress`, `IPv4Properties` and `IPv6Properties` flat at the top level
   next to `AdapterType`:
 
@@ -33,8 +35,11 @@ description: |
   generated schema's `required: [NetworkInterfaceSmallDefinition]` could
   never be satisfied by any body this route returns. Hardware wins;
   restructured as `allOf` against the embedded type, keeping its own
-  `required: [MACAddress]` (present on both instances). The Caseta body
-  corroborates the flatten on a second platform. It also omits
+  `required: [MACAddress]` (present on all three instances). The Caseta body
+  corroborates the flatten on a second platform, and the v01.124 bare-bridge
+  body is byte-identical to the v01.123 one -- same interface, same bridge,
+  a firmware version later and a project wipe in between, so it is a
+  repetition rather than a third independent witness. It also omits
   `SOCKS5ProxyProperties` entirely -- which corroborates that property's
   optionality rather than establishing it: firmware already types it
   `SOCKS5ProxyProperties *leapobj.SOCKS5ProxyProperties`, a pointer, and
@@ -49,13 +54,15 @@ description: |
   `"NetworkInterfaces": [{"MACAddress": ...}]` on RA3. Only this schema's
   embed is flattened.
 
-  `AdapterType` stays required (`"Ethernet"`, 2/2, once per platform). Its
+  `AdapterType` stays required (`"Ethernet"`, present on every observed
+  instance). Its
   enum members were not recovered from the firmware and one distinct
   observed value is too thin a base to author one, so it stays an open
   string -- and a WiFi member is not
   hypothetical here, since this same schema carries a `WiFiProperties`
   property that no captured interface populates. The observed value is
-  recorded on the field under `x-observed-values`.
+  recorded on the field under `x-observed-values` and counted per corpus
+  under `x-observed-census`.
 allOf:
   - $ref: "#/components/schemas/NetworkInterfaceSmallDefinition"
 properties:
@@ -66,10 +73,17 @@ properties:
     description: |
       TODO(enum): members of NetworkInterfaceType were not recovered from
       the firmware extraction, and hardware has produced exactly one
-      distinct value: `Ethernet`, twice, via /networkinterface/1 on RA3
-      v03.249 and on Caseta v01.123. See this schema's description.
+      distinct value: `Ethernet`, via /networkinterface/1 on RA3 v03.249 and
+      on Caseta v01.123 and v01.124. Counts per corpus are under
+      `x-observed-census`; the two Caseta ones are the same interface
+      reprobed, not two interfaces. See this schema's description.
     x-observed-values:
       - Ethernet
+    x-observed-census:
+      Ethernet:
+        spec-read-caseta: 1
+        spec-read-caseta-bare: 1
+        spec-read-ra3: 1
   WiFiProperties:
     $ref: "#/components/schemas/WiFiProperties"
   SOCKS5ProxyProperties:

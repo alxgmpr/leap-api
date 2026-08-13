@@ -1,10 +1,11 @@
-# Straight copy from _generated/NTPServerProperties.yaml -- matches the one
-# captured instance exactly. Observed on RA3 v03.247, via /service, as the
-# flat `NTPServerProperties` key on the array entry with
+# Straight copy from _generated/NTPServerProperties.yaml -- matches both
+# captured instances exactly. Observed on RA3 v03.247 and again on RA3
+# v03.249, both via /service, as the flat `NTPServerProperties` key on the
+# array entry with
 # `Type: "NTPServer"`: `{"PropertiesType": "Static", "Endpoints": [{"href":
 # "/service/ntpserver/1", "Endpoint": "time.iot.lutron.io"}]}`. Not observed
-# on Caseta (no `/service/ntpserver` entry in that capture). See
-# Service.yaml.
+# on Caseta (no `/service/ntpserver` entry in any of the three Caseta
+# corpora). See Service.yaml.
 type: object
 properties:
   PropertiesType:
@@ -13,11 +14,16 @@ properties:
       TODO(enum): members of NTPServerPropertiesType were not recovered
       from the firmware extraction, and hardware has produced exactly one:
       `Static`, on the /service entry for `Type: "NTPServer"` in each of the
-      two RA3 corpora. The value's own name implies a non-static counterpart
+      two RA3 corpora and no Caseta one -- see `x-observed-census`. The
+      value's own name implies a non-static counterpart
       (a DHCP-supplied server list is the obvious candidate) that neither
       capture is configured for.
     x-observed-values:
       - Static
+    x-observed-census:
+      Static:
+        ra3: 1
+        spec-read-ra3: 1
   Endpoints:
     type: array
     items:

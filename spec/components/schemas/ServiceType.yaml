@@ -36,8 +36,13 @@ description: |
   Values observed to date, retained below under `x-observed-values` as
   documentation rather than as an assertion (RA3 v03.247: Alexa,
   GoogleHome, BACnet, HomeKit, IFTTT, Sonos, NTPServer; RA3 v03.249, the
-  spec probe: those seven plus Cloud; Caseta v01.123, both corpora: Sonos,
-  HomeKit, Alexa, GoogleHome, AutoProgrammer, IFTTT). A value outside this
+  spec probe: those seven plus Cloud; Caseta: Sonos, HomeKit, Alexa,
+  GoogleHome, AutoProgrammer, IFTTT, the same six on all three corpora --
+  v01.123 twice and the wiped v01.124 bridge, which provisions no fewer
+  integrations for having no devices). Per-corpus occurrence counts are
+  under `x-observed-census`; a value appearing more than once in a corpus is
+  the /service collection and the per-type /service/{type} route serving the
+  same entry. A value outside this
   list is expected
   and validates -- consistent with `Service.yaml`, which does not set
   `additionalProperties: false`.
@@ -51,4 +56,47 @@ x-observed-values:
   - NTPServer
   - AutoProgrammer
   - Cloud
+x-observed-census:
+  Alexa:
+    caseta: 1
+    ra3: 1
+    spec-read-caseta: 2
+    spec-read-caseta-bare: 2
+    spec-read-ra3: 2
+  AutoProgrammer:
+    caseta: 1
+    spec-read-caseta: 1
+    spec-read-caseta-bare: 1
+  BACnet:
+    ra3: 1
+    spec-read-ra3: 2
+  Cloud:
+    spec-read-ra3: 1
+  GoogleHome:
+    caseta: 1
+    ra3: 1
+    spec-read-caseta: 1
+    spec-read-caseta-bare: 1
+    spec-read-ra3: 1
+  HomeKit:
+    caseta: 1
+    ra3: 1
+    spec-read-caseta: 2
+    spec-read-caseta-bare: 2
+    spec-read-ra3: 2
+  IFTTT:
+    caseta: 1
+    ra3: 1
+    spec-read-caseta: 2
+    spec-read-caseta-bare: 2
+    spec-read-ra3: 2
+  NTPServer:
+    ra3: 1
+    spec-read-ra3: 1
+  Sonos:
+    caseta: 1
+    ra3: 1
+    spec-read-caseta: 2
+    spec-read-caseta-bare: 2
+    spec-read-ra3: 2
 example: HomeKit

@@ -54,11 +54,20 @@ properties:
       from the firmware extraction, and hardware has produced exactly one:
       `NotRequired`, 91 of the 93 object occurrences on basis B (see this
       schema's header comment), across both platforms and all five read
-      corpora that return a device status. Every probed system was
+      corpora that return a device status. The 91 is the sum of
+      `x-observed-census`, which is on basis B; the denominator 93 is the
+      header's and is not machine-checked. Every probed system was
       already in sync; whatever this
       field reports mid-transfer was never captured, so the set stays open.
     x-observed-values:
       - NotRequired
+    x-observed-census:
+      NotRequired:
+        caseta: 48
+        ra3: 31
+        spec-read-caseta: 4
+        spec-read-caseta-bare: 2
+        spec-read-ra3: 6
   SensorHeard:
     $ref: "#/components/schemas/SensorHeard"
   DeviceHeard:
@@ -72,8 +81,9 @@ properties:
     description: |
       TODO(enum): members of StatusAccuracy were not recovered from the
       firmware extraction, and hardware has produced exactly one: `Good`,
-      37 observations (RA3 v03.247 31, RA3 v03.249 6; absent from every
-      Caseta device status, on all three Caseta corpora). This is the one
+      on RA3 only -- absent from every Caseta device status, on all three
+      Caseta corpora; the per-corpus counts are under `x-observed-census` and
+      sum to 37. This is the one
       count in this file that is the same on both bases, and the one the
       bare-bridge corpus did not move: only the RA3 corpora carry the field,
       and both answer 204 NoContent on the /device/status collection that
@@ -82,5 +92,9 @@ properties:
       same single value -- see that field for why one value is not a set.
     x-observed-values:
       - Good
+    x-observed-census:
+      Good:
+        ra3: 31
+        spec-read-ra3: 6
   FirmwareUpdateStatus:
     $ref: "#/components/schemas/DeviceFirmwareUpdateStatus"

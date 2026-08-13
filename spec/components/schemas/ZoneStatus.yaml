@@ -38,7 +38,23 @@ description: |
   `Unoccupied` were expected but unconfirmed, and the coverage-blind probe
   produced both. That is the precedent this field declines to repeat.
   Values seen to date are recorded per field under `x-observed-values`, as
-  documentation rather than as an assertion.
+  documentation rather than as an assertion, and counted per corpus under
+  `x-observed-census`.
+
+  **THE CENSUS AND THIS FILE'S PROSE COUNT ON DIFFERENT BASES**, and the
+  difference is worth stating once here rather than four times below. The
+  prose counts the way `SwitchedLevel.yaml` established: the base routes
+  (/zone/status, /zone/{zoneId}/status) on their own, with
+  /zone/{zoneId}/status/expanded and
+  /area/{areaId}/associatedzone/status[/expanded] called out separately,
+  because those routes re-serve zones the base routes already returned and
+  folding them in would make a re-derived number look like new evidence.
+  `x-observed-census` cannot make that distinction: it is a flat count of
+  object occurrences, so `ZoneExpandedStatus` -- which is `allOf` this
+  schema -- lands on these same annotated fields and is counted here too, as
+  are the frame-log snapshots. Every census total below is therefore larger
+  than the prose figure it sits next to, and each field says by how much.
+  Neither number is wrong; they answer different questions.
 
   `Availability` points at the shared `Availability` schema: its firmware
   type is `leapobj.Availability`, the same type as DeviceStatus.Availability,
@@ -68,12 +84,21 @@ properties:
       TODO(enum): members of CCOLevel were not recovered from the firmware
       extraction, and hardware has produced exactly one: `Open`, 3
       observations across the two RA3 corpora (/zone/status and
-      /zone/2520/status, the only CCO zone either reaches; neither Caseta
-      corpus reaches one). A `Closed` counterpart is
+      /zone/2520/status, the only CCO zone either reaches; no Caseta
+      corpus reaches one). `x-observed-census` totals 9 on the flat basis
+      this schema's description explains: those 3, plus 1 through
+      /zone/2520/status/expanded and 5 in the RA3 frame logs -- all of them
+      that same zone. A `Closed` counterpart is
       all but certain and simply never coincided with a probe, which is
       why this stays an open string.
     x-observed-values:
       - Open
+    x-observed-census:
+      Open:
+        fixtures/push-experiments.json: 4
+        fixtures/push-probe.json: 1
+        ra3: 3
+        spec-read-ra3: 1
   ReceptacleLevel:
     type: string
     description: |
@@ -108,12 +133,25 @@ properties:
       deltas and no fan changed while a capture was open. See
       `docs/subscriptions.md`.
 
+      `x-observed-census` totals 9 rather than 8: it folds in the expanded
+      route, and it counts the duplicated `ra3-keypad-press` snapshot twice
+      because it counts occurrences, not observations. This field is the
+      clearest case in the file of why the two bases are kept apart.
+
       Two values on one physical fan at two different moments is a lower
       bound, not the vocabulary of the type: low and medium counterparts
       are expected and unobserved, which is why this stays an open string.
     x-observed-values:
       - High
       - "Off"
+    x-observed-census:
+      High:
+        fixtures/push-experiments.json: 2
+        fixtures/push-probe.json: 1
+        ra3: 3
+        spec-read-ra3: 1
+      "Off":
+        fixtures/push-experiments.json: 2
   Zone:
     $ref: "#/components/schemas/HyperReference"
   StatusAccuracy:
@@ -130,12 +168,22 @@ properties:
       `fixtures/push-probe.json`. Only 2 of those 52 are in pushes (`seq` 21
       and 25): 46 are in the subscribe-time snapshot (`seq` 18), 2 in the
       CreateResponse command replies (`seq` 20, 24) and 2 in ordinary reads
-      (`seq` 2, 27). Volume is
+      (`seq` 2, 27). `x-observed-census` totals 510 -- those 224 probe-set
+      occurrences, the 52, and 234 more in `fixtures/push-experiments.json`,
+      which this paragraph had never counted. Volume is
       not variety -- every probe caught a healthy system, and a field named
       "status accuracy" exists to report the unhealthy case this corpus
       never provoked.
     x-observed-values:
       - Good
+    x-observed-census:
+      Good:
+        caseta: 42
+        fixtures/push-experiments.json: 234
+        fixtures/push-probe.json: 52
+        ra3: 81
+        spec-read-caseta: 3
+        spec-read-ra3: 98
   Availability:
     $ref: "#/components/schemas/Availability"
   SingleSetPointHVACStatus:
@@ -148,12 +196,21 @@ properties:
       TODO(enum): members of ZoneLockState were not recovered from the
       firmware extraction, and hardware has produced exactly one:
       `Unlocked`, 102 observations across the two RA3 corpora (the field
-      never appears on either Caseta corpus), plus 33 through
+      never appears on any of the three Caseta corpora), plus 33 through
       ZoneExpandedStatus and 36 through
-      /area/{areaId}/associatedzone/status and its expanded form. A `Locked`
+      /area/{areaId}/associatedzone/status and its expanded form.
+      `x-observed-census` totals 397 -- those 171 probe-set occurrences plus
+      226 in the two RA3 frame logs, which this paragraph had never counted.
+      A `Locked`
       counterpart is implied by the field's own name; no probed zone was
       locked.
     x-observed-values:
       - Unlocked
+    x-observed-census:
+      Unlocked:
+        fixtures/push-experiments.json: 180
+        fixtures/push-probe.json: 46
+        ra3: 75
+        spec-read-ra3: 96
 required:
   - StatusAccuracy

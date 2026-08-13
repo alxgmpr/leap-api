@@ -62,11 +62,16 @@ properties:
     description: |
       TODO(enum): members of OccupancySensorSensitivity were not recovered
       from the firmware extraction, and hardware has produced exactly one:
-      `Medium`, on the single observed OccupancySensorSettings. The name of
+      `Medium`, on the single observed OccupancySensorSettings -- which this
+      schema's description records as two bodies of one object, so
+      `x-observed-census` counts 2. The name of
       the value implies neighbours it does not prove, and one value does not
       distinguish an enum from a constant, so this stays an open string --
       the precedent ZoneStatus.yaml records at length.
     x-observed-values:
       - Medium
+    x-observed-census:
+      Medium:
+        spec-read-caseta: 2
   PresetAssignmentUnsupported:
     type: boolean

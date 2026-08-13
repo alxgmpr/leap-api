@@ -11,12 +11,20 @@ properties:
       description: |
         TODO(enum): members of LinkOperatingMode were not recovered from the
         firmware extraction, and hardware has produced exactly one:
-        `Normal`, 6 observations covering every link on both platforms
-        (/link/{439,437}/status on each RA3 corpus, /link/1/status on each
-        Caseta corpus). Every probed link was operating
+        `Normal`, covering every link on both platforms --
+        /link/{439,437}/status on each of the two RA3 corpora, /link/1/status
+        on each of the three Caseta corpora. Occurrence counts per corpus are
+        under `x-observed-census`. Every probed link was operating
         normally; a mode named `Normal` exists to contrast with modes this
         corpus never provoked.
       x-observed-values:
         - Normal
+      x-observed-census:
+        Normal:
+          caseta: 1
+          ra3: 2
+          spec-read-caseta: 1
+          spec-read-caseta-bare: 1
+          spec-read-ra3: 2
 required:
   - Link

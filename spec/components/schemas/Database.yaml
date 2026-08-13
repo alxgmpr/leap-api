@@ -12,12 +12,20 @@ properties:
     description: |
       TODO(enum): members of DatabaseType were not recovered from the
       firmware extraction, and hardware has produced exactly one: `Project`,
-      4 observations (both RA3 corpora, nested inside a Device via
-      /project/masterdevicelist/devices and /device/435). A processor that
+      on both RA3 corpora and neither Caseta one, always nested inside a
+      Device -- via /project/masterdevicelist/devices, via /device/435, and
+      via the `Parent` device of two entries in
+      /link/{439,437}/associatedlinknode/expanded. Four occurrences per RA3
+      corpus, of what the header comment records as a single database object;
+      the per-corpus counts are under `x-observed-census`. A processor that
       distinguishes database *types* plainly has more than one; the probes
       only ever reach the project database.
     x-observed-values:
       - Project
+    x-observed-census:
+      Project:
+        ra3: 4
+        spec-read-ra3: 4
   Version:
     $ref: "#/components/schemas/DatabaseVersion"
   TransferGUID:

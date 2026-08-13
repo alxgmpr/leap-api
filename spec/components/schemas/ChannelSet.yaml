@@ -4,14 +4,21 @@ properties:
     type: string
     description: |
       TODO(enum): members of Frequency were not recovered from the firmware
-      extraction, and hardware has produced exactly one: `"434"`, twice --
-      once in each Caseta corpus, both via
-      /link/1/associatedlinknode/expanded. No RA3 corpus carries a
-      ChannelSet. This is a radio band in MHz, and Lutron's Clear Connect
-      radios are region-specific -- 434 is what these North American
+      extraction, and hardware has produced exactly one: `"434"`, on all
+      three Caseta corpora via /link/1/associatedlinknode/expanded, plus once
+      more on the bare-bridge corpus via /device/1/linknode/1 -- the only
+      corpus that requests that route at all. No RA3 corpus carries a
+      ChannelSet. Occurrence counts per corpus are under
+      `x-observed-census`. This is a radio band in MHz, and Lutron's Clear
+      Connect radios are region-specific -- 434 is what these North American
       bridges report, not the vocabulary of the type. Closing on it would
       reject hardware sold elsewhere.
     x-observed-values:
       - "434"
+    x-observed-census:
+      "434":
+        caseta: 1
+        spec-read-caseta: 1
+        spec-read-caseta-bare: 2
 required:
   - Frequency

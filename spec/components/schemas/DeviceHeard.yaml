@@ -30,6 +30,9 @@ properties:
       anything about what it carries.
     x-observed-values:
       - UserInteraction
+    x-observed-census:
+      UserInteraction:
+        fixtures/push-experiments.json: 1
   UnassociatedDeviceDiscoverySession:
     $ref: "#/components/schemas/HyperReference"
   ModelNumber:

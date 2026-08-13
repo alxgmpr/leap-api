@@ -89,11 +89,23 @@ properties:
       `Custom` sitting alongside two room names says the same thing.
 
       Values seen to date are recorded under `x-observed-values`, as
-      documentation rather than as an assertion.
+      documentation rather than as an assertion, and counted under
+      `x-observed-census`. The census is on object occurrences, so each of
+      those three devices shows up three times in the one Caseta corpus that
+      carries it -- via /device, via /device/{id}, and as the `Parent` of a
+      /link/1/associatedlinknode/expanded entry. Three devices, nine
+      occurrences.
     x-observed-values:
       - Bedside
       - Kitchen
       - Custom
+    x-observed-census:
+      Bedside:
+        caseta: 3
+      Custom:
+        caseta: 3
+      Kitchen:
+        caseta: 3
   Manufactured:
     $ref: "#/components/schemas/ManufacturingDetails"
   OwnedLinks:

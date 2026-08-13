@@ -11,6 +11,9 @@ properties:
       which no captured action uses.
     x-observed-values:
       - Command
+    x-observed-census:
+      Command:
+        caseta: 2
   Resource:
     $ref: "#/components/schemas/HyperReference"
   Command:
