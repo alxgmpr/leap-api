@@ -23,27 +23,66 @@ export function highlightJson(json: string): string {
   return out + esc(json.slice(last));
 }
 
-const FIDELITY_NOTE: Record<Frame["fidelity"], string> = {
+export const FIDELITY_NOTE: Record<Frame["fidelity"], string> = {
   "captured-frame": "Captured frame — every header is real.",
   "captured-body":
     "Captured body — StatusCode and Body are from hardware; CommuniqueType, MessageBodyType and ClientTag are supplied by convention.",
   constructed: "Constructed — synthesized from the schema. Not observed.",
 };
 
-/** One frame, pretty-printed for reading and one-lined for copying. */
+/**
+ * A frame as it exists on the wire: one line.
+ *
+ * LEAP is newline-delimited JSON, so a frame is a single line on a socket.
+ * Pretty-printing it here would misrepresent the format and cost four times
+ * the height; the captured body gets pretty-printed separately, behind a
+ * disclosure, because that is the part a reader actually reads.
+ */
+export function renderWire(frame: Frame): string {
+  return `<pre class="wire" data-fidelity="${frame.fidelity}" title="${esc(FIDELITY_NOTE[frame.fidelity])}"><code>${highlightJson(renderNdjson(frame))}</code></pre>`;
+}
+
+/** Copy the exact line, which is the reason this reference exists. */
+export function renderCopy(frame: Frame): string {
+  return `<button class="copy" type="button" data-copy="${esc(renderNdjson(frame))}">copy line</button>`;
+}
+
+/** "Zones · 14 items" — what is in the reply, before deciding to open it. */
+export function bodyShape(body: Record<string, unknown> | undefined): string {
+  if (!body) return "no body";
+  const key = Object.keys(body)[0];
+  if (!key) return "empty object";
+  const value = body[key];
+  if (Array.isArray(value))
+    return `${key} · ${value.length} item${value.length === 1 ? "" : "s"}`;
+  if (value && typeof value === "object")
+    return `${key} · ${Object.keys(value).length} fields`;
+  return key;
+}
+
+/**
+ * The reply, collapsed to its answer. The summary line is the disclosure
+ * trigger, so this needs no JavaScript and no id bookkeeping.
+ */
+export function renderReply(frame: Frame): string {
+  const status = frame.Header.StatusCode ?? "";
+  const head = `<span class="dir" aria-hidden="true">←</span><span class="status">${esc(status)}</span><span class="shape">${esc(bodyShape(frame.Body))}</span>${frame.source ? `<span class="src" title="${esc(FIDELITY_NOTE[frame.fidelity])}">${esc(frame.source)}</span>` : ""}`;
+
+  if (!frame.Body)
+    return `<div class="reply" data-fidelity="${frame.fidelity}">${head}</div>`;
+
+  return `<details class="reply" data-fidelity="${frame.fidelity}">
+<summary>${head}</summary>
+<pre class="wire body"><code>${highlightJson(JSON.stringify(frame.Body, null, 2))}</code></pre>
+</details>`;
+}
+
+/** A labelled single frame, for pages that show one outside an exchange. */
 export function renderFrame(frame: Frame, label: string): string {
-  const wire = renderNdjson(frame);
-  const pretty = JSON.stringify(JSON.parse(wire), null, 2);
-  return [
-    `<figure class="frame" data-fidelity="${frame.fidelity}">`,
-    `<figcaption><span class="frame-label">${esc(label)}</span>`,
-    `<span class="chip chip-${frame.fidelity}" title="${esc(FIDELITY_NOTE[frame.fidelity])}">${esc(frame.fidelity.replace("-", " "))}</span>`,
-    frame.source
-      ? `<span class="frame-source">${esc(frame.source)}</span>`
-      : "",
-    "</figcaption>",
-    `<pre class="frame-json"><code>${highlightJson(pretty)}</code></pre>`,
-    `<button class="copy" type="button" data-copy="${esc(wire)}">Copy wire line</button>`,
-    "</figure>",
-  ].join("");
+  const direction = frame.Header.StatusCode ? "←" : "→";
+  return `<div class="frame" data-fidelity="${frame.fidelity}">
+<div class="send"><span class="dir" aria-hidden="true">${direction}</span><span class="ct">${esc(label)}</span>${frame.source ? `<span class="src">${esc(frame.source)}</span>` : ""}${renderCopy(frame)}</div>
+${renderWire(frame)}
+${frame.Body ? `<details class="frame-body"><summary>show body</summary><pre class="wire body"><code>${highlightJson(JSON.stringify(frame.Body, null, 2))}</code></pre></details>` : ""}
+</div>`;
 }

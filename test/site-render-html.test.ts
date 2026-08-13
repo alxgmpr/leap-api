@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test, { describe } from "node:test";
-import { highlightJson, renderFrame } from "../lib/site/render/highlight.ts";
+import {
+  highlightJson,
+  renderCopy,
+  renderFrame,
+} from "../lib/site/render/highlight.ts";
 import { esc, slug } from "../lib/site/render/html.ts";
 
 describe("html primitives", () => {
@@ -64,16 +68,13 @@ describe("html primitives", () => {
   });
 
   test("the copyable wire line survives escaping into an attribute", () => {
-    const html = renderFrame(
-      {
-        CommuniqueType: "CreateRequest",
-        Header: { Url: "/zone/1/commandprocessor", ClientTag: "lt-1" },
-        Body: { Command: { CommandType: "GoToDimmedLevel" } },
-        fidelity: "constructed",
-        source: null,
-      },
-      "Request",
-    );
+    const html = renderCopy({
+      CommuniqueType: "CreateRequest",
+      Header: { Url: "/zone/1/commandprocessor", ClientTag: "lt-1" },
+      Body: { Command: { CommandType: "GoToDimmedLevel" } },
+      fidelity: "constructed",
+      source: null,
+    });
     assert.match(html, /data-copy="\{&quot;CommuniqueType&quot;/);
     assert.ok(
       !html.includes('data-copy="{"'),

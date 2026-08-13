@@ -30,15 +30,26 @@ describe("resource pages", () => {
   });
 
   test("marks subscribable operations and names the pushed schema", () => {
-    assert.match(zone?.html ?? "", /Subscribable/);
-    assert.match(zone?.html ?? "", /ZoneStatus/);
+    assert.match(zone?.html ?? "", /class="sub">subscribable/);
+    assert.match(zone?.html ?? "", /Subscribing pushes/);
+    assert.match(zone?.html ?? "", /schema\/ZoneStatus\/index\.html/);
   });
 
-  test("carries a provenance chip on every operation", () => {
-    const chips = (zone?.html ?? "").match(/class="chip chip-verdict/g) ?? [];
-    const zoneOps =
-      model.resources.find((r) => r.name === "zone")?.operations ?? [];
-    assert.equal(chips.length, zoneOps.length);
+  test("carries one provenance mark per URL, not per verb", () => {
+    const html = zone?.html ?? "";
+    const chips = (html.match(/class="chip chip-verdict/g) ?? []).length;
+    const urls = new Set(
+      model.resources
+        .find((r) => r.name === "zone")
+        ?.operations.map((o) => o.url),
+    ).size;
+    assert.equal(chips, urls);
+    assert.ok(
+      chips <
+        (model.resources.find((r) => r.name === "zone")?.operations.length ??
+          0),
+      "grouping must actually reduce the marks",
+    );
   });
 
   test("renders the command composer with CommandType options", () => {
@@ -119,7 +130,7 @@ describe("resource pages", () => {
     // href, and no resource page covers it. Linking it would be a dead link;
     // dropping it would hide a real relationship.
     const html = zone?.html ?? "";
-    assert.match(html, /not documented in this reference/);
+    assert.match(html, /not documented here/);
     assert.ok(
       !html.includes("resource/countdowntimer/index.html"),
       "must not link to a page that does not exist",
@@ -130,10 +141,43 @@ describe("resource pages", () => {
     assert.ok(!(zone?.html ?? "").includes('href="/'));
   });
 
-  test("every operation is filterable by its verdict", () => {
+  test("every URL group is filterable by its verdict", () => {
     const html = zone?.html ?? "";
-    const ops = (html.match(/class="operation"/g) ?? []).length;
+    const groups = (html.match(/class="group"/g) ?? []).length;
     const verdicts = (html.match(/data-verdict="/g) ?? []).length;
-    assert.equal(ops, verdicts);
+    assert.equal(groups, verdicts);
+    assert.ok(groups > 0);
+  });
+
+  test("renders each frame as one wire line, not pretty-printed", () => {
+    const html = zone?.html ?? "";
+    const wires = [
+      ...html.matchAll(
+        /<pre class="wire" [^>]*><code>([\s\S]*?)<\/code><\/pre>/g,
+      ),
+    ];
+    assert.ok(wires.length > 0);
+    for (const [, line] of wires)
+      assert.ok(
+        !(line as string).includes("\n"),
+        "a LEAP frame is one line on the socket",
+      );
+  });
+
+  test("collapses a captured reply to its shape", () => {
+    const html = zone?.html ?? "";
+    assert.match(html, /<summary><span class="dir"[^>]*>←<\/span>/);
+    assert.match(html, /class="shape">ZoneStatuses · \d+ items/);
+  });
+
+  test("keeps the composer, evidence and OpenAPI mapping behind one disclosure", () => {
+    const html = zone?.html ?? "";
+    assert.match(
+      html,
+      /<details class="more"><summary>Details, evidence and composer/,
+    );
+    assert.match(html, /class="composer"/);
+    assert.match(html, /class="observations"/);
+    assert.match(html, /openapi-mapping/);
   });
 });

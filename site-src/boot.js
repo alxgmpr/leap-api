@@ -121,7 +121,7 @@ for (const form of document.querySelectorAll("form.composer")) {
   form.addEventListener("change", () => refresh(form));
   refresh(form);
 
-  const send = form.querySelector("button.send");
+  const send = form.querySelector("button.send-frame");
   if (!(send instanceof HTMLButtonElement)) continue;
   if (!transport) {
     send.title =

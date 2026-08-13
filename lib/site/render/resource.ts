@@ -1,6 +1,7 @@
 import type { Edge } from "../graph.ts";
 import type { LeapModel, Operation, Resource } from "../model.ts";
-import { renderFrame } from "./highlight.ts";
+import type { Provenance } from "../provenance.ts";
+import { renderCopy, renderReply, renderWire } from "./highlight.ts";
 import { siteNav } from "./home.ts";
 import { esc } from "./html.ts";
 import { type Page, page } from "./layout.ts";
@@ -18,15 +19,35 @@ const VERDICT_NOTE: Record<string, string> = {
   "never-asked": "No probe corpus ever sent this.",
 };
 
-function verdictChip(operation: Operation): string {
-  const { verdict, observations } = operation.provenance;
-  const detail = [
-    VERDICT_NOTE[verdict] ?? "",
-    ...observations.map((o) => `${o.corpus}: ${o.status}`),
-  ]
-    .filter(Boolean)
-    .join(" — ");
-  return `<span class="chip chip-verdict chip-${verdict}" title="${esc(detail)}">${esc(verdict.replace("-", " "))}</span>`;
+/**
+ * Corpora collapse to the two product lines. A reader wants to know that RA3
+ * and Caseta answered, not which of the seven probe campaigns did the asking
+ * -- that stays in the title, and in docs/platforms.md.
+ */
+function platformOf(corpus: string): string {
+  return corpus.includes("caseta") ? "caseta" : "ra3";
+}
+
+/** One mark per URL: ink for answered on hardware, grey for everything else. */
+function evidenceMark(provenances: Provenance[]): string {
+  const observations = provenances.flatMap((p) => p.observations);
+  const detail = observations.map((o) => `${o.corpus}: ${o.status}`).join(", ");
+  const confirmed = provenances.some((p) => p.verdict === "confirmed");
+
+  if (confirmed) {
+    const answered = [
+      ...new Set(
+        observations
+          .filter((o) => o.status.startsWith("200"))
+          .map((o) => platformOf(o.corpus)),
+      ),
+    ].join(" ");
+    return `<span class="chip chip-verdict chip-confirmed" title="${esc(`${VERDICT_NOTE.confirmed} ${detail}`)}"><span class="dot live">●</span> ${esc(answered)}</span>`;
+  }
+
+  const verdict = provenances[0]?.verdict ?? "never-asked";
+  const note = VERDICT_NOTE[verdict] ?? "";
+  return `<span class="chip chip-verdict chip-${verdict}" title="${esc(detail ? `${note} ${detail}` : note)}"><span class="dot">○</span> ${esc(verdict.replace("-", " "))}</span>`;
 }
 
 function observationTable(operation: Operation): string {
@@ -70,10 +91,9 @@ function parameterFields(
 }
 
 function composer(operation: Operation, model: LeapModel): string {
-  const commandTable = model.commandTable;
   const isCommand = operation.url.endsWith("/commandprocessor");
   const options = isCommand
-    ? commandTable
+    ? model.commandTable
         .map(
           (row) =>
             `<option value="${esc(row.commandType)}" data-field="${esc(row.parameterField ?? "")}" data-established="${esc(row.establishedBy)}" data-fields="${esc(JSON.stringify(parameterFields(row.parameterField, model)))}">${esc(row.commandType)}</option>`,
@@ -94,45 +114,86 @@ ${
     : ""
 }
 <output class="composed"></output>
-<button type="button" class="send" disabled title="Enable by running the local playground">Send</button>
+<button type="button" class="send-frame" disabled title="Enable by running the local playground">Send</button>
 </form>`;
 }
 
-function renderOperation(operation: Operation, model: LeapModel): string {
+/** One exchange: the line you write, and the line you read back. */
+function renderExchange(operation: Operation, model: LeapModel): string {
   const anchor = operation.operationId || operation.url;
-
-  // The authored half only. The platform table bundle.ts appends is dropped
-  // here and rendered natively by observationTable below -- see markdown.ts.
   const prose = operation.description
     ? splitInjectedTable(operation.description).prose
     : "";
 
-  return `<article class="operation" id="${esc(anchor)}" data-verdict="${esc(operation.provenance.verdict)}">
-<h3><span class="communique">${esc(operation.communiqueType)}</span> <code>${esc(operation.url)}</code> ${verdictChip(operation)}${operation.subscribable ? ' <span class="chip chip-sub">Subscribable</span>' : ""}</h3>
-${operation.summary ? `<p class="summary">${esc(operation.summary)}</p>` : ""}
-${prose ? `<div class="prose opdesc">${renderMarkdown(prose)}</div>` : ""}
-${operation.bodyType ? `<p class="bodytype">Wire <code>MessageBodyType</code>: <code>${esc(operation.bodyType)}</code> — <code>Body</code> is <code>{"${esc(operation.bodyType)}": …}</code>, and the schema below describes what is under that key.</p>` : ""}
+  // One reply per product line, not one per probe campaign. Seven corpora
+  // answering the same read produced seven near-identical lines; RA3 and
+  // Caseta can genuinely differ, and that is the comparison worth showing.
+  // Every corpus that answered is still listed in the details below.
+  // First wins, not last: captures.json lists the two original campaigns
+  // ahead of the coverage-blind sweeps, and those carry the fuller bodies --
+  // keeping the last would show /zone's 1-item spec-read capture instead of
+  // the 14-item one.
+  const byPlatform = new Map<string, (typeof operation.responses)[number]>();
+  for (const frame of operation.responses) {
+    const platform = platformOf(frame.source ?? "");
+    if (!byPlatform.has(platform)) byPlatform.set(platform, frame);
+  }
+  const replies = [...byPlatform.values()];
+
+  const notes = [
+    operation.summary ? `<p class="summary">${esc(operation.summary)}</p>` : "",
+    operation.bodyType
+      ? `<p class="meta">Wire <code>MessageBodyType</code> <code>${esc(operation.bodyType)}</code> — <code>Body</code> wraps the payload under that key.</p>`
+      : "",
+    operation.eventSchema
+      ? `<p class="meta">Subscribing pushes <a href="${ROOT}schema/${esc(operation.eventSchema)}/index.html">${esc(operation.eventSchema)}</a>, a partial carrying only changed fields. <a href="${ROOT}docs/subscriptions/index.html">Subscriptions</a>.</p>`
+      : "",
+    prose ? `<div class="prose opdesc">${renderMarkdown(prose)}</div>` : "",
+    composer(operation, model),
+    observationTable(operation),
+    operation.responseSchema
+      ? `<p class="meta">Payload schema <a href="${ROOT}schema/${esc(operation.responseSchema)}/index.html">${esc(operation.responseSchema)}</a>.</p>`
+      : "",
+    operation.requestSchema
+      ? `<p class="meta">Request payload schema <a href="${ROOT}schema/${esc(operation.requestSchema)}/index.html">${esc(operation.requestSchema)}</a>.</p>`
+      : "",
+    `<p class="meta openapi-mapping">In <code>dist/openapi.yaml</code>: <code>${esc(operation.httpVerb || "no HTTP verb — subscribe-only")} ${esc(operation.url)}</code>${operation.operationId ? `, operationId <code>${esc(operation.operationId)}</code>` : ""}. <a href="${ROOT}docs/mapping/index.html">Mapping</a>.</p>`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return `<article class="op" id="${esc(anchor)}">
+<div class="send"><span class="dir" aria-hidden="true">→</span><span class="ct">${esc(operation.communiqueType.replace("Request", ""))}</span>${operation.subscribable ? '<span class="sub">subscribable</span>' : ""}${renderCopy(operation.request)}</div>
+${renderWire(operation.request)}
 ${
-  operation.eventSchema
-    ? `<p class="pushes">Subscribing pushes <a href="${ROOT}schema/${esc(operation.eventSchema)}/index.html">${esc(operation.eventSchema)}</a> — a partial carrying only changed fields, so its <code>required</code> list does not hold for a push. See <a href="${ROOT}docs/subscriptions/index.html">Subscriptions</a>.</p>`
-    : ""
+  replies.length > 0
+    ? replies.map((frame) => renderReply(frame)).join("")
+    : '<div class="reply reply-none"><span class="dir" aria-hidden="true">←</span><span class="shape">no captured reply</span></div>'
 }
-${renderFrame(operation.request, "Request")}
-${operation.responses.map((f) => renderFrame(f, `Response (${f.source})`)).join("")}
-${composer(operation, model)}
-${observationTable(operation)}
-${
-  operation.responseSchema
-    ? `<p class="schema-link">Payload schema: <a href="${ROOT}schema/${esc(operation.responseSchema)}/index.html">${esc(operation.responseSchema)}</a></p>`
-    : ""
-}
-${
-  operation.requestSchema
-    ? `<p class="schema-link">Request payload schema: <a href="${ROOT}schema/${esc(operation.requestSchema)}/index.html">${esc(operation.requestSchema)}</a></p>`
-    : ""
-}
-<details class="openapi-mapping"><summary>OpenAPI mapping</summary><p>Rendered in <code>dist/openapi.yaml</code> as <code>${esc(operation.httpVerb || "(no HTTP verb — subscribe-only)")} ${esc(operation.url)}</code>${operation.operationId ? `, operationId <code>${esc(operation.operationId)}</code>` : ""}. See <a href="${ROOT}docs/mapping/index.html">Mapping LEAP onto OpenAPI</a>.</p></details>
+<details class="more"><summary>Details, evidence and composer</summary>${notes}</details>
 </article>`;
+}
+
+/**
+ * A URL is one addressable thing; the CommuniqueTypes are what may be sent to
+ * it. Grouping stops the same URL being restated once per verb.
+ */
+function renderUrlGroup(
+  url: string,
+  operations: Operation[],
+  model: LeapModel,
+): string {
+  const verdict = operations.some((o) => o.provenance.verdict === "confirmed")
+    ? "confirmed"
+    : (operations[0]?.provenance.verdict ?? "never-asked");
+
+  return `<section class="group" data-verdict="${esc(verdict)}">
+<header class="url-head">
+<h2 class="url">${esc(url)}</h2>
+${evidenceMark(operations.map((o) => o.provenance))}
+</header>
+${operations.map((operation) => renderExchange(operation, model)).join("")}
+</section>`;
 }
 
 function renderEdges(edges: Edge[], documented: Set<string>): string {
@@ -144,20 +205,21 @@ function renderEdges(edges: Edge[], documented: Set<string>): string {
   const renderEdge = (edge: Edge): string => {
     const label = `<code>${esc(edge.schema)}.${esc(edge.property)}</code>`;
     if (!edge.target)
-      return `<li data-target="">${label} → <span class="unresolved">target not established — no capture ever populated this link</span></li>`;
+      return `<li data-target=""><span class="dot">○</span> ${label} <span class="unresolved">target not established</span></li>`;
 
-    const evidence = `<span class="evidence">observed ${esc(edge.observedHref ?? "")} in ${esc(edge.corpus ?? "")}</span>`;
+    const evidence = `<span class="evidence" title="observed ${esc(edge.observedHref ?? "")} in ${esc(edge.corpus ?? "")}">${esc(edge.observedHref ?? "")}</span>`;
     if (!documented.has(edge.target))
-      return `<li data-target="${esc(edge.target)}">${label} → <code>/${esc(edge.target)}</code> ${evidence} — <span class="unresolved">not documented in this reference; see <a href="${ROOT}coverage/index.html">coverage</a></span></li>`;
+      return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <code>/${esc(edge.target)}</code> ${evidence} <span class="unresolved">not documented here</span></li>`;
 
-    return `<li data-target="${esc(edge.target)}">${label} → <a href="${ROOT}resource/${esc(edge.target)}/index.html">${esc(edge.target)}</a> ${evidence}</li>`;
+    return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <a href="${ROOT}resource/${esc(edge.target)}/index.html">${esc(edge.target)}</a> ${evidence}</li>`;
   };
 
-  return `<h2>Links to other resources</h2>
-<p class="lede">Targets are read off real captured <code>href</code> values. A link
+  return `<details class="links"><summary>Links to other resources · ${edges.length}</summary>
+<p class="meta">Targets are read off real captured <code>href</code> values. A link
 no capture ever populated is left unresolved rather than guessed from its
 property name.</p>
-<ul class="edges">${edges.map(renderEdge).join("")}</ul>`;
+<ul class="edges">${edges.map(renderEdge).join("")}</ul>
+</details>`;
 }
 
 function renderResource(
@@ -165,13 +227,21 @@ function renderResource(
   model: LeapModel,
   documented: Set<string>,
 ): Page {
+  const byUrl = new Map<string, Operation[]>();
+  for (const operation of resource.operations)
+    byUrl.set(operation.url, [...(byUrl.get(operation.url) ?? []), operation]);
+
   const subscribable = resource.operations.filter((o) => o.subscribable).length;
-  const main = `<h1>${esc(resource.name)}</h1>
-<p class="lede">${resource.operations.length} operation${resource.operations.length === 1 ? "" : "s"}${subscribable > 0 ? `, ${subscribable} subscribable` : ""}. Everything you can send about a
-<code>${esc(resource.name)}</code>, the frames it answers with, and what it links to.</p>
+
+  const main = `<header class="mast">
+<h1>${esc(resource.name)}</h1>
+<span class="count">${byUrl.size} URL${byUrl.size === 1 ? "" : "s"} · ${resource.operations.length} operation${resource.operations.length === 1 ? "" : "s"}${subscribable > 0 ? ` · ${subscribable} subscribable` : ""}</span>
+</header>
+<p class="legend"><span><span class="dot live">●</span> answered on hardware</span><span><span class="dot">○</span> not observed</span><span>→ you write · ← you read</span></p>
 ${renderEdges(resource.edges, documented)}
-<h2>Operations</h2>
-${resource.operations.map((operation) => renderOperation(operation, model)).join("")}`;
+${[...byUrl.entries()]
+  .map(([url, operations]) => renderUrlGroup(url, operations, model))
+  .join("")}`;
 
   return {
     path: `resource/${resource.name}/index.html`,
