@@ -1,0 +1,105 @@
+import assert from "node:assert/strict";
+import test, { describe } from "node:test";
+import { buildModel } from "../lib/site/model.ts";
+import { renderResourcePages } from "../lib/site/render/resource.ts";
+
+describe("resource pages", () => {
+  const model = buildModel();
+  const pages = renderResourcePages(model);
+  const zone = pages.find((p) => p.path === "resource/zone/index.html");
+
+  test("emits one page per resource", () => {
+    assert.equal(pages.length, model.resources.length);
+    assert.ok(zone);
+  });
+
+  test("leads with CommuniqueType, not the HTTP verb", () => {
+    const html = zone?.html ?? "";
+    const communique = html.indexOf("ReadRequest");
+    const verb = html.indexOf("OpenAPI mapping");
+    assert.ok(communique > -1);
+    assert.ok(
+      verb === -1 || communique < verb,
+      "CommuniqueType must come first",
+    );
+  });
+
+  test("shows the captured response frame inline", () => {
+    assert.match(zone?.html ?? "", /ZoneStatuses/);
+    assert.match(zone?.html ?? "", /data-fidelity="captured-body"/);
+  });
+
+  test("marks subscribable operations and names the pushed schema", () => {
+    assert.match(zone?.html ?? "", /Subscribable/);
+    assert.match(zone?.html ?? "", /ZoneStatus/);
+  });
+
+  test("carries a provenance chip on every operation", () => {
+    const chips = (zone?.html ?? "").match(/class="chip chip-verdict/g) ?? [];
+    const zoneOps =
+      model.resources.find((r) => r.name === "zone")?.operations ?? [];
+    assert.equal(chips.length, zoneOps.length);
+  });
+
+  test("renders the command composer with CommandType options", () => {
+    assert.match(zone?.html ?? "", /class="composer"/);
+    assert.match(zone?.html ?? "", /GoToDimmedLevel/);
+  });
+
+  test("a CommandType carries its parameter schema's scalar fields", () => {
+    // Without these, composing a GoToDimmedLevel still means opening
+    // DimmedLevelParameters to learn it holds a Level -- the jump this page
+    // exists to remove.
+    const html = zone?.html ?? "";
+    const option =
+      /<option value="GoToDimmedLevel"[^>]*data-fields="([^"]*)"/.exec(html);
+    assert.ok(option, "GoToDimmedLevel option must carry its fields");
+    const fields = JSON.parse((option[1] as string).replaceAll("&quot;", '"'));
+    assert.ok(
+      fields.some((f: { name: string }) => f.name === "Level"),
+      "Level must be offered as an input",
+    );
+  });
+
+  test("a CommandType with no established field carries no fields", () => {
+    const html = zone?.html ?? "";
+    const option =
+      /<option value="GoToFanSpeed"[^>]*data-fields="([^"]*)"/.exec(html);
+    assert.ok(option);
+    assert.deepEqual(
+      JSON.parse((option[1] as string).replaceAll("&quot;", '"')),
+      [],
+      "no source pairs GoToFanSpeed with a field, so none may be offered",
+    );
+  });
+
+  test("renders edges, with unresolved ones visibly unresolved", () => {
+    const html =
+      pages.find((p) => p.path === "resource/area/index.html")?.html ?? "";
+    assert.match(html, /class="edges"/);
+    assert.match(html, /data-target="area"|data-target=""/);
+  });
+
+  test("an observed target this reference does not document is not linked", () => {
+    // Zone.CountdownTimer resolves to /countdowntimer from a real captured
+    // href, and no resource page covers it. Linking it would be a dead link;
+    // dropping it would hide a real relationship.
+    const html = zone?.html ?? "";
+    assert.match(html, /not documented in this reference/);
+    assert.ok(
+      !html.includes("resource/countdowntimer/index.html"),
+      "must not link to a page that does not exist",
+    );
+  });
+
+  test("links are relative to the page, not to site root", () => {
+    assert.ok(!(zone?.html ?? "").includes('href="/'));
+  });
+
+  test("every operation is filterable by its verdict", () => {
+    const html = zone?.html ?? "";
+    const ops = (html.match(/class="operation"/g) ?? []).length;
+    const verdicts = (html.match(/data-verdict="/g) ?? []).length;
+    assert.equal(ops, verdicts);
+  });
+});

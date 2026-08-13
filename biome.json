@@ -1,9 +1,23 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.0/schema.json",
   "files": {
-    "includes": ["lib/**/*.ts", "tools/**/*.ts", "test/**/*.ts"],
+    "includes": [
+      "lib/**/*.ts",
+      "tools/**/*.ts",
+      "test/**/*.ts",
+      "site-src/**/*.js"
+    ],
     "ignoreUnknown": true
   },
-  "linter": { "enabled": true, "rules": { "recommended": true } },
-  "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 }
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  }
 }

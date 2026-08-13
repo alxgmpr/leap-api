@@ -24,6 +24,7 @@ jobs:
         run: git diff --exit-code -- spec/paths/_generated spec/components/schemas/_generated
       - run: npm run bundle
       - run: npm run lint:spec
+      - run: npm run build:site
       - run: npm test
       - run: npm run coverage
 

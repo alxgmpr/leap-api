@@ -3,7 +3,9 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "gen:schemas": "npx tsx tools/gen-schemas.ts",
     "gen:paths": "npx tsx tools/gen-paths.ts",
@@ -15,17 +17,20 @@
     "lint:fix": "biome check --fix .",
     "lint:spec": "redocly lint dist/openapi.yaml",
     "render": "npx @scalar/cli document serve dist/openapi.yaml",
-    "build:site": "redocly build-docs dist/openapi.yaml --output site/index.html",
+    "build:site": "npx tsx tools/build-site.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test test/**/*.test.ts"
   },
-  "dependencies": { "yaml": "^2.8.2" },
+  "dependencies": {
+    "yaml": "^2.8.2"
+  },
   "devDependencies": {
     "@biomejs/biome": "2.4.0",
     "@redocly/cli": "^1.25.0",
     "@types/node": "^24.12.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "marked": "^14.1.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

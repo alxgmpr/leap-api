@@ -263,8 +263,43 @@ npm run redact        # re-redact fixtures/ from source probe data (requires the
                        # separate, private source repository this project was
                        # built against; not needed if fixtures/ is already present)
 npm run bundle         # merge spec/ into dist/openapi.yaml
+npm run build:site     # generate the documentation site into site/
 npm run coverage       # report probe-vs-spec and TODO-marker coverage
 ```
+
+`npm test` reads build artifacts directly, so run `npm run bundle && npm run
+build:site` before it — `test/bundle.test.ts` has always required the former,
+and the site tests require the latter.
+
+## The documentation site
+
+`npm run build:site` (`tools/build-site.ts`) generates `site/` from
+`dist/openapi.yaml`, `fixtures/` and `docs/`. It replaces
+`redocly build-docs`, which is a good renderer of HTTP APIs pointed at
+something that is not one: it renders an HTTP request sample for a protocol
+that is NDJSON on a persistent socket, shows the unwrapped payload where the
+wire carries a single-key `Body` wrapper, and hides every `x-leap-*`
+extension by default.
+
+The generated site is organized by LEAP resource rather than by path and
+verb. Each resource page carries its operations as real wire frames, its
+href relationships, its platform observations and a frame composer, so
+sending a zone command does not require opening `Command.yaml` for the
+`CommandType`-to-parameter-field pairing — that table is parsed at build
+time and drives the composer directly. The five narrative documents render
+in-site from `docs/*.md`, which stay canonical.
+
+Two rules the build enforces rather than documents, in
+`lib/site/invariants.ts`:
+
+- **Every frame carries a fidelity level.** `captured-frame` (a frame log:
+  every header real), `captured-body` (a probe corpus: `StatusCode` and
+  `Body` real, other headers by convention), or `constructed` (synthesized
+  from the schema, nothing observed). The build fails on an ungraded frame.
+- **Every rendered `Body` is a single-key wrapper**, except RA3's bare `{}`
+  from `/button`. The build fails otherwise.
+
+`@redocly/cli` remains for `npm run lint:spec`.
 
 `spec/paths/_generated/` and `spec/components/schemas/_generated/` are
 staging output — regenerating them does not touch the hand-refined files in
