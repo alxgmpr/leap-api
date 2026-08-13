@@ -17,7 +17,7 @@ two independent sources cross-checked against each other:
 - **Live probing** of real RA3 and Caseta hardware, as the source of truth for
   which routes actually respond, with what status, and with what body —
   including catching and correcting two systematic defects in the firmware
-  extraction itself (see `docs/mapping.md`). Four campaigns, 4,098 requests
+  extraction itself (see `docs/mapping.md`). Five campaigns, 4,946 requests
   in all:
   - 2,087 requests against an RA3 processor running firmware v03.247 and a
     Caseta bridge (1,124 and 963 — `fixtures/ra3.json`,
@@ -36,6 +36,11 @@ two independent sources cross-checked against each other:
     `docs/platforms.md` test the route-refusal finding across two product
     lines rather than one. That bridge is nearly unconfigured, so read
     its absences with the caveat that document spells out.
+  - 848 requests replaying that same path list a third time, against that
+    same Caseta bridge after a factory reset with no devices provisioned at
+    all, on firmware v01.124 (`fixtures/spec-read-caseta-bare.json`) — the
+    bare-bridge baseline `docs/platforms.md` uses to separate "nothing
+    configured" from "not implemented".
 
 Alongside the specification, five narrative documents cover everything an
 OpenAPI document cannot express on its own:
@@ -104,21 +109,30 @@ route and finds nothing here cannot tell "this route does not exist" from
   definitions and nothing else, so the extraction can emit no named enum
   type at all, and per `docs/mapping.md` the firmware defines no plural
   collection-wrapper types either. Six of the 70 are documented-open
-  `string`s rather than enums, for two different reasons. `ServiceType` went
-  first — live traffic on RA3 firmware v03.249 falsified it as a closed set
-  (it returned a `Type` this specification did not list), and the firmware
-  types `Service.Type` as a bare Go `string` with no named type behind it,
-  so there was nothing to close against. `Role`, `SessionRole`,
+  `string`s rather than enums, for two different reasons.
+  `OccupancyStatus.yaml` records the criterion in full; the short form is
+  that every closed enum here is a **lower bound** — the extraction can
+  never bound a member set — so a closed `enum` is worth shipping only when
+  something evidences the extent of the set, and is reopened or extended
+  when hardware contradicts it. `ServiceType` went
+  first — live traffic on RA3 firmware v03.249 falsified it as a closed set,
+  returning a ninth `Type` this specification did not list. Its 8 declared
+  members had *all* been independently observed, which is exactly the
+  evidence 23 closed enums still rest on, and it was falsified anyway; it
+  reopened rather than being extended because nothing else evidenced the
+  extent of its set. `Role`, `SessionRole`,
   `ButtonGroupCategoryType`, `StopIfMovingEnabledState` and
-  `SystemLoadSheddingState` followed on a different ground: hardware has
-  falsified none of them, but each closed a set on exactly one observed
-  value, where the `enum` and its `x-observed-values` carry identical
-  content and the `enum` adds only an exhaustiveness claim.
-  `OccupancyStatus.yaml` records that criterion — set cardinality, not
-  firmware typing — and the ruling it reverses. `ServerType`, falsified the
-  same way by the Caseta bridge, was *appended* to instead: it has three
-  independently observed members, so it stays closed as an acknowledged
-  lower bound like the other 23 closed enums. Five of the 70 are new:
+  `SystemLoadSheddingState` followed on the weakest case of the same scale:
+  hardware has falsified none of them, but each closed a set on one observed
+  value with no member list from anywhere else, so the `enum` and its
+  `x-observed-values` carried identical content and the `enum` added only an
+  exhaustiveness claim. `ServerType`, falsified the
+  same way by the Caseta bridge, was *appended* to instead: its three
+  members are all independently observed, so something does evidence the
+  extent of its set. All 24 surviving closed enums are acknowledged lower
+  bounds — 23 on independently observed members, and `CommandType` on a
+  member list recovered from decompiled Lutron app binaries, only one of
+  whose 39 members has ever been seen on the wire. Five of the 70 are new:
   `Availability`, `BatteryLevelState`, `LinkType`, `SwitchedLevel` and
   `NetworkConfigurationType`, shared enums whose firmware types the
   extraction referenced but never defined, recovered from probe data in the
@@ -158,9 +172,10 @@ daylighting/occupancy-sensor neighbours, `/preset/{presetId}`,
 `/virtualbutton/{virtualbuttonId}` — paths RA3 refuses or leaves empty and
 Caseta answers with real data. It then went back up by one, to the **117**
 the command prints today: `/device/status/deviceheard` was added two
-commits after that import, and a subscribe-only route can never appear in a
-probe set, so it joins this list permanently rather than as a regression
-(both processors answer it `405 MethodNotAllowed`; see
+commits after that import, and a subscribe-only route can never answer a
+read with `200`, so it joins this list permanently rather than as a
+regression (both processors were in fact sent it, and both answered
+`405 MethodNotAllowed`; see
 `spec/paths/device.yaml` and the note above `EXPECTED_MATCHED_CASES` in
 `test/conformance.test.ts`). Of the 117 that remain, 94 *have* now been
 sent and answered with something other than `200`: 54 drew a

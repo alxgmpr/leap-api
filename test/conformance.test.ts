@@ -216,9 +216,12 @@ addFormats(ajv);
 // the same reason: no route here was unreached before. That tuple is the one
 // this import produced and is no longer what the command prints -- two
 // commits later `/device/status/deviceheard` was added, and a subscribe-only
-// route can never appear in a probe set, so the second figure became 117
-// permanently. See `spec/paths/device.yaml`. Both numbers are re-derivable;
-// neither is a regression.
+// route can never answer a read with `200`, so the second figure became 117
+// permanently. It is in the probe sets (both `ra3.json` and `caseta.json`
+// sent it; both answered `405 MethodNotAllowed`) -- `specWithoutFixture`
+// counts paths with no `200` body, not paths never asked about. See
+// `spec/paths/device.yaml`. Both numbers are re-derivable; neither is a
+// regression.
 const EXPECTED_MATCHED_CASES = 925;
 let matchedCases = 0;
 

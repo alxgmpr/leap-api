@@ -86,10 +86,31 @@ description: |
     binaries, cited per member in `Command`'s description, so the extent of
     the set has a source outside this project's corpus.
 
-  Either way the closed set is an acknowledged lower bound, which is what
-  "unlisted values are possible" beside a closed `enum` means in this
-  specification: not a contradiction to be resolved, but a statement that
-  the member list is a floor.
+  **Neither ground says the set is complete.** Every closed enum here is a
+  lower bound -- the extraction can never bound a member set, as below -- so
+  the two grounds are not evidence of completeness. They are the condition
+  under which a closed `enum` carries enough discriminating content to be
+  worth shipping *despite* being a lower bound. That is what "unlisted
+  values are possible" beside a closed `enum` means in this specification:
+  not a contradiction to be resolved, but a statement that the member list
+  is a floor.
+
+  **`ServiceType` proves that directly, and it is the reason this rule needs
+  a third term.** Before it was opened it declared 8 members -- Alexa,
+  GoogleHome, BACnet, HomeKit, IFTTT, Sonos, NTPServer, AutoProgrammer --
+  and every one of the 8 had been independently observed. Ground one,
+  satisfied in full, the same ground that keeps 23 enums closed today. It
+  was opened anyway, because the coverage-blind RA3 v03.249 probe returned a
+  ninth, `Cloud`. "Every declared member was observed" says nothing whatever
+  about whether an *undeclared* member exists. Any closed enum here can go
+  the same way, and two already have: `ServiceType`, and this file.
+
+  **So falsification is the third term.** A closed set that hardware
+  contradicts is reopened or extended, on the split those two cases already
+  record: **reopened** when nothing else evidences the extent
+  (`ServiceType`), **extended** when something does (`ServerType`, whose
+  members are all independently observed; and this file, extended from one
+  member to three).
 
   **`CommandType` is worth stating explicitly, because it would otherwise
   look like a counterexample.** It is simultaneously the largest
@@ -102,10 +123,14 @@ description: |
   which appears 21 times as a property name and never as a value. It stays
   closed on the second ground, not the first. See `CommandType.yaml`.
 
-  **What disqualified the five is that they had neither.** Not a small
-  sample -- no evidence of any kind about the set's extent: one observed
-  value, and no member list from anywhere else to close against. Sample
-  size alone is not the rule; absence of any evidence about extent is.
+  **What disqualified the five is that they had neither ground.** Not a
+  small sample -- no evidence of any kind about the set's extent: one
+  observed value, and no member list from anywhere else to close against.
+  Sample size alone is not the rule; absence of any evidence about extent
+  is. They are the **weakest case on the same scale**, not a different kind
+  of case: `ServiceType` sat at the strong end of ground one and was still
+  falsified, so nothing here is safe from a later corpus, and these five had
+  the least standing of anything the specification had closed.
 
   The rule is fully applied rather than half-applied: **no one-member closed
   enum remains anywhere in `spec/components/schemas/`**, and all 24
@@ -145,9 +170,11 @@ description: |
   pointer fields, which evidenced that a **third member exists** before any
   Caseta probe found it. That is genuinely more than the five ever had, but
   it does not evidence that only three exist, and nothing in the extraction
-  could. `ServiceType` is the other end of the scale and was opened on
-  neither ground: `Service.Type` is a bare Go `string` with no named type at
-  all, and hardware falsified the closed set outright.
+  could. `ServiceType.yaml` is the worked example of the third term: it
+  satisfied ground one and hardware falsified it regardless, and it was
+  reopened rather than extended because nothing else evidenced the extent of
+  its set -- `Service.Type` being a bare Go `string` with no named type
+  behind it is the corroborating detail there, not the ground.
 enum:
   - Occupied
   - Unoccupied

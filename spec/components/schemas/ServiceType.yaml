@@ -1,8 +1,9 @@
-# HAND-AUTHORED (formerly a closed enum -- see the description). The
-# firmware types `Service.Type` as a bare `string` (vendor/leap-types.json:
-# `type leapobj.Service struct { ... Type string ... }`, no named enum type
-# at all), so there is nothing for the generator to recover members from
-# and nothing for this specification to close the set against.
+# HAND-AUTHORED (formerly a closed 8-member enum -- see the description).
+# Opened because hardware falsified the closed set and nothing else
+# evidences its extent; the firmware typing below corroborates rather than
+# decides. `Service.Type` is a bare `string` (vendor/leap-types.json: `type
+# leapobj.Service struct { ... Type string ... }`, no named enum type at
+# all), so there was never a member list for the generator to recover.
 type: string
 description: |
   Discriminator for `Service.Type`, naming which `*Properties` field (if
@@ -19,13 +20,39 @@ description: |
   contradiction is resolved in favor of what the description always said
   the field was.
 
-  Hardware wins, and unusually the firmware does not contest it: unlike
-  `ProgrammingModelType` or `AddressedState` -- real firmware enums whose
-  members the extraction merely failed to recover, where the observed set
-  is a lower bound on a genuinely closed type and the right response to a
-  new value is to add it -- there is no `leapobj.ServiceType` at all. The
-  field is a bare Go `string`, and the values are whichever integrations a
-  particular processor's firmware build and feature set have provisioned.
+  **The operative ground is falsification, plus the absence of anything
+  evidencing the set's extent** -- the criterion `OccupancyStatus.yaml`
+  records in full. This file is that criterion's worked example, and it is
+  worth being precise about why, because the obvious reading is wrong.
+
+  The obvious reading is that the enum was weakly evidenced. It was not. All
+  8 declared members -- Alexa, GoogleHome, BACnet, HomeKit, IFTTT, Sonos,
+  NTPServer, AutoProgrammer -- had been independently observed on hardware
+  before it was closed. That is the same ground on which 23 closed enums
+  still ship, satisfied in full, and hardware falsified it regardless.
+  "Every declared member was observed" says nothing about whether an
+  undeclared member exists, which is the whole lesson: every closed enum in
+  this specification is a lower bound, and a later corpus can contradict any
+  of them.
+
+  What decides **reopened** rather than **extended** is whether anything
+  else evidences the extent of the set. Nothing does here, so it reopens.
+  `ServerType` was falsified the same way by the Caseta bridge and was
+  extended instead, because its members are all independently observed and
+  the type system had independently evidenced the missing one. This file
+  and that one are the two halves of the split.
+
+  **The bare-`string` typing corroborates, it does not decide.** There is
+  no `leapobj.ServiceType` at all -- the field is a bare Go `string` --
+  which is a real difference from `ProgrammingModelType` or
+  `AddressedState`, and it is why there was never a generator-recoverable
+  member list. But firmware typing does not separate open from closed
+  anywhere in this specification: the extraction recovers `struct`
+  definitions only and never defines a named enum type, so it cannot bound
+  any member set, and all 24 closed enums are named types it never defined.
+
+  The values here are whichever integrations a particular processor's
+  firmware build and feature set have provisioned.
   The two RA3 corpora this project has captured do not agree on that list --
   same project, two firmware builds, one extra integration on the later one
   -- which is the same kind of per-installation, per-build divergence

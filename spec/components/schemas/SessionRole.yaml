@@ -23,11 +23,17 @@ description: |
   extent of their set: 23 have every declared member independently observed
   in the fixtures, and `CommandType` has a documented non-wire source for
   its 39 (decompiled Lutron app binaries), of which only
-  `PressAndRelease` was ever seen on the wire. This field had neither: one
-  observed value, and no member list from anywhere else. Firmware typing
-  does not separate the cases -- it is typed
-  `leapobj.SessionRole`, a named type the extraction
-  never defined, and so is every one of those 24. See
+  `PressAndRelease` was ever seen on the wire.
+
+  **Neither ground claims the set is complete.** Every closed enum here is a
+  lower bound, and a later corpus can still falsify one: `ServiceType` had
+  all 8 of its declared members independently observed and was falsified
+  anyway, by a ninth value on a later probe. What this field had was neither
+  ground at all -- one observed value, and no member list from anywhere else
+  -- which makes it the **weakest case on the same scale**, not a different
+  kind of case. Firmware typing does not separate the cases either: it is
+  typed `leapobj.SessionRole`, a named type the
+  extraction never defined, and so is every one of those 24. See
   `OccupancyStatus.yaml`, which records the criterion in full and the
   ruling it reverses.
 
