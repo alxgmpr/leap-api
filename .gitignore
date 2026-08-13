@@ -1,6 +1,8 @@
 node_modules/
 dist/
-site/
+# Anchored: the generated site is /site only. `site/` unanchored also matched
+# lib/site (the generator's source), which is tracked.
+/site/
 raw/
 *.local.json
 .DS_Store
