@@ -4,6 +4,7 @@ import { renderFrame } from "./highlight.ts";
 import { siteNav } from "./home.ts";
 import { esc } from "./html.ts";
 import { type Page, page } from "./layout.ts";
+import { renderMarkdown, splitInjectedTable } from "./markdown.ts";
 
 const ROOT = "../../";
 
@@ -99,9 +100,17 @@ ${
 
 function renderOperation(operation: Operation, model: LeapModel): string {
   const anchor = operation.operationId || operation.url;
+
+  // The authored half only. The platform table bundle.ts appends is dropped
+  // here and rendered natively by observationTable below -- see markdown.ts.
+  const prose = operation.description
+    ? splitInjectedTable(operation.description).prose
+    : "";
+
   return `<article class="operation" id="${esc(anchor)}" data-verdict="${esc(operation.provenance.verdict)}">
 <h3><span class="communique">${esc(operation.communiqueType)}</span> <code>${esc(operation.url)}</code> ${verdictChip(operation)}${operation.subscribable ? ' <span class="chip chip-sub">Subscribable</span>' : ""}</h3>
 ${operation.summary ? `<p class="summary">${esc(operation.summary)}</p>` : ""}
+${prose ? `<div class="prose opdesc">${renderMarkdown(prose)}</div>` : ""}
 ${operation.bodyType ? `<p class="bodytype">Wire <code>MessageBodyType</code>: <code>${esc(operation.bodyType)}</code> — <code>Body</code> is <code>{"${esc(operation.bodyType)}": …}</code>, and the schema below describes what is under that key.</p>` : ""}
 ${
   operation.eventSchema

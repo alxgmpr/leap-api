@@ -1,5 +1,6 @@
 import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { toClientModel } from "../lib/site/client-model.ts";
 import { assertInvariants } from "../lib/site/invariants.ts";
 import { buildModel } from "../lib/site/model.ts";
 import { renderCoveragePage } from "../lib/site/render/coverage.ts";
@@ -31,5 +32,9 @@ for (const p of pages) {
   writeFileSync(target, p.html, "utf8");
 }
 cpSync("site-src", join(OUT, "assets"), { recursive: true });
-writeFileSync(join(OUT, "model.json"), JSON.stringify(model), "utf8");
+writeFileSync(
+  join(OUT, "model.json"),
+  JSON.stringify(toClientModel(model)),
+  "utf8",
+);
 console.log(`built ${pages.length} pages into ${OUT}/`);

@@ -7,6 +7,32 @@ describe("search", () => {
   const model = JSON.parse(readFileSync("site/model.json", "utf8"));
   const index = buildSearchIndex(model);
 
+  test("the shipped model stays small enough to fetch on every page", () => {
+    const bytes = readFileSync("site/model.json").byteLength;
+    assert.ok(
+      bytes < 250_000,
+      `model.json is ${Math.round(bytes / 1024)}KB — only what search and the timelines read belongs in it`,
+    );
+  });
+
+  test("ships nothing the client never reads", () => {
+    assert.equal(
+      model.docs,
+      undefined,
+      "narrative markdown is rendered at build time",
+    );
+    assert.equal(
+      model.coverage,
+      undefined,
+      "the coverage page is rendered at build time",
+    );
+    assert.equal(
+      model.resources[0]?.operations[0]?.request,
+      undefined,
+      "frames are rendered at build time",
+    );
+  });
+
   test("indexes resources, operations, schemas and command types", () => {
     const kinds = new Set(index.map((e) => e.kind));
     assert.deepEqual([...kinds].sort(), [

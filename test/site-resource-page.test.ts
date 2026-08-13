@@ -46,6 +46,40 @@ describe("resource pages", () => {
     assert.match(zone?.html ?? "", /GoToDimmedLevel/);
   });
 
+  test("renders the authored operation description as markdown", () => {
+    const html = zone?.html ?? "";
+    // The commandprocessor's own note -- 2,610 characters of which
+    // CommandTypes are confirmed and by what source.
+    assert.match(html, /Confirmed accepted CommandTypes/);
+    assert.match(html, /class="prose opdesc"/);
+    assert.match(html, /<code>GoToShadeLevelWithTilt<\/code>/);
+  });
+
+  test("does not print the injected platform table on top of its own", () => {
+    const html = zone?.html ?? "";
+    assert.ok(
+      !html.includes("Platform availability"),
+      "bundle.ts's injected copy must not render beside the native observation table",
+    );
+    assert.match(html, /class="observations"/);
+  });
+
+  test("every operation with a description shows it", () => {
+    for (const resource of model.resources) {
+      const html =
+        pages.find((p) => p.path === `resource/${resource.name}/index.html`)
+          ?.html ?? "";
+      const withProse = resource.operations.filter(
+        (o) => o.description && !o.description.startsWith("**Platform"),
+      ).length;
+      if (withProse === 0) continue;
+      assert.ok(
+        (html.match(/class="prose opdesc"/g) ?? []).length > 0,
+        `${resource.name} renders no operation description`,
+      );
+    }
+  });
+
   test("a CommandType carries its parameter schema's scalar fields", () => {
     // Without these, composing a GoToDimmedLevel still means opening
     // DimmedLevelParameters to learn it holds a Level -- the jump this page

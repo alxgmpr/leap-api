@@ -4,6 +4,7 @@ import { classifyField } from "../provenance.ts";
 import { siteNav } from "./home.ts";
 import { esc } from "./html.ts";
 import { type Page, page } from "./layout.ts";
+import { renderMarkdown } from "./markdown.ts";
 
 const ROOT = "../../";
 
@@ -33,7 +34,7 @@ function renderField(
 <td><code>${esc(name)}</code>${isRequired ? ' <span class="req">required</span>' : ""}</td>
 <td>${typeLabel(node)}</td>
 <td><span class="chip chip-verdict chip-${verdict}">${esc(verdict.replace("-", " "))}</span></td>
-<td>${Array.isArray(observed) ? `<span class="observed">observed: ${esc(observed.map(String).join(", "))}</span>` : ""}${node.description ? `<p class="fielddesc">${esc(String(node.description))}</p>` : ""}</td>
+<td>${Array.isArray(observed) ? `<span class="observed">observed: ${esc(observed.map(String).join(", "))}</span>` : ""}${node.description ? `<div class="prose fielddesc">${renderMarkdown(String(node.description))}</div>` : ""}</td>
 </tr>`;
 }
 
@@ -59,7 +60,7 @@ function renderSchema(entry: SchemaEntry, model: LeapModel): Page {
 <p class="lede">This describes the <strong>unwrapped payload</strong> — the value
 under <code>Body</code>'s single key, not the wrapper around it.</p>
 ${schemaEvidence}
-${node.description ? `<div class="schema-desc"><p>${esc(String(node.description))}</p></div>` : ""}
+${node.description ? `<div class="prose schema-desc">${renderMarkdown(String(node.description))}</div>` : ""}
 ${items ? `<h2>Element type</h2><p>${typeLabel(node)}</p>` : ""}
 ${
   enumValues
