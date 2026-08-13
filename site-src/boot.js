@@ -183,12 +183,12 @@ if (search instanceof HTMLInputElement && results) {
     const items = options();
     if (items.length === 0) return;
     active = (next + items.length) % items.length;
-    items.forEach((li, i) => li.classList.toggle("active", i === active));
-    items[active]?.scrollIntoView({ block: "nearest" });
-    search.setAttribute("aria-activedescendant", `search-hit-${active}`);
     items.forEach((li, i) => {
       li.id = `search-hit-${i}`;
+      li.classList.toggle("active", i === active);
     });
+    items[active]?.scrollIntoView({ block: "nearest" });
+    search.setAttribute("aria-activedescendant", `search-hit-${active}`);
   };
 
   search.addEventListener("input", render);
