@@ -6,24 +6,31 @@ description: |
   `Permissions.SessionRole` (firmware type `leapobj.SessionRole`) via
   /clientsetting.
 
-  **Open string, not an enum.** This shipped as a closed one-member `enum`
-  beside a sentence saying unlisted values were possible, which is a
-  self-contradiction: the `enum` rejects exactly the values the sentence
-  says exist. Resolved in favour of the sentence. `enum: [Admin]` and
-  `x-observed-values: [Admin]` assert the same *content*; the `enum`
-  additionally asserts "and nothing else, ever", which no corpus supports
-  and no firmware evidence can supply -- the extraction recovers Go `struct`
-  definitions only and defines none of the 118 named `leapobj.*` types it
-  references as field types, `leapobj.SessionRole` among them, so it can
-  never bound a member set here or anywhere else in this specification.
-  Opening drops one unevidenced assertion and loses no evidenced one, and
-  `x-observed-values` is machine-checked against the fixtures in both
-  directions (`test/observed-values.test.ts`), which the `enum` never was
-  for frame-log bodies. `OccupancyStatus.yaml` records the reversal in full.
+  **Open string, not an enum.** This shipped as a closed **one-member**
+  `enum`, and one member is the case where the `enum` adds nothing:
+  `enum: [Admin]` and `x-observed-values: [Admin]` assert the same
+  *content*. The only thing the `enum` adds is "and nothing else, ever" --
+  an exhaustiveness claim on a sample that has never once shown this field
+  to vary. Opening drops that and loses no evidenced content, and it moves
+  the claim somewhere machine-checked in both directions
+  (`test/observed-values.test.ts`), which the `enum` never was for
+  frame-log bodies.
+
+  **That is a cardinality rule, not a general one**, and it is stated here
+  so this file does not read as licensing something wider. 24 closed enums
+  still ship in this specification, 23 of them beside the same note that
+  unlisted values are possible, and they stay closed: each has at least two
+  independently observed members, so the field has demonstrated that it
+  varies and the enum carries real discriminating content. Firmware typing
+  does not separate the cases either: this field is typed
+  `leapobj.SessionRole`, a named type the extraction never
+  defined, and so is every one of those 24. See
+  `OccupancyStatus.yaml`, which records the criterion and the ruling it
+  reverses.
 
   **The evidence is weaker here than a bare count suggests, and the count
-  itself was wrong.** `Admin` is observed four times: in the corpora labelled
-  `sweep-read`, `spec-read-ra3`, `spec-read-caseta` and
+  itself was wrong.** `Admin` is observed four times, in the corpora
+  labelled `sweep-read`, `spec-read-ra3`, `spec-read-caseta` and
   `spec-read-caseta-bare` -- so on both platforms, and on two of the three
   Caseta corpora rather than one. The description said "three corpora" and
   named three fixture files; the fourth, the v01.124 bare bridge, answers

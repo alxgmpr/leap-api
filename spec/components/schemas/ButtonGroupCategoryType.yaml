@@ -5,35 +5,52 @@ description: |
   Button group category, from `ButtonGroupCategory.Type` (firmware type
   `leapobj.ButtonGroupCategoryType`).
 
-  **Open string, not an enum.** This shipped as a closed one-member `enum`
-  beside a sentence saying unlisted values were possible, which is a
-  self-contradiction: the `enum` rejects exactly the values the sentence
-  says exist. Resolved in favour of the sentence. `enum: [Lights]` and
-  `x-observed-values: [Lights]` assert the same *content*; the `enum`
-  additionally asserts "and nothing else, ever", which no corpus supports
-  and no firmware evidence can supply -- the extraction recovers Go `struct`
-  definitions only and defines none of the 118 named `leapobj.*` types it
-  references as field types, `leapobj.ButtonGroupCategoryType` among them,
-  so it can never bound a member set here or anywhere else in this
-  specification. Opening drops one unevidenced assertion and loses no
-  evidenced one, and `x-observed-values` is machine-checked against the
-  fixtures in both directions (`test/observed-values.test.ts`), which the
-  `enum` never was for frame-log bodies. `OccupancyStatus.yaml` records the
-  reversal in full.
+  **Open string, not an enum.** This shipped as a closed **one-member**
+  `enum`, and one member is the case where the `enum` adds nothing:
+  `enum: [Lights]` and `x-observed-values: [Lights]` assert the same
+  *content*. The only thing the `enum` adds is "and nothing else, ever" --
+  an exhaustiveness claim on a sample that has never once shown this field
+  to vary. Opening drops that and loses no evidenced content, and it moves
+  the claim somewhere machine-checked in both directions
+  (`test/observed-values.test.ts`), which the `enum` never was for
+  frame-log bodies.
+
+  **That is a cardinality rule, not a general one**, and it is stated here
+  so this file does not read as licensing something wider. 24 closed enums
+  still ship in this specification, 23 of them beside the same note that
+  unlisted values are possible, and they stay closed: each has at least two
+  independently observed members, so the field has demonstrated that it
+  varies and the enum carries real discriminating content. Firmware typing
+  does not separate the cases either: this field is typed
+  `leapobj.ButtonGroupCategoryType`, a named type the extraction never
+  defined, and so is every one of those 24. See
+  `OccupancyStatus.yaml`, which records the criterion and the ruling it
+  reverses.
 
   `Lights` is observed 20 times across three corpora -- RA3 v03.247 4,
   Caseta v01.123 10, RA3 v03.249 6, counted per corpus under
   `x-observed-census` -- via /buttongroup, /buttongroup/{buttongroupId},
   /device/{deviceId}/buttongroup and its /expanded form.
 
-  **Do not re-derive this by walking for `Category.Type`.** That key path is
-  shared with `ZoneCategory.Type`, an unrelated firmware type on zones and
-  areas. A key-name walk over the probe corpora and the frame logs finds 387
-  `Category.Type` strings; 367 of them are that other type (`Kitchen`,
-  `Bathroom`, `CeilingFan`, `ExhaustFan`, and 241 empty strings), and only
-  the 20 below are this one. The two are separated by their container, not
-  by their key. `npm run census` is schema-aware and does not have this
-  problem; a hand-rolled walker does.
+  **Do not re-derive this by walking for `Category.Type`.** Four unrelated
+  firmware types put a `Type` field under a `Category` key, and the fixtures
+  carry 387 such strings in all. Only the 20 below are this type. The other
+  367 split three ways, not one: `Zone.Category`
+  (`leapobj.ZoneCategory`) 310, of which 241 are the empty string;
+  `Area.Category` (`leapobj.AreaCategory`) 51; and `VirtualButton.Category`
+  (`leapobj.VirtualButtonCategory`) 6.
+
+  Two of those three are not enum-shaped at all: `ZoneCategory.Type` and
+  `AreaCategory.Type` are bare Go `string`s -- the `ServiceType` case, not
+  this one. Only `VirtualButtonCategory.Type` is a named type, and it is a
+  different named type (`leapobj.VirtualButtonCategoryType`).
+
+  Nor do the values sort themselves out by inspection. `Kitchen` occurs 5
+  times as an area category and 4 as a virtual-button category and never as
+  a zone one; `Bathroom` 6 times as an area category and never as a zone
+  one. The four are separated by their container -- not by their key, and
+  not by their value. `npm run census` is schema-aware and does not have
+  this problem; a hand-rolled walker does.
 
   The Caseta spec probe contributes none, but not for want of coverage: it
   reaches exactly one button group (`/buttongroup/1`, via

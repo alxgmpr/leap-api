@@ -93,9 +93,9 @@ route and finds nothing here cannot tell "this route does not exist" from
   routes — see `docs/mapping.md`). The other 146 generated families were
   never touched.
 - **Schemas.** The firmware extraction recovered 636 struct definitions.
-  `spec/components/schemas/` ships 320 schemas total, but those two numbers
-  don't reconcile 1:1 — 259 of the 320 (41% of the 636 generated) were
-  hand-refined from a generated counterpart of the same name; the other 61
+  `spec/components/schemas/` ships 344 schemas total, but those two numbers
+  don't reconcile 1:1 — 274 of the 344 (43% of the 636 generated) were
+  hand-refined from a generated counterpart of the same name; the other 70
   have no generated counterpart at all (hand-authored collection wrappers
   like `Zones`/`Devices`/`Areas`/`Curves`/`LoadControllers`, and
   hand-authored enums like `CommandType`/`EnabledState`/`LEDState`/
@@ -103,25 +103,27 @@ route and finds nothing here cannot tell "this route does not exist" from
   extraction could produce: all 636 recovered types are Go `struct`
   definitions and nothing else, so the extraction can emit no named enum
   type at all, and per `docs/mapping.md` the firmware defines no plural
-  collection-wrapper types either. Six of the 61 are no longer enums.
-  `ServiceType` went first — live traffic on RA3 firmware v03.249 falsified
-  it as a closed set (it returned a `Type` this specification did not list),
-  so it is now a documented-open `string` with its observed values retained
-  as documentation rather than as an assertion. `Role`, `SessionRole`,
+  collection-wrapper types either. Six of the 70 are documented-open
+  `string`s rather than enums, for two different reasons. `ServiceType` went
+  first — live traffic on RA3 firmware v03.249 falsified it as a closed set
+  (it returned a `Type` this specification did not list), and the firmware
+  types `Service.Type` as a bare Go `string` with no named type behind it,
+  so there was nothing to close against. `Role`, `SessionRole`,
   `ButtonGroupCategoryType`, `StopIfMovingEnabledState` and
-  `SystemLoadSheddingState` followed, not because hardware falsified them
-  but because each closed a set on exactly one observed value while its own
-  description said unlisted values were possible; `OccupancyStatus.yaml`
-  records that reversal. `ServerType`, falsified the same
-  way by the Caseta bridge, was *appended* to instead — the firmware types
-  `Server.Type` as a real named enum and `Service.Type` as a bare `string`,
-  which is the whole of the difference; both files argue it out in their
-  descriptions. Five of the 61 are new:
+  `SystemLoadSheddingState` followed on a different ground: hardware has
+  falsified none of them, but each closed a set on exactly one observed
+  value, where the `enum` and its `x-observed-values` carry identical
+  content and the `enum` adds only an exhaustiveness claim.
+  `OccupancyStatus.yaml` records that criterion — set cardinality, not
+  firmware typing — and the ruling it reverses. `ServerType`, falsified the
+  same way by the Caseta bridge, was *appended* to instead: it has three
+  independently observed members, so it stays closed as an acknowledged
+  lower bound like the other 23 closed enums. Five of the 70 are new:
   `Availability`, `BatteryLevelState`, `LinkType`, `SwitchedLevel` and
   `NetworkConfigurationType`, shared enums whose firmware types the
   extraction referenced but never defined, recovered from probe data in the
-  Task 13 enum pass. The remaining 377 of the 636
-  generated schemas (59%) sit untouched in
+  Task 13 enum pass. The remaining 362 of the 636
+  generated schemas (57%) sit untouched in
   `spec/components/schemas/_generated/`.
 
 None of this is a defect to be silently patched over — hand-refining a

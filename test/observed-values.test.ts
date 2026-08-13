@@ -78,7 +78,7 @@ describe("x-observed-values agrees with the fixtures", () => {
   // Non-vacuity, part 1: the annotation collector found something to check.
   test("the bundle carries annotated sites", () => {
     assert.ok(
-      sites.length >= 20,
+      sites.length >= 25,
       `only ${sites.length} x-observed-values sites found in dist/openapi.yaml; ` +
         "if this dropped, the collector broke or annotations were deleted",
     );
@@ -91,7 +91,7 @@ describe("x-observed-values agrees with the fixtures", () => {
   test("the bundle carries declared censuses", () => {
     const declared = sites.filter((s) => s.declared !== undefined);
     assert.ok(
-      declared.length >= 20,
+      declared.length >= 25,
       `only ${declared.length} x-observed-census blocks found in ` +
         "dist/openapi.yaml; the census assertions are vacuous on sites that " +
         "declare none, so if this dropped, blocks were deleted or the " +
