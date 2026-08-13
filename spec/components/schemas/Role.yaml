@@ -1,11 +1,36 @@
+# HAND-AUTHORED. Shipped as a closed one-member `enum` until this pass --
+# see the description for why it is an open string now.
 type: string
 description: |
-  Contact's role on the project. The firmware extraction did not recover
-  the full enum; the member below was recovered from Contact.Role via
-  /project/contactinfo, and is now observed three times across both
-  platforms -- RA3 v03.247, RA3 v03.249 and Caseta v01.123 -- on two
-  distinct contact records. Unlisted values are possible; a one-member set
-  closed on one distinct value is a lower bound, and this specification has
-  had such a set falsified before (see `OccupancyStatus.yaml`).
-enum:
+  Contact's role on the project, from `Contact.Role` (firmware type
+  `leapobj.Role`) via /project/contactinfo.
+
+  **Open string, not an enum.** This shipped as a closed one-member `enum`
+  beside a sentence saying unlisted values were possible, which is a
+  self-contradiction: the `enum` rejects exactly the values the sentence
+  says exist. Resolved in favour of the sentence. `enum: [Installer]` and
+  `x-observed-values: [Installer]` assert the same *content*; the `enum`
+  additionally asserts "and nothing else, ever", which no corpus supports
+  and no firmware evidence can supply -- the extraction recovers Go `struct`
+  definitions only and defines none of the 118 named `leapobj.*` types it
+  references as field types, `leapobj.Role` among them, so it can never
+  bound a member set here or anywhere else in this specification. Opening
+  drops one unevidenced assertion and loses no evidenced one, and
+  `x-observed-values` is machine-checked against the fixtures in both
+  directions (`test/observed-values.test.ts`), which the `enum` never was
+  for frame-log bodies. `OccupancyStatus.yaml` records the reversal in full.
+
+  Three occurrences on two distinct contact records, counted per corpus
+  under `x-observed-census`: RA3 v03.247 and the RA3 v03.249 spec probe both
+  return `/contactinfo/102` -- byte-identical bodies, so a second
+  observation of one record rather than a second record -- and the Caseta
+  v01.123 spec probe returns `/contactinfo/1`, which is genuinely different.
+  The original Caseta capture and the v01.124 bare-bridge probe answer this
+  route `204 NoContent` and contribute none. See `Contact.yaml`.
+x-observed-values:
   - Installer
+x-observed-census:
+  Installer:
+    ra3: 1
+    spec-read-caseta: 1
+    spec-read-ra3: 1

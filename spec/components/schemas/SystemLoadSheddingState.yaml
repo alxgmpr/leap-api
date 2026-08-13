@@ -1,10 +1,37 @@
+# HAND-AUTHORED. Shipped as a closed one-member `enum` until this pass --
+# see the description for why it is an open string now.
 type: string
 description: |
-  Load shedding activation state. The firmware extraction did not recover
-  the full enum; the member below was recovered from
-  SystemLoadSheddingStatus.State via /system/loadshedding/status, observed
-  once in each RA3 corpus (v03.247 and v03.249) and unconfirmed on Caseta,
-  which returns 405 MethodNotAllowed on this route. Two observations of the
-  same value on one installation; unlisted values are possible.
-enum:
+  Load shedding activation state, from `SystemLoadSheddingStatus.State`
+  (firmware type `leapobj.SystemLoadSheddingState`) via
+  /system/loadshedding/status.
+
+  **Open string, not an enum.** This shipped as a closed one-member `enum`
+  beside a sentence saying unlisted values were possible, which is a
+  self-contradiction: the `enum` rejects exactly the values the sentence
+  says exist. Resolved in favour of the sentence. `enum: [Disabled]` and
+  `x-observed-values: [Disabled]` assert the same *content*; the `enum`
+  additionally asserts "and nothing else, ever", which no corpus supports
+  and no firmware evidence can supply -- the extraction recovers Go `struct`
+  definitions only and defines none of the 118 named `leapobj.*` types it
+  references as field types, `leapobj.SystemLoadSheddingState` among them,
+  so it can never bound a member set here or anywhere else in this
+  specification. Opening drops one unevidenced assertion and loses no
+  evidenced one, and `x-observed-values` is machine-checked against the
+  fixtures in both directions (`test/observed-values.test.ts`), which the
+  `enum` never was for frame-log bodies. `OccupancyStatus.yaml` records the
+  reversal in full.
+
+  This is the thinnest evidence of the five. `Disabled` is observed twice,
+  once in each RA3 corpus (v03.247 and v03.249) and counted per corpus under
+  `x-observed-census` -- two observations of the same value on the same
+  installation, which is one installation's configuration, not a vocabulary.
+  Unconfirmed on Caseta: all three Caseta corpora answer this route
+  `405 MethodNotAllowed`. An `Enabled` counterpart is what the concept
+  implies and no fixture carries.
+x-observed-values:
   - Disabled
+x-observed-census:
+  Disabled:
+    ra3: 1
+    spec-read-ra3: 1

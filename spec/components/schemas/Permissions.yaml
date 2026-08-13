@@ -1,7 +1,9 @@
 type: object
 description: |
   `SessionRole`'s unresolved-enum marker is resolved to the hand-authored
-  `SessionRole` enum -- see that schema for the fixture citation.
+  `SessionRole` schema -- an open `string` with its observed values recorded
+  under `x-observed-values`, not an enum. See that schema for the fixture
+  citation and for why it is not closed.
 properties:
   SessionRole:
     $ref: "#/components/schemas/SessionRole"

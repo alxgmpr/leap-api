@@ -1,15 +1,44 @@
+# HAND-AUTHORED. Shipped as a closed one-member `enum` until this pass --
+# see the description for why it is an open string now.
 type: string
 description: |
-  Whether a shade button group stops movement when a new command arrives.
-  The firmware extraction did not recover the full enum; the only member
-  below was recovered from ButtonGroup.StopIfMoving observed on Caseta --
-  21 instances across the three Caseta corpora: 19 from the original
-  v01.123 capture (via /buttongroup and /device/{deviceId}/buttongroup),
-  1 from the v01.123 coverage-blind spec probe, and 1 from the v01.124
-  bare-bridge probe, on the button group a bridge with no devices still
-  reports at /device/1/buttongroup. Never observed on either RA3
-  corpus in any context (always absent), and never observed as anything but
-  `Disabled` on Caseta -- an `Enabled` counterpart is expected by the field
-  name but unconfirmed in any fixture. Unlisted values are possible.
-enum:
+  Whether a shade button group stops movement when a new command arrives,
+  from `ButtonGroup.StopIfMoving` (firmware type
+  `leapobj.StopIfMovingEnabledState`).
+
+  **Open string, not an enum.** This shipped as a closed one-member `enum`
+  beside a sentence saying unlisted values were possible, which is a
+  self-contradiction: the `enum` rejects exactly the values the sentence
+  says exist. Resolved in favour of the sentence. `enum: [Disabled]` and
+  `x-observed-values: [Disabled]` assert the same *content*; the `enum`
+  additionally asserts "and nothing else, ever", which no corpus supports
+  and no firmware evidence can supply -- the extraction recovers Go `struct`
+  definitions only and defines none of the 118 named `leapobj.*` types it
+  references as field types, `leapobj.StopIfMovingEnabledState` among them,
+  so it can never bound a member set here or anywhere else in this
+  specification. Opening drops one unevidenced assertion and loses no
+  evidenced one, and `x-observed-values` is machine-checked against the
+  fixtures in both directions (`test/observed-values.test.ts`), which the
+  `enum` never was for frame-log bodies. `OccupancyStatus.yaml` records the
+  reversal in full.
+
+  `Disabled` is observed 21 times, all on Caseta, across all three Caseta
+  corpora and counted per corpus under `x-observed-census`: 19 from the
+  original v01.123 capture (via /buttongroup and
+  /device/{deviceId}/buttongroup), 1 from the v01.123 coverage-blind spec
+  probe, and 1 from the v01.124 bare-bridge probe, on the button group a
+  bridge with no devices still reports at /device/1/buttongroup.
+
+  **Never observed on either RA3 corpus, in any context** -- always absent,
+  on all 32 button-group objects RA3 v03.247 returns and all 14 the v03.249
+  spec probe returns -- and never observed as anything but `Disabled` on
+  Caseta. An `Enabled` counterpart is expected by the field name and
+  unconfirmed in any fixture, which is a statement about the corpus rather
+  than about the type.
+x-observed-values:
   - Disabled
+x-observed-census:
+  Disabled:
+    caseta: 19
+    spec-read-caseta: 1
+    spec-read-caseta-bare: 1

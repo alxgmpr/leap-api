@@ -28,12 +28,14 @@ description: |
   either -- a fan that has been seen off and on high says nothing about
   whether low and medium exist.
 
-  This specification has made that assertion before, five times, all of them
-  predating this pass and all still shipping closed on a single distinct
-  observed value: `Role` (`Installer`), `SessionRole` (`Admin`),
+  This specification made that assertion five times before, all of them
+  predating this pass: `Role` (`Installer`), `SessionRole` (`Admin`),
   `ButtonGroupCategoryType` (`Lights`), `StopIfMovingEnabledState`
-  (`Disabled`) and `SystemLoadSheddingState` (`Disabled`). `OccupancyStatus`
-  is the sixth, and the one where a later probe showed what it costs: it
+  (`Disabled`) and `SystemLoadSheddingState` (`Disabled`). All five are open
+  strings now, on the argument `OccupancyStatus.yaml` records in full, so
+  the treatment these fields get is the specification's rule rather than its
+  exception. `OccupancyStatus` was the sixth, and the one where a later
+  probe showed what closing costs: it
   shipped closed on `Unknown` alone, its own note said `Occupied` and
   `Unoccupied` were expected but unconfirmed, and the coverage-blind probe
   produced both. That is the precedent this field declines to repeat.

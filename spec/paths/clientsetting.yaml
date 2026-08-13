@@ -1,7 +1,8 @@
 # Refined from spec/paths/_generated/clientsetting.yaml. Straight copy of
 # both operations' shape (x-leap-body-type/response schema already correct);
 # the only deviation is in the schemas ClientSetting $refs -- Permissions.
-# SessionRole's unresolved-enum marker is resolved (see SessionRole.yaml).
+# SessionRole's unresolved-enum marker is resolved to a documented-open
+# `string` rather than to an enum (see SessionRole.yaml).
 #
 # PUT finding from Task 8's sweep (fixtures/sweep-write.json): sending an
 # UpdateRequest to this path returned `400 BadRequest`, body

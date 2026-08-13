@@ -46,13 +46,52 @@ description: |
   on the same kind of evidence -- see `ZoneStatus.yaml`, which records that
   argument in full.
 
-  This is not the only single-observation closure in the specification, just
-  the only one hardware has falsified so far. `Role`, `SessionRole`,
+  This is not the only single-observation closure the specification has
+  carried, just the only one hardware has falsified. `Role`, `SessionRole`,
   `ButtonGroupCategoryType`, `StopIfMovingEnabledState` and
-  `SystemLoadSheddingState` all predate this pass and all still ship closed
-  on one distinct observed value. They are left alone rather than reopened:
-  nothing has contradicted them, and reopening on suspicion would assert an
-  absence no corpus has observed.
+  `SystemLoadSheddingState` all predate this pass and all shipped closed on
+  one distinct observed value each.
+
+  **All five are now open strings, which reverses the ruling this paragraph
+  used to record.** That ruling left them closed because "reopening on
+  suspicion would assert an absence no corpus has observed", and it had the
+  burden backwards. Opening asserts nothing: `type: string` beside
+  `x-observed-values` records what was seen and claims nothing about what
+  was not. It is the closed `enum` that asserts, and what it asserts is
+  exhaustiveness. For a one-member set the two carry the same *content* --
+  `enum: [X]` and `x-observed-values: [X]` list the same value -- so opening
+  drops one unevidenced assertion and loses no evidenced one. It also moves
+  the claim somewhere machine-checked: `test/observed-values.test.ts`
+  cross-references every `x-observed-values` list against the fixtures in
+  both directions, and `x-observed-census` does the same for the counts,
+  where a closed `enum` was checked against probe-set bodies only and
+  against frame-log bodies not at all.
+
+  Nor was suspicion ever the ground. Each of those five descriptions opened
+  with "the firmware extraction did not recover the full enum", which reads
+  as a per-type accident and is not one. The extraction recovers Go `struct`
+  definitions and nothing else -- `test/vendored-extraction.test.ts` asserts
+  that of all 636 recovered type values -- and a Go string enum is
+  `type X string` plus consts, a form it never emitted. It references 754
+  distinct `leapobj.*` types as field types, defines the 636 structs among
+  them and none of the remaining 118, and those 118 are where every enum
+  type this specification names lives (`leapobj.Role`,
+  `leapobj.SessionRole`, `leapobj.ButtonGroupCategoryType`,
+  `leapobj.StopIfMovingEnabledState`, `leapobj.SystemLoadSheddingState` and
+  `leapobj.OccupancyStatus` among them). So "the extraction did not recover
+  the full enum" is true of every enum in this specification by
+  construction, and the extraction can never bound any member set anywhere
+  in it. Every enum here is observation-derived and a lower bound; for those
+  five the lower bound rested on exactly one value each.
+
+  `ServerType.yaml` stays closed, and is the contrast that keeps this from
+  being a blanket rule. Its members are not evidenced by the extraction
+  either, but `leapobj.Server` carries `LIPProperties`, `LEAPProperties` and
+  `IPLProperties` as three distinct pointer fields, so the type system
+  independently evidenced a third `ServerType` member before any Caseta
+  probe found it. Nothing comparable exists for the five, and `ServiceType`
+  sits at the far end of the same scale: `Service.Type` is a bare Go
+  `string` with no named type at all.
 enum:
   - Occupied
   - Unoccupied

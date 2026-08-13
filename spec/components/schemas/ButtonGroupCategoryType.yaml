@@ -1,10 +1,39 @@
+# HAND-AUTHORED. Shipped as a closed one-member `enum` until this pass --
+# see the description for why it is an open string now.
 type: string
 description: |
-  Button group category. The firmware extraction did not recover the full
-  enum; the member below was recovered from ButtonGroupCategory.Type,
-  observed 20 times across three corpora -- RA3 v03.247 4, Caseta v01.123
-  10, RA3 v03.249 6 -- via /buttongroup, /buttongroup/{buttongroupId},
+  Button group category, from `ButtonGroupCategory.Type` (firmware type
+  `leapobj.ButtonGroupCategoryType`).
+
+  **Open string, not an enum.** This shipped as a closed one-member `enum`
+  beside a sentence saying unlisted values were possible, which is a
+  self-contradiction: the `enum` rejects exactly the values the sentence
+  says exist. Resolved in favour of the sentence. `enum: [Lights]` and
+  `x-observed-values: [Lights]` assert the same *content*; the `enum`
+  additionally asserts "and nothing else, ever", which no corpus supports
+  and no firmware evidence can supply -- the extraction recovers Go `struct`
+  definitions only and defines none of the 118 named `leapobj.*` types it
+  references as field types, `leapobj.ButtonGroupCategoryType` among them,
+  so it can never bound a member set here or anywhere else in this
+  specification. Opening drops one unevidenced assertion and loses no
+  evidenced one, and `x-observed-values` is machine-checked against the
+  fixtures in both directions (`test/observed-values.test.ts`), which the
+  `enum` never was for frame-log bodies. `OccupancyStatus.yaml` records the
+  reversal in full.
+
+  `Lights` is observed 20 times across three corpora -- RA3 v03.247 4,
+  Caseta v01.123 10, RA3 v03.249 6, counted per corpus under
+  `x-observed-census` -- via /buttongroup, /buttongroup/{buttongroupId},
   /device/{deviceId}/buttongroup and its /expanded form.
+
+  **Do not re-derive this by walking for `Category.Type`.** That key path is
+  shared with `ZoneCategory.Type`, an unrelated firmware type on zones and
+  areas. A key-name walk over the probe corpora and the frame logs finds 387
+  `Category.Type` strings; 367 of them are that other type (`Kitchen`,
+  `Bathroom`, `CeilingFan`, `ExhaustFan`, and 241 empty strings), and only
+  the 20 below are this one. The two are separated by their container, not
+  by their key. `npm run census` is schema-aware and does not have this
+  problem; a hand-rolled walker does.
 
   The Caseta spec probe contributes none, but not for want of coverage: it
   reaches exactly one button group (`/buttongroup/1`, via
@@ -14,7 +43,10 @@ description: |
   observation. `Category` is optional on ButtonGroup generally: only 2 of
   the 16 button groups the original RA3 capture returns carry it, and 5 of
   10 on the original Caseta capture.
-
-  Unlisted values are possible.
-enum:
+x-observed-values:
   - Lights
+x-observed-census:
+  Lights:
+    caseta: 10
+    ra3: 4
+    spec-read-ra3: 6

@@ -1,13 +1,47 @@
+# HAND-AUTHORED. Shipped as a closed one-member `enum` until this pass --
+# see the description for why it is an open string now.
 type: string
 description: |
-  The firmware extraction did not recover the full enum; `Admin` is the only
-  value observed, on the probe client's own `/clientsetting` session in
-  three corpora -- `fixtures/sweep-read.json`, `fixtures/spec-read.json`
-  and `fixtures/spec-read-caseta.json`, so on both platforms. All three
-  report the role of this project's own prober, so they say what that
-  client was granted, not what the type can hold. Unlisted values are
-  possible -- a
-  non-admin integrator/guest role, for instance, is plausible but
-  unconfirmed by any capture in this project's corpus.
-enum:
+  Role granted to the connected client's session, from
+  `Permissions.SessionRole` (firmware type `leapobj.SessionRole`) via
+  /clientsetting.
+
+  **Open string, not an enum.** This shipped as a closed one-member `enum`
+  beside a sentence saying unlisted values were possible, which is a
+  self-contradiction: the `enum` rejects exactly the values the sentence
+  says exist. Resolved in favour of the sentence. `enum: [Admin]` and
+  `x-observed-values: [Admin]` assert the same *content*; the `enum`
+  additionally asserts "and nothing else, ever", which no corpus supports
+  and no firmware evidence can supply -- the extraction recovers Go `struct`
+  definitions only and defines none of the 118 named `leapobj.*` types it
+  references as field types, `leapobj.SessionRole` among them, so it can
+  never bound a member set here or anywhere else in this specification.
+  Opening drops one unevidenced assertion and loses no evidenced one, and
+  `x-observed-values` is machine-checked against the fixtures in both
+  directions (`test/observed-values.test.ts`), which the `enum` never was
+  for frame-log bodies. `OccupancyStatus.yaml` records the reversal in full.
+
+  **The evidence is weaker here than a bare count suggests, and the count
+  itself was wrong.** `Admin` is observed four times: in the corpora labelled
+  `sweep-read`, `spec-read-ra3`, `spec-read-caseta` and
+  `spec-read-caseta-bare` -- so on both platforms, and on two of the three
+  Caseta corpora rather than one. The description said "three corpora" and
+  named three fixture files; the fourth, the v01.124 bare bridge, answers
+  /clientsetting `200 OK` with
+  `Permissions.SessionRole: Admin` exactly as the others do. Per-corpus
+  counts are under `x-observed-census`.
+
+  All four are the same observation repeated: every one reports the role of
+  *this project's own prober*, on that prober's own session. They say what
+  that client was granted, not what the type can hold. A non-admin
+  integrator or guest role is plausible and unconfirmed by any capture in
+  this project's corpus -- which is a statement about the corpus, not about
+  the type, and is why nothing here is closed on it.
+x-observed-values:
   - Admin
+x-observed-census:
+  Admin:
+    spec-read-caseta: 1
+    spec-read-caseta-bare: 1
+    spec-read-ra3: 1
+    sweep-read: 1

@@ -99,15 +99,20 @@ route and finds nothing here cannot tell "this route does not exist" from
   have no generated counterpart at all (hand-authored collection wrappers
   like `Zones`/`Devices`/`Areas`/`Curves`/`LoadControllers`, and
   hand-authored enums like `CommandType`/`EnabledState`/`LEDState`/
-  `SessionRole`). None of these were ever definitions the firmware
+  `ProgrammingModelType`). None of these were ever definitions the firmware
   extraction could produce: all 636 recovered types are Go `struct`
   definitions and nothing else, so the extraction can emit no named enum
   type at all, and per `docs/mapping.md` the firmware defines no plural
-  collection-wrapper types either. One of the 61, `ServiceType`, is no
-  longer an enum — live traffic on RA3 firmware v03.249 falsified it as a
-  closed set (it returned a `Type` this specification did not list), so it
-  is now a documented-open `string` with its observed values retained as
-  documentation rather than as an assertion. `ServerType`, falsified the same
+  collection-wrapper types either. Six of the 61 are no longer enums.
+  `ServiceType` went first — live traffic on RA3 firmware v03.249 falsified
+  it as a closed set (it returned a `Type` this specification did not list),
+  so it is now a documented-open `string` with its observed values retained
+  as documentation rather than as an assertion. `Role`, `SessionRole`,
+  `ButtonGroupCategoryType`, `StopIfMovingEnabledState` and
+  `SystemLoadSheddingState` followed, not because hardware falsified them
+  but because each closed a set on exactly one observed value while its own
+  description said unlisted values were possible; `OccupancyStatus.yaml`
+  records that reversal. `ServerType`, falsified the same
   way by the Caseta bridge, was *appended* to instead — the firmware types
   `Server.Type` as a real named enum and `Service.Type` as a bare `string`,
   which is the whole of the difference; both files argue it out in their
