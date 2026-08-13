@@ -111,8 +111,14 @@ properties:
     description: |
       TODO(enum): members of FanSpeed were not recovered from the firmware
       extraction, and hardware has produced two, both from
-      /zone/1982/status -- the single observed fan zone, on the RA3 side;
-      neither Caseta corpus reaches one, nor does any Caseta frame log.
+      /zone/1982/status -- the single observed fan zone, on the RA3 side. No
+      Caseta corpus reaches a fan zone and no Caseta frame log carries the
+      field, but for two different reasons: the two Caseta corpora that reach
+      zones at all reach 14 and 1 respectively and none is a fan zone, while
+      the bare-bridge corpus reaches none, answering /zone/status
+      `204 NoContent` and 404ing all 8 per-zone ids. `caseta-push-pad-0`, the
+      one Caseta frame-log run that carries zone statuses, carries no
+      `FanSpeed` either.
 
       `High`, 6 observations: 3 in the read corpora (`fixtures/ra3.json`
       via /zone/status and /zone/1982/status, `fixtures/spec-read.json` via
@@ -133,10 +139,14 @@ properties:
       deltas and no fan changed while a capture was open. See
       `docs/subscriptions.md`.
 
-      `x-observed-census` totals 9 rather than 8: it folds in the expanded
-      route, and it counts the duplicated `ra3-keypad-press` snapshot twice
-      because it counts occurrences, not observations. This field is the
-      clearest case in the file of why the two bases are kept apart.
+      `x-observed-census` totals 9, exactly one more than those eight. The
+      expanded-route `High` is already the eighth of them, so it is not the
+      difference; the ninth is the `ra3-keypad-press` snapshot, which the
+      census counts twice because it counts occurrences and not observations.
+      Per value: `High` 7 -- the 6 above plus the expanded one, which the
+      census cannot hold apart; `Off` 2 -- the single observation, stored
+      twice. This field is the clearest case in the file of why the two bases
+      are kept apart.
 
       Two values on one physical fan at two different moments is a lower
       bound, not the vocabulary of the type: low and medium counterparts
