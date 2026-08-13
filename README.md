@@ -82,7 +82,18 @@ route and finds nothing here cannot tell "this route does not exist" from
   remaining 182 each have their own bundled path. Of the 228 absent, 4 are
   `{xid}` routes whose `{id}` twin *is* bundled — OpenAPI forbids two paths
   differing only in parameter name, so those 4 are represented rather than
-  missing (see `docs/mapping.md`); the other 224 are genuinely not covered.
+  missing (see `docs/mapping.md`); 5 more are concatenated spellings whose
+  corrected, slashed form *is* bundled on captured evidence (`/devicestatus`
+  documented as `/device/status`, and `/devicestatus/deviceheard`,
+  `/occupancygroupstatus`, `/systemaway`, `/timeclockstatus`), so they too are
+  represented rather than missing; the other 219 are genuinely not covered.
+  Of those 219, **51 have a path that is itself in doubt**: each begins with
+  another resource's name, so it may be a concatenation the extraction mangled
+  — `/areastatus` for `/area/status` — rather than a path in its own right.
+  The five corrected spellings prove that defect is real; nothing distinguishes
+  the 51 without asking hardware, so `npm run build:site` lists both readings
+  on the coverage page and asserts neither. Writing those 51 up would mean
+  guessing the path before guessing the shape.
   The bundle ships 211 paths, so 29 of them have no firmware route behind
   them at all: the ten `commandprocessor` routes (the extraction recovered
   zero — see `docs/mapping.md`) and 19 others — collection, `/status` and
