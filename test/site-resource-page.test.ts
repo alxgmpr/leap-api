@@ -46,6 +46,33 @@ describe("resource pages", () => {
     assert.match(zone?.html ?? "", /GoToDimmedLevel/);
   });
 
+  test("a CommandType carries its parameter schema's scalar fields", () => {
+    // Without these, composing a GoToDimmedLevel still means opening
+    // DimmedLevelParameters to learn it holds a Level -- the jump this page
+    // exists to remove.
+    const html = zone?.html ?? "";
+    const option =
+      /<option value="GoToDimmedLevel"[^>]*data-fields="([^"]*)"/.exec(html);
+    assert.ok(option, "GoToDimmedLevel option must carry its fields");
+    const fields = JSON.parse((option[1] as string).replaceAll("&quot;", '"'));
+    assert.ok(
+      fields.some((f: { name: string }) => f.name === "Level"),
+      "Level must be offered as an input",
+    );
+  });
+
+  test("a CommandType with no established field carries no fields", () => {
+    const html = zone?.html ?? "";
+    const option =
+      /<option value="GoToFanSpeed"[^>]*data-fields="([^"]*)"/.exec(html);
+    assert.ok(option);
+    assert.deepEqual(
+      JSON.parse((option[1] as string).replaceAll("&quot;", '"')),
+      [],
+      "no source pairs GoToFanSpeed with a field, so none may be offered",
+    );
+  });
+
   test("renders edges, with unresolved ones visibly unresolved", () => {
     const html =
       pages.find((p) => p.path === "resource/area/index.html")?.html ?? "";

@@ -44,14 +44,45 @@ function commandPayload(form) {
   const payload = { CommandType: select.value };
 
   if (!field) {
-    if (note)
+    if (note) {
+      // Update the guard on this path too. Without it, switching to a
+      // fieldless CommandType and back leaves the guard stale and the
+      // parameter inputs never come back.
+      note.dataset.for = select.value;
       note.innerHTML = `<span class="unresolved">No parameter field is established for <code>${select.value}</code></span> — ${option.dataset.established ?? ""}`;
+    }
     return payload;
   }
 
-  if (note)
-    note.innerHTML = `Parameter field <code>${field}</code> — ${option.dataset.established ?? ""}`;
-  payload[field] = {};
+  // Render an input per scalar field of the parameter schema, so the composed
+  // frame is complete without opening the schema page to learn that
+  // DimmedLevelParameters holds a Level.
+  const fields = JSON.parse(option.dataset.fields || "[]");
+  if (note && note.dataset.for !== select.value) {
+    note.dataset.for = select.value;
+    note.innerHTML =
+      `Parameter field <code>${field}</code> — ${option.dataset.established ?? ""}` +
+      (fields.length > 0
+        ? `<div class="paramfields">${fields
+            .map(
+              (/** @type {any} */ f) =>
+                `<label>${f.name}<input data-payload="${f.name}" data-kind="${f.type}" placeholder="${f.example ?? f.type}"></label>`,
+            )
+            .join("")}</div>`
+        : "");
+  }
+
+  /** @type {Record<string, unknown>} */
+  const parameters = {};
+  for (const input of form.querySelectorAll("[data-payload]")) {
+    if (!(input instanceof HTMLInputElement) || input.value === "") continue;
+    const numeric = input.dataset.kind !== "string";
+    parameters[input.dataset.payload ?? ""] =
+      numeric && input.value.trim() !== "" && !Number.isNaN(Number(input.value))
+        ? Number(input.value)
+        : input.value;
+  }
+  payload[field] = parameters;
   return payload;
 }
 

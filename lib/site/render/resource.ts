@@ -1,4 +1,3 @@
-import type { CommandRow } from "../command-table.ts";
 import type { Edge } from "../graph.ts";
 import type { LeapModel, Operation, Resource } from "../model.ts";
 import { renderFrame } from "./highlight.ts";
@@ -40,13 +39,43 @@ function observationTable(operation: Operation): string {
     .join("")}</tbody></table></div>`;
 }
 
-function composer(operation: Operation, commandTable: CommandRow[]): string {
+/**
+ * Scalar fields of a parameter schema, so the composer can offer real inputs
+ * rather than an empty object. Nested objects and $refs are skipped: they need
+ * their own schema page, and the link to it is already on the operation.
+ */
+function parameterFields(
+  schemaName: string | null,
+  model: LeapModel,
+): { name: string; type: string; example?: string }[] {
+  if (!schemaName) return [];
+  const entry = model.schemas.find((s) => s.name === schemaName);
+  const properties = (entry?.node.properties ?? {}) as Record<
+    string,
+    Record<string, unknown>
+  >;
+  return Object.entries(properties)
+    .filter(
+      ([, node]) =>
+        node.type === "string" ||
+        node.type === "number" ||
+        node.type === "integer",
+    )
+    .map(([name, node]) => ({
+      name,
+      type: String(node.type),
+      example: typeof node.example === "string" ? node.example : undefined,
+    }));
+}
+
+function composer(operation: Operation, model: LeapModel): string {
+  const commandTable = model.commandTable;
   const isCommand = operation.url.endsWith("/commandprocessor");
   const options = isCommand
     ? commandTable
         .map(
           (row) =>
-            `<option value="${esc(row.commandType)}" data-field="${esc(row.parameterField ?? "")}" data-established="${esc(row.establishedBy)}">${esc(row.commandType)}</option>`,
+            `<option value="${esc(row.commandType)}" data-field="${esc(row.parameterField ?? "")}" data-established="${esc(row.establishedBy)}" data-fields="${esc(JSON.stringify(parameterFields(row.parameterField, model)))}">${esc(row.commandType)}</option>`,
         )
         .join("")
     : "";
@@ -81,7 +110,7 @@ ${
 }
 ${renderFrame(operation.request, "Request")}
 ${operation.responses.map((f) => renderFrame(f, `Response (${f.source})`)).join("")}
-${composer(operation, model.commandTable)}
+${composer(operation, model)}
 ${observationTable(operation)}
 ${
   operation.responseSchema

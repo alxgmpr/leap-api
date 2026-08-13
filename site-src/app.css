@@ -483,6 +483,28 @@ button:disabled {
   color: var(--unestablished);
 }
 
+.paramfields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.paramfields label {
+  font-size: 0.78rem;
+}
+
+.paramfields input {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--ink);
+  max-width: 160px;
+}
+
 /* ---------- edges, tables, lists ---------- */
 
 .edges,
