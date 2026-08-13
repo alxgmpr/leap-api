@@ -97,29 +97,41 @@ ${
 </article>`;
 }
 
-function renderEdges(edges: Edge[]): string {
+function renderEdges(edges: Edge[], documented: Set<string>): string {
   if (edges.length === 0) return "";
+
+  // Three states, and the middle one is real: hardware returns hrefs pointing
+  // at routes this reference does not document. Linking those to a page that
+  // does not exist would be worse than saying so.
+  const renderEdge = (edge: Edge): string => {
+    const label = `<code>${esc(edge.schema)}.${esc(edge.property)}</code>`;
+    if (!edge.target)
+      return `<li data-target="">${label} → <span class="unresolved">target not established — no capture ever populated this link</span></li>`;
+
+    const evidence = `<span class="evidence">observed ${esc(edge.observedHref ?? "")} in ${esc(edge.corpus ?? "")}</span>`;
+    if (!documented.has(edge.target))
+      return `<li data-target="${esc(edge.target)}">${label} → <code>/${esc(edge.target)}</code> ${evidence} — <span class="unresolved">not documented in this reference; see <a href="${ROOT}coverage/index.html">coverage</a></span></li>`;
+
+    return `<li data-target="${esc(edge.target)}">${label} → <a href="${ROOT}resource/${esc(edge.target)}/index.html">${esc(edge.target)}</a> ${evidence}</li>`;
+  };
+
   return `<h2>Links to other resources</h2>
 <p class="lede">Targets are read off real captured <code>href</code> values. A link
 no capture ever populated is left unresolved rather than guessed from its
 property name.</p>
-<ul class="edges">
-${edges
-  .map((edge) =>
-    edge.target
-      ? `<li data-target="${esc(edge.target)}"><code>${esc(edge.schema)}.${esc(edge.property)}</code> → <a href="${ROOT}resource/${esc(edge.target)}/index.html">${esc(edge.target)}</a> <span class="evidence">observed ${esc(edge.observedHref ?? "")} in ${esc(edge.corpus ?? "")}</span></li>`
-      : `<li data-target=""><code>${esc(edge.schema)}.${esc(edge.property)}</code> → <span class="unresolved">target not established — no capture ever populated this link</span></li>`,
-  )
-  .join("")}
-</ul>`;
+<ul class="edges">${edges.map(renderEdge).join("")}</ul>`;
 }
 
-function renderResource(resource: Resource, model: LeapModel): Page {
+function renderResource(
+  resource: Resource,
+  model: LeapModel,
+  documented: Set<string>,
+): Page {
   const subscribable = resource.operations.filter((o) => o.subscribable).length;
   const main = `<h1>${esc(resource.name)}</h1>
 <p class="lede">${resource.operations.length} operation${resource.operations.length === 1 ? "" : "s"}${subscribable > 0 ? `, ${subscribable} subscribable` : ""}. Everything you can send about a
 <code>${esc(resource.name)}</code>, the frames it answers with, and what it links to.</p>
-${renderEdges(resource.edges)}
+${renderEdges(resource.edges, documented)}
 <h2>Operations</h2>
 ${resource.operations.map((operation) => renderOperation(operation, model)).join("")}`;
 
@@ -135,5 +147,8 @@ ${resource.operations.map((operation) => renderOperation(operation, model)).join
 }
 
 export function renderResourcePages(model: LeapModel): Page[] {
-  return model.resources.map((resource) => renderResource(resource, model));
+  const documented = new Set(model.resources.map((r) => r.name));
+  return model.resources.map((resource) =>
+    renderResource(resource, model, documented),
+  );
 }

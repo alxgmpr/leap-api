@@ -1,5 +1,6 @@
 import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { assertInvariants } from "../lib/site/invariants.ts";
 import { buildModel } from "../lib/site/model.ts";
 import { renderCoveragePage } from "../lib/site/render/coverage.ts";
 import { renderDocPages } from "../lib/site/render/docs.ts";
@@ -20,6 +21,8 @@ const pages: Page[] = [
   ...renderRecipePages(model),
   ...renderCoveragePage(model),
 ];
+
+assertInvariants(model, pages);
 
 rmSync(OUT, { recursive: true, force: true });
 for (const p of pages) {

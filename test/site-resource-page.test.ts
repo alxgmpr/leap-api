@@ -53,6 +53,18 @@ describe("resource pages", () => {
     assert.match(html, /data-target="area"|data-target=""/);
   });
 
+  test("an observed target this reference does not document is not linked", () => {
+    // Zone.CountdownTimer resolves to /countdowntimer from a real captured
+    // href, and no resource page covers it. Linking it would be a dead link;
+    // dropping it would hide a real relationship.
+    const html = zone?.html ?? "";
+    assert.match(html, /not documented in this reference/);
+    assert.ok(
+      !html.includes("resource/countdowntimer/index.html"),
+      "must not link to a page that does not exist",
+    );
+  });
+
   test("links are relative to the page, not to site root", () => {
     assert.ok(!(zone?.html ?? "").includes('href="/'));
   });
