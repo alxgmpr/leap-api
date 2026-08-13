@@ -11,36 +11,37 @@ describe("site model", () => {
     assert.ok(model.resources.some((r) => r.name === "zone"));
   });
 
-  test("leads with CommuniqueType and keeps the HTTP verb available", () => {
+  test("leads with CommuniqueType", () => {
     const zone = model.resources.find((r) => r.name === "zone");
     const status = zone?.operations.find((o) => o.url === "/zone/status");
     assert.equal(status?.communiqueType, "ReadRequest");
-    assert.equal(status?.httpVerb, "get");
     assert.equal(status?.subscribable, true);
     assert.equal(status?.eventSchema, "ZoneStatus");
   });
 
-  test("keeps a subscribe-only route, which has no HTTP verb to hang on", () => {
+  test("keeps a subscribe-only route, which no HTTP verb would carry", () => {
     const device = model.resources.find((r) => r.name === "device");
     const heard = device?.operations.find(
       (o) => o.url === "/device/status/deviceheard",
     );
     assert.ok(heard, "the SUBSCRIBE-only route must not be dropped");
     assert.equal(heard.communiqueType, "SubscribeRequest");
-    assert.equal(heard.httpVerb, "");
     assert.equal(heard.subscribable, true);
     assert.equal(heard.eventSchema, "DeviceStatus");
   });
 
-  test("attaches a captured 200 only to the verb the probes actually sent", () => {
-    const zone = model.resources.find((r) => r.name === "zone");
-    for (const operation of zone?.operations ?? [])
-      if (operation.httpVerb !== "get")
-        assert.equal(
-          operation.responses.length,
-          0,
-          `${operation.httpVerb} ${operation.url} carries a read's captured answer`,
-        );
+  test("attaches a captured 200 only to the CommuniqueType the probes sent", () => {
+    // Every corpus sent ReadRequest and nothing else, so a captured body is
+    // evidence for the read alone -- hanging one on a write would label that
+    // write with a read's answer.
+    for (const resource of model.resources)
+      for (const operation of resource.operations)
+        if (operation.communiqueType !== "ReadRequest")
+          assert.equal(
+            operation.responses.length,
+            0,
+            `${operation.communiqueType} ${operation.url} carries a read's captured answer`,
+          );
   });
 
   test("attaches a captured response body, already wrapped", () => {

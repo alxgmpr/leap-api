@@ -21,8 +21,6 @@ import {
 export type Operation = {
   url: string;
   communiqueType: string;
-  /** Retained for cross-referencing dist/openapi.yaml. Demoted in the UI. */
-  httpVerb: string;
   operationId: string;
   summary: string | null;
   description: string | null;
@@ -220,10 +218,12 @@ export function buildModel(): LeapModel {
           : null;
 
       // Probe corpora only ever sent ReadRequest, so a captured body is
-      // evidence for the GET on this URL and for nothing else -- attaching it
-      // to a POST would label a write with a read's answer.
+      // evidence for the read on this URL and for nothing else -- attaching it
+      // to a write would label that write with a read's answer. Gating on the
+      // CommuniqueType rather than the HTTP verb states the actual reason;
+      // the two agree on every operation in the bundle.
       const responses: Frame[] =
-        verb === "get"
+        communiqueType === "ReadRequest"
           ? capturesFor(url).map(({ corpus, capture }) =>
               frameFromProbe({
                 url,
@@ -240,7 +240,6 @@ export function buildModel(): LeapModel {
         {
           url,
           communiqueType,
-          httpVerb: verb,
           operationId: String(operation.operationId ?? ""),
           summary: (operation.summary as string | undefined) ?? null,
           description: (operation.description as string | undefined) ?? null,
@@ -276,7 +275,6 @@ export function buildModel(): LeapModel {
         {
           url,
           communiqueType: "SubscribeRequest",
-          httpVerb: "",
           operationId: "",
           summary: (item.summary as string | undefined) ?? null,
           description: (item.description as string | undefined) ?? null,
