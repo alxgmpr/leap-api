@@ -54,6 +54,8 @@ export function classifyField(node: {
   enum?: unknown[];
   description?: string;
   "x-observed-values"?: unknown[];
+  /** Real schema nodes carry `type`, `$ref`, `items` and the rest alongside these. */
+  [key: string]: unknown;
 }): Verdict {
   if (Array.isArray(node["x-observed-values"])) return "confirmed";
   if (node.description?.includes("TODO(")) return "not-established";

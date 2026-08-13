@@ -56,7 +56,10 @@ describe("href graph", () => {
     const edge = edges.find(
       (e) => e.schema === "Zone" && e.property === "Device",
     );
-    assert.ok(edge, "the edge still exists, so the UI can show it as unresolved");
+    assert.ok(
+      edge,
+      "the edge still exists, so the UI can show it as unresolved",
+    );
     assert.equal(edge?.target, null);
     assert.equal(edge?.observedHref, null);
   });
