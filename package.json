@@ -16,7 +16,6 @@
     "lint": "biome check .",
     "lint:fix": "biome check --fix .",
     "lint:spec": "redocly lint dist/openapi.yaml",
-    "render": "npx @scalar/cli document serve dist/openapi.yaml",
     "build:site": "npx tsx tools/build-site.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test test/**/*.test.ts"
