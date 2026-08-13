@@ -4,11 +4,16 @@ import { buildModel } from "../lib/site/model.ts";
 import { renderHome } from "../lib/site/render/home.ts";
 import type { Page } from "../lib/site/render/layout.ts";
 import { renderResourcePages } from "../lib/site/render/resource.ts";
+import { renderSchemaPages } from "../lib/site/render/schema.ts";
 
 const OUT = "site";
 
 const model = buildModel();
-const pages: Page[] = [...renderHome(model), ...renderResourcePages(model)];
+const pages: Page[] = [
+  ...renderHome(model),
+  ...renderResourcePages(model),
+  ...renderSchemaPages(model),
+];
 
 rmSync(OUT, { recursive: true, force: true });
 for (const p of pages) {

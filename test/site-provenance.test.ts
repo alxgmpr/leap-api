@@ -63,6 +63,19 @@ describe("provenance", () => {
     );
   });
 
+  test("an open TODO outranks observed values on the same field", () => {
+    assert.equal(
+      classifyField({
+        type: "string",
+        description:
+          "TODO(enum): members of InstanceStrategy were not recovered",
+        "x-observed-values": ["Custom"],
+      }),
+      "not-established",
+      "seeing a value is not the same as bounding the set",
+    );
+  });
+
   test("a plain firmware-extracted field is firmware", () => {
     assert.equal(classifyField({ type: "integer" }), "firmware");
     assert.equal(classifyField({ enum: ["Enabled", "Disabled"] }), "firmware");

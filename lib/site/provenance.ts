@@ -57,7 +57,12 @@ export function classifyField(node: {
   /** Real schema nodes carry `type`, `$ref`, `items` and the rest alongside these. */
   [key: string]: unknown;
 }): Verdict {
-  if (Array.isArray(node["x-observed-values"])) return "confirmed";
+  // An open TODO outranks observed values, and the two co-occur constantly --
+  // 18 of the 24 fields carrying `x-observed-values` also carry a
+  // `TODO(enum)`, meaning "the member set was never recovered, but these
+  // values were seen". Grading that `confirmed` would claim the set is
+  // settled. The observed values are still rendered beside the chip.
   if (node.description?.includes("TODO(")) return "not-established";
+  if (Array.isArray(node["x-observed-values"])) return "confirmed";
   return "firmware";
 }
