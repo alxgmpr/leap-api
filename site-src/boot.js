@@ -4,6 +4,8 @@
 // session timelines.
 
 import { composeFrame } from "./compose.js";
+import { buildSearchIndex, filterIndex } from "./search-index.js";
+import { mountTimeline } from "./timeline.js";
 import { getTransport } from "./transport.js";
 
 const root = document.body.dataset.root ?? "";
@@ -120,5 +122,44 @@ if (filter instanceof HTMLInputElement)
   filter.addEventListener("change", () => {
     document.body.classList.toggle("confirmed-only", filter.checked);
   });
+
+/* ---------- search and timelines, both model-backed ---------- */
+
+const search = document.getElementById("search");
+const results = document.getElementById("search-results");
+const timelines = [...document.querySelectorAll("[data-timeline]")];
+
+if ((search instanceof HTMLInputElement && results) || timelines.length > 0) {
+  const model = await fetch(`${root}model.json`).then((r) => r.json());
+
+  if (search instanceof HTMLInputElement && results) {
+    const index = buildSearchIndex(model);
+    const render = () => {
+      const hits = filterIndex(index, search.value);
+      results.innerHTML = hits
+        .map(
+          (hit) =>
+            `<li><a href="${root}${hit.href}">${hit.title}<span class="kind">${hit.kind}</span></a></li>`,
+        )
+        .join("");
+      results.hidden = hits.length === 0;
+    };
+    search.addEventListener("input", render);
+    search.addEventListener("blur", () => {
+      // Let a click on a result land before the list disappears.
+      setTimeout(() => {
+        results.hidden = true;
+      }, 150);
+    });
+    search.addEventListener("focus", render);
+  }
+
+  for (const element of timelines) {
+    const log = model.frameLogs.find(
+      (/** @type {any} */ l) => l.id === element.getAttribute("data-timeline"),
+    );
+    if (log) mountTimeline(element, log);
+  }
+}
 
 export { root };
