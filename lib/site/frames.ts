@@ -30,6 +30,16 @@ export type Frame = {
   fidelity: Fidelity;
   /** Corpus label or fixture path. Null for constructed frames. */
   source: string | null;
+  /** Frame-log frames only: milliseconds into the captured session. */
+  atMs?: number;
+  /**
+   * Frame-log frames only: milliseconds after *this frame's own request*.
+   * Distinct from `atMs` -- late-frames.json records a per-request delay, not
+   * a position on a session clock, so the two must not be differenced.
+   */
+  delayMs?: number;
+  /** Frame-log frames only: the log classified this as a push, not a reply. */
+  pushed?: boolean;
 };
 
 const RESPONSE_TYPE: Record<string, string> = {
@@ -115,6 +125,9 @@ export function frameFromLog(
     communiqueType: string;
     header: Record<string, unknown>;
     body?: unknown;
+    atMs?: unknown;
+    receivedMsAfterSubscribe?: unknown;
+    classification?: unknown;
   },
   source: string,
 ): Frame {
@@ -126,6 +139,17 @@ export function frameFromLog(
   };
   if (entry.body !== undefined && entry.body !== null)
     frame.Body = entry.body as Record<string, unknown>;
+  if (typeof entry.atMs === "number") frame.atMs = entry.atMs;
+  // late-frames.json times its frames with receivedMsAfterSubscribe -- a
+  // generic field name from the capture tool, not specific to subscriptions.
+  // It is a delay after that frame's own request, so it is kept apart from
+  // atMs: differencing them across frames produces nonsense.
+  if (typeof entry.receivedMsAfterSubscribe === "number")
+    frame.delayMs = entry.receivedMsAfterSubscribe;
+  // The capture tool classifies a frame that arrived on an already-resolved
+  // tag as a push; anything else is an ordinary reply.
+  if (typeof entry.classification === "string")
+    frame.pushed = entry.classification !== "response";
   return frame;
 }
 

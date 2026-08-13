@@ -2,11 +2,12 @@ import type { LeapModel } from "./model.ts";
 
 /**
  * The subset of the model the browser actually reads: the search index needs
- * names, URLs and operation ids; the timelines need frame logs. Everything
- * else -- full schema nodes, frames, descriptions, the 131KB of narrative
- * markdown -- is rendered at build time and never touched client-side.
+ * names, URLs and operation ids, and nothing else. Full schema nodes, frames,
+ * descriptions, narrative markdown and the frame logs are all rendered at
+ * build time and never touched client-side.
  *
- * Shipping the whole model was a 1.1MB download on every page.
+ * Shipping the whole model was a 1.1MB download on every page; the frame logs
+ * alone were 92KB of it, fetched to draw a list the server already knows.
  */
 export type ClientModel = {
   resources: {
@@ -15,7 +16,6 @@ export type ClientModel = {
   }[];
   schemas: { name: string }[];
   commandTable: { commandType: string }[];
-  frameLogs: LeapModel["frameLogs"];
 };
 
 export function toClientModel(model: LeapModel): ClientModel {
@@ -31,6 +31,5 @@ export function toClientModel(model: LeapModel): ClientModel {
     commandTable: model.commandTable.map((row) => ({
       commandType: row.commandType,
     })),
-    frameLogs: model.frameLogs,
   };
 }

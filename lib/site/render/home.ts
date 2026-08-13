@@ -2,6 +2,7 @@ import type { LeapModel } from "../model.ts";
 import { renderFrame } from "./highlight.ts";
 import { esc } from "./html.ts";
 import { type NavItem, type Page, page } from "./layout.ts";
+import { renderTimeline } from "./timeline.ts";
 
 export function siteNav(model: LeapModel): NavItem[] {
   return [
@@ -23,6 +24,7 @@ export function siteNav(model: LeapModel): NavItem[] {
 
 export function renderHome(model: LeapModel): Page[] {
   // The most informative real frame available: a captured response with a body.
+  const session = model.frameLogs.find((log) => log.id === "push-probe");
   const example = model.frameLogs
     .flatMap((log) => log.frames)
     .find((frame) => frame.Header.StatusCode?.startsWith("200") && frame.Body);
@@ -53,9 +55,16 @@ project. The one exception, RA3's read of <code>/button</code>, returns a bare
 <code>{}</code> — an empty object has no key to wrap.</p>
 
 <h2>What a session looks like</h2>
-<div data-timeline="push-probe" class="timeline">
-<p>Subscribe, command, push — replayed from a real frame log.</p>
-</div>
+<p>Subscribe, send a command, and watch the processor push the result back on
+the subscription's own tag — a real captured connection, in order.</p>
+${
+  session
+    ? renderTimeline(
+        { logId: session.id, frames: session.frames.slice(0, 12) },
+        "One connection",
+      )
+    : ""
+}
 
 <h2>Where to go</h2>
 <ul class="entrypoints">

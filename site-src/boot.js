@@ -1,11 +1,10 @@
 // Progressive enhancement entry point. Every page is complete without this
 // file: frames, tables, schemas and platform data are all in the HTML. This
-// adds the composer, copy buttons, search, the provenance filter and the
-// session timelines.
+// adds the composer, copy buttons, search and the provenance filter. The
+// session timelines are static, rendered at build time.
 
 import { composeFrame } from "./compose.js";
 import { buildSearchIndex, filterIndex } from "./search-index.js";
-import { mountTimeline } from "./timeline.js";
 import { getTransport } from "./transport.js";
 
 const root = document.body.dataset.root ?? "";
@@ -154,43 +153,73 @@ if (filter instanceof HTMLInputElement)
     document.body.classList.toggle("confirmed-only", filter.checked);
   });
 
-/* ---------- search and timelines, both model-backed ---------- */
+/* ---------- search ---------- */
 
 const search = document.getElementById("search");
 const results = document.getElementById("search-results");
-const timelines = [...document.querySelectorAll("[data-timeline]")];
 
-if ((search instanceof HTMLInputElement && results) || timelines.length > 0) {
+if (search instanceof HTMLInputElement && results) {
   const model = await fetch(`${root}model.json`).then((r) => r.json());
+  const index = buildSearchIndex(model);
 
-  if (search instanceof HTMLInputElement && results) {
-    const index = buildSearchIndex(model);
-    const render = () => {
-      const hits = filterIndex(index, search.value);
-      results.innerHTML = hits
-        .map(
-          (hit) =>
-            `<li><a href="${root}${hit.href}">${hit.title}<span class="kind">${hit.kind}</span></a></li>`,
-        )
-        .join("");
-      results.hidden = hits.length === 0;
-    };
-    search.addEventListener("input", render);
-    search.addEventListener("blur", () => {
-      // Let a click on a result land before the list disappears.
-      setTimeout(() => {
-        results.hidden = true;
-      }, 150);
+  const render = () => {
+    const hits = filterIndex(index, search.value);
+    results.innerHTML = hits
+      .map(
+        (hit) =>
+          `<li role="option"><a href="${root}${hit.href}" tabindex="-1">${hit.title}<span class="kind">${hit.kind}</span></a></li>`,
+      )
+      .join("");
+    results.hidden = hits.length === 0;
+    search.setAttribute("aria-expanded", String(!results.hidden));
+    active = -1;
+  };
+
+  // Arrow keys move a selection through the results and Enter follows it, so
+  // the search is usable without a mouse. Escape returns to the field.
+  let active = -1;
+  const options = () => [...results.querySelectorAll("li")];
+  const highlight = (next) => {
+    const items = options();
+    if (items.length === 0) return;
+    active = (next + items.length) % items.length;
+    items.forEach((li, i) => li.classList.toggle("active", i === active));
+    items[active]?.scrollIntoView({ block: "nearest" });
+    search.setAttribute("aria-activedescendant", `search-hit-${active}`);
+    items.forEach((li, i) => {
+      li.id = `search-hit-${i}`;
     });
-    search.addEventListener("focus", render);
-  }
+  };
 
-  for (const element of timelines) {
-    const log = model.frameLogs.find(
-      (/** @type {any} */ l) => l.id === element.getAttribute("data-timeline"),
-    );
-    if (log) mountTimeline(element, log);
-  }
+  search.addEventListener("input", render);
+  search.addEventListener("focus", render);
+  search.addEventListener("blur", () => {
+    // Let a click on a result land before the list disappears.
+    setTimeout(() => {
+      results.hidden = true;
+      search.setAttribute("aria-expanded", "false");
+    }, 150);
+  });
+  search.addEventListener("keydown", (event) => {
+    if (results.hidden) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      highlight(active + 1);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      highlight(active - 1);
+    } else if (event.key === "Enter" && active >= 0) {
+      const link = options()[active]?.querySelector("a");
+      if (link) {
+        event.preventDefault();
+        link.click();
+      }
+    } else if (event.key === "Escape") {
+      results.hidden = true;
+      search.setAttribute("aria-expanded", "false");
+      active = -1;
+    }
+  });
 }
 
 export { root };

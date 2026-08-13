@@ -1,11 +1,14 @@
+import { type Callout, calloutsFor } from "../callouts.ts";
 import type { Edge } from "../graph.ts";
 import type { LeapModel, Operation, Resource } from "../model.ts";
 import type { Provenance } from "../provenance.ts";
+import { timelineFor } from "../timelines.ts";
 import { renderCopy, renderReply, renderWire } from "./highlight.ts";
 import { siteNav } from "./home.ts";
 import { esc } from "./html.ts";
 import { type Page, page } from "./layout.ts";
 import { renderMarkdown, splitInjectedTable } from "./markdown.ts";
+import { renderTimeline } from "./timeline.ts";
 
 const ROOT = "../../";
 
@@ -120,6 +123,7 @@ ${
 
 /** One exchange: the line you write, and the line you read back. */
 function renderExchange(operation: Operation, model: LeapModel): string {
+  const timeline = timelineFor(operation, model.frameLogs);
   const anchor = operation.operationId || operation.url;
   const prose = operation.description
     ? splitInjectedTable(operation.description).prose
@@ -163,13 +167,20 @@ function renderExchange(operation: Operation, model: LeapModel): string {
     .join("\n");
 
   return `<article class="op" id="${esc(anchor)}">
+${calloutsFor(operation)
+  .map(
+    (c: Callout) =>
+      `<p class="callout">${esc(c.text)} <a href="${ROOT}${esc(c.href)}">Read why</a>.</p>`,
+  )
+  .join("")}
 <div class="send"><span class="dir" aria-hidden="true">→</span><span class="ct">${esc(operation.communiqueType.replace("Request", ""))}</span>${operation.subscribable ? '<span class="sub">subscribable</span>' : ""}${renderCopy(operation.request)}</div>
 ${renderWire(operation.request)}
 ${
   replies.length > 0
-    ? replies.map((frame) => renderReply(frame)).join("")
+    ? replies.map((frame) => renderReply(frame, ROOT)).join("")
     : '<div class="reply reply-none"><span class="dir" aria-hidden="true">←</span><span class="shape">no captured reply</span></div>'
 }
+${timeline ? renderTimeline(timeline, "This exchange on hardware") : ""}
 <details class="compose"${isCommand ? " open" : ""}><summary>Compose a frame</summary>${composer(operation, model)}</details>
 <details class="more"><summary>Evidence and notes</summary>${notes}</details>
 </article>`;

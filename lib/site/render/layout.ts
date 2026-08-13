@@ -45,8 +45,9 @@ export function page(input: {
 <header class="topbar">
 <a class="brand" href="${esc(input.relativeRoot)}index.html">LEAP</a>
 <div class="searchwrap">
-<input id="search" class="search" type="search" placeholder="Search resources, schemas, commands" autocomplete="off">
-<ul id="search-results" class="search-results" hidden></ul>
+<input id="search" class="search" type="search" placeholder="Search resources, schemas, commands" autocomplete="off"
+ role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list">
+<ul id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></ul>
 </div>
 <label class="filter"><input id="confirmed-only" type="checkbox"> Hardware-confirmed only</label>
 </header>
