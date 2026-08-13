@@ -29,16 +29,24 @@ description: |
   names.)
 
   **Neither ground claims the set is complete.** Every closed enum here is a
-  lower bound, and a later corpus can still falsify one. Three already have,
-  all from the strong end of the first ground: `ServiceType` had all 8 of
-  its declared members independently observed and a ninth arrived on a later
-  probe; `ServerType` had both of its 2 observed and a third arrived from a
-  second platform; `ProgrammingModelType` had all 5 observed and a sixth
-  arrived on a later RA3 build. One was reopened and two were extended, on
-  the split `OccupancyStatus.yaml` sets out. What this field had was neither
-  ground at all -- one observed value, and no member list from anywhere else
-  -- which makes it the **weakest case on the same scale**, not a different
-  kind of case. Firmware typing does not decide *this* question -- it
+  lower bound, and a later corpus can still falsify one. **Four already
+  have** -- which is every falsification in this specification's history --
+  and three of the four satisfied the first ground in full when they fell:
+  `ServiceType` had all 8 of its declared members independently observed and
+  a ninth arrived on a later probe; `ServerType` had both of its 2 observed
+  and a third arrived from a second platform; `ProgrammingModelType` had all
+  5 observed and a sixth arrived on a later RA3 build. One of the four was
+  reopened and three were extended, on the split `OccupancyStatus.yaml` sets
+  out.
+
+  **The fourth falsification is the one this file should be read against.**
+  `OccupancyStatus` shipped closed on a single observed member, `Unknown`,
+  with no member list from anywhere else -- exactly this field's profile --
+  and one coverage-blind probe returned `Occupied` and `Unoccupied`
+  together. So what this field has is neither ground at all, which makes it
+  the **weakest case on the same scale**, not a different kind of case -- and
+  there is already a worked example of what closing on that much evidence
+  costs. Firmware typing does not decide *this* question -- it
   decides only whether an already-falsified set reopens or is extended, and
   nothing here has been falsified. This field is typed
   `leapobj.SessionRole`, a named type the extraction never

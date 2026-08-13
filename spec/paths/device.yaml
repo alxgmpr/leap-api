@@ -148,13 +148,22 @@
   # records only the mangled, concatenated form `/devicestatus/deviceheard`,
   # `SUBSCRIBE`-only. That is why no read probe in this project ever
   # recovered a body here: every probe sweep sends GET, and there is no GET
-  # to answer. The correctly-slashed path is not absent from the corpora --
-  # `fixtures/ra3.json` and `fixtures/caseta.json` both sent it and both got
-  # `405 MethodNotAllowed`. The later sweeps do not carry it: the Task 8
-  # sweeps never had it in their path lists, and the coverage-blind sweeps
-  # replay this specification's own paths, which did not include this one
-  # until two commits after the last of them was imported. The mangled form
-  # `/devicestatus/deviceheard` appears in no corpus at all.
+  # to answer. But this route is asked-and-refused, not never-asked --
+  # both spellings were probed, by the verb their corpus sends, and both
+  # were refused:
+  #
+  #   - the correctly-slashed path, by GET, in `fixtures/ra3.json` and
+  #     `fixtures/caseta.json` -- `405 MethodNotAllowed` on both;
+  #   - the mangled form, by `SubscribeRequest`, in
+  #     `fixtures/subscriptions.json` (the Task 8 subscribe campaign, which
+  #     probed the firmware's own route spellings) -- `400 BadRequest`, no
+  #     frames.
+  #
+  # No later PROBE SET carries the correctly-slashed path: the Task 8 read
+  # and write sweeps never had it in their path lists, and the coverage-blind
+  # sweeps replay this specification's own paths, which did not include this
+  # one until two commits after the last of them was imported. The frame logs
+  # are the exception, and they are the whole of the evidence below.
   #
   # The wire supplies both the corrected path and the pushed body. In the
   # `caseta-device-join` run of `fixtures/push-experiments.json`, the Caseta
@@ -164,12 +173,17 @@
   # `MessageBodyType: OneDeviceStatus`, body `{"DeviceStatus":
   # {"DeviceHeard": {...}}}` -- a `DeviceStatus` wrapping a `DeviceHeard`,
   # which is why x-leap-event-schema points at DeviceStatus and not at
-  # DeviceHeard. Same route, same auto-subscribe, in the
-  # `caseta-connect-observe` run.
+  # DeviceHeard. The same auto-subscribe on the same route opens the other
+  # two Caseta connections in that file as well, `caseta-connect-observe` and
+  # `caseta-push-pad-0` -- all three of them, which is the count
+  # docs/platforms.md gives for the connect-time pair. Only
+  # `caseta-device-join` went on to push a body.
   #
   # SCOPE: every frame behind this path is Caseta. The auto-subscribe is a
   # platform divergence (docs/platforms.md), and no RA3 capture in this
-  # project subscribes to this route or receives a frame on it. What is
+  # project ever holds a subscription here or receives a frame on it -- the
+  # one RA3 attempt, on the mangled spelling above, was refused
+  # `400 BadRequest` and returned no frames. What is
   # asserted here is that the route exists and pushes DeviceStatus bodies,
   # not that both platforms implement it.
   #

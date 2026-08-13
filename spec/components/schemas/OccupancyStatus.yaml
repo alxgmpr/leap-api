@@ -11,11 +11,14 @@ description: |
   original capture and 1 from the v01.123 coverage-blind spec probe; the
   v01.124 bare-bridge probe adds none, because a bridge with no devices has
   no occupancy groups and answers /occupancygroup/status `204 NoContent`.
-  It is never observed on RA3, which answers `204 NoContent` on that route
-  in both RA3 corpora. Its
-  description called that a single-value, single-platform sample and said
-  `Occupied` and `Unoccupied` counterparts were "expected by the concept but
-  unconfirmed in either fixture".
+  No occupancy group was ever reached on RA3, which answers
+  /occupancygroup/status `204 NoContent` in both RA3 corpora -- so that route
+  contributes nothing there. (`Unknown` itself *is* observed on RA3, four
+  times, but through `AreaStatus` -- the next paragraph's subject, and the
+  evidence that falsified this schema's original single member.) The
+  pre-extension description called that a single-value, single-platform
+  sample and said `Occupied` and `Unoccupied` counterparts were "expected by
+  the concept but unconfirmed in either fixture".
 
   The coverage-blind spec probe confirmed both, on the other field carrying
   this same firmware type (`leapobj.OccupancyStatus`):
@@ -100,8 +103,9 @@ description: |
 
   **Hardware has falsified four closed sets across this specification's
   history, three of them from the strong end of ground one.** That is all of
-  them: no other `enum` in `spec/components/schemas/` has ever gained or
-  lost a member.
+  them. No other `enum` in `spec/components/schemas/` has ever gained a
+  member, and the only ones that ever lost one are the five this pass
+  opened -- which lost theirs to the ruling above, not to hardware.
 
   - `ServiceType` declared 8 -- Alexa, GoogleHome, BACnet, HomeKit, IFTTT,
     Sonos, NTPServer, AutoProgrammer -- every one independently observed,
