@@ -302,6 +302,35 @@ struct definitions -- so it is a wire-only field in the same class as the
 plural collection wrappers `docs/mapping.md` describes. It is now declared,
 with its evidence, in `Device.yaml`.
 
+The same command checks `required` in three ways. **False claims** -- a
+required field absent from an observed instance -- exit non-zero, and there
+are none; Ajv already fails such a body, so this is an independent check that
+does not depend on the conformance suite having reached every schema.
+**Untested claims** count required fields on schemas no capture ever
+exercised: 141 fields across 84 schemas, a coverage statement rather than a
+defect. **Candidates** are fields present in every observation that are not
+required: 56 of them.
+
+Candidates are reported and never applied, for two reasons. 55 of the 56 are
+fields the firmware itself marks as pointers -- optional -- so promoting them
+would contradict the extraction on the strength of never having seen them
+absent, the same inference this document refuses when it says every closed
+enum is a lower bound. And the check can only judge an instance by the schema
+the document says it is, which makes its evidence weaker than it looks: a
+schema embedded as a bare `{href}` in one context and in full in another is
+counted only where it appears in full.
+
+That last limit was not theoretical. `Buttons` is declared `oneOf` an array of
+`Button` or an empty object, because RA3's read of `/button` returns a bare
+`{}`. An earlier version of this walker matched only `type: array`, so it
+walked each of Caseta's 40 buttons *as* a `Buttons`, found no properties, and
+skipped all 40 in silence -- under-reporting both checks, and nominating
+`ProgrammingModel.ProgrammingModelType` for promotion when those 40 buttons
+are exactly the href-only embeds that `ProgrammingModel.yaml` cites for
+relaxing it. The schema was right and the tool was wrong. With the alternation
+walked, 40 `ProgrammingModel` instances lack the field and the nomination
+disappears; a test pins that agreement.
+
 ## The documentation site
 
 `npm run build:site` (`tools/build-site.ts`) generates `site/` from
