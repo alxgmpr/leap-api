@@ -1,6 +1,7 @@
 import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { buildModel } from "../lib/site/model.ts";
+import { renderDocPages } from "../lib/site/render/docs.ts";
 import { renderHome } from "../lib/site/render/home.ts";
 import type { Page } from "../lib/site/render/layout.ts";
 import { renderResourcePages } from "../lib/site/render/resource.ts";
@@ -13,6 +14,7 @@ const pages: Page[] = [
   ...renderHome(model),
   ...renderResourcePages(model),
   ...renderSchemaPages(model),
+  ...renderDocPages(model),
 ];
 
 rmSync(OUT, { recursive: true, force: true });
