@@ -5,14 +5,14 @@ description: |
   value observed on the wire, and unlisted values are possible.
 
   This schema shipped with a single member, `Unknown`, recovered from
-  OccupancyGroupStatus.OccupancyStatus on Caseta v01.123 (25 instances,
-  still, across the three Caseta corpora -- 24 from the original capture
-  and 1 from the v01.123 coverage-blind spec probe; the v01.124 bare-bridge
-  probe adds none, because a bridge with no devices has no occupancy groups
-  and answers /occupancygroup/status `204 NoContent`) via
-  /occupancygroup/status,
-  hand-authored, see occupancygroup.yaml; never observed on RA3, which
-  answers 204 NoContent on that route). Its
+  OccupancyGroupStatus.OccupancyStatus on Caseta v01.123 via
+  /occupancygroup/status (hand-authored, see occupancygroup.yaml). That is
+  25 instances, still, across the three Caseta corpora -- 24 from the
+  original capture and 1 from the v01.123 coverage-blind spec probe; the
+  v01.124 bare-bridge probe adds none, because a bridge with no devices has
+  no occupancy groups and answers /occupancygroup/status `204 NoContent`.
+  It is never observed on RA3, which answers `204 NoContent` on that route
+  in both RA3 corpora. Its
   description called that a single-value, single-platform sample and said
   `Occupied` and `Unoccupied` counterparts were "expected by the concept but
   unconfirmed in either fixture".
@@ -67,10 +67,13 @@ description: |
   where a closed `enum` was checked against probe-set bodies only and
   against frame-log bodies not at all.
 
-  **THE CRITERION IS EVIDENCE ABOUT THE EXTENT OF THE SET, not firmware
-  typing.** It is stated here in full because it is applied to five files
-  and deliberately not applied to twenty-four others, and a rule that looks
-  general while being half-applied is worse than no rule.
+  **THE CRITERION IS EVIDENCE ABOUT THE EXTENT OF THE SET, not how the
+  field is typed.** It is stated here in full because it governs all thirty
+  of this specification's enum-shaped schemas -- the 6 documented-open
+  `string`s and the 24 that stay closed -- and a rule that looks general
+  while being half-applied is worse than no rule. (Typing does decide one
+  narrower question, below: whether a set hardware has already *falsified*
+  is reopened or extended. It decides nothing about which sets may close.)
 
   A closed `enum` needs evidence about the **extent of the set**, not just
   about its members. Two kinds of evidence can supply that, and the 24
@@ -95,66 +98,141 @@ description: |
   not a contradiction to be resolved, but a statement that the member list
   is a floor.
 
-  **`ServiceType` proves that directly, and it is the reason this rule needs
-  a third term.** Before it was opened it declared 8 members -- Alexa,
-  GoogleHome, BACnet, HomeKit, IFTTT, Sonos, NTPServer, AutoProgrammer --
-  and every one of the 8 had been independently observed. Ground one,
-  satisfied in full, the same ground that keeps 23 enums closed today. It
-  was opened anyway, because the coverage-blind RA3 v03.249 probe returned a
-  ninth, `Cloud`. "Every declared member was observed" says nothing whatever
-  about whether an *undeclared* member exists. Any closed enum here can go
-  the same way, and two already have: `ServiceType`, and this file.
+  **Hardware has falsified four closed sets across this specification's
+  history, three of them from the strong end of ground one.** That is all of
+  them: no other `enum` in `spec/components/schemas/` has ever gained or
+  lost a member.
 
-  **So falsification is the third term.** A closed set that hardware
-  contradicts is reopened or extended, on the split those two cases already
-  record: **reopened** when nothing else evidences the extent
-  (`ServiceType`), **extended** when something does (`ServerType`, whose
-  members are all independently observed; and this file, extended from one
-  member to three).
+  - `ServiceType` declared 8 -- Alexa, GoogleHome, BACnet, HomeKit, IFTTT,
+    Sonos, NTPServer, AutoProgrammer -- every one independently observed,
+    and the coverage-blind RA3 v03.249 probe returned a ninth, `Cloud`.
+  - `ServerType` declared 2, `LEAP` and `IPL`, both observed on RA3 v03.247,
+    and the Caseta coverage-blind probe returned a third, `LIP`.
+  - `ProgrammingModelType` declared 5, all five observed across RA3 v03.247
+    and Caseta v01.123, and the RA3 v03.249 probe returned a sixth,
+    `SimpleConditionalProgrammingModel`.
+  - This file declared 1, `Unknown`, and the same RA3 v03.249 probe returned
+    two more at once.
+
+  The first three had the ground that keeps 23 enums closed today, satisfied
+  in full, and fell anyway: "every declared member was observed" says
+  nothing whatever about whether an *undeclared* member exists. Any closed
+  enum here can go the same way. The fourth is this file, which had neither
+  ground when it was falsified -- assessed under the rule above it would
+  never have shipped closed at all, which is exactly what happened to the
+  five.
+
+  **So falsification is the third term, and it needs a split**, because
+  those four were not resolved the same way. `ServiceType` was reopened to a
+  documented `string`. The other three had the new members appended and
+  stayed closed.
+
+  **What decides reopened from extended is whether the firmware models the
+  field with a named type at all.** That is a different question from the
+  two grounds above, and it is the one place in this specification where
+  firmware typing decides anything.
+
+  - `Service.Type` is a bare Go `string`: `leapobj.Service` is
+    `Type string` beside `Body json.RawMessage`, with no named type and no
+    per-member field list. There is no closed set in the firmware to
+    converge on, so appending a ninth value would only re-arm the identical
+    failure for the next unobserved integration. The corpus corroborates
+    that independently -- the 8-member list was a *union* no single unit
+    ever exposed, RA3 v03.247 carrying 7 and Caseta v01.123 a different 6,
+    sharing 5, so the set is whichever integrations a given build and
+    feature set have provisioned, and that was visible before `Cloud`
+    arrived. **Reopened.**
+  - `ServerType`, `ProgrammingModelType` and this file are all named
+    `leapobj.*` types. A closed set does exist in the firmware; this project
+    simply cannot enumerate it, because the extraction recovers `struct`
+    definitions only. Each new observation converges on a real set rather
+    than chasing an open one, so a newly observed value is a member to add.
+    **Extended.**
+
+  Three limits on that, none of them optional reading.
+
+  *It decides only that question.* It does not decide whether a closed
+  `enum` should ship at all: all 24 that do are named `leapobj.*` types the
+  extraction never defined, and so were all five of the fields this pass
+  opened, so typing cannot separate those. The older criterion in this
+  specification -- a bare `string` opens, a named type stays closed -- read
+  this rule as though it answered both questions, and would have kept all
+  five closed.
+
+  *The reopen branch has exactly one case.* `Service.Type` is the only
+  bare-`string` field this specification ever shipped a closed `enum` on, so
+  that branch rests on `n = 1` and should be read accordingly.
+
+  *Extending claims nothing about completeness.* All three extended sets
+  remain lower bounds. `ProgrammingModelType.yaml` says outright that a
+  seventh member is expected and should be appended the same way.
+
+  **The three extended cases had unequal further evidence, and the
+  difference is worth recording rather than averaging away.**
+
+  - `ServerType` had the most. `leapobj.Server` carries `LEAPProperties`,
+    `IPLProperties` and `LIPProperties`, three named pointer fields, one per
+    member, all three in the extraction before any Caseta probe: the type
+    system had already named the member that was missing.
+  - This file had a prediction. Its own pre-falsification description named
+    `Occupied` and `Unoccupied` as "expected by the concept but unconfirmed
+    in either fixture", and the probe returned exactly those two, together,
+    across all 8 areas it reached (`Unknown` 4, `Unoccupied` 3, `Occupied`
+    1), with no fourth value. That is a judgement about what the field
+    means, recorded in advance and then confirmed -- not evidence about the
+    firmware or the corpus, and the only closure here resting on one.
+  - `ProgrammingModelType` had nothing beyond the named type.
+    `leapobj.ProgrammingModel` carries only two per-member fields
+    (`DualActionProperties`, `AdvancedToggleProperties`) against six
+    members, so unlike `Server` it does not enumerate the set. It is the
+    weakest of the three extensions and the closest of them to the
+    `ServiceType` case.
+
+  Note what does **not** separate any of these: "all members are now
+  observed" is equally true of `ServiceType`, whose 9 documented values are
+  every value ever seen. Falsification followed by extension produces that
+  condition every time, so it cannot decide anything after the fact.
 
   **`CommandType` is worth stating explicitly, because it would otherwise
   look like a counterexample.** It is simultaneously the largest
   exhaustiveness claim here -- 39 members -- and a single-observation enum
-  by exactly the measure that opened these five. One of its 39,
-  `PressAndRelease`, has ever been seen on the wire (twice, on Caseta
-  only). The other 38 have not: the only other members occurring anywhere
-  in the fixtures as quoted strings are `Raise` and `Lower`, which appear
-  as `RaiseLowerDirection` values under `Direction`, and `StopIfMoving`,
-  which appears 21 times as a property name and never as a value. It stays
-  closed on the second ground, not the first. See `CommandType.yaml`.
+  by exactly the measure that opened these five. Exactly one of its 39,
+  `PressAndRelease`, has ever been observed **as a `CommandType`** -- twice,
+  on Caseta only, under a `CommandType` key. Two more of the 39 do occur on
+  the wire, but not as commands: `Raise` and `Lower` appear 6 times each as
+  `Direction` values, which is `RaiseLowerDirection`, a different closed
+  enum whose two members those are. A third, `StopIfMoving`, appears 21
+  times as a property name and never as a value. The remaining 35 occur
+  nowhere in any fixture at all. It stays closed on the second ground, not
+  the first. See `CommandType.yaml`.
 
   **What disqualified the five is that they had neither ground.** Not a
   small sample -- no evidence of any kind about the set's extent: one
   observed value, and no member list from anywhere else to close against.
   Sample size alone is not the rule; absence of any evidence about extent
   is. They are the **weakest case on the same scale**, not a different kind
-  of case: `ServiceType` sat at the strong end of ground one and was still
-  falsified, so nothing here is safe from a later corpus, and these five had
-  the least standing of anything the specification had closed.
+  of case: `ServiceType`, `ServerType` and `ProgrammingModelType` all sat at
+  the strong end of ground one and were falsified regardless, so nothing
+  here is safe from a later corpus, and these five had the least standing of
+  anything the specification had closed.
 
   The rule is fully applied rather than half-applied: **no one-member closed
-  enum remains anywhere in `spec/components/schemas/`**, and all 24
-  survivors sit beside an observed-not-exhaustive note of their own -- 23 in
-  the same words these five carried, `VirtualButtonCategorySubType` in
-  slightly stronger ones ("unlisted values are very likely").
+  enum remains anywhere in `spec/components/schemas/`** -- 24 `enum` nodes
+  survive, all of them whole-schema, with member counts of 2, 3, 4, 6 and 39
+  -- and every one sits beside an observed-not-exhaustive note of its own,
+  23 in the same words these five carried and
+  `VirtualButtonCategorySubType` in slightly stronger ones ("unlisted values
+  are very likely").
 
-  **Firmware typing cannot do this work**, which is worth saying because the
-  older criterion in this specification -- a bare Go `string` opens, a named
-  enum whose members the extraction failed to recover stays closed as a
-  lower bound -- would have kept all five closed. All 24 remaining closed
-  enums are named `leapobj.*` types, referenced at field positions and never
-  defined by the extraction: exactly the status of these five. It does not
-  separate them.
-
-  What the extraction does settle is that it never bounds anything. It
+  What the extraction settles is that it never bounds anything. It
   recovers Go `struct` definitions and nothing else -- `test/vendor.test.ts`
   asserts that of all 636 recovered type values -- and a Go string enum is
   `type X string` plus consts, a form it never emitted. At field positions
   it references 455 distinct `leapobj.*` types: 337 of them are among the
   636 structs it defines, and the other 118 it never defines at all. (The
   two sets overlap rather than nest -- 299 recovered structs are never used
-  as a field type anywhere, and 337 + 299 = 636.) Those 118 are where every
-  enum type this specification names lives, `leapobj.Role`,
+  as a field type anywhere, and 337 + 299 = 636.) Those 118 include every
+  `leapobj.*` enum type this specification names -- `leapobj.Role`,
   `leapobj.SessionRole`, `leapobj.ButtonGroupCategoryType`,
   `leapobj.StopIfMovingEnabledState`, `leapobj.SystemLoadSheddingState` and
   this file's own `leapobj.OccupancyStatus` among them. So "the firmware
@@ -163,18 +241,20 @@ description: |
   field, and each of the five descriptions opened with it as though it were
   the latter.
 
-  `ServerType.yaml` stays closed on the first ground -- three
-  independently observed members -- and its own description should not be
-  read as claiming more than it can. `leapobj.Server` carries
-  `LIPProperties`, `LEAPProperties` and `IPLProperties` as three distinct
-  pointer fields, which evidenced that a **third member exists** before any
-  Caseta probe found it. That is genuinely more than the five ever had, but
-  it does not evidence that only three exist, and nothing in the extraction
-  could. `ServiceType.yaml` is the worked example of the third term: it
-  satisfied ground one and hardware falsified it regardless, and it was
-  reopened rather than extended because nothing else evidenced the extent of
-  its set -- `Service.Type` being a bare Go `string` with no named type
-  behind it is the corroborating detail there, not the ground.
+  Keep that separate from the fact the split above turns on. *That the
+  extraction failed to recover a member list* says nothing about any field,
+  because it failed for all of them. *That the firmware declares a field as
+  a named type rather than a bare `string`* is a fact about the field, and
+  it survives the extraction's limits intact -- field declarations are
+  exactly what the `struct` definitions do carry.
+
+  Two files carry the worked examples of the split. `ServerType.yaml` is the
+  extended side, and stays closed on the first ground -- three independently
+  observed members -- with its `*Properties` evidence kept at its true
+  weight: it says a third member existed, not that only three do, and
+  nothing in the extraction could say the latter. `ServiceType.yaml` is the
+  reopened side, and states in full why a bare `string` field leaves nothing
+  to converge on.
 enum:
   - Occupied
   - Unoccupied

@@ -54,6 +54,19 @@ description: |
   says. A seventh member turning up in a future capture is expected, and
   should be added the same way rather than treated as a reason to open the
   field.
+
+  That is the *extended* half of the split `OccupancyStatus.yaml` records in
+  full, and this file is the weakest of the three cases on it. Hardware has
+  falsified four closed sets in this specification; three were extended and
+  one, `ServiceType`, was reopened. The ground is that
+  `ProgrammingModel.ProgrammingModelType` is a named `leapobj.*` type -- a
+  closed set does exist in the firmware for observations to converge on --
+  where `Service.Type` is a bare `string` with nothing to converge on. But
+  unlike `ServerType`, whose `leapobj.Server` carries one `*Properties`
+  pointer field per member and so named the missing one in advance,
+  `leapobj.ProgrammingModel` carries only two (`DualActionProperties`,
+  `AdvancedToggleProperties`) against six members here. It does not
+  enumerate this set, and nothing else does either.
 enum:
   - AdvancedToggleProgrammingModel
   - SingleActionProgrammingModel

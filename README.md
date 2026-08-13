@@ -109,30 +109,41 @@ route and finds nothing here cannot tell "this route does not exist" from
   definitions and nothing else, so the extraction can emit no named enum
   type at all, and per `docs/mapping.md` the firmware defines no plural
   collection-wrapper types either. Six of the 70 are documented-open
-  `string`s rather than enums, for two different reasons.
-  `OccupancyStatus.yaml` records the criterion in full; the short form is
+  `string`s rather than enums, on one criterion applied to two strengths of
+  case. `OccupancyStatus.yaml` records it in full; the short form is
   that every closed enum here is a **lower bound** — the extraction can
   never bound a member set — so a closed `enum` is worth shipping only when
-  something evidences the extent of the set, and is reopened or extended
-  when hardware contradicts it. `ServiceType` went
+  something evidences the extent of the set, and once hardware contradicts
+  one it is reopened or extended. `ServiceType` went
   first — live traffic on RA3 firmware v03.249 falsified it as a closed set,
   returning a ninth `Type` this specification did not list. Its 8 declared
   members had *all* been independently observed, which is exactly the
-  evidence 23 closed enums still rest on, and it was falsified anyway; it
-  reopened rather than being extended because nothing else evidenced the
-  extent of its set. `Role`, `SessionRole`,
+  evidence 23 closed enums still rest on, and it was falsified anyway.
+  `Role`, `SessionRole`,
   `ButtonGroupCategoryType`, `StopIfMovingEnabledState` and
-  `SystemLoadSheddingState` followed on the weakest case of the same scale:
+  `SystemLoadSheddingState` followed as the weakest case on the same scale —
+  not a different kind of case:
   hardware has falsified none of them, but each closed a set on one observed
   value with no member list from anywhere else, so the `enum` and its
   `x-observed-values` carried identical content and the `enum` added only an
-  exhaustiveness claim. `ServerType`, falsified the
-  same way by the Caseta bridge, was *appended* to instead: its three
-  members are all independently observed, so something does evidence the
-  extent of its set. All 24 surviving closed enums are acknowledged lower
+  exhaustiveness claim. Hardware has falsified four closed sets in all, and
+  `ServiceType` is the only one that reopened; `ServerType`,
+  `ProgrammingModelType` and `OccupancyStatus` each had the new members
+  *appended* and stayed closed. What separates them is the one place in this
+  specification where firmware typing decides anything: those three are
+  named `leapobj.*` types, so a closed set exists in the firmware for later
+  observations to converge on even though the extraction never recovered its
+  members, while `Service.Type` is a bare `string` beside an untyped `Body`,
+  with no set to converge on at all. That question is separate from whether
+  a closed `enum` should ship in the first place, which typing cannot answer
+  — every closed enum here is a named type the extraction never defined, and
+  so were all five fields above. All 24 surviving closed enums are
+  acknowledged lower
   bounds — 23 on independently observed members, and `CommandType` on a
   member list recovered from decompiled Lutron app binaries, only one of
-  whose 39 members has ever been seen on the wire. Five of the 70 are new:
+  whose 39 members has ever been observed *as a `CommandType`* (two more,
+  `Raise` and `Lower`, are on the wire as `RaiseLowerDirection` values).
+  Five of the 70 are new:
   `Availability`, `BatteryLevelState`, `LinkType`, `SwitchedLevel` and
   `NetworkConfigurationType`, shared enums whose firmware types the
   extraction referenced but never defined, recovered from probe data in the
@@ -160,8 +171,8 @@ mostly a statement about this project's probe *planning*, not about the
 hardware. The Task 8 sweep planner deliberately skips routes the
 specification already documents, so the specification's own paths were
 systematically never asked about: of the 155 paths then reported, 152 had
-never been sent to any processor at all — not sent and refused, never
-sent. The coverage-blind probe in `fixtures/spec-read.json` was run to fix
+never been sent to any unit at all — RA3 processor or Caseta bridge — not
+sent and refused, never sent. The coverage-blind probe in `fixtures/spec-read.json` was run to fix
 exactly that, replaying all 864 of the specification's own URLs against an
 RA3 processor on firmware v03.249; it closed 25, leaving 130. Replaying the
 same list against
@@ -174,8 +185,9 @@ Caseta answers with real data. It then went back up by one, to the **117**
 the command prints today: `/device/status/deviceheard` was added two
 commits after that import, and a subscribe-only route can never answer a
 read with `200`, so it joins this list permanently rather than as a
-regression (both processors were in fact sent it, and both answered
-`405 MethodNotAllowed`; see
+regression (the RA3 processor and the Caseta bridge were both in fact sent
+it — `fixtures/ra3.json` and `fixtures/caseta.json` each carry it — and both
+answered `405 MethodNotAllowed`; see
 `spec/paths/device.yaml` and the note above `EXPECTED_MATCHED_CASES` in
 `test/conformance.test.ts`). Of the 117 that remain, 94 *have* now been
 sent and answered with something other than `200`: 54 drew a

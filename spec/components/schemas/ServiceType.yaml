@@ -1,9 +1,10 @@
 # HAND-AUTHORED (formerly a closed 8-member enum -- see the description).
-# Opened because hardware falsified the closed set and nothing else
-# evidences its extent; the firmware typing below corroborates rather than
-# decides. `Service.Type` is a bare `string` (vendor/leap-types.json: `type
-# leapobj.Service struct { ... Type string ... }`, no named enum type at
-# all), so there was never a member list for the generator to recover.
+# Opened because hardware falsified the closed set and the firmware never
+# modelled that set at all: `Service.Type` is a bare `string`
+# (vendor/leap-types.json: `type leapobj.Service struct { ... Type string
+# Body json.RawMessage }`, no named enum type anywhere), so there is nothing
+# for a later value to converge on and never was a member list for the
+# generator to recover.
 type: string
 description: |
   Discriminator for `Service.Type`, naming which `*Properties` field (if
@@ -20,10 +21,11 @@ description: |
   contradiction is resolved in favor of what the description always said
   the field was.
 
-  **The operative ground is falsification, plus the absence of anything
-  evidencing the set's extent** -- the criterion `OccupancyStatus.yaml`
-  records in full. This file is that criterion's worked example, and it is
-  worth being precise about why, because the obvious reading is wrong.
+  **The operative ground is falsification, plus the fact that the firmware
+  never modelled this set at all** -- the criterion `OccupancyStatus.yaml`
+  records in full. This file is that criterion's worked example on the
+  reopen side, and it is worth being precise about why, because the obvious
+  reading is wrong.
 
   The obvious reading is that the enum was weakly evidenced. It was not. All
   8 declared members -- Alexa, GoogleHome, BACnet, HomeKit, IFTTT, Sonos,
@@ -35,30 +37,47 @@ description: |
   this specification is a lower bound, and a later corpus can contradict any
   of them.
 
-  What decides **reopened** rather than **extended** is whether anything
-  else evidences the extent of the set. Nothing does here, so it reopens.
-  `ServerType` was falsified the same way by the Caseta bridge and was
-  extended instead, because its members are all independently observed and
-  the type system had independently evidenced the missing one. This file
-  and that one are the two halves of the split.
+  What decides **reopened** rather than **extended** is whether the firmware
+  models the field with a named type at all. Falsification establishes that
+  the old list was short, not by how much, and a named `leapobj.*` type
+  means a closed set does exist in the firmware for later observations to
+  converge on -- this project simply cannot enumerate it, because the
+  extraction recovers Go `struct` definitions only. `ServerType`,
+  `ProgrammingModelType` and `OccupancyStatus` were all falsified and all
+  extended on that ground. This file is the only reopen, and the only
+  bare-`string` field this specification ever shipped a closed `enum` on, so
+  it is the whole of that branch.
 
-  **The bare-`string` typing corroborates, it does not decide.** There is
-  no `leapobj.ServiceType` at all -- the field is a bare Go `string` --
-  which is a real difference from `ProgrammingModelType` or
-  `AddressedState`, and it is why there was never a generator-recoverable
-  member list. But firmware typing does not separate open from closed
-  anywhere in this specification: the extraction recovers `struct`
-  definitions only and never defines a named enum type, so it cannot bound
-  any member set, and all 24 closed enums are named types it never defined.
+  **There is nothing here to converge on.** `leapobj.Service` is
+  `Type string` beside `Body json.RawMessage`: no named type for the
+  discriminator, and an untyped blob where `leapobj.Server` has a field per
+  member. There is no per-`Type` list to enumerate against -- the seven
+  `*Properties` fields modeled in `Service.yaml` were recovered from the
+  wire, not from that struct.
 
-  The values here are whichever integrations a particular processor's
-  firmware build and feature set have provisioned.
-  The two RA3 corpora this project has captured do not agree on that list --
+  The corpus says the same thing independently, and said it before `Cloud`
+  arrived. The values here are whichever integrations a particular
+  processor's firmware build and feature set have provisioned, so the
+  8-member list was a **union no single unit ever exposed**: RA3 v03.247
+  carried 7 (Alexa, BACnet, GoogleHome, HomeKit, IFTTT, NTPServer, Sonos)
+  and Caseta v01.123 a different 6 (those minus BACnet and NTPServer, plus
+  AutoProgrammer), sharing 5. The two RA3 corpora do not agree either --
   same project, two firmware builds, one extra integration on the later one
   -- which is the same kind of per-installation, per-build divergence
   docs/platforms.md records for route availability. Appending `Cloud` to a
   closed enum would have re-armed the identical failure for the next
   unobserved integration.
+
+  **What the bare-`string` typing does and does not settle.** It settles the
+  reopen-versus-extend question above: there is no `leapobj.ServiceType` at
+  all, so there is no firmware set for a ninth or tenth value to converge
+  on, and that is a real difference from `ProgrammingModelType` or
+  `AddressedState`. It settles nothing about whether a closed `enum` should
+  have shipped in the first place -- all 24 closed enums here are named
+  types the extraction never defined, and so were the five one-member fields
+  this specification opened, so typing cannot separate those. The two
+  questions have to be read separately; the older criterion in this
+  specification ran them together.
 
   Values observed to date, retained below under `x-observed-values` as
   documentation rather than as an assertion (RA3 v03.247: Alexa,

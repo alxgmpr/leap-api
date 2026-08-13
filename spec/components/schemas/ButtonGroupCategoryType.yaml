@@ -21,19 +21,28 @@ description: |
   is not exhaustive, and they stay closed because something evidences the
   extent of their set: 23 have every declared member independently observed
   in the fixtures, and `CommandType` has a documented non-wire source for
-  its 39 (decompiled Lutron app binaries), of which only
-  `PressAndRelease` was ever seen on the wire.
+  its 39 (decompiled Lutron app binaries), of which only `PressAndRelease`
+  has ever been observed **as a `CommandType`**. (`Raise` and `Lower` do
+  appear on the wire, but as the two members of `RaiseLowerDirection`,
+  under `Direction` -- a different enum that happens to share those two
+  names.)
 
   **Neither ground claims the set is complete.** Every closed enum here is a
-  lower bound, and a later corpus can still falsify one: `ServiceType` had
-  all 8 of its declared members independently observed and was falsified
-  anyway, by a ninth value on a later probe. What this field had was neither
+  lower bound, and a later corpus can still falsify one. Three already have,
+  all from the strong end of the first ground: `ServiceType` had all 8 of
+  its declared members independently observed and a ninth arrived on a later
+  probe; `ServerType` had both of its 2 observed and a third arrived from a
+  second platform; `ProgrammingModelType` had all 5 observed and a sixth
+  arrived on a later RA3 build. One was reopened and two were extended, on
+  the split `OccupancyStatus.yaml` sets out. What this field had was neither
   ground at all -- one observed value, and no member list from anywhere else
   -- which makes it the **weakest case on the same scale**, not a different
-  kind of case. Firmware typing does not separate the cases either: it is
-  typed `leapobj.ButtonGroupCategoryType`, a named type the
-  extraction never defined, and so is every one of those 24. See
-  `OccupancyStatus.yaml`, which records the criterion in full and the
+  kind of case. Firmware typing does not decide *this* question -- it
+  decides only whether an already-falsified set reopens or is extended, and
+  nothing here has been falsified. This field is typed
+  `leapobj.ButtonGroupCategoryType`, a named type the extraction never
+  defined, and so is every one of those 24, so typing cannot separate them.
+  See `OccupancyStatus.yaml`, which records the criterion in full and the
   ruling it reverses.
 
   `Lights` is observed 20 times across three corpora -- RA3 v03.247 4,
@@ -41,18 +50,26 @@ description: |
   `x-observed-census` -- via /buttongroup, /buttongroup/{buttongroupId},
   /device/{deviceId}/buttongroup and its /expanded form.
 
-  **Do not re-derive this by walking for `Category.Type`.** Four unrelated
-  firmware types put a `Type` field under a `Category` key, and the fixtures
-  carry 387 such strings in all. Only the 20 below are this type. The other
+  **Do not re-derive this by walking for `Category.Type`.** Four firmware
+  types put a `Type` field under a `Category` key -- this one and three
+  others -- and the fixtures carry 387 such strings in all. Only the 20
+  below are this type. The other
   367 split three ways, not one: `Zone.Category`
   (`leapobj.ZoneCategory`) 310, of which 241 are the empty string;
   `Area.Category` (`leapobj.AreaCategory`) 51; and `VirtualButton.Category`
   (`leapobj.VirtualButtonCategory`) 6.
 
   Two of those three are not enum-shaped at all: `ZoneCategory.Type` and
-  `AreaCategory.Type` are bare Go `string`s -- the `ServiceType` case, not
-  this one. Only `VirtualButtonCategory.Type` is a named type, and it is a
-  different named type (`leapobj.VirtualButtonCategoryType`).
+  `AreaCategory.Type` are bare Go `string`s, with no named type behind them
+  the way `Service.Type` has none, and this specification carries both as
+  plain `type: string` with no member list of any kind. That is a similarity
+  to `ServiceType`'s firmware typing, but it does not make them the same
+  case: what opened `ServiceType` was hardware falsifying a closed `enum` it
+  had shipped, with the bare typing deciding only that it reopened rather
+  than being extended -- see `OccupancyStatus.yaml`. Neither of these two
+  ever shipped a member list to falsify. Only `VirtualButtonCategory.Type`
+  is a named type, and it is a different named type
+  (`leapobj.VirtualButtonCategoryType`).
 
   Nor do the values sort themselves out by inspection. `Kitchen` occurs 5
   times as an area category and 4 as a virtual-button category and never as

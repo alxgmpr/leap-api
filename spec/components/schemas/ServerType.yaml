@@ -23,36 +23,43 @@ description: |
   **Appended, not reopened.** A closed enum falsified by a later corpus is
   exactly the shape of the `ServiceType` case, which was resolved the other
   way -- reopened to a documented `string` rather than extended -- so the
-  divergence needs stating.
+  divergence needs stating. The two fell the same way, from the same
+  standing: this file declared `LEAP` and `IPL` with both independently
+  observed on RA3 v03.247, `ServiceType` declared 8 with all 8 independently
+  observed, and each was contradicted by a later corpus. Every declared
+  member having been observed says nothing about whether an undeclared one
+  exists, so it cannot be what separates them.
 
-  The operative ground is the one `OccupancyStatus.yaml` records: a closed
-  `enum` here needs evidence about the **extent** of the set, and all three
-  members above were independently observed on hardware. That puts this
-  field with the other 22 closed enums whose every member the fixtures
-  carry, and it is what separates it from `Role`, `SessionRole`,
-  `ButtonGroupCategoryType`, `StopIfMovingEnabledState` and
-  `SystemLoadSheddingState`, which were opened for having one observed
-  value and no member list from anywhere else. A newly observed value here
-  is a member to add, as `LIP` was.
+  **What separates them is that the firmware models this field with a named
+  type and does not model `Service.Type` with one at all** -- the split
+  `OccupancyStatus.yaml` records in full. `Server.Type` is
+  `leapobj.ServerType`. A closed set exists in the firmware; this project
+  simply cannot enumerate it, because the extraction recovers Go `struct`
+  definitions only and never emitted a `type X string` plus consts. So each
+  newly observed value converges on a real set, and `LIP` was a member to
+  add. `leapobj.Service` is `Type string` beside `Body json.RawMessage` --
+  no named type, nothing to converge on -- so appending there would only
+  re-arm the same failure. `ProgrammingModelType` was extended on this same
+  ground, and this specification has done it four times in all: three
+  extensions and one reopen.
 
-  **Firmware typing is not that ground**, and this file used to say it was.
-  `Server.Type` is typed `leapobj.ServerType`, a named enum whose members
-  the extraction failed to recover -- but so is every one of the 24 closed
-  enums, and so were all five of the fields that were opened. The
-  extraction recovers Go `struct` definitions only and never defines a
-  named enum type, so it cannot bound any member set and cannot separate
-  these cases. `ServiceType` is genuinely different, but for a narrower
-  reason than "named versus bare" as a rule: `Service.Type` is a bare Go
-  `string` with no named type at all, *and* hardware falsified its closed
-  set outright.
+  **That ground decides only the falsification question**, and this file
+  used to state it as though it decided more. It does not say whether a
+  closed `enum` should ship at all: every one of the 24 closed enums here is
+  a named `leapobj.*` type the extraction never defined, and so were all
+  five of the fields this specification opened for having one observed value
+  and no member list from anywhere else. What puts this field with the other
+  22 closed enums whose every member the fixtures carry is that all three
+  members above are independently observed -- not its typing.
 
-  One corroborating detail, worth keeping at its true weight.
-  `leapobj.Server` has carried a `LIPProperties
-  *leapobj.LIPPropertyDefinition` field, distinct from `IPLProperties`,
-  since before any Caseta probe: the type system said a third member
-  **existed** while only the platform exposing it was missing from the
-  corpus. That is real, and more than the opened five ever had. It does not
-  say that only three exist, and nothing in the extraction could.
+  Extending also claims nothing about completeness. The `*Properties`
+  evidence is worth keeping at its true weight: `leapobj.Server` carrying
+  `LEAPProperties`, `IPLProperties` and `LIPProperties` as three distinct
+  pointer fields said a third member **existed** while only the platform
+  exposing it was missing from the corpus. That is real, and more than the
+  opened five ever had, and more than `ProgrammingModelType` had. It does
+  not say that only three exist, and nothing in the extraction could: this
+  stays a lower bound, like every closed enum here.
 enum:
   - LEAP
   - IPL

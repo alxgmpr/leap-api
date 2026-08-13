@@ -1,11 +1,12 @@
 type: string
 description: |
   Discriminator for `Command` (see `Command`'s description for the full
-  CommandType-to-parameter-field mapping). One of the 118 enums the firmware
-  extraction could not recover (`Command.CommandType` shipped as an open
-  `leapobj.CommandType` string with no member list attached), because no
-  member list survives extraction for an enum the firmware itself only
-  represents as an open string. Members below were recovered from app
+  CommandType-to-parameter-field mapping). `Command.CommandType` is typed
+  `leapobj.CommandType`, one of the 118 named types the extraction
+  references at a field position and never defines -- it recovers Go
+  `struct` definitions only, and a Go string enum is `type X string` plus
+  consts, so no member list survives extraction for this or for any other
+  enum here (see `OccupancyStatus.yaml`). Members below were recovered from app
   reverse engineering, not captured traffic, with one exception
   (`PressAndRelease`, confirmed via a live Caseta probe response body).
   **Observed-not-exhaustive**: unlisted values are possible, and several
