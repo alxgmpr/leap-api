@@ -266,6 +266,10 @@ export function findRequiredIssues(
   const issues: RequiredIssue[] = [];
 
   for (const name of Object.keys(schemas)) {
+    // Every claim in an unverified import is unverified by construction, so
+    // counting them as "untested requirements" says nothing and would have
+    // moved this number from 141 to 228 without any refined claim changing.
+    if (schemas[name]?.["x-leap-verified"] === false) continue;
     const required = declaredRequired(schemas, name);
     const declared = declaredProperties(schemas, name);
     const seen = instances.get(name) ?? [];

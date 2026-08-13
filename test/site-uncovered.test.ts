@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test, { describe } from "node:test";
 import { parse } from "yaml";
+import { disambiguatePath } from "../lib/route-to-path.ts";
 import { buildModel } from "../lib/site/model.ts";
 import {
   classifyRoutes,
@@ -11,9 +12,16 @@ import {
 
 describe("uncovered firmware routes", () => {
   const doc = parse(readFileSync("dist/openapi.yaml", "utf8")) as {
-    paths: Record<string, unknown>;
+    paths: Record<string, Record<string, unknown>>;
   };
-  const bundledPaths = new Set(Object.keys(doc.paths));
+  // The refined tier alone, as tools/derive-unverified.ts does: the bundle now
+  // also carries the import, and counting that as covered would classify the
+  // very routes it imported as no longer absent.
+  const bundledPaths = new Set(
+    Object.entries(doc.paths)
+      .filter(([, item]) => item["x-leap-verified"] !== false)
+      .map(([path]) => path),
+  );
   const absent = classifyRoutes({ bundledPaths });
   const summary = summarize(absent);
 
@@ -25,7 +33,7 @@ describe("uncovered firmware routes", () => {
     assert.equal(
       covered,
       182,
-      "182 firmware routes are bundled under their own path",
+      "182 firmware routes are refined under their own path",
     );
   });
 
@@ -37,6 +45,9 @@ describe("uncovered firmware routes", () => {
       .map((r) => r.path)
       .sort();
     assert.deepEqual(corrected, [
+      // The concatenation is not always in the leading segment: this one is
+      // /device/{id}/buttongroup/expanded, hand-authored in the refined tree.
+      "/device/{deviceId}/buttongroupexpanded",
       "/devicestatus",
       "/devicestatus/deviceheard",
       "/occupancygroupstatus",
@@ -45,15 +56,35 @@ describe("uncovered firmware routes", () => {
     ]);
   });
 
-  test("the four xid twins classify as represented", () => {
-    assert.equal(summary["represented-xid-twin"], 4);
+  test("every xid twin is represented, whether its id form is refined or imported", () => {
+    // Importing both forms would put two paths differing only in a parameter
+    // name into the document -- forbidden, and a hard error in redocly.yaml.
+    assert.equal(summary["represented-xid-twin"], 8);
+    const idForms = new Set(
+      readRoutes().map((r) =>
+        disambiguatePath(r.path.replaceAll("{xid}", "{id}")),
+      ),
+    );
     for (const route of absent.filter(
       (r) => r.absence === "represented-xid-twin",
     ))
       assert.ok(
-        bundledPaths.has(route.path.replaceAll("Xid}", "Id}")),
-        `${route.path} claims an {id} twin that is not bundled`,
+        idForms.has(route.path.replaceAll("Xid}", "Id}")),
+        `${route.path} claims an {id} twin that does not exist`,
       );
+  });
+
+  test("no imported path collides with another only by parameter name", () => {
+    const imported = JSON.parse(
+      readFileSync("spec/unverified-paths.json", "utf8"),
+    ).paths as string[];
+    const all = new Set([...imported, ...bundledPaths]);
+    for (const path of all)
+      if (/\{[a-z]+Xid\}/.test(path))
+        assert.ok(
+          !all.has(path.replaceAll("Xid}", "Id}")),
+          `${path} and its {id} twin are both in the document`,
+        );
   });
 
   test("a path in doubt always offers its slashed reading, and never asserts it", () => {
@@ -108,12 +139,14 @@ describe("the coverage page states it", () => {
   });
 
   test("lists both kinds of absence separately", () => {
-    assert.match(html, /path taken at face value · 168/);
-    assert.match(html, /the path itself is in doubt · 51/);
+    assert.match(html, /Imported, unverified — 163 paths, 80 schemas/);
+    assert.match(html, /Not represented — 51 paths/);
+    assert.match(html, /The paths in doubt · 51/);
   });
 
-  test("asserts no shape for anything it does not document", () => {
-    assert.match(html, /No shape, status or platform is asserted/);
+  test("says plainly that representation is not verification", () => {
+    assert.match(html, /representation is not\s+verification/);
+    assert.match(html, /No capture has exercised them/);
     assert.ok(model.resources.length > 0);
   });
 });

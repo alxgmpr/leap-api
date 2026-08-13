@@ -127,16 +127,29 @@ describe("resource pages", () => {
     assert.match(html, /data-target="area"|data-target=""/);
   });
 
-  test("an observed target this reference does not document is not linked", () => {
+  test("an observed target is linked once the reference documents it", () => {
     // Zone.CountdownTimer resolves to /countdowntimer from a real captured
-    // href, and no resource page covers it. Linking it would be a dead link;
-    // dropping it would hide a real relationship.
+    // href. Before the unverified import there was no page to link to and the
+    // edge rendered as "not documented here"; the import gave it one.
     const html = zone?.html ?? "";
-    assert.match(html, /not documented here/);
-    assert.ok(
-      !html.includes("resource/countdowntimer/index.html"),
-      "must not link to a page that does not exist",
-    );
+    assert.match(html, /resource\/countdowntimer\/index\.html/);
+  });
+
+  test("an edge to a resource with no page at all is still not linked", () => {
+    // The guard the test above used to provide: every resolved target that is
+    // linked must have a generated page behind it.
+    const documented = new Set(model.resources.map((r) => r.name));
+    for (const resource of model.resources)
+      for (const edge of resource.edges)
+        if (edge.target && !documented.has(edge.target)) {
+          const html =
+            pages.find((p) => p.path === `resource/${resource.name}/index.html`)
+              ?.html ?? "";
+          assert.ok(
+            !html.includes(`resource/${edge.target}/index.html`),
+            `${edge.schema}.${edge.property} links to a page that does not exist`,
+          );
+        }
   });
 
   test("links are relative to the page, not to site root", () => {

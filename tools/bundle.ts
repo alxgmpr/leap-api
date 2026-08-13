@@ -8,6 +8,10 @@ import {
 import { basename, join } from "node:path";
 import { parse, stringify } from "yaml";
 import { buildMatrix, renderMatrixTable } from "../lib/platform-matrix.ts";
+import {
+  importUnverifiedPaths,
+  importUnverifiedSchemas,
+} from "../lib/unverified-import.ts";
 
 const PATHS_DIR = "spec/paths";
 const SCHEMAS_DIR = "spec/components/schemas";
@@ -38,6 +42,32 @@ for (const file of readRefined(PATHS_DIR)) {
   const { __name, ...items } = file as { __name: string };
   Object.assign(doc.paths, items);
 }
+
+// Import the firmware routes that were never hand-refined, marked unverified.
+//
+// This runs after the refined tree is merged and never overwrites a path it
+// already placed: a refined definition always wins. Only routes whose path can
+// be taken at face value are listed -- the 51 whose first segment starts with
+// another resource's name may be concatenations the extraction mangled, and
+// importing one would mean guessing the path before guessing the shape. See
+// spec/unverified-paths.json and lib/site/uncovered.ts.
+const allowlist = existsSync("spec/unverified-paths.json")
+  ? (
+      JSON.parse(readFileSync("spec/unverified-paths.json", "utf8")) as {
+        paths: string[];
+      }
+    ).paths
+  : [];
+const unverifiedPaths = importUnverifiedPaths({
+  allowlist,
+  bundledPaths: new Set(Object.keys(doc.paths)),
+});
+Object.assign(doc.paths, unverifiedPaths);
+const unverifiedSchemas = importUnverifiedSchemas({
+  paths: unverifiedPaths,
+  bundledSchemas: new Set(Object.keys(doc.components.schemas)),
+});
+Object.assign(doc.components.schemas, unverifiedSchemas);
 
 // Inject platform availability into operation descriptions so it renders in
 // tools that hide x-* extensions.
@@ -85,5 +115,6 @@ doc.tags = [
 mkdirSync("dist", { recursive: true });
 writeFileSync("dist/openapi.yaml", stringify(doc), "utf8");
 console.log(
-  `bundled ${Object.keys(doc.paths).length} paths, ${Object.keys(doc.components.schemas).length} schemas`,
+  `bundled ${Object.keys(doc.paths).length} paths, ${Object.keys(doc.components.schemas).length} schemas ` +
+    `(${Object.keys(unverifiedPaths).length} paths and ${Object.keys(unverifiedSchemas).length} schemas unverified)`,
 );

@@ -7,13 +7,26 @@ export type Coverage = {
   specWithoutFixture: string[];
   todoEnums: number;
   todoResponses: number;
+  /** Firmware routes imported without hand-refinement, counted separately. */
+  unverifiedPaths: number;
+  unverifiedSchemas: number;
 };
 
 export function computeCoverage(): Coverage {
   const doc = parse(readFileSync("dist/openapi.yaml", "utf8")) as {
-    paths: Record<string, unknown>;
+    paths: Record<string, Record<string, unknown>>;
+    components: { schemas: Record<string, Record<string, unknown>> };
   };
-  const specPaths = new Set(Object.keys(doc.paths));
+
+  // Every number here describes the hand-refined tier. The unverified import
+  // is a different kind of content -- no capture, staging shapes -- and
+  // folding it in would silently change what each count means: adding 163
+  // routes nobody has probed moved "in spec but no fixture" from 117 to 280
+  // without anything about the refined reference having changed.
+  const verified = Object.entries(doc.paths).filter(
+    ([, item]) => item["x-leap-verified"] !== false,
+  );
+  const specPaths = new Set(verified.map(([path]) => path));
 
   // Fixture files come from captures.json (the manifest Task 7 introduced),
   // not a hardcoded list -- every manifest entry is a `{path: {status,
@@ -35,17 +48,28 @@ export function computeCoverage(): Coverage {
     }
   }
 
-  // Marker counts come from the bundle, not the _generated index files:
-  // only bundled content is what a reader actually sees.
-  const bundled = readFileSync("dist/openapi.yaml", "utf8");
+  // Marker counts come from the bundle, not the _generated index files: only
+  // bundled content is what a reader actually sees. Counted structurally over
+  // the verified tier rather than by regex over the whole file, so the import
+  // does not inflate them.
+  const verifiedSchemas = Object.entries(doc.components.schemas).filter(
+    ([, schema]) => schema["x-leap-verified"] !== false,
+  );
+  const verifiedText = JSON.stringify([
+    verified.map(([, item]) => item),
+    verifiedSchemas.map(([, schema]) => schema),
+  ]);
 
   return {
     probedNotInSpec: [...probedPaths].filter((p) => !specPaths.has(p)).sort(),
     specWithoutFixture: [...specPaths]
       .filter((p) => !probedPaths.has(p))
       .sort(),
-    todoEnums: (bundled.match(/TODO\(enum\)/g) ?? []).length,
-    todoResponses: (bundled.match(/TODO\(response\)/g) ?? []).length,
+    todoEnums: (verifiedText.match(/TODO\(enum\)/g) ?? []).length,
+    todoResponses: (verifiedText.match(/TODO\(response\)/g) ?? []).length,
+    unverifiedPaths: Object.keys(doc.paths).length - verified.length,
+    unverifiedSchemas:
+      Object.keys(doc.components.schemas).length - verifiedSchemas.length,
   };
 }
 
@@ -56,6 +80,9 @@ if (process.argv[1]?.endsWith("check-coverage.ts")) {
   console.log(`in spec but no fixture:  ${c.specWithoutFixture.length}`);
   console.log(`unresolved enums:        ${c.todoEnums}`);
   console.log(`unresolved responses:    ${c.todoResponses}`);
+  console.log(
+    `unverified imports:      ${c.unverifiedPaths} paths, ${c.unverifiedSchemas} schemas`,
+  );
   if (c.probedNotInSpec.length > 0) {
     console.log("\nMissing from spec:");
     for (const p of c.probedNotInSpec) console.log(`  ${p}`);

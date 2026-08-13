@@ -7,8 +7,27 @@ describe("site model", () => {
 
   test("groups every bundled path under a resource", () => {
     const urls = model.resources.flatMap((r) => r.operations.map((o) => o.url));
-    assert.equal(new Set(urls).size, 211);
+    const verified = model.resources.flatMap((r) =>
+      r.operations.filter((o) => o.verified).map((o) => o.url),
+    );
+    assert.equal(new Set(verified).size, 211, "the hand-refined tier");
+    assert.equal(new Set(urls).size, 374, "plus the unverified import");
     assert.ok(model.resources.some((r) => r.name === "zone"));
+  });
+
+  test("marks the imported tier unverified and nothing else", () => {
+    const all = model.resources.flatMap((r) => r.operations);
+    const unverified = all.filter((o) => !o.verified);
+    assert.ok(unverified.length > 0);
+    for (const operation of unverified)
+      assert.equal(
+        operation.provenance.verdict,
+        "unverified",
+        `${operation.url} is imported but not graded unverified`,
+      );
+    // A refined path is never downgraded by the import.
+    const zone = all.find((o) => o.url === "/zone/status");
+    assert.equal(zone?.verified, true);
   });
 
   test("leads with CommuniqueType", () => {

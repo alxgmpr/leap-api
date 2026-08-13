@@ -11,6 +11,13 @@
 export type Verdict =
   /** A 200 was captured from hardware. */
   | "confirmed"
+  /**
+   * Imported from the firmware route table without hand-refinement: no
+   * capture, no platform data, and staging shapes. Outranks every other
+   * verdict because it is a statement about the entry itself, not about what
+   * hardware said.
+   */
+  | "unverified"
   /** Hardware was asked and answered something other than 200. */
   | "refused"
   /** Recovered from decompiled Lutron app binaries, not firmware and not captures. */
@@ -39,8 +46,10 @@ export function classifyOperation(input: {
   url: string;
   description?: string;
   observations: Observation[];
+  verified?: boolean;
 }): Provenance {
   const observations = input.observations;
+  if (input.verified === false) return { verdict: "unverified", observations };
   if (isCommandProcessor(input.url)) return { verdict: "app-re", observations };
   if (observations.some((o) => o.status.startsWith("200")))
     return { verdict: "confirmed", observations };

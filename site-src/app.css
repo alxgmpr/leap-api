@@ -510,6 +510,14 @@ div.reply {
   color: var(--ink);
 }
 
+/* An unverified import is the one grade that warns rather than informs. */
+.chip-unverified {
+  color: var(--live);
+  border: 1px solid currentcolor;
+  border-radius: 3px;
+  padding: 0 5px;
+}
+
 /* ---------- composer ---------- */
 
 .compose[open] > summary {

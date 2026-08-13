@@ -53,36 +53,40 @@ the firmware extraction never recovered.</dd>
 whose response shape is not established.</dd>
 </dl>
 
-<h2>What the firmware route table has and this does not</h2>
-<p>The extraction recovered ${firmwareRoutes} route templates.
-${summary.uncovered + summary["uncovered-path-in-doubt"]} of them are not
-documented here. ${summary["represented-xid-twin"]} more are
-<code>{xid}</code> forms whose <code>{id}</code> twin is covered, and
-${summary["represented-corrected"]} are concatenated spellings whose corrected,
-slashed form is covered — <code>/devicestatus</code> is documented as
-<code>/device/status</code>, on captured evidence. Those two groups are
-represented rather than missing.</p>
+<h2>What the firmware route table has, and in what state</h2>
+<p>The extraction recovered ${firmwareRoutes} route templates. Every one of
+them is now represented here except ${summary["uncovered-path-in-doubt"]},
+whose paths cannot be written down without guessing. But representation is not
+verification, and ${coverage.unverifiedPaths} of these paths are imported
+without it.</p>
 
-<details class="links"><summary>Not documented, path taken at face value · ${summary.uncovered}</summary>
-<p class="meta">The route table records these and nothing here verifies them.
-No shape, status or platform is asserted for any of them.</p>
-<ul class="nofixture">${absent
-    .filter((r) => r.absence === "uncovered")
-    .map(
-      (r) =>
-        `<li><code>${esc(r.path)}</code> <span class="evidence">${esc(r.verbs.join(" "))}</span></li>`,
-    )
-    .join("")}</ul>
-</details>
+<dl class="coverage">
+<dt>Hand-refined</dt>
+<dd>Checked against captured traffic: shapes corrected, <code>required</code>
+trimmed to what was observed, mislabels fixed. Everything outside the two
+groups below.</dd>
 
-<details class="links"><summary>Not documented, and the path itself is in doubt · ${summary["uncovered-path-in-doubt"]}</summary>
-<p class="meta">Each of these begins with another resource's name, so it may be
-a concatenation the extraction mangled rather than a path in its own right.
-That defect is real and proven: <code>/devicestatus</code>,
-<code>/occupancygroupstatus</code>, <code>/systemaway</code> and two others
-were confirmed by captures to be the slashed form. Nothing distinguishes the
-ones below without asking hardware, so both readings are shown and neither is
-asserted.</p>
+<dt>Imported, unverified — ${coverage.unverifiedPaths} paths, ${coverage.unverifiedSchemas} schemas</dt>
+<dd>Taken from the firmware route table as-is. No capture has exercised them,
+no platform availability is known, and their shapes are the generator's staging
+output. They carry <code>x-leap-verified: false</code> and are marked
+<em>unverified</em> wherever they appear. Where such a route is a single-segment
+collection read, no response schema is asserted at all: the extraction labels
+that shape with the singular struct name while the wire sends a plural wrapper,
+a defect confirmed elsewhere in this document, and the wrapper's real key has
+only ever come from captures.</dd>
+
+<dt>Not represented — ${summary["uncovered-path-in-doubt"]} paths</dt>
+<dd>Each begins with another resource's name, so it may be a concatenation the
+extraction mangled rather than a path in its own right. That defect is real and
+proven: <code>/devicestatus</code>, <code>/occupancygroupstatus</code>,
+<code>/systemaway</code> and three others were confirmed to be the slashed form.
+Nothing separates these from genuine resources without asking hardware, and
+importing one would mean guessing the path before guessing the shape.</dd>
+</dl>
+
+<details class="links"><summary>The paths in doubt · ${summary["uncovered-path-in-doubt"]}</summary>
+<p class="meta">Both readings shown. Neither is asserted.</p>
 <ul class="nofixture">${absent
     .filter((r) => r.absence === "uncovered-path-in-doubt")
     .map(
@@ -92,13 +96,13 @@ asserted.</p>
     .join("")}</ul>
 </details>
 
-<h2>Why the untouched routes stay untouched</h2>
+<h2>Why the imported tier stays labelled</h2>
 <p>Hand-refining a path family or schema is evidence-checked work — cross-referencing
 captures, correcting mislabels, trimming <code>required</code> to what was actually
-observed. A straight unverified copy of the ${summary.uncovered + summary["uncovered-path-in-doubt"]}
-routes above would carry exactly the false confidence this reference works to
-avoid everywhere else — and for ${summary["uncovered-path-in-doubt"]} of them it
-would have to guess the path itself before it could even begin.</p>
+observed. The imported tier has had none of that done to it, which is why it is
+labelled on every page it appears on rather than quietly mixed in. Reading an
+unverified entry as though it were checked is the one mistake this document is
+built to prevent.</p>
 
 <h2>Paths with no 200 capture</h2>
 <ul class="nofixture">${coverage.specWithoutFixture

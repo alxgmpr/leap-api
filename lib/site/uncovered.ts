@@ -33,6 +33,34 @@ export type Absence =
    */
   | "uncovered-path-in-doubt";
 
+/**
+ * Every way of inserting one slash inside a segment of a path.
+ *
+ * The extraction concatenates path segments, and not only the first one:
+ * `/device/{id}/buttongroupexpanded` is the mangled spelling of
+ * `/device/{id}/buttongroup/expanded`, which the refined tree already carries
+ * hand-authored. Checking only the leading segment missed it, and the import
+ * that followed collided with the refined operationId.
+ */
+export function slashedForms(path: string): string[] {
+  const out: string[] = [];
+  const segments = path.split("/");
+  for (let i = 1; i < segments.length; i += 1) {
+    const segment = segments[i];
+    if (!segment || segment.startsWith("{")) continue;
+    for (let cut = 1; cut < segment.length; cut += 1)
+      out.push(
+        [
+          ...segments.slice(0, i),
+          segment.slice(0, cut),
+          segment.slice(cut),
+          ...segments.slice(i + 1),
+        ].join("/"),
+      );
+  }
+  return out;
+}
+
 export type UncoveredRoute = {
   path: string;
   verbs: string[];
@@ -83,16 +111,28 @@ export function classifyRoutes(input: {
         )
       : null;
 
+    // An {xid} route is represented when its {id} twin is bundled, and also
+    // when that twin is merely another route in the extraction: importing both
+    // would put two paths differing only in a parameter name into the
+    // document, which OpenAPI forbids and redocly's no-identical-paths rule is
+    // configured to treat as a hard error.
+    const idTwin = disambiguatePath(route.path.replaceAll("{xid}", "{id}"));
+    const idTwinExists =
+      input.bundledPaths.has(idTwin) ||
+      routes.some((other) => disambiguatePath(other.path) === idTwin);
+
+    // The concatenation is not always in the leading segment:
+    // /device/{id}/buttongroupexpanded is the mangled spelling of
+    // /device/{id}/buttongroup/expanded, which the refined tree already
+    // carries hand-authored.
+    const correctedElsewhere = slashedForms(path).find((form) =>
+      input.bundledPaths.has(form),
+    );
+
     let absence: Absence;
-    if (
-      route.path.includes("{xid}") &&
-      input.bundledPaths.has(
-        disambiguatePath(route.path.replaceAll("{xid}", "{id}")),
-      )
-    )
+    if (route.path.includes("{xid}") && idTwinExists)
       absence = "represented-xid-twin";
-    else if (slashed && input.bundledPaths.has(slashed))
-      absence = "represented-corrected";
+    else if (correctedElsewhere) absence = "represented-corrected";
     else if (prefix && (segmentCounts.get(segment) ?? 0) === 1)
       // Only this one route uses the segment, so nothing corroborates that it
       // is a resource rather than a concatenation.

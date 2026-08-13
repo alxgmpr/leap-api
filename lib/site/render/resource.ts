@@ -20,6 +20,8 @@ const VERDICT_NOTE: Record<string, string> = {
   firmware: "Present in the firmware extraction.",
   "not-established": "The specification marks this unresolved.",
   "never-asked": "No probe corpus ever sent this.",
+  unverified:
+    "Imported from the firmware route table without hand-refinement. No capture has exercised it and its shapes are the generator's staging output.",
 };
 
 /**

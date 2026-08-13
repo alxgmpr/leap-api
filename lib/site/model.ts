@@ -29,6 +29,8 @@ export type Operation = {
   responseSchema: string | null;
   subscribable: boolean;
   eventSchema: string | null;
+  /** False for firmware routes imported without hand-refinement. */
+  verified: boolean;
   request: Frame;
   responses: Frame[];
   provenance: Provenance;
@@ -249,6 +251,7 @@ export function buildModel(): LeapModel {
           subscribable:
             operation["x-leap-subscribable"] === true || pathLevelSubscribable,
           eventSchema: refName(operation["x-leap-event-schema"]),
+          verified: operation["x-leap-verified"] !== false,
           request: buildRequestFrame({
             url,
             communiqueType,
@@ -260,6 +263,7 @@ export function buildModel(): LeapModel {
             url,
             description: operation.description as string | undefined,
             observations: observationsFor(url),
+            verified: operation["x-leap-verified"] !== false,
           }),
         },
       ]);
@@ -283,6 +287,7 @@ export function buildModel(): LeapModel {
           responseSchema: null,
           subscribable: true,
           eventSchema: refName(item["x-leap-event-schema"]),
+          verified: item["x-leap-verified"] !== false,
           request: buildRequestFrame({
             url,
             communiqueType: "SubscribeRequest",
@@ -292,6 +297,7 @@ export function buildModel(): LeapModel {
             url,
             description: item.description as string | undefined,
             observations: observationsFor(url),
+            verified: item["x-leap-verified"] !== false,
           }),
         },
       ]);

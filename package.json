@@ -19,7 +19,8 @@
     "lint:spec": "redocly lint dist/openapi.yaml",
     "build:site": "npx tsx tools/build-site.ts",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test test/**/*.test.ts"
+    "test": "node --import tsx --test test/**/*.test.ts",
+    "derive:unverified": "npx tsx tools/derive-unverified.ts"
   },
   "dependencies": {
     "yaml": "^2.8.2"
