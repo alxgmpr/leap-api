@@ -67,29 +67,51 @@ description: |
   where a closed `enum` was checked against probe-set bodies only and
   against frame-log bodies not at all.
 
-  **THE CRITERION IS SET CARDINALITY, not firmware typing.** It is stated
-  here in full because it is applied to five files and deliberately not
-  applied to twenty-four others, and a rule that looks general while being
-  half-applied is worse than no rule.
+  **THE CRITERION IS EVIDENCE ABOUT THE EXTENT OF THE SET, not firmware
+  typing.** It is stated here in full because it is applied to five files
+  and deliberately not applied to twenty-four others, and a rule that looks
+  general while being half-applied is worse than no rule.
 
-  - A **one-member** closed enum asserts exhaustiveness on a sample that has
-    never once shown the field to vary. `enum: [X]` and
-    `x-observed-values: [X]` assert the same *content*, so opening drops
-    only the unevidenced half and takes nothing from a consumer. One
-    observed value does not distinguish an enum from a constant, which is
-    the argument `ZoneStatus.yaml` records in full.
-  - A **multi-member** closed enum is different in kind. Each of its members
-    was independently observed, so the field has demonstrated that it
-    varies, and the enum carries real discriminating content. Those stay
-    closed, as acknowledged lower bounds -- which is what "unlisted values
-    are possible" beside a closed `enum` means in this specification: not a
-    contradiction to be resolved, but a statement that the member list is a
-    floor.
+  A closed `enum` needs evidence about the **extent of the set**, not just
+  about its members. Two kinds of evidence can supply that, and the 24
+  closed enums that remain divide cleanly between them:
+
+  - **Independently observed members** -- 23 of the 24. For every one of
+    those 23, *every* declared member was observed in the fixtures at a site
+    this specification governs; not two of them, all of them. Their member
+    counts are 2, 3, 4 and 6. The field has demonstrated that it varies, and
+    the enum carries real discriminating content.
+  - **A documented non-wire source for the member list** -- 1 of the 24,
+    `CommandType`. Its 39 members were recovered from decompiled Lutron app
+    binaries, cited per member in `Command`'s description, so the extent of
+    the set has a source outside this project's corpus.
+
+  Either way the closed set is an acknowledged lower bound, which is what
+  "unlisted values are possible" beside a closed `enum` means in this
+  specification: not a contradiction to be resolved, but a statement that
+  the member list is a floor.
+
+  **`CommandType` is worth stating explicitly, because it would otherwise
+  look like a counterexample.** It is simultaneously the largest
+  exhaustiveness claim here -- 39 members -- and a single-observation enum
+  by exactly the measure that opened these five. One of its 39,
+  `PressAndRelease`, has ever been seen on the wire (twice, on Caseta
+  only). The other 38 have not: the only other members occurring anywhere
+  in the fixtures as quoted strings are `Raise` and `Lower`, which appear
+  as `RaiseLowerDirection` values under `Direction`, and `StopIfMoving`,
+  which appears 21 times as a property name and never as a value. It stays
+  closed on the second ground, not the first. See `CommandType.yaml`.
+
+  **What disqualified the five is that they had neither.** Not a small
+  sample -- no evidence of any kind about the set's extent: one observed
+  value, and no member list from anywhere else to close against. Sample
+  size alone is not the rule; absence of any evidence about extent is.
 
   The rule is fully applied rather than half-applied: **no one-member closed
-  enum remains anywhere in `spec/components/schemas/`.** The 24 that stay
-  closed carry between 2 and 39 members, and 23 of the 24 sit beside the
-  same "unlisted values are possible" note these five carried.
+  enum remains anywhere in `spec/components/schemas/`**, and all 24
+  survivors sit beside an observed-not-exhaustive note of their own -- 23 in
+  the same words these five carried, `VirtualButtonCategorySubType` in
+  slightly stronger ones ("unlisted values are very likely").
 
   **Firmware typing cannot do this work**, which is worth saying because the
   older criterion in this specification -- a bare Go `string` opens, a named
@@ -116,7 +138,7 @@ description: |
   field, and each of the five descriptions opened with it as though it were
   the latter.
 
-  `ServerType.yaml` stays closed under the cardinality rule -- three
+  `ServerType.yaml` stays closed on the first ground -- three
   independently observed members -- and its own description should not be
   read as claiming more than it can. `leapobj.Server` carries
   `LIPProperties`, `LEAPProperties` and `IPLProperties` as three distinct

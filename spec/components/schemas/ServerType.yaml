@@ -23,20 +23,36 @@ description: |
   **Appended, not reopened.** A closed enum falsified by a later corpus is
   exactly the shape of the `ServiceType` case, which was resolved the other
   way -- reopened to a documented `string` rather than extended -- so the
-  divergence needs stating. `ServiceType` was reopened because the firmware
-  types `Service.Type` as a bare Go `string`, with no named type behind it
-  and no closed set to recover. `Server.Type` is the opposite: the firmware
-  types it `leapobj.ServerType`, a real named enum whose members the
-  extraction merely failed to recover, which puts it with
-  `ProgrammingModelType` and `AddressedState` -- observed members are a
-  lower bound on a genuinely closed type, and a newly observed value is a
-  member to add.
+  divergence needs stating.
 
-  The firmware also contests nothing here. `leapobj.Server` has carried a
-  `LIPProperties *leapobj.LIPPropertyDefinition` field, distinct from
-  `IPLProperties`, since before any Caseta probe: the type system already
-  said a third member existed, and only the platform that exposes it was
-  missing from the corpus.
+  The operative ground is the one `OccupancyStatus.yaml` records: a closed
+  `enum` here needs evidence about the **extent** of the set, and all three
+  members above were independently observed on hardware. That puts this
+  field with the other 22 closed enums whose every member the fixtures
+  carry, and it is what separates it from `Role`, `SessionRole`,
+  `ButtonGroupCategoryType`, `StopIfMovingEnabledState` and
+  `SystemLoadSheddingState`, which were opened for having one observed
+  value and no member list from anywhere else. A newly observed value here
+  is a member to add, as `LIP` was.
+
+  **Firmware typing is not that ground**, and this file used to say it was.
+  `Server.Type` is typed `leapobj.ServerType`, a named enum whose members
+  the extraction failed to recover -- but so is every one of the 24 closed
+  enums, and so were all five of the fields that were opened. The
+  extraction recovers Go `struct` definitions only and never defines a
+  named enum type, so it cannot bound any member set and cannot separate
+  these cases. `ServiceType` is genuinely different, but for a narrower
+  reason than "named versus bare" as a rule: `Service.Type` is a bare Go
+  `string` with no named type at all, *and* hardware falsified its closed
+  set outright.
+
+  One corroborating detail, worth keeping at its true weight.
+  `leapobj.Server` has carried a `LIPProperties
+  *leapobj.LIPPropertyDefinition` field, distinct from `IPLProperties`,
+  since before any Caseta probe: the type system said a third member
+  **existed** while only the platform exposing it was missing from the
+  corpus. That is real, and more than the opened five ever had. It does not
+  say that only three exist, and nothing in the extraction could.
 enum:
   - LEAP
   - IPL

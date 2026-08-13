@@ -32,9 +32,10 @@ description: |
   predating this pass: `Role` (`Installer`), `SessionRole` (`Admin`),
   `ButtonGroupCategoryType` (`Lights`), `StopIfMovingEnabledState`
   (`Disabled`) and `SystemLoadSheddingState` (`Disabled`). All five are open
-  strings now, under the cardinality criterion `OccupancyStatus.yaml`
-  records: a one-member closed enum asserts exhaustiveness on a field
-  nothing has shown to vary, and none remains in this specification. That is
+  strings now, under the criterion `OccupancyStatus.yaml` records: a
+  closed enum needs evidence about the extent of its set, and a one-member
+  enum with no member list from anywhere else has none. No one-member
+  closed enum remains in this specification. That is
   not the majority treatment -- 24 closed enum schemas still ship against 6
   documented-open ones -- but it is the whole of the one-member case, and
   these fields are in it for the same reason. `OccupancyStatus` was the

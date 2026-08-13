@@ -8,7 +8,7 @@ Caseta bridges, Vive systems, and their companion apps use over TLS port
 ## What this is
 
 A single, browsable, hand-refined OpenAPI document (`spec/`, bundling to
-`dist/openapi.yaml`) covering 210 paths and 320 component schemas, built from
+`dist/openapi.yaml`) covering 211 paths and 344 component schemas, built from
 two independent sources cross-checked against each other:
 
 - A **firmware extraction** — 410 route identifiers and 636 response struct
@@ -78,9 +78,9 @@ route and finds nothing here cannot tell "this route does not exist" from
   `{xid}` routes whose `{id}` twin *is* bundled — OpenAPI forbids two paths
   differing only in parameter name, so those 4 are represented rather than
   missing (see `docs/mapping.md`); the other 224 are genuinely not covered.
-  The bundle ships 210 paths, so 28 of them have no firmware route behind
+  The bundle ships 211 paths, so 29 of them have no firmware route behind
   them at all: the ten `commandprocessor` routes (the extraction recovered
-  zero — see `docs/mapping.md`) and 18 others — collection, `/status` and
+  zero — see `docs/mapping.md`) and 19 others — collection, `/status` and
   `/expanded` paths, several of them the correctly-slashed replacements for
   forms the extraction mangled (`/devicestatus` and similar), the rest
   absent from the extraction in any form.
@@ -132,13 +132,13 @@ schema or path family is real, evidence-checked work (cross-referencing
 observed), and this project has done it for the paths and schemas that
 were reachable, probe-confirmed, or otherwise worth the verification cost.
 It has not attempted a straight, unverified copy of the other 228
-routes/377 schemas, because an unverified copy would carry exactly the
+routes/362 schemas, because an unverified copy would carry exactly the
 false confidence this document works to avoid elsewhere. Run
 `npm run coverage` for the live, generated version of these numbers
 (`probedNotInSpec`/`specWithoutFixture`), which additionally tracks
 coverage against the captured fixtures rather than just the firmware
 extraction. At the time of writing it reports `probedNotInSpec: 0`,
-`specWithoutFixture: 116`, `todoEnums: 73`, `todoResponses: 167`.
+`specWithoutFixture: 117`, `todoEnums: 76`, `todoResponses: 140`.
 
 **What `specWithoutFixture` does and does not mean.** It counts bundled
 paths with no `200` response in `fixtures/`, and until recently that was
@@ -156,10 +156,16 @@ a Caseta bridge (`fixtures/spec-read-caseta.json`) closed 14 more, leaving
 buys: `/zone/tuningsettings`, `/area/{areaId}/occupancysettings` and its
 daylighting/occupancy-sensor neighbours, `/preset/{presetId}`,
 `/virtualbutton/{virtualbuttonId}` — paths RA3 refuses or leaves empty and
-Caseta answers with real data. Of the 116 that remain, 93 *have* now been
+Caseta answers with real data. It then went back up by one, to the **117**
+the command prints today: `/device/status/deviceheard` was added two
+commits after that import, and a subscribe-only route can never appear in a
+probe set, so it joins this list permanently rather than as a regression
+(both processors answer it `405 MethodNotAllowed`; see
+`spec/paths/device.yaml` and the note above `EXPECTED_MATCHED_CASES` in
+`test/conformance.test.ts`). Of the 117 that remain, 94 *have* now been
 sent and answered with something other than `200`: 54 drew a
 `400 BadRequest` refusal, 34 a `404` for an instance that does not exist on
-the unit asked, 26 a `204`, and 6 a `405` (these overlap — a path probed on
+the unit asked, 26 a `204`, and 7 a `405` (these overlap — a path probed on
 more than one platform can appear under more than one status; see
 `docs/platforms.md`). Only 23 have still never been sent. So the
 number now means largely "asked and not answered `200`", but it is still a
@@ -201,9 +207,9 @@ the two should not be conflated.
    `docs/platforms.md`). These are the corpus every generated schema is
    checked against.
 4. **Hand-refine** a subset of the generated paths and schemas — 24 of 170
-   generated path families, 259 of 636 generated schemas as of this writing
+   generated path families, 274 of 636 generated schemas as of this writing
    (see "What is and is not covered" above; `spec/paths/` ships one more
-   family and `spec/components/schemas/` 61 more schemas, hand-authored with
+   family and `spec/components/schemas/` 70 more schemas, hand-authored with
    no generated counterpart to refine from) — into `spec/paths/` and
    `spec/components/schemas/`: correcting the firmware extraction's
    systematic defects (mangled collection paths, singular/plural

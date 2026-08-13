@@ -16,17 +16,20 @@ description: |
   (`test/observed-values.test.ts`), which the `enum` never was for
   frame-log bodies.
 
-  **That is a cardinality rule, not a general one**, and it is stated here
-  so this file does not read as licensing something wider. 24 closed enums
-  still ship in this specification, 23 of them beside the same note that
-  unlisted values are possible, and they stay closed: each has at least two
-  independently observed members, so the field has demonstrated that it
-  varies and the enum carries real discriminating content. Firmware typing
-  does not separate the cases either: this field is typed
-  `leapobj.SystemLoadSheddingState`, a named type the extraction never
-  defined, and so is every one of those 24. See
-  `OccupancyStatus.yaml`, which records the criterion and the ruling it
-  reverses.
+  **That is not a general licence to reopen**, and the limit is stated here
+  so this file does not read as one. 24 closed enums still ship in this
+  specification, every one beside a note of its own saying the member list
+  is not exhaustive, and they stay closed because something evidences the
+  extent of their set: 23 have every declared member independently observed
+  in the fixtures, and `CommandType` has a documented non-wire source for
+  its 39 (decompiled Lutron app binaries), of which only
+  `PressAndRelease` was ever seen on the wire. This field had neither: one
+  observed value, and no member list from anywhere else. Firmware typing
+  does not separate the cases -- it is typed
+  `leapobj.SystemLoadSheddingState`, a named type the extraction
+  never defined, and so is every one of those 24. See
+  `OccupancyStatus.yaml`, which records the criterion in full and the
+  ruling it reverses.
 
   This is the thinnest evidence of the five. `Disabled` is observed twice,
   once in each RA3 corpus (v03.247 and v03.249) and counted per corpus under
