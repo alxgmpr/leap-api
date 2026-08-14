@@ -1,20 +1,37 @@
 import assert from "node:assert/strict";
 import test, { describe } from "node:test";
+import { href, ROOT_TOP } from "../lib/site/href.ts";
 import { buildModel } from "../lib/site/model.ts";
-import { renderResourceSections } from "../lib/site/render/resource.ts";
+import {
+  renderResourceIndex,
+  renderResourcePage,
+} from "../lib/site/render/resource.ts";
 
-describe("resource sections", () => {
+describe("resource pages", () => {
   const model = buildModel();
-  const sections = renderResourceSections(model);
-  const zone = sections.find((s) => s.id === "resource-zone");
+  const zone = model.resources.find((r) => r.name === "zone");
+  const countdown = model.resources.find((r) => r.name === "countdowntimer");
+  if (!zone || !countdown) throw new Error("fixture resources missing");
+  const zonePage = renderResourcePage(model, zone);
 
-  test("emits one section per resource, plus the lead", () => {
-    assert.equal(sections.length, model.resources.length + 1);
-    assert.ok(zone);
+  test("renders one page per resource, with the resource's own id", () => {
+    assert.equal(zonePage.id, "resource-zone");
+    const pages = model.resources.map((r) => renderResourcePage(model, r));
+    assert.equal(pages.length, model.resources.length);
+  });
+
+  test("the index carries the evidence legend, once, off the resource pages", () => {
+    const index = renderResourceIndex(model);
+    assert.equal(index.id, "resources");
+    assert.match(index.html, /answered on hardware/);
+    assert.ok(
+      !zonePage.html.includes("answered on hardware"),
+      "the legend must not be restated on every resource page",
+    );
   });
 
   test("leads with CommuniqueType and never shows an HTTP verb", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     // The markup carries the CommuniqueType; the uppercasing is presentational.
     assert.match(html, /class="ct">Read</);
     assert.match(html, /class="ct">Update</);
@@ -27,40 +44,53 @@ describe("resource sections", () => {
   });
 
   test("shows the captured response frame inline", () => {
-    assert.match(zone?.html ?? "", /ZoneStatuses/);
-    assert.match(zone?.html ?? "", /data-fidelity="captured-body"/);
+    assert.match(zonePage.html, /ZoneStatuses/);
+    assert.match(zonePage.html, /data-fidelity="captured-body"/);
   });
 
   test("marks subscribable operations and names the pushed schema", () => {
-    assert.match(zone?.html ?? "", /class="sub">subscribable/);
-    assert.match(zone?.html ?? "", /Subscribing pushes/);
-    assert.match(zone?.html ?? "", /href="schema\/ZoneStatus\.html"/);
+    assert.match(zonePage.html, /class="sub">subscribable/);
+    assert.match(zonePage.html, /Subscribing pushes/);
+  });
+
+  test("a schema reference points at the schema's page", () => {
+    const section = renderResourcePage(model, zone);
+    assert.match(section.html, /href="\.\.\/schema\/ZoneStatus\.html"/);
+  });
+
+  test("an edge points at the target resource's page", () => {
+    // Zone.CountdownTimer resolves to /countdowntimer from a real captured
+    // href. Before the unverified import there was no page to link to and
+    // the edge rendered as "not documented here"; the import gave it one.
+    const section = renderResourcePage(model, zone);
+    assert.match(section.html, /href="\.\.\/resource\/countdowntimer\.html"/);
+  });
+
+  test("an operation reference carries the page and the anchor", () => {
+    assert.equal(
+      href.operation(ROOT_TOP, "zone", "readZone"),
+      "resource/zone.html#readZone",
+    );
   });
 
   test("carries one provenance mark per URL, not per verb", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     const chips = (html.match(/class="chip chip-verdict/g) ?? []).length;
-    const urls = new Set(
-      model.resources
-        .find((r) => r.name === "zone")
-        ?.operations.map((o) => o.url),
-    ).size;
+    const urls = new Set(zone.operations.map((o) => o.url)).size;
     assert.equal(chips, urls);
     assert.ok(
-      chips <
-        (model.resources.find((r) => r.name === "zone")?.operations.length ??
-          0),
+      chips < zone.operations.length,
       "grouping must actually reduce the marks",
     );
   });
 
   test("renders the command composer with CommandType options", () => {
-    assert.match(zone?.html ?? "", /class="composer"/);
-    assert.match(zone?.html ?? "", /GoToDimmedLevel/);
+    assert.match(zonePage.html, /class="composer"/);
+    assert.match(zonePage.html, /GoToDimmedLevel/);
   });
 
   test("renders the authored operation description as markdown", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     // The commandprocessor's own note -- 2,610 characters of which
     // CommandTypes are confirmed and by what source.
     assert.match(html, /Confirmed accepted CommandTypes/);
@@ -69,7 +99,7 @@ describe("resource sections", () => {
   });
 
   test("does not print the injected platform table on top of its own", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     assert.ok(
       !html.includes("Platform availability"),
       "bundle.ts's injected copy must not render beside the native observation table",
@@ -79,8 +109,7 @@ describe("resource sections", () => {
 
   test("every operation with a description shows it", () => {
     for (const resource of model.resources) {
-      const html =
-        sections.find((s) => s.id === `resource-${resource.name}`)?.html ?? "";
+      const html = renderResourcePage(model, resource).html;
       const withProse = resource.operations.filter(
         (o) => o.description && !o.description.startsWith("**Platform"),
       ).length;
@@ -96,7 +125,7 @@ describe("resource sections", () => {
     // Without these, composing a GoToDimmedLevel still means opening
     // DimmedLevelParameters to learn it holds a Level -- the jump this page
     // exists to remove.
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     const option =
       /<option value="GoToDimmedLevel"[^>]*data-fields="([^"]*)"/.exec(html);
     assert.ok(option, "GoToDimmedLevel option must carry its fields");
@@ -108,7 +137,7 @@ describe("resource sections", () => {
   });
 
   test("a CommandType with no established field carries no fields", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     const option =
       /<option value="GoToFanSpeed"[^>]*data-fields="([^"]*)"/.exec(html);
     assert.ok(option);
@@ -120,42 +149,34 @@ describe("resource sections", () => {
   });
 
   test("renders edges, with unresolved ones visibly unresolved", () => {
-    const html = sections.find((s) => s.id === "resource-area")?.html ?? "";
+    const area = model.resources.find((r) => r.name === "area");
+    if (!area) throw new Error("area fixture missing");
+    const html = renderResourcePage(model, area).html;
     assert.match(html, /class="edges"/);
     assert.match(html, /data-target="area"|data-target=""/);
   });
 
-  test("an observed target is linked once the reference documents it", () => {
-    // Zone.CountdownTimer resolves to /countdowntimer from a real captured
-    // href. Before the unverified import there was no section to link to and
-    // the edge rendered as "not documented here"; the import gave it one.
-    const html = zone?.html ?? "";
-    assert.match(html, /href="index\.html#resource-countdowntimer"/);
-  });
-
-  test("an edge to a resource with no section at all is still not linked", () => {
+  test("an edge to a resource with no page at all is still not linked", () => {
     // The guard the test above used to provide: every resolved target that is
-    // linked must have a rendered section behind it.
+    // linked must have a rendered page behind it.
     const documented = new Set(model.resources.map((r) => r.name));
     for (const resource of model.resources)
       for (const edge of resource.edges)
         if (edge.target && !documented.has(edge.target)) {
-          const html =
-            sections.find((s) => s.id === `resource-${resource.name}`)?.html ??
-            "";
+          const html = renderResourcePage(model, resource).html;
           assert.ok(
-            !html.includes(`href="index.html#resource-${edge.target}"`),
-            `${edge.schema}.${edge.property} links to a section that does not exist`,
+            !html.includes(`href="../resource/${edge.target}.html"`),
+            `${edge.schema}.${edge.property} links to a page that does not exist`,
           );
         }
   });
 
-  test("links are in-page anchors, never root-absolute", () => {
-    assert.ok(!(zone?.html ?? "").includes('href="/'));
+  test("links are relative, never root-absolute", () => {
+    assert.ok(!zonePage.html.includes('href="/'));
   });
 
   test("every URL group is filterable by its verdict", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     const groups = (html.match(/class="group"/g) ?? []).length;
     const verdicts = (html.match(/data-verdict="/g) ?? []).length;
     assert.equal(groups, verdicts);
@@ -163,7 +184,7 @@ describe("resource sections", () => {
   });
 
   test("renders each frame as one wire line, not pretty-printed", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     const wires = [
       ...html.matchAll(
         /<pre class="wire" [^>]*><code>([\s\S]*?)<\/code><\/pre>/g,
@@ -178,13 +199,13 @@ describe("resource sections", () => {
   });
 
   test("collapses a captured reply to its shape", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     assert.match(html, /<summary><span class="dir"[^>]*>←<\/span>/);
     assert.match(html, /class="shape">ZoneStatuses · \d+ items/);
   });
 
   test("gives the composer its own affordance, separate from the evidence", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     assert.match(
       html,
       /<details class="compose"[^>]*><summary>Compose a frame/,
@@ -195,20 +216,20 @@ describe("resource sections", () => {
   });
 
   test("opens the composer where composing is the point", () => {
-    const html = zone?.html ?? "";
+    const html = zonePage.html;
     // A command processor's whole surface is the frame you build; a read's is
     // the frame already shown above it.
     const opened = (html.match(/<details class="compose" open>/g) ?? []).length;
-    const commandProcessors = (
-      model.resources.find((r) => r.name === "zone")?.operations ?? []
-    ).filter((o) => o.url.endsWith("/commandprocessor")).length;
+    const commandProcessors = zone.operations.filter((o) =>
+      o.url.endsWith("/commandprocessor"),
+    ).length;
     assert.ok(commandProcessors > 0);
     assert.equal(opened, commandProcessors);
   });
 
   test("does not route the reader through OpenAPI in its own voice", () => {
     // Authored spec prose may still mention it; the site's own chrome may not.
-    const chrome = (zone?.html ?? "").replace(
+    const chrome = zonePage.html.replace(
       /<div class="prose opdesc">[\s\S]*?<\/div>/g,
       "",
     );

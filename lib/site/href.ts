@@ -8,11 +8,10 @@
  * It is threaded through from the start so that switching a reference from an
  * in-page anchor to a page URL is a one-line change here, not a hunt.
  *
- * Most tiers still live entirely on index.html, so their hrefs point at
- * `${root}index.html#anchor` -- correct from both the top level and a nested
- * page. `schema` is the first tier split into its own pages (Task 4) and
- * resolves to a real page URL; the rest follow in later tasks as each tier
- * splits.
+ * Docs, recipes and coverage still live entirely on index.html, so their
+ * hrefs point at `${root}index.html#anchor` -- correct from both the top
+ * level and a nested page. `schema` (Task 4) and `resource`/`operation`
+ * (Task 5) resolve to real page URLs; recipes and coverage follow in Task 6.
  */
 
 /** Prefix for a page at the site root. */
@@ -27,13 +26,17 @@ export const href = {
     return `${root}index.html`;
   },
   tier(root: string, name: TierName): string {
-    return `${root}index.html#${name}`;
+    // Resources and schemas are their own top-level pages; recipes and
+    // coverage still live as sections of index.html until Task 6.
+    return name === "resources" || name === "schemas"
+      ? `${root}${name}.html`
+      : `${root}index.html#${name}`;
   },
   resource(root: string, name: string): string {
-    return `${root}index.html#resource-${name}`;
+    return `${root}resource/${name}.html`;
   },
-  operation(root: string, _resourceName: string, operationId: string): string {
-    return `${root}index.html#${operationId}`;
+  operation(root: string, resourceName: string, operationId: string): string {
+    return `${root}resource/${resourceName}.html#${operationId}`;
   },
   schema(root: string, name: string): string {
     return `${root}schema/${name}.html`;

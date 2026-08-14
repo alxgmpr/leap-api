@@ -10,6 +10,7 @@ export function siteNav(model: LeapModel, root: string): NavItem[] {
     { href: href.overview(root), label: "Overview" },
     { href: href.tier(root, "recipes"), label: "Recipes" },
     { href: href.tier(root, "coverage"), label: "Coverage" },
+    { href: href.tier(root, "resources"), label: "Resources" },
     { href: href.tier(root, "schemas"), label: "Schemas" },
     ...model.docs.map((d) => ({
       href: href.doc(root, d.slug),

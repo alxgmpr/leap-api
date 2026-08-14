@@ -1,6 +1,6 @@
 import { type Callout, calloutsFor } from "../callouts.ts";
 import type { Edge } from "../graph.ts";
-import { href, ROOT_TOP } from "../href.ts";
+import { href, ROOT_NESTED, ROOT_TOP } from "../href.ts";
 import type { LeapModel, Operation, Resource } from "../model.ts";
 import type { Provenance } from "../provenance.ts";
 import { timelineFor } from "../timelines.ts";
@@ -152,15 +152,15 @@ function renderExchange(operation: Operation, model: LeapModel): string {
       ? `<p class="meta">Wire <code>MessageBodyType</code> <code>${esc(operation.bodyType)}</code> — <code>Body</code> wraps the payload under that key.</p>`
       : "",
     operation.eventSchema
-      ? `<p class="meta">Subscribing pushes <a href="${esc(href.schema(ROOT_TOP, operation.eventSchema))}">${esc(operation.eventSchema)}</a>, a partial carrying only changed fields. <a href="${esc(href.doc(ROOT_TOP, "subscriptions"))}">Subscriptions</a>.</p>`
+      ? `<p class="meta">Subscribing pushes <a href="${esc(href.schema(ROOT_NESTED, operation.eventSchema))}">${esc(operation.eventSchema)}</a>, a partial carrying only changed fields. <a href="${esc(href.doc(ROOT_NESTED, "subscriptions"))}">Subscriptions</a>.</p>`
       : "",
     prose ? `<div class="prose opdesc">${renderMarkdown(prose)}</div>` : "",
     observationTable(operation),
     operation.responseSchema
-      ? `<p class="meta">Payload schema <a href="${esc(href.schema(ROOT_TOP, operation.responseSchema))}">${esc(operation.responseSchema)}</a>.</p>`
+      ? `<p class="meta">Payload schema <a href="${esc(href.schema(ROOT_NESTED, operation.responseSchema))}">${esc(operation.responseSchema)}</a>.</p>`
       : "",
     operation.requestSchema
-      ? `<p class="meta">Request payload schema <a href="${esc(href.schema(ROOT_TOP, operation.requestSchema))}">${esc(operation.requestSchema)}</a>.</p>`
+      ? `<p class="meta">Request payload schema <a href="${esc(href.schema(ROOT_NESTED, operation.requestSchema))}">${esc(operation.requestSchema)}</a>.</p>`
       : "",
   ]
     .filter(Boolean)
@@ -177,7 +177,7 @@ ${calloutsFor(operation)
 ${renderWire(operation.request)}
 ${
   replies.length > 0
-    ? replies.map((frame) => renderReply(frame)).join("")
+    ? replies.map((frame) => renderReply(frame, ROOT_NESTED)).join("")
     : '<div class="reply reply-none"><span class="dir" aria-hidden="true">←</span><span class="shape">no captured reply</span></div>'
 }
 ${timeline ? renderTimeline(timeline, "This exchange on hardware") : ""}
@@ -223,7 +223,7 @@ function renderEdges(edges: Edge[], documented: Set<string>): string {
     if (!documented.has(edge.target))
       return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <code>/${esc(edge.target)}</code> ${evidence} <span class="unresolved">not documented here</span></li>`;
 
-    return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <a href="${esc(href.resource(ROOT_TOP, edge.target))}">${esc(edge.target)}</a> ${evidence}</li>`;
+    return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <a href="${esc(href.resource(ROOT_NESTED, edge.target))}">${esc(edge.target)}</a> ${evidence}</li>`;
   };
 
   return `<details class="links"><summary>Links to other resources · ${edges.length}</summary>
@@ -234,11 +234,20 @@ property name.</p>
 </details>`;
 }
 
-function renderResource(
-  resource: Resource,
+/**
+ * One resource, as its own page. Headings are promoted one level from the
+ * shared-document form (the old h2 -> h1): a resource page owns its heading
+ * hierarchy outright instead of nesting under the single-page document's h1.
+ * The evidence legend that used to sit once above every resource section
+ * now lives on `renderResourceIndex` instead -- restating it per page would
+ * be the same "used to be restated on every resource page" mistake in
+ * reverse.
+ */
+export function renderResourcePage(
   model: LeapModel,
-  documented: Set<string>,
+  resource: Resource,
 ): Section {
+  const documented = new Set(model.resources.map((r) => r.name));
   const byUrl = new Map<string, Operation[]>();
   for (const operation of resource.operations)
     byUrl.set(operation.url, [...(byUrl.get(operation.url) ?? []), operation]);
@@ -246,7 +255,7 @@ function renderResource(
   const subscribable = resource.operations.filter((o) => o.subscribable).length;
 
   const html = `<header class="mast">
-<h2>${esc(resource.name)}</h2>
+<h1>${esc(resource.name)}</h1>
 <span class="count">${byUrl.size} URL${byUrl.size === 1 ? "" : "s"} · ${resource.operations.length} operation${resource.operations.length === 1 ? "" : "s"}${subscribable > 0 ? ` · ${subscribable} subscribable` : ""}</span>
 </header>
 ${renderEdges(resource.edges, documented)}
@@ -258,23 +267,20 @@ ${[...byUrl.entries()]
 }
 
 /**
- * The resources part of the scroll: one lead section carrying the legend
- * once -- it used to be restated on every resource page -- then one section
- * per resource.
+ * The resources tier index: its own page (Task 5), carrying the evidence
+ * legend once and a grid linking every resource with its operation count --
+ * the same `.resource-grid` markup the overview's "Resources" section uses.
  */
-export function renderResourceSections(model: LeapModel): Section[] {
-  const documented = new Set(model.resources.map((r) => r.name));
-  const lead: Section = {
-    id: "resources",
-    html: `<h2 class="part">Resources</h2>
+export function renderResourceIndex(model: LeapModel): Section {
+  const html = `<h1 class="part">Resources</h1>
 <p class="lede">Every addressable URL, grouped by its first path segment, with
 the frames a client writes and the replies hardware gave.</p>
-<p class="legend"><span><span class="dot live">●</span> answered on hardware</span><span><span class="dot">○</span> not observed</span><span>→ you write · ← you read</span></p>`,
-  };
-  return [
-    lead,
-    ...model.resources.map((resource) =>
-      renderResource(resource, model, documented),
-    ),
-  ];
+<p class="legend"><span><span class="dot live">●</span> answered on hardware</span><span><span class="dot">○</span> not observed</span><span>→ you write · ← you read</span></p>
+<ul class="resource-grid">${model.resources
+    .map(
+      (r) =>
+        `<li><a href="${esc(href.resource(ROOT_TOP, r.name))}">${esc(r.name)}</a> <span class="count">${r.operations.length}</span></li>`,
+    )
+    .join("")}</ul>`;
+  return { id: "resources", html };
 }

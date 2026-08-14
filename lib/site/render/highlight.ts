@@ -1,5 +1,5 @@
 import { type Frame, renderNdjson } from "../frames.ts";
-import { href, ROOT_TOP } from "../href.ts";
+import { href } from "../href.ts";
 import { esc } from "./html.ts";
 
 const TOKEN =
@@ -58,9 +58,11 @@ export function bodyShape(body: Record<string, unknown> | undefined): string {
 
 /**
  * The reply, collapsed to its answer. The summary line is the disclosure
- * trigger, so this needs no JavaScript and no id bookkeeping.
+ * trigger, so this needs no JavaScript and no id bookkeeping. `root` reaches
+ * the site root from the page this is rendered onto -- resource pages
+ * (Task 5) are one directory below the docs the wrapper note links into.
  */
-export function renderReply(frame: Frame): string {
+export function renderReply(frame: Frame, root: string): string {
   const status = frame.Header.StatusCode ?? "";
   const head = `<span class="dir" aria-hidden="true">←</span><span class="status">${esc(status)}</span><span class="shape">${esc(bodyShape(frame.Body))}</span>${frame.source ? `<span class="src" title="${esc(FIDELITY_NOTE[frame.fidelity])}">${esc(frame.source)}</span>` : ""}`;
 
@@ -72,7 +74,7 @@ export function renderReply(frame: Frame): string {
   // describes what is under that key, not this object.
   const key = Object.keys(frame.Body)[0];
   const wrapperNote = key
-    ? `<p class="wrapnote">The one key <code>${esc(key)}</code> is <code>Header.MessageBodyType</code>; the schema describes what is under it, not this object. <a href="${esc(href.docHeading(ROOT_TOP, "protocol", "body-wraps-the-payload"))}">The Body wrapper</a>.</p>`
+    ? `<p class="wrapnote">The one key <code>${esc(key)}</code> is <code>Header.MessageBodyType</code>; the schema describes what is under it, not this object. <a href="${esc(href.docHeading(root, "protocol", "body-wraps-the-payload"))}">The Body wrapper</a>.</p>`
     : "";
 
   return `<details class="reply" data-fidelity="${frame.fidelity}">

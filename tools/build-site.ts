@@ -9,7 +9,10 @@ import { renderDocSections } from "../lib/site/render/docs.ts";
 import { renderOverview, siteNav } from "../lib/site/render/home.ts";
 import { type Page, page } from "../lib/site/render/layout.ts";
 import { renderRecipeSections } from "../lib/site/render/recipes.ts";
-import { renderResourceSections } from "../lib/site/render/resource.ts";
+import {
+  renderResourceIndex,
+  renderResourcePage,
+} from "../lib/site/render/resource.ts";
 import {
   renderSchemaIndex,
   renderSchemaPage,
@@ -19,13 +22,13 @@ const OUT = "site";
 
 const model = buildModel();
 
-// One document, one scroll: narrative first, then the reference tiers.
+// One document, one scroll: narrative first, then the tiers still awaiting
+// their own split (docs, recipes, coverage -- Task 6). Resources and schemas
+// have their own pages as of Tasks 4 and 5.
 const sections = [
   renderOverview(model),
   ...renderDocSections(model),
   ...renderRecipeSections(model),
-  ...renderResourceSections(model),
-  renderSchemaIndex(model),
   renderCoverageSection(model),
 ];
 
@@ -39,6 +42,36 @@ const pages: Page[] = [
       sections,
     }),
   },
+  {
+    path: "resources.html",
+    html: page({
+      title: "Resources",
+      root: ROOT_TOP,
+      nav: siteNav(model, ROOT_TOP),
+      sections: [renderResourceIndex(model)],
+      current: href.tier(ROOT_TOP, "resources"),
+    }),
+  },
+  {
+    path: "schemas.html",
+    html: page({
+      title: "Schemas",
+      root: ROOT_TOP,
+      nav: siteNav(model, ROOT_TOP),
+      sections: [renderSchemaIndex(model)],
+      current: href.tier(ROOT_TOP, "schemas"),
+    }),
+  },
+  ...model.resources.map((resource) => ({
+    path: `resource/${resource.name}.html`,
+    html: page({
+      title: resource.name,
+      root: ROOT_NESTED,
+      nav: siteNav(model, ROOT_NESTED),
+      sections: [renderResourcePage(model, resource)],
+      current: href.resource(ROOT_NESTED, resource.name),
+    }),
+  })),
   ...model.schemas.map((entry) => ({
     path: `schema/${entry.name}.html`,
     html: page({

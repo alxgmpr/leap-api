@@ -47,20 +47,23 @@ describe("search", () => {
     // boot.js renders a hit as `${root}${hit.href}`, exactly like href.ts
     // builds a cross-page link -- so every kind here must name its target
     // page explicitly, the same way href.resource/operation/schema do, not
-    // a bare "#anchor" that only resolves by accident from index.html
-    // itself and never from any other page (schema pages, as of Task 4).
+    // a bare "#anchor" that only resolves by accident from one particular
+    // page and never from any other.
     const resource = index.find(
       (e) => e.kind === "resource" && e.title === "zone",
     );
-    assert.equal(resource?.href, "index.html#resource-zone");
+    assert.equal(resource?.href, "resource/zone.html");
 
     const operation = index.find(
       (e) => e.kind === "operation" && e.title === "/zone/status",
     );
-    assert.ok(operation?.href.startsWith("index.html#"));
+    assert.ok(operation?.href.startsWith("resource/zone.html#"));
 
+    // Commands are sent to a commandprocessor; the zone resource's is the
+    // only one any capture has exercised, so that is where a command hit
+    // lands -- on the zone resource's own page, as of Task 5.
     const command = index.find((e) => e.kind === "command");
-    assert.equal(command?.href, "index.html#resource-zone");
+    assert.equal(command?.href, "resource/zone.html");
 
     // Schemas are the one kind with a page of their own as of Task 4.
     const schema = index.find((e) => e.kind === "schema" && e.title === "Zone");

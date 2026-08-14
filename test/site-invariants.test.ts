@@ -162,13 +162,24 @@ describe("build invariants", () => {
 describe("generated site", () => {
   const files = walk("site").map((f) => f.replace(/\\/g, "/"));
 
-  // Task 4 splits schemas out of the single document: index.html plus one
-  // page per schema. Later tasks split resources, docs, recipes and coverage
-  // the same way.
-  test("emits index.html plus one page per schema", () => {
+  // Task 4 split schemas out of the single document; Task 5 splits resources
+  // out too, and promotes both tier indexes (resources.html, schemas.html)
+  // to real pages of their own. Docs, recipes and coverage still live on
+  // index.html until Task 6.
+  test("emits index.html, the two tier indexes, one page per resource and one page per schema", () => {
     const model = buildModel();
-    assert.equal(files.length, model.schemas.length + 1);
+    assert.equal(
+      files.length,
+      model.resources.length + model.schemas.length + 3,
+    );
     assert.ok(files.includes("site/index.html"));
+    assert.ok(files.includes("site/resources.html"));
+    assert.ok(files.includes("site/schemas.html"));
+    for (const resource of model.resources)
+      assert.ok(
+        files.includes(`site/resource/${resource.name}.html`),
+        `resource/${resource.name}.html is missing`,
+      );
     for (const entry of model.schemas)
       assert.ok(
         files.includes(`site/schema/${entry.name}.html`),
@@ -178,21 +189,32 @@ describe("generated site", () => {
 
   test("every section still on index.html is present", () => {
     const html = readFileSync("site/index.html", "utf8");
-    for (const anchor of [
-      "overview",
-      "doc-protocol",
-      "recipes",
-      "resource-zone",
-      "schemas",
-      "coverage",
-    ])
+    // resource-zone and schemas moved to their own pages in Tasks 5 and 4;
+    // docs, recipes and coverage stay here until Task 6.
+    for (const anchor of ["overview", "doc-protocol", "recipes", "coverage"])
       assert.ok(html.includes(`id="${anchor}"`), `#${anchor} is missing`);
+  });
+
+  test("a resource page carries its own h1 and section anchor", () => {
+    const html = readFileSync("site/resource/zone.html", "utf8");
+    assert.ok(html.includes('id="resource-zone"'));
+    assert.match(html, /<h1>zone<\/h1>/);
   });
 
   test("a schema page carries its own h1 and section anchor", () => {
     const html = readFileSync("site/schema/Zone.html", "utf8");
     assert.ok(html.includes('id="schema-Zone"'));
     assert.match(html, /<h1>Zone<\/h1>/);
+  });
+
+  test("the resources and schemas tier indexes carry their own promoted heading", () => {
+    const resources = readFileSync("site/resources.html", "utf8");
+    assert.ok(resources.includes('id="resources"'));
+    assert.match(resources, /<h1 class="part">Resources<\/h1>/);
+
+    const schemas = readFileSync("site/schemas.html", "utf8");
+    assert.ok(schemas.includes('id="schemas"'));
+    assert.match(schemas, /<h1 class="part">Schemas<\/h1>/);
   });
 
   test("every same-page anchor resolves within its own page", () => {
@@ -208,15 +230,25 @@ describe("generated site", () => {
     }
   });
 
-  test("index.html links to schema pages by URL, not root-absolute", () => {
-    const html = readFileSync("site/index.html", "utf8");
+  test("resources.html and schemas.html link to their pages by URL, not root-absolute", () => {
+    const resources = readFileSync("site/resources.html", "utf8");
     assert.ok(
-      /href="schema\/\w+\.html"/.test(html),
-      "a schema reference must be a page URL from index.html",
+      /href="resource\/[\w-]+\.html"/.test(resources),
+      "a resource reference must be a page URL from resources.html",
     );
+
+    const schemas = readFileSync("site/schemas.html", "utf8");
     assert.ok(
-      !html.includes('href="/'),
-      "a root-absolute link breaks GitHub Pages subpaths",
+      /href="schema\/\w+\.html"/.test(schemas),
+      "a schema reference must be a page URL from schemas.html",
     );
+
+    for (const file of files) {
+      const html = readFileSync(file, "utf8");
+      assert.ok(
+        !html.includes('href="/'),
+        `${file} has a root-absolute link, which breaks GitHub Pages subpaths`,
+      );
+    }
   });
 });

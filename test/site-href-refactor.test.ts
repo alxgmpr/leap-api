@@ -25,11 +25,12 @@ describe("cross-references go through the href module", () => {
   });
 
   test("rendered output still contains the same references", () => {
-    // Schema pages now live one directory deep, so a resource reference
-    // resolves through ROOT_NESTED to a page URL, not a bare anchor.
+    // Schema pages and resource pages both now live one directory deep
+    // (Tasks 4 and 5), so a "used by" reference resolves through
+    // ROOT_NESTED to the resource's own page URL, not an index.html anchor.
     const zone = model.schemas.find((s) => s.name === "ZoneStatus");
     if (!zone) throw new Error("ZoneStatus missing from the model");
     const section = renderSchemaPage(model, zone);
-    assert.match(section.html, /href="\.\.\/index\.html#resource-/);
+    assert.match(section.html, /href="\.\.\/resource\/[\w-]+\.html"/);
   });
 });

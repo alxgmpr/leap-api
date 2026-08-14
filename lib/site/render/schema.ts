@@ -98,11 +98,14 @@ ${
 }
 
 /**
- * The schemas tier index. The unwrapping rule is stated here once, where it
- * used to sit at the top of the single schemas section.
+ * The schemas tier index: its own page (Task 5). The unwrapping rule is
+ * stated here once, where it used to sit at the top of the single schemas
+ * section. The heading is promoted from h2 to h1 -- this page owns its own
+ * heading hierarchy outright, the same promotion `renderResourceIndex` and
+ * every per-entity page make.
  */
 export function renderSchemaIndex(model: LeapModel): Section {
-  const html = `<h2 class="part">Schemas</h2>
+  const html = `<h1 class="part">Schemas</h1>
 <p class="lede">Each schema describes the <strong>unwrapped payload</strong> —
 the value under <code>Body</code>'s single key, not the wrapper around it.</p>
 <ul class="resource-grid">${model.schemas

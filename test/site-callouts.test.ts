@@ -43,15 +43,19 @@ describe("callouts", () => {
   });
 
   test("every callout anchor resolves in the built site", () => {
+    // calloutsFor is only ever rendered onto a resource page, one directory
+    // below index.html -- so every href here must cross back up via "../",
+    // not a bare "#anchor" that would only resolve by accident.
     const html = readFileSync("site/index.html", "utf8");
     for (const op of operations)
       for (const callout of calloutsFor(op)) {
         assert.ok(
-          callout.href.startsWith("#"),
-          `${callout.href} is not an in-page anchor`,
+          callout.href.startsWith("../index.html#"),
+          `${callout.href} is not a cross-page anchor into index.html`,
         );
+        const fragment = callout.href.split("#")[1];
         assert.ok(
-          html.includes(`id="${callout.href.slice(1)}"`),
+          html.includes(`id="${fragment}"`),
           `${callout.href} points at an anchor nothing renders`,
         );
       }
