@@ -685,6 +685,51 @@ subscribable resources. A client dispatching pushes must key on
 shape), not on the communique type, which varies `ReadResponse` vs
 `UpdateResponse` by what is being reported.
 
+## LED status: keypad feedback as an aggregate delta
+
+A keypad button's LED is a third kind of subscribable state, and it settles the
+`ReadResponse`-vs-`UpdateResponse` question the button-event section opened.
+Captured on the office `SunnataHybridKeypad` (`/device/483`), whose buttons
+carry LEDs `/led/490` and `/led/491` (each an `AdvancedToggleProgrammingModel`
+button over the office zones) and `/led/492` (a button that tracks a scene), by
+driving the office zones with LEAP commands and watching the LEDs follow
+(`$SRC/data/session-2026-08-14/led-delta2-qsx.json`, 2026-08-14; office-scoped,
+self-restored):
+
+- **The subscribe carries an initial snapshot**, unlike a button-event
+  subscribe. `SubscribeRequest /led/490/status` answers `SubscribeResponse
+  200 OK`, `MessageBodyType: OneLEDStatus`, body `{"LEDStatus": {"href": …,
+  "LED": {"href": "/led/490"}, "State": "On"}}` — the LED has a current state
+  to report, where a button has no current event, so this matches the
+  zone/area status subscribe (200 + snapshot), not the button-event one
+  (204, none).
+
+- **The delta pushes as `ReadResponse`.** When every office zone was driven to
+  0, `/led/490` and `/led/491` each pushed on their own tag —
+  `CommuniqueType: ReadResponse`, `MessageBodyType: OneLEDStatus`, body
+  `{"LEDStatus": {…, "State": "Off"}}` — and pushed again as `"On"` when the
+  zones were restored. So LED status uses the *same* `ReadResponse` push type
+  the status snapshots use; only button *events* (previous section) diverge to
+  `UpdateResponse`. The split is event-vs-state, not resource-by-resource:
+  state reports (zone, area, LED) push `ReadResponse`; discrete events (button
+  press/release) push `UpdateResponse`. `State` is a binary enum; `On` and
+  `Off` are the observed members.
+
+- **The LED tracks a programming-model aggregate, not one zone.** Driving a
+  single office zone off (the run before this one) produced **no** LED push at
+  all — `/led/490` only flipped once *all three* office zones were off, because
+  its button is an `AdvancedToggleProgrammingModel` whose LED reflects whether
+  the group is active, not any single member. `/led/492`, whose button tracks a
+  scene rather than the zones, never moved across either run. And a burst of three zone commands produced **one** push
+  per LED, carrying the final aggregate state — not one push per underlying
+  zone change. A client cannot read a keypad LED as a proxy for a specific
+  zone's level; it is the programming model's own boolean.
+
+Together with button events, this is the second and third push shape beyond
+`/zone/status`: the corpus now has zone level, area status, device-heard,
+button press/release, and keypad LED state, and the delta rule (a push carries
+only what changed, never a full snapshot) holds across all of them.
+
 ## What this still does not establish
 
 - **Which non-LEAP origins.** A change originating outside this client is now
@@ -710,11 +755,11 @@ shape), not on the communique type, which varies `ReadResponse` vs
   of frames, and the run does not label which presses were holds. A run that
   marks its holds would turn this from inference into observation.
 - **Whether the delta rule is universal.** Observed on `ZoneStatuses` (both
-  in runs this client drove and in the one it did not) and `AreaStatus`.
-  Whether every
-  subscribable resource pushes deltas, or some push full snapshots, is not
-  established — and `caseta-push-pad-0` could not test it, since its one zone
-  had nothing to omit.
+  in runs this client drove and in the one it did not), `AreaStatus`,
+  `ButtonStatus` events, and `LEDStatus` — four resource kinds now, each
+  pushing only what changed. Whether *every* subscribable resource does, or
+  some push full snapshots, is still not proven exhaustively, but the rule has
+  held everywhere it has been tested.
 - **`UnsubscribeResponse`.** Still never captured; no subscription in this
   corpus was ever explicitly torn down rather than dropped with the socket.
 - **Push behaviour under load.** One zone changing on a quiet system, or five
