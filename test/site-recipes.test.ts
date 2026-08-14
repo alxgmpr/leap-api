@@ -4,6 +4,11 @@ import { buildModel } from "../lib/site/model.ts";
 import { RECIPES } from "../lib/site/recipes.ts";
 import { renderCoverageSection } from "../lib/site/render/coverage.ts";
 import { renderRecipeSections } from "../lib/site/render/recipes.ts";
+import {
+  classifyRoutes,
+  readRoutes,
+  summarize,
+} from "../lib/site/uncovered.ts";
 
 describe("recipes", () => {
   const model = buildModel();
@@ -59,6 +64,44 @@ describe("coverage section", () => {
       html,
       new RegExp(String(model.coverage.specWithoutFixture.length)),
     );
-    assert.match(html, /224 not covered/);
+  });
+
+  // This sentence was hand-written prose for most of the project's life and
+  // went stale twice. Asserting it against the classifier rather than against a
+  // literal is what keeps it honest -- a number typed here would drift the same
+  // way the page's did.
+  test("the route accounting is derived, not typed", () => {
+    const html = renderCoverageSection(model).html;
+    // Refined tier only: an imported path does not cover its own firmware
+    // route. Classified against every bundled path instead, this reports 0
+    // uncovered -- near-total coverage of a surface nobody has verified.
+    const bundledPaths = new Set(
+      model.resources.flatMap((r) =>
+        r.operations.filter((o) => o.verified).map((o) => o.url),
+      ),
+    );
+    const summary = summarize(classifyRoutes({ bundledPaths }));
+    const notCovered = summary.uncovered + summary["uncovered-path-in-doubt"];
+    const routes = readRoutes().length;
+
+    assert.match(html, new RegExp(`recovered ${routes} route templates`));
+    assert.match(html, new RegExp(`the\\s+${notCovered} routes with no`));
+    assert.doesNotMatch(html, /224 not covered/);
+  });
+
+  test("the page and the burndown count the same way", () => {
+    const html = renderCoverageSection(model).html;
+    const last = model.history[model.history.length - 1];
+    if (!last) return; // no history file in this checkout
+    assert.match(
+      html,
+      new RegExp(`${last.metrics.uncoveredRoutes} routes with no`),
+    );
+    assert.match(
+      html,
+      new RegExp(
+        `→ ${last.metrics.uncoveredRoutes} of ${last.metrics.firmwareRoutes}`,
+      ),
+    );
   });
 });

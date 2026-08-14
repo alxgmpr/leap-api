@@ -1,6 +1,7 @@
 import type { LeapModel } from "../model.ts";
 import { groupNoFixture } from "../no-fixture.ts";
 import { classifyRoutes, readRoutes, summarize } from "../uncovered.ts";
+import { renderBurndown } from "./burndown.ts";
 import { esc } from "./html.ts";
 import type { Section } from "./layout.ts";
 
@@ -11,29 +12,47 @@ export function renderCoverageSection(model: LeapModel): Section {
     0,
   );
 
+  // Classified against the hand-refined tier alone, as tools/derive-unverified.ts
+  // does. Counting an imported path as covering its own firmware route would
+  // report 0 routes uncovered and 51 in doubt, which reads as near-complete
+  // coverage of a surface nobody has verified. The import is stated as its own
+  // line below instead of disappearing into this one.
   const bundledPaths = new Set(
-    model.resources.flatMap((r) => r.operations.map((o) => o.url)),
+    model.resources.flatMap((r) =>
+      r.operations.filter((o) => o.verified).map((o) => o.url),
+    ),
   );
   const absent = classifyRoutes({ bundledPaths });
   const summary = summarize(absent);
   // Not bundledPaths.size: 29 bundled paths have no firmware route behind
   // them, so adding the two counts overstates what the extraction recovered.
   const firmwareRoutes = readRoutes().length;
+  const represented =
+    summary["represented-corrected"] + summary["represented-xid-twin"];
+  const notCovered = summary.uncovered + summary["uncovered-path-in-doubt"];
+  const refinedDirectly = firmwareRoutes - represented - notCovered;
 
   const main = `<h2 class="part">Coverage</h2>
 <p class="lede">A route absent from this reference may not exist, or may just
 not be written up. These numbers tell the two apart.</p>
 
+${renderBurndown(model)}
+
 <dl class="coverage">
 <dt>Covered</dt>
 <dd>${operations} operations across ${model.resources.length} resources, and ${model.schemas.length} schemas.</dd>
 
-<dt>Firmware routes not covered</dt>
-<dd>228 of the 410 route templates the firmware extraction recovered are absent
-from this reference. 4 of those are <code>{xid}</code> twins whose
-<code>{id}</code> form is covered — the two forms address the same resource and
-cannot be stated separately, so they are represented rather than missing —
-leaving 224 not covered.</dd>
+<dt>Firmware routes, four ways</dt>
+<dd>The extraction recovered ${firmwareRoutes} route templates.
+${refinedDirectly} are hand-refined under their own spelling.
+${represented} more are hand-refined under a different one —
+${summary["represented-xid-twin"]} <code>{xid}</code> twins whose
+<code>{id}</code> form is covered (the two forms address the same resource and
+cannot be stated separately) and ${summary["represented-corrected"]} mangled
+spellings whose corrected path is covered. ${summary.uncovered} are present but
+imported unverified, and ${summary["uncovered-path-in-doubt"]} are not
+represented at all. The burndown above plots the last two together: the
+${notCovered} routes with no hand-refined path behind them.</dd>
 
 <dt>Probed but missing from this reference</dt>
 <dd>${coverage.probedNotInSpec.length}${coverage.probedNotInSpec.length === 0 ? " — every path a corpus answered 200 on is documented." : ""}</dd>

@@ -12,6 +12,7 @@
     "redact": "npx tsx tools/redact.ts",
     "bundle": "npx tsx tools/bundle.ts",
     "coverage": "npx tsx tools/check-coverage.ts",
+    "history:coverage": "npx tsx tools/coverage-history.ts",
     "fields": "npx tsx tools/check-observed-fields.ts",
     "census": "npx tsx tools/derive-census.ts",
     "lint": "biome check .",
@@ -31,6 +32,7 @@
     "@types/node": "^24.12.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "linkedom": "^0.18.13",
     "marked": "^14.1.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

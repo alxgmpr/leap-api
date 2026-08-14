@@ -1,10 +1,6 @@
 import assert from "node:assert/strict";
 import test, { describe } from "node:test";
-import {
-  highlightJson,
-  renderCopy,
-  renderFrame,
-} from "../lib/site/render/highlight.ts";
+import { highlightJson, renderFrame } from "../lib/site/render/highlight.ts";
 import { esc, slug } from "../lib/site/render/html.ts";
 
 describe("html primitives", () => {
@@ -67,18 +63,25 @@ describe("html primitives", () => {
     assert.match(html, /data-fidelity="constructed"/);
   });
 
-  test("the copyable wire line survives escaping into an attribute", () => {
-    const html = renderCopy({
-      CommuniqueType: "CreateRequest",
-      Header: { Url: "/zone/1/commandprocessor", ClientTag: "lt-1" },
-      Body: { Command: { CommandType: "GoToDimmedLevel" } },
-      fidelity: "constructed",
-      source: null,
-    });
-    assert.match(html, /data-copy="\{&quot;CommuniqueType&quot;/);
+  // The copy control is injected by site-src/copy.js, which reads the text
+  // out of the block. Emitting a button here would leave a dead control on a
+  // page without JavaScript, and a data-copy attribute would carry a second
+  // copy of every frame on the page.
+  test("carries no copy control and no duplicate of the frame text", () => {
+    const html = renderFrame(
+      {
+        CommuniqueType: "CreateRequest",
+        Header: { Url: "/zone/1/commandprocessor", ClientTag: "lt-1" },
+        Body: { Command: { CommandType: "GoToDimmedLevel" } },
+        fidelity: "constructed",
+        source: null,
+      },
+      "Request",
+    );
+    assert.ok(!html.includes("<button"), "a button here is dead without JS");
     assert.ok(
-      !html.includes('data-copy="{"'),
-      "unescaped quotes break the attribute",
+      !html.includes("data-copy"),
+      "the frame text is already in <pre>",
     );
   });
 });

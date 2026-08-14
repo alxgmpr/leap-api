@@ -42,11 +42,6 @@ export function renderWire(frame: Frame): string {
   return `<pre class="wire" data-fidelity="${frame.fidelity}" title="${esc(FIDELITY_NOTE[frame.fidelity])}"><code>${highlightJson(renderNdjson(frame))}</code></pre>`;
 }
 
-/** Copy the exact line, which is the reason this reference exists. */
-export function renderCopy(frame: Frame): string {
-  return `<button class="copy" type="button" data-copy="${esc(renderNdjson(frame))}">copy line</button>`;
-}
-
 /** "Zones · 14 items" — what is in the reply, before deciding to open it. */
 export function bodyShape(body: Record<string, unknown> | undefined): string {
   if (!body) return "no body";
@@ -90,7 +85,7 @@ ${wrapperNote}
 export function renderFrame(frame: Frame, label: string): string {
   const direction = frame.Header.StatusCode ? "←" : "→";
   return `<div class="frame" data-fidelity="${frame.fidelity}">
-<div class="send"><span class="dir" aria-hidden="true">${direction}</span><span class="ct">${esc(label)}</span>${frame.source ? `<span class="src">${esc(frame.source)}</span>` : ""}${renderCopy(frame)}</div>
+<div class="send"><span class="dir" aria-hidden="true">${direction}</span><span class="ct">${esc(label)}</span>${frame.source ? `<span class="src">${esc(frame.source)}</span>` : ""}</div>
 ${renderWire(frame)}
 ${frame.Body ? `<details class="frame-body"><summary>show body</summary><pre class="wire body"><code>${highlightJson(JSON.stringify(frame.Body, null, 2))}</code></pre></details>` : ""}
 </div>`;

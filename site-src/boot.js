@@ -4,6 +4,7 @@
 // session timelines are static, rendered at build time.
 
 import { composeFrame } from "./compose.js";
+import { attachCopyButtons } from "./copy.js";
 import { buildSearchIndex, filterIndex } from "./search-index.js";
 import { getTransport } from "./transport.js";
 
@@ -11,16 +12,7 @@ const root = document.body.dataset.root ?? "";
 
 /* ---------- copy buttons ---------- */
 
-for (const button of document.querySelectorAll("button.copy")) {
-  button.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(button.dataset.copy ?? "");
-    const original = button.textContent;
-    button.textContent = "Copied";
-    setTimeout(() => {
-      button.textContent = original;
-    }, 1200);
-  });
-}
+attachCopyButtons(document);
 
 /* ---------- frame composer ---------- */
 

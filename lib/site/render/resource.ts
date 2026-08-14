@@ -3,7 +3,7 @@ import type { Edge } from "../graph.ts";
 import type { LeapModel, Operation, Resource } from "../model.ts";
 import type { Provenance } from "../provenance.ts";
 import { timelineFor } from "../timelines.ts";
-import { renderCopy, renderReply, renderWire } from "./highlight.ts";
+import { renderReply, renderWire } from "./highlight.ts";
 import { esc } from "./html.ts";
 import type { Section } from "./layout.ts";
 import { renderMarkdown, splitInjectedTable } from "./markdown.ts";
@@ -172,7 +172,7 @@ ${calloutsFor(operation)
       `<p class="callout">${esc(c.text)} <a href="${esc(c.href)}">Read why</a>.</p>`,
   )
   .join("")}
-<div class="send"><span class="dir" aria-hidden="true">→</span><span class="ct">${esc(operation.communiqueType.replace("Request", ""))}</span>${operation.subscribable ? '<span class="sub">subscribable</span>' : ""}${renderCopy(operation.request)}</div>
+<div class="send"><span class="dir" aria-hidden="true">→</span><span class="ct">${esc(operation.communiqueType.replace("Request", ""))}</span>${operation.subscribable ? '<span class="sub">subscribable</span>' : ""}</div>
 ${renderWire(operation.request)}
 ${
   replies.length > 0

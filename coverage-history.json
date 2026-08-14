@@ -1,0 +1,1517 @@
+[
+  {
+    "sha": "4cdb84490f16f92ae42d158ea50852e9e9f005ba",
+    "date": "2026-08-07T14:27:19-06:00",
+    "subject": "feat: add root document and spec bundler",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 402,
+      "noFixture": 0,
+      "todoEnums": 0,
+      "todoResponses": 0,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 0
+    }
+  },
+  {
+    "sha": "c18b51c89713622a23b92b57a2b1a6f48ff18593",
+    "date": "2026-08-07T14:46:42-06:00",
+    "subject": "feat: refine zone family and add conformance suite",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 388,
+      "noFixture": 8,
+      "todoEnums": 25,
+      "todoResponses": 13,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 16
+    }
+  },
+  {
+    "sha": "6665d656d2c03e76f946d8a4ccaf0f6d9debbd68",
+    "date": "2026-08-07T15:10:13-06:00",
+    "subject": "feat: refine area family path and schemas",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 363,
+      "noFixture": 29,
+      "todoEnums": 27,
+      "todoResponses": 32,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 41
+    }
+  },
+  {
+    "sha": "b22438597ffc3a7607266bb630f9d9877b5c0b69",
+    "date": "2026-08-07T15:16:56-06:00",
+    "subject": "feat: refine device family path and schemas",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 346,
+      "noFixture": 39,
+      "todoEnums": 48,
+      "todoResponses": 42,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 58
+    }
+  },
+  {
+    "sha": "c16a2b31f2777eb7f0eac0d385afe7974ea93240",
+    "date": "2026-08-07T15:20:09-06:00",
+    "subject": "feat: refine link family path and schemas",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 341,
+      "noFixture": 41,
+      "todoEnums": 51,
+      "todoResponses": 42,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 65
+    }
+  },
+  {
+    "sha": "61dcee7174cd1fa5c6ab782e12f0a7da2fe7af88",
+    "date": "2026-08-07T15:50:14-06:00",
+    "subject": "feat: refine system family path and schemas",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 334,
+      "noFixture": 46,
+      "todoEnums": 52,
+      "todoResponses": 50,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 75
+    }
+  },
+  {
+    "sha": "2d7b3059f949326f4fada28c9c7476195818e1f9",
+    "date": "2026-08-07T15:52:03-06:00",
+    "subject": "feat: refine project family path and schemas",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 328,
+      "noFixture": 50,
+      "todoEnums": 52,
+      "todoResponses": 57,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 82
+    }
+  },
+  {
+    "sha": "9f1d1ef5b04795ab5ece2386718630a23aeaac90",
+    "date": "2026-08-07T15:53:03-06:00",
+    "subject": "feat: refine server family path and schemas",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 323,
+      "noFixture": 55,
+      "todoEnums": 53,
+      "todoResponses": 64,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 88
+    }
+  },
+  {
+    "sha": "38f70f14a6bd2129dd595e084e3c08b5153e6bea",
+    "date": "2026-08-07T15:53:54-06:00",
+    "subject": "feat: refine service family path and schemas",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 281,
+      "noFixture": 96,
+      "todoEnums": 53,
+      "todoResponses": 111,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 130
+    }
+  },
+  {
+    "sha": "1fef97df91de4f72d42208cd89572169f2436667",
+    "date": "2026-08-07T15:54:47-06:00",
+    "subject": "feat: refine networkinterface family path and schemas",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 279,
+      "noFixture": 98,
+      "todoEnums": 56,
+      "todoResponses": 111,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 132
+    }
+  },
+  {
+    "sha": "5ee2739c930f9239ea9f168adc1ec32d434d4b3e",
+    "date": "2026-08-07T16:12:28-06:00",
+    "subject": "feat: refine button, buttongroup, controlstation, programmingmodel, virtualbutton families",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 264,
+      "noFixture": 109,
+      "todoEnums": 51,
+      "todoResponses": 117,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 147
+    }
+  },
+  {
+    "sha": "a61ae5320f4e7ecde11d55c26ffb679ee9e92c00",
+    "date": "2026-08-07T16:20:15-06:00",
+    "subject": "feat: refine timeclock, timeclockevent, occupancygroup families",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 249,
+      "noFixture": 120,
+      "todoEnums": 55,
+      "todoResponses": 125,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 164
+    }
+  },
+  {
+    "sha": "2fdcb096da9906513d6ccfda0014cbf896441c2d",
+    "date": "2026-08-07T16:23:19-06:00",
+    "subject": "feat: refine preset, presetassignment, facade families",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 148,
+      "todoEnums": 55,
+      "todoResponses": 171,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 194
+    }
+  },
+  {
+    "sha": "38b0b79a19801530c723fb5b16ac9539828e5edb",
+    "date": "2026-08-07T16:50:53-06:00",
+    "subject": "feat: hand-author the command surface from app RE",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 157,
+      "todoEnums": 90,
+      "todoResponses": 171,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 204
+    }
+  },
+  {
+    "sha": "5292a14256951bffff16d8c88722ff119156e2e3",
+    "date": "2026-08-07T19:05:52-06:00",
+    "subject": "docs: document the MessageBodyType body-wrapper rule",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 157,
+      "todoEnums": 90,
+      "todoResponses": 171,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 204
+    }
+  },
+  {
+    "sha": "fb1c2d197f45ad460ae549b13e85762a6ed0449f",
+    "date": "2026-08-07T19:09:34-06:00",
+    "subject": "feat: add missing GET /area operation and Areas collection schema",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 157,
+      "todoEnums": 90,
+      "todoResponses": 170,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 204
+    }
+  },
+  {
+    "sha": "719c3e1c97739cea14ca9f58f1d3b873f25b9594",
+    "date": "2026-08-07T19:11:47-06:00",
+    "subject": "fix: correct Timestamp.Utc field name/format, tighten Timespan pattern",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 157,
+      "todoEnums": 90,
+      "todoResponses": 170,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 204
+    }
+  },
+  {
+    "sha": "f1dbb5935b16ba52518d000e7256b2e729651067",
+    "date": "2026-08-07T19:16:17-06:00",
+    "subject": "feat: add /virtualbutton/{virtualbuttonId}/commandprocessor",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 158,
+      "todoEnums": 90,
+      "todoResponses": 170,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 205
+    }
+  },
+  {
+    "sha": "1e26b9905c3fcec22965b616ed693dfe6256ffe0",
+    "date": "2026-08-07T19:19:40-06:00",
+    "subject": "feat: resolve four TODO(response) markers from captured traffic",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 158,
+      "todoEnums": 90,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 205
+    }
+  },
+  {
+    "sha": "ea3de828720f468c4ea3883645de051deaf6d32e",
+    "date": "2026-08-07T19:22:03-06:00",
+    "subject": "fix: stop redact.ts's IPv6 pattern from matching duration/timespan shapes",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 158,
+      "todoEnums": 90,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 205
+    }
+  },
+  {
+    "sha": "221a4e7c8ce3c73bf94ee2550df864e5873fb403",
+    "date": "2026-08-07T19:25:49-06:00",
+    "subject": "feat: model Service's per-Type properties and make Type an enum",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 158,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 205
+    }
+  },
+  {
+    "sha": "137484bcf87646db1edcb3290cf9815b38db8bf6",
+    "date": "2026-08-07T19:33:48-06:00",
+    "subject": "chore: minor quick-win fixes (license, citations, stale claims)",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 158,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 205
+    }
+  },
+  {
+    "sha": "05f9b4b3edaca56d94d60ffd66de6828002442fb",
+    "date": "2026-08-07T19:59:24-06:00",
+    "subject": "fix: remove real secrets from test/redact.test.ts, correct 4 stale claims",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 158,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 205
+    }
+  },
+  {
+    "sha": "43821c585dc038051366eeb8c5f26ae7ac8e8413",
+    "date": "2026-08-09T18:27:37-06:00",
+    "subject": "refactor: resolve capture inputs from a manifest",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 158,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 205
+    }
+  },
+  {
+    "sha": "90b6d4f7b8930c101126f87aa0a56f52faa14423",
+    "date": "2026-08-09T19:19:51-06:00",
+    "subject": "Import Task 8 probe-sweep captures and generalize fixture tooling",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 220,
+      "noFixture": 156,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 205
+    }
+  },
+  {
+    "sha": "7d59e52140516ee504359ca7362adb3a5e6c275e",
+    "date": "2026-08-09T19:22:26-06:00",
+    "subject": "Refine led family from Task 8 sweep fixtures",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 218,
+      "noFixture": 156,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 207
+    }
+  },
+  {
+    "sha": "95a49fc6b987f112fe4190a10e969ae0e1b7997b",
+    "date": "2026-08-09T19:25:11-06:00",
+    "subject": "Resolve zone family's associatedloadcontroller TODO(response)",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 218,
+      "noFixture": 156,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 207
+    }
+  },
+  {
+    "sha": "452b8cddbe27729ba8cd4be1f7231c150d19e436",
+    "date": "2026-08-09T19:26:08-06:00",
+    "subject": "Update controlstation family's stale no-fixture note",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 218,
+      "noFixture": 156,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 207
+    }
+  },
+  {
+    "sha": "f6c0eeffd8f8e140e2e7c98dc2ef92316b4dfd72",
+    "date": "2026-08-09T19:27:21-06:00",
+    "subject": "Refine firmwareimage family from Task 8 sweep fixtures",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 217,
+      "noFixture": 156,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 208
+    }
+  },
+  {
+    "sha": "d9c041dad05f5a9a5093c94ca71fbea2c3276582",
+    "date": "2026-08-09T19:28:25-06:00",
+    "subject": "Refine curve family from Task 8 sweep fixtures",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 216,
+      "noFixture": 156,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 209
+    }
+  },
+  {
+    "sha": "c0d87ae5bfc101f0d1ac41454cc970b325a496eb",
+    "date": "2026-08-09T19:29:52-06:00",
+    "subject": "Refine clientsetting family from Task 8 sweep fixtures",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 156,
+      "todoEnums": 92,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "79d7e86b8dce9931020b7ec8f6f66c2a1d7fd669",
+    "date": "2026-08-09T23:51:48-06:00",
+    "subject": "Merge PR #1: coverage-blind spec probe, subscription-push finding, fixture privacy fix",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "f212f8f04d5bd4d33eae250e482455e3a8d71579",
+    "date": "2026-08-10T00:25:25-06:00",
+    "subject": "NetworkInterface: two 200 OKs, one per platform, not one",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "b6d842887ebdbccd64cc7558b121f774a469f43f",
+    "date": "2026-08-10T00:26:23-06:00",
+    "subject": "IPv4Properties: Caseta does reach an IPv4Properties object",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "f405938507c80f33af1080bd527591c796f29614",
+    "date": "2026-08-10T00:27:42-06:00",
+    "subject": "Contact: three instances on both platforms, not one on RA3",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "618b5d9ff10e18762eec69268ec4925bad8136f2",
+    "date": "2026-08-10T00:34:50-06:00",
+    "subject": "Enum descriptions: re-derive counts against all six corpora",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "b074b2505c51fab5bfb0e0144653cc774e914243",
+    "date": "2026-08-10T00:36:46-06:00",
+    "subject": "ZoneStatus: single-observation closure was made six times, not once",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "84b710e0e5ebe9143d0af2040a9d98ac4ecf6196",
+    "date": "2026-08-10T00:37:45-06:00",
+    "subject": "BACnetSettings: annotate InstanceStrategy, the site 91c5b4d missed",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "b666d38cbf6324d096c415279edef45a4c8d5e09",
+    "date": "2026-08-10T00:39:40-06:00",
+    "subject": "ProgrammingModelType: Caseta's absence is not a coverage artifact",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "247deb5066f8d532e421628be8b91269fab03182",
+    "date": "2026-08-10T00:39:50-06:00",
+    "subject": "Schema descriptions: name corpora and firmware builds, not unit numbers",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "4cfe6ea32e7c303d0f8465e7558a167d676e1953",
+    "date": "2026-08-10T00:42:58-06:00",
+    "subject": "AreaStatus, TimeclockEvent, LoadController: correct three rationales",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "3e10a0f4e6d327796a35ea4ab120b80a97f9b1a5",
+    "date": "2026-08-10T00:44:31-06:00",
+    "subject": "commandprocessor: record the 201 Created hardware returned",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "e27f63d88d662fa994ceca2456e13d05f2713924",
+    "date": "2026-08-10T00:51:57-06:00",
+    "subject": "Two last unit-numbering references",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "62fbe518694ba8c370c8960fdb1b9464ecc85797",
+    "date": "2026-08-10T01:24:04-06:00",
+    "subject": "LoadController: drop the sweep corpus's firmware label",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "707882c09c0cc90a91f4b69497b3e812dd08ba35",
+    "date": "2026-08-10T01:24:47-06:00",
+    "subject": "ButtonGroupCategoryType: the Caseta spec probe does reach a button group",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "465cfd5bd38d138d04a7dc2117032a8bd36ea173",
+    "date": "2026-08-10T01:27:10-06:00",
+    "subject": "NetworkInterface: the Caseta body corroborates optionality, it does not cause it",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "f7fbf2205c2fbfe5c7fc4dc9f8bd5216e0d53f01",
+    "date": "2026-08-10T01:32:25-06:00",
+    "subject": "OccupancyStatus: the ninth Unoccupied is the snapshot, not a push",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "4282ad00408c58434319303e503d992b51ba47a8",
+    "date": "2026-08-10T01:33:20-06:00",
+    "subject": "DeviceStatus: name the two counting bases it uses",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "fb73581015c4a1c5bc4e12463d375e91f142c747",
+    "date": "2026-08-10T01:34:32-06:00",
+    "subject": "Self-check pass: three sentences from this round overran their evidence",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "ece25aedeea48c1b99bfd23f378ea27042c64ce4",
+    "date": "2026-08-10T01:38:23-06:00",
+    "subject": "SwitchedLevel: scope the ZoneExpandedStatus clause, and fix a second snapshot-as-push",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "315525ca7b4de0bb96f093713fd5631742e8988f",
+    "date": "2026-08-10T01:42:49-06:00",
+    "subject": "ZoneStatus: 52 StatusAccuracy occurrences, only 2 of them pushed",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "e684b40b9441786f8e9d8c6f7bf31edbbb6ce099",
+    "date": "2026-08-10T02:13:26-06:00",
+    "subject": "commandprocessor: the corpora do contain probes of these paths",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "c83b4e70cd9b2f7d0b917f6da5e62d9f45eccd44",
+    "date": "2026-08-10T02:16:10-06:00",
+    "subject": "LinkType: say that Link.LinkType's count is route-scoped",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "58d0cf28351815d7bcde2bdab14ab853c5e552df",
+    "date": "2026-08-10T02:43:28-06:00",
+    "subject": "commandprocessor: 76 of the refusals carry a body too",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "7b2b8fc0c6c70111608353fd2d4be740f00a608b",
+    "date": "2026-08-10T02:44:35-06:00",
+    "subject": "LinkType: only 6 of 128 LinkNodeExpanded parents carry OwnedLinks",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 73,
+      "todoResponses": 167,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "688e4919e3e8f9f9632222999c60b08309c4cc95",
+    "date": "2026-08-10T11:43:04-06:00",
+    "subject": "area settings: resolve 6 TODO(response)s from three Caseta objects",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 79,
+      "todoResponses": 161,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "5fa0b3a636144ef7e65ff4970b0b3aa791f82d05",
+    "date": "2026-08-10T11:51:13-06:00",
+    "subject": "area misc: resolve 4 TODO(response)s, almost all on RA3 evidence",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 79,
+      "todoResponses": 157,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "258ed8060fbdf5108064dc49753a7793dc8d19de",
+    "date": "2026-08-10T11:53:08-06:00",
+    "subject": "service: resolve 5 TODO(response)s by reuse, authoring no new schema",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 79,
+      "todoResponses": 152,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "7efe792ef7101ce7666c38825cf61dc90811c619",
+    "date": "2026-08-10T11:56:03-06:00",
+    "subject": "zone: resolve 4 TODO(response)s, all of them Caseta-only",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 148,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "5b6d0120de86c808d4ea4b42915adb981f13c0d6",
+    "date": "2026-08-10T11:58:35-06:00",
+    "subject": "project: resolve 2 TODO(response)s, one body each, opposite platforms",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 146,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "63a9fe9e5acef588eaf252f18efd49e64e71b323",
+    "date": "2026-08-10T11:59:55-06:00",
+    "subject": "server: resolve 2 TODO(response)s, one by reuse and one by renaming",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 144,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "972f9e1c1fe71f683a41abf10af9ada0c454d7d0",
+    "date": "2026-08-10T12:01:23-06:00",
+    "subject": "buttongroup: resolve /buttongroup/{id}/button by reuse",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 143,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "144fb4e1ad45f95e36a04e58c60dec7a0141970c",
+    "date": "2026-08-10T12:03:05-06:00",
+    "subject": "device: resolve /device/{id}/ledsettings, and scope the \"500\" finding",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 142,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "7c62efb9867922d5d840732d37645961efcb919d",
+    "date": "2026-08-10T12:04:20-06:00",
+    "subject": "linknode: resolve /device/{id}/linknode/{id} by reuse, and unstale LinkType",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 141,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "148c2718763417956a42b464cff104a79e8288c1",
+    "date": "2026-08-10T12:06:49-06:00",
+    "subject": "programmingmodel: resolve /programmingmodel/{id}/preset, unstale Preset",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "748d64fcee9352ce0212f13db010f6f477a6127f",
+    "date": "2026-08-10T12:11:10-06:00",
+    "subject": "Self-check pass: six prose corrections across the ten families",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "22b629e4bfaf50224cb0e3e13cd1dff14f9c69bc",
+    "date": "2026-08-10T12:42:01-06:00",
+    "subject": "Review fixes: two Criticals, one Important, one Minor -- all prose",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 80,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "0b780107a9ec200c4bd5994b6f53f96424d3efa8",
+    "date": "2026-08-10T12:45:40-06:00",
+    "subject": "DateList: retype four TimeclockEvent fields from enum marker to Date[]",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "9be2ecbfcb965756f1743e8b4922bce2d4cca239",
+    "date": "2026-08-10T12:47:19-06:00",
+    "subject": "EventTime: record the sibling falsification, change nothing",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "e45c67de19636734d67475fa19fcf28da7954b5c",
+    "date": "2026-08-10T12:49:24-06:00",
+    "subject": "Self-check pass: \"218 preset URLs\" counted the wrong set",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "ebffea6aaf26afb1e2363208d6c8eb641475b3d7",
+    "date": "2026-08-10T13:13:30-06:00",
+    "subject": "server.yaml: scope the premise -- and not the way the review suggested",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "3978c4af0b40d4c320f722caf2a3799ba3dae245",
+    "date": "2026-08-10T13:14:05-06:00",
+    "subject": "TimeclockEventRule: 16 is the occurrence count, 7 is the object count",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "fc030b678011c225c4c553d8661e9253465c7cc1",
+    "date": "2026-08-10T13:15:10-06:00",
+    "subject": "Preset: give /presetassignment its statuses, and scope the bold claim",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "e2126199e954e729829c1e97003a822f92d42281",
+    "date": "2026-08-10T13:15:48-06:00",
+    "subject": "area settings: \"a body\" was the wrong noun -- the 404s carry bodies too",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "14020b21954d860468d588fcf540ec1d6cdd19f3",
+    "date": "2026-08-10T13:16:30-06:00",
+    "subject": "TimeclockEvent: the quoted limits object is Rules[0], not the response",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "434dda353b33918c75882d6a2b0ebeed79d88918",
+    "date": "2026-08-10T13:17:26-06:00",
+    "subject": "DateList: fold in the BeginDate observation, and name the residual precisely",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "8b2388ae42c79072b2cd9e17f06cd9a85d2652c4",
+    "date": "2026-08-10T13:18:44-06:00",
+    "subject": "Self-check pass: the same 16-vs-7 collapse, one file over from the fix",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "b3b36dd0fc34f6ee3d4d7f32c44e3d9edb12c001",
+    "date": "2026-08-12T14:14:18-06:00",
+    "subject": "Import the bare-bridge spec-probe corpus",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "6c864ef4eea8bfddcd0c07eb7eb5e21c775eb958",
+    "date": "2026-08-12T14:17:20-06:00",
+    "subject": "Import the 2026-08-11/12 push-experiment frame logs",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "4a1676f593525a52987329fbd60244624c97ca1e",
+    "date": "2026-08-12T14:25:21-06:00",
+    "subject": "DiscoveryMechanism: record its first observed value",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 215,
+      "noFixture": 116,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 210
+    }
+  },
+  {
+    "sha": "20b4c5a0a7ed51870049be53d47c75b5ec8b569c",
+    "date": "2026-08-12T14:26:08-06:00",
+    "subject": "device: correct the subscribable surface from the push experiments",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "8818376c95dbf912858762671a2221f8015d85a3",
+    "date": "2026-08-12T15:14:10-06:00",
+    "subject": "ZoneStatus.FanSpeed: record the second observed value",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "5fcd25d5390ae06ee37c75a03c7e020f74664871",
+    "date": "2026-08-12T15:15:20-06:00",
+    "subject": "Availability: the zone-side census is 8 observations, not 2",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "2011147074cbdd3ab158784584431ec8ec738739",
+    "date": "2026-08-12T15:17:34-06:00",
+    "subject": "commandprocessor: rebind the probe census to seven corpora",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "0c0fd7f5795493058d6a76f99465c4e415bfa7af",
+    "date": "2026-08-12T15:22:45-06:00",
+    "subject": "deviceheard: the required-fields argument that actually holds",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "69fc7395938e33862847ec322e6307b85e395e98",
+    "date": "2026-08-12T15:29:32-06:00",
+    "subject": "The bare-bridge corpus moved 14 censuses, not just some enumerating words",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "dbba680747a3b1c18f00e423c425f9a0bdc9c7fd",
+    "date": "2026-08-12T15:30:23-06:00",
+    "subject": "facade: /facade/{facadeId} has fixture coverage, and has since PR #1",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "4c3095ea450be90b44244f6f027f1f190e4aef1c",
+    "date": "2026-08-12T15:34:05-06:00",
+    "subject": "Self-check pass: two counts that were right and read ambiguously",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "3273b48e91c136713d72f30ce67801f2e898ce00",
+    "date": "2026-08-12T18:51:05-06:00",
+    "subject": "Add x-observed-census: the counts get the treatment the values already had",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "5fe9687fd16fcf7d511e17a8b5e62551563efa4c",
+    "date": "2026-08-12T19:07:16-06:00",
+    "subject": "ZoneStatus: a reconciliation that did not close, and one more stale \"either\"",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "13f238615615e2d3d33d894609e2e3c0111954e4",
+    "date": "2026-08-12T19:21:11-06:00",
+    "subject": "Open the five single-observation enums: the enum and its own caveat disagreed",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "cbfee0f2f96dae795514cc3fbc83176248a46d2b",
+    "date": "2026-08-12T19:41:13-06:00",
+    "subject": "Name the criterion that opened the five, and fix four counts attached to the wrong noun",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "e6f102263c6bc32da71bed506f591a68e30fbe0c",
+    "date": "2026-08-12T20:00:28-06:00",
+    "subject": "The criterion had no slot for CommandType, and the README disagreed with itself",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "6a8375782068d65286b1127b7e9a5396a1dd9731",
+    "date": "2026-08-12T20:19:40-06:00",
+    "subject": "Complete the rule with falsification: ServiceType satisfied ground one and fell anyway",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "7a4a016e405b5fd8ff8d82006befb3401e9fdd8b",
+    "date": "2026-08-12T20:50:58-06:00",
+    "subject": "Re-derive the falsification account: it is four cases, not two, and the split had no rule",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "925525a0f13da8239d22c2fcb8d04aae81773384",
+    "date": "2026-08-12T21:11:48-06:00",
+    "subject": "Bind the deviceheard claim to the subscribe corpus, and give the five files the fourth falsification",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "b25223233e059373b1071abcf3e76f574183f0c2",
+    "date": "2026-08-12T21:50:19-06:00",
+    "subject": "Six enums lost members, not five, and the connect-time pair is two",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "adc8f36e30da61a809be8d07a76571c77f37cb3b",
+    "date": "2026-08-13T03:17:28-06:00",
+    "subject": "Check what the schemas do not declare, and close the one gap",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 0,
+      "unverifiedSchemas": 0,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "6561256f26c3574c6d6262453a52221850df7219",
+    "date": "2026-08-13T04:21:12-06:00",
+    "subject": "Import the 163 face-value firmware routes as a labelled unverified tier",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "4167e76f718b940ecc17d2adae4797553dd354f6",
+    "date": "2026-08-13T22:10:32-06:00",
+    "subject": "Generalize create/delete evidence with the Caseta CountdownTimer round trip",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "ea5a9931198ddc93b93a111e5adb080590b8acda",
+    "date": "2026-08-14T13:05:46-06:00",
+    "subject": "mapping.md: cut to conventions and defects; OpenAPI framing off the site",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 211
+    }
+  }
+]
