@@ -46,7 +46,7 @@ describe("bundled spec", () => {
     // ReadRequest (GET). Injecting that data onto post/put/delete would
     // mislabel write operations with a status that was actually the
     // response to a GET on the same URL -- see docs/mapping.md's
-    // x-leap-platforms section. The only correct invariant is "get only",
+    // x-leap-platforms bullet. The only correct invariant is "get only",
     // not merely "some HTTP method" (the previous version of this test
     // accepted injection under post/put/delete as long as it was under an
     // operation object, which is exactly the bug this test should catch).

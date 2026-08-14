@@ -2,7 +2,7 @@
 
 LEAP (Lutron Extensible Application Protocol) is not HTTP. This document
 describes the actual transport and framing, independent of how this
-specification maps it onto OpenAPI (see `docs/mapping.md` for that mapping).
+reference organizes it (`docs/mapping.md`).
 
 Sources are cited inline. `$SRC` refers to `~/lutron-protocols`, a separate,
 read-only repository holding the firmware extraction and probe captures this
@@ -41,9 +41,8 @@ top-level keys:
 - **`Header.StatusCode`** — present on responses. A literal HTTP-style string,
   e.g. `"200 OK"` or `"400 BadRequest"`. See "Status codes" below.
 - **`Header.MessageBodyType`** — the name of the schema that `Body`'s
-  **payload is wrapped under**, e.g. `"ZoneStatus"`. This is what
-  `x-leap-body-type` in the OpenAPI document records for each operation
-  (`docs/mapping.md`).
+  **payload is wrapped under**, e.g. `"ZoneStatus"`. Recorded per operation
+  as `x-leap-body-type` (`docs/mapping.md`).
 - **`Body`** — present on requests that carry a payload (`CreateRequest`,
   `UpdateRequest`) and on most responses. Absent on `204 NoContent` and on
   bodyless requests like `ReadRequest`.
@@ -70,8 +69,7 @@ single-key-wrapper shape. The one exception is RA3's `GET /button`, which
 returns a bare `{}` (no buttons to report at probe time — an empty object
 has no key to wrap, wrapped or not). `test/conformance.test.ts` unwraps the
 one key before validating any body against its schema, for exactly this
-reason. See `docs/mapping.md`'s "The `Body` wrapper" section for the
-OpenAPI-mapping consequences of this rule.
+reason.
 
 ## Framing
 
@@ -388,9 +386,8 @@ shape?" question above:
 ## Status codes
 
 `Header.StatusCode` deliberately mimics HTTP status line text — literal
-strings like `"200 OK"`, not bare numeric codes. This is the detail that makes
-an OpenAPI representation a good fit rather than a forced one (see
-`docs/mapping.md`).
+strings like `"200 OK"`, not bare numeric codes. That mimicry is why an
+HTTP-shaped description of LEAP is a close fit rather than a forced one.
 
 Counts below are observed across this project's probe sweeps of RA3 (1,124
 endpoints) and Caseta (963 endpoints) — 2,087 total probed requests, tallied
@@ -438,9 +435,9 @@ subscription push land on a tag the client has seen before, which makes them
 easy to conflate; the difference is whether the tag is still pending. A `102`
 arrives while the request is unresolved and is followed by that request's
 terminal response. A push arrives after the request already got its terminal
-response, and only when the resource's state moves. `docs/mapping.md`'s
-verb table and "The 14 CommuniqueTypes" section above still apply
-unchanged; a client just cannot treat the first frame on a tag as
+response, and only when the resource's state moves. "The 14
+CommuniqueTypes" section above still applies unchanged; a client just
+cannot treat the first frame on a tag as
 necessarily the last. `$SRC/lib/leap-client.ts`'s `handleData` (see
 "Framing and correlation" above) implements this directly: on a frame whose
 `ClientTag` matches a pending request, if `Header.StatusCode` starts with

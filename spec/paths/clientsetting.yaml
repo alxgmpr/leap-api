@@ -12,8 +12,8 @@
 # own protocol version, echoed back at `GET /clientsetting` -- see
 # fixtures/sweep-read.json), not a server-side setting a client can change;
 # noted here since no requestBody is modeled in this specification to carry
-# the constraint directly (see docs/mapping.md's "The flat `Command` model"
-# section for why write payloads are largely undocumented in this project).
+# the constraint directly (see docs/mapping.md's "Commands" section for why
+# write payloads are largely undocumented in this project).
 /clientsetting:
   get:
     operationId: getClientSetting

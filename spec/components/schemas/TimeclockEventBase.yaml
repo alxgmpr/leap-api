@@ -25,7 +25,7 @@ description: |
   (`TimeclockEvent.TimeclockEventType`,
   `NLOTime.NaturalLightOptimizationEventType`, `OccGroupTime.EventType`,
   all typed `leapobj.EventTimeType`). The dependency is therefore expressed
-  as an OpenAPI 3.1 `if`/`then` in each parent, against that parent's own
+  as an `if`/`then` in each parent, against that parent's own
   discriminator, rather than relaxed away here -- see those three files.
   Anything embedding this type without such a conditional asserts nothing
   about the astronomic fields, which is the honest position for a parent

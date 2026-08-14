@@ -39,9 +39,9 @@ properties:
       parser strips pointers at any depth to a single `optional` flag (see
       lib/go-struct-parser.ts), so the null-vs-absent distinction never
       reached the generated schema and `CurrentScene` came out as a bare
-      `$ref`. Restored here as an OpenAPI 3.1 `oneOf` against
-      `HyperReference` or the JSON Schema `null` type -- 3.1 is JSON Schema
-      proper, so `type: "null"` is available; a `$ref`-plus-`type` sibling
+      `$ref`. Restored here as a `oneOf` against `HyperReference` or the
+      JSON Schema `null` type -- these schemas are JSON Schema 2020-12, so
+      `type: "null"` is available; a `$ref`-plus-`type` sibling
       would not work, since `null` cannot also satisfy `HyperReference`
       (which requires `href`).
 

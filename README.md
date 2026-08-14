@@ -14,7 +14,7 @@ for "not established".
 ## Layout
 
 - `spec/` — hand-refined paths and schemas; bundles to `dist/openapi.yaml`
-- `docs/` — the wire protocol, the OpenAPI mapping, subscriptions, platform
+- `docs/` — the wire protocol, spec conventions, subscriptions, platform
   divergence, and discovery/pairing
 - `fixtures/` — redacted captured traffic the schemas are validated against
 - `site/` — the browsable reference (generated, not checked in)

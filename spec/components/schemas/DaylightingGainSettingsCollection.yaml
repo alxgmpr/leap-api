@@ -2,7 +2,7 @@
 #
 # The name has a `Collection` suffix because the wire cannot supply a
 # distinguishing one. Unlike the `Zone`/`Zones` cases docs/mapping.md's
-# "Collection GETs and the singular/plural defect" describes, the collection
+# "Singular collection body types" describes, the collection
 # route and the per-area route here carry the *same* MessageBodyType --
 # `DaylightingGainSettings`, a name already plural in form -- and differ only
 # in the shape underneath it: an array on `/area/daylightinggainsettings`, a

@@ -3,8 +3,8 @@ description: |
   Body of a `ReadRequest` on `/area/{areaId}/childarea/summary`
   (MessageBodyType `AreaSummaries`; the wire wraps this array as
   `{"AreaSummaries": [...]}`, unwrapped here per the MessageBodyType
-  convention). Hand-authored, per docs/mapping.md's "Collection GETs and the
-  singular/plural defect": the firmware extraction defines no plural
+  convention). Hand-authored, per docs/mapping.md's "Singular collection
+  body types": the firmware extraction defines no plural
   collection-wrapper types at all.
 
   The firmware-extracted route table recovered no responseType for this

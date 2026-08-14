@@ -22,7 +22,7 @@ export function wireKey(goFieldName: string): string {
  *   "PT2S", "PT0S". FadeTime/DelayTime are request-body-only fields
  *   (`DimmedLevelParameters` and siblings), and no CreateRequest/
  *   UpdateRequest body was ever captured during probing (see
- *   docs/mapping.md's "Why the command surface is hand-authored" section),
+ *   docs/mapping.md's "Commands" section),
  *   so this claim has never been checked against real traffic for the
  *   fields it's actually about.
  * - Every `lutcommon.Timespan` field this project HAS captured traffic for

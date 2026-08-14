@@ -21,9 +21,9 @@
 #    documented starting point did not exist in the spec. `x-leap-
 #    subscribable`/`x-leap-event-schema` moved from the path item onto this
 #    `get` operation to match the convention used for every other bare
-#    collection route with a GET (`/device`, `/zone`, `/virtualbutton`) --
-#    see docs/mapping.md, which previously cited `/area` as the one
-#    no-GET exception to that convention; that carve-out no longer applies.
+#    collection route with a GET (`/device`, `/zone`, `/virtualbutton`).
+#    `/area` was previously the one no-GET exception to that convention;
+#    that carve-out no longer applies.
 #
 # 3. The six area-settings operations -- `/area/{daylightinggainsettings,
 #    occupancysensorsettings,occupancysettings}`, each as a collection route

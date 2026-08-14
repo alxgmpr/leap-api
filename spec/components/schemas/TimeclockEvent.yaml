@@ -59,8 +59,8 @@ description: |
   to a wall-clock time has no sunrise/sunset anchor to report.
 
   So rather than relax `required` and assert nothing, the real constraint
-  is expressed with OpenAPI 3.1's `if`/`then` (3.1 schemas are JSON Schema
-  2020-12, so the applicator keywords are available): when
+  is expressed with `if`/`then` (these schemas are JSON Schema 2020-12, so
+  the applicator keywords are available): when
   `TimeclockEventType` is `Astronomic`, both `AstronomicEventType` and
   `AstronomicTimeOffset` are required. That holds on 6/6 observed
   astronomic events -- `/timeclockevent/{651,676}`, returned identically by

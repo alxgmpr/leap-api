@@ -2,9 +2,9 @@ type: array
 description: |
   Body of a `ReadRequest` on `/area/{areaId}/areascene` (MessageBodyType
   `AreaScenes`; the wire wraps this array as `{"AreaScenes": [...]}`,
-  unwrapped here per the MessageBodyType convention -- see docs/mapping.md's
-  "The `Body` wrapper"). Hand-authored, per docs/mapping.md's "Collection
-  GETs and the singular/plural defect": the firmware extraction defines no
+  unwrapped here per the MessageBodyType convention -- see
+  docs/protocol.md). Hand-authored, per docs/mapping.md's "Singular
+  collection body types": the firmware extraction defines no
   plural collection-wrapper types at all, so every such response schema in
   this specification is hand-authored rather than generated.
 

@@ -2,12 +2,11 @@ type: array
 description: |
   Body of a `ReadRequest` on the `/curve` collection (MessageBodyType
   `Curves`; the wire wraps this array as `{"Curves": [...]}`, unwrapped
-  here per the MessageBodyType convention -- see docs/mapping.md's "The
-  `Body` wrapper"). The firmware-extracted route table mislabeled this
-  operation's MessageBodyType as `Curve` (singular) -- the same
-  singular/plural collection defect documented for `/zone`, `/device`, and
-  others in docs/mapping.md's "Collection GETs and the singular/plural
-  defect". Confirmed 200 OK with this body shape (one curve observed) on a
+  here per the MessageBodyType convention -- see docs/protocol.md). The
+  firmware-extracted route table mislabeled this operation's MessageBodyType
+  as `Curve` (singular) -- the same defect documented for `/zone`,
+  `/device`, and others in docs/mapping.md's "Singular collection body
+  types". Confirmed 200 OK with this body shape (one curve observed) on a
   single processor during Task 8's sweep campaign
   (`fixtures/sweep-read.json`). Hand-authored, since the firmware extraction
   defines no plural collection-wrapper types at all.

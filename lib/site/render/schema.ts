@@ -60,7 +60,7 @@ ${node.description ? `<div class="prose schema-desc">${renderMarkdown(String(nod
 ${items ? `<h4>Element type</h4><p>${typeLabel(node)}</p>` : ""}
 ${
   enumValues
-    ? `<h4>Members</h4><p class="meta">Every closed enum here is a lower bound — the firmware extraction can never bound a member set. See <a href="#doc-mapping">the mapping notes</a>.</p><ul class="enum">${enumValues
+    ? `<h4>Members</h4><p class="meta">Every closed enum here is a lower bound — the firmware extraction can never bound a member set.</p><ul class="enum">${enumValues
         .map((v) => `<li><code>${esc(String(v))}</code></li>`)
         .join("")}</ul>`
     : ""

@@ -11,8 +11,8 @@
 # (the normal array, and an object matching exactly `{}`); the RA3 `{}`
 # case unwraps to no recognized key (a bare `{}` has no key to unwrap) and
 # is validated as-is against that `oneOf` by test/conformance.test.ts, not
-# skipped -- see that file's body-key lookup and `docs/mapping.md`'s "The
-# `Body` wrapper" section.
+# skipped -- see that file's body-key lookup and `docs/protocol.md`'s
+# account of the `Body` wrapper.
 /button:
   get:
     operationId: getButton

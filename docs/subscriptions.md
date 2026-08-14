@@ -2,14 +2,14 @@
 
 LEAP's subscription mechanism is the one place this specification's HTTP-shaped
 mapping is a genuine convention rather than a description of the wire
-protocol — OpenAPI has no native concept of a server pushing further messages
-after the initial response. This document is the full lifecycle account,
+protocol — an HTTP-shaped description has no concept of a server pushing
+further messages after the initial response. This document is the full lifecycle account,
 including the `ClientTag` question this project carried as open from its design
 stage until a live push probe answered it.
 
 See `docs/protocol.md` for the underlying `ClientTag` correlation mechanism
-this all depends on, and `docs/mapping.md` for how `x-leap-subscribable` and
-`x-leap-event-schema` fit into the OpenAPI mapping generally.
+this all depends on, and `docs/mapping.md` for what `x-leap-subscribable`
+and `x-leap-event-schema` claim.
 
 ## The push probe and its scope
 
@@ -778,7 +778,7 @@ only what changed, never a full snapshot) holds across all of them.
 
 ## The subscribable routes
 
-This specification's bundled OpenAPI document is generated from the firmware
+This specification's bundled document is generated from the firmware
 route extraction, which recorded **40** raw `SUBSCRIBE`-verb markers before
 hand-refinement. That number should not be quoted as the size of the final,
 correct subscribable surface. The accounting from 40 to 20 is:
@@ -873,7 +873,7 @@ does not imply a live implementation.
 
 | Path | Probe | Notes |
 |---|---|---|
-| `/area` | **`405`** | `SubscribeRequest /area` → `405 MethodNotAllowed`. The firmware route table records `CREATE`+`SUBSCRIBE` for `/area` and no `GET` at all; `GET /area` here is hand-authored and probe-derived (see `docs/mapping.md`). The subscribe half is not honored by this processor. |
+| `/area` | **`405`** | `SubscribeRequest /area` → `405 MethodNotAllowed`. The firmware route table records `CREATE`+`SUBSCRIBE` for `/area` and no `GET` at all; `GET /area` here is hand-authored and probe-derived (see `spec/paths/area.yaml`). The subscribe half is not honored by this processor. |
 | `/area/{areaId}` | `200 OK` | Confirmed twice (`/area/32`, `/area/912`). |
 | `/area/{areaId}/occupancysensorsettings` | `404` | Inconclusive, not a refusal: both probed areas (`32`, `912`) have no such resource, so the verb was never reached. |
 | `/area/{areaId}/status` | `200 OK` | Confirmed twice, and the source of 3 of the 5 pushes in `fixtures/push-probe.json`. |
