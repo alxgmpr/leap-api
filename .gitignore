@@ -6,6 +6,7 @@ dist/
 raw/
 *.local.json
 .DS_Store
+CLAUDE.md
 
 # SDD process workspace (also covered by global gitignore)
 .superpowers/
