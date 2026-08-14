@@ -372,7 +372,7 @@ button,
   background: var(--panel);
 }
 
-/* scrollspy: the section on screen */
+/* the current page's own nav entry, marked server-side by page({ current }) */
 .sidebar li a.current {
   color: var(--live);
   background: var(--panel);
@@ -389,12 +389,6 @@ main {
 }
 
 /* ---------- the scroll's sections ---------- */
-
-.docsec + .docsec {
-  margin-top: 44px;
-  padding-top: 30px;
-  border-top: 1px solid var(--rule);
-}
 
 /* A part heading opens each reference tier: Recipes, Resources, Schemas,
    Coverage. Same weight as the old per-page h1, because that is what it
@@ -424,14 +418,6 @@ main {
 h1 {
   font-family: var(--mono);
   font-size: var(--t-2xl);
-  font-weight: var(--w-med);
-  letter-spacing: var(--track-tight);
-  margin: 0;
-}
-
-.mast h2 {
-  font-family: var(--mono);
-  font-size: var(--t-xl);
   font-weight: var(--w-med);
   letter-spacing: var(--track-tight);
   margin: 0;
@@ -993,12 +979,6 @@ tr.required td:first-child {
   letter-spacing: var(--track-tight);
 }
 
-/* A narrative doc's own title, demoted to h2 inside the single scroll. */
-.docsec > article.prose > h2:first-child {
-  font-size: var(--t-2xl);
-  margin-top: 0;
-}
-
 .toc {
   margin-bottom: 28px;
   padding: 14px 16px;
@@ -1229,7 +1209,7 @@ body.confirmed-only [data-verdict]:not([data-verdict="confirmed"]):hover {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px 28px;
 }
-.multiple h4 {
+.multiple h3 {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -1238,7 +1218,7 @@ body.confirmed-only [data-verdict]:not([data-verdict="confirmed"]):hover {
   padding-bottom: 4px;
   border-bottom: 1px solid var(--rule);
 }
-.multiple h4 .count {
+.multiple h3 .count {
   color: var(--live);
   font: 15px var(--mono);
 }

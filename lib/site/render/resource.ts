@@ -202,7 +202,7 @@ function renderUrlGroup(
 
   return `<section class="group" data-verdict="${esc(verdict)}">
 <header class="url-head">
-<h3 class="url">${esc(url)}</h3>
+<h2 class="url">${esc(url)}</h2>
 ${evidenceMark(operations.map((o) => o.provenance))}
 </header>
 ${operations.map((operation) => renderExchange(operation, model)).join("")}

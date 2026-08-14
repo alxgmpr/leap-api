@@ -6,8 +6,11 @@ export type Page = { path: string; html: string };
 export type NavItem = { href: string; label: string; group?: string };
 
 /**
- * One block of the single-page reference. `id` is the section's anchor and
- * must be unique across the whole document -- the build enforces that.
+ * The body content of one page in the reference (each page carries exactly
+ * one). `id` becomes the `id` attribute on the wrapping `<section
+ * class="docsec">` -- it and every other id inside `html` only need to be
+ * unique within this page, not across the other 556; `assertInvariants`
+ * checks per page.
  */
 export type Section = { id: string; html: string };
 

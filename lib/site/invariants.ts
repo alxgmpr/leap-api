@@ -55,9 +55,9 @@ export function assertInvariants(model: LeapModel, pages: Page[]): void {
   if (duplicates.length > 0)
     throw new Error(`duplicate page paths: ${duplicates.join(", ")}`);
 
-  // The whole reference is one document, so every anchor shares one id space:
-  // doc headings, operation ids, resource and schema sections. A collision
-  // silently hijacks deep links.
+  // Ids only need to be unique within their own page, not across the whole
+  // 557-page reference -- checked per page below. A collision on one page
+  // silently hijacks its deep links.
   for (const p of pages) {
     const ids = [...p.html.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
     const clashes = [

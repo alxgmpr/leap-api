@@ -6,10 +6,10 @@ import type { Operation } from "./model.ts";
  * section that explains it in full. The prose is never copied here -- the
  * callout states the consequence for a client author in one sentence and
  * sends them to the section that has the evidence. `href` names its target
- * page explicitly (docs still live on index.html, so every callout here
- * points there) rather than a bare in-page anchor: `calloutsFor` is only
- * ever rendered onto a resource page (Task 5), one directory below the docs
- * it links into, via `ROOT_NESTED`.
+ * page explicitly (each doc is its own `docs/<slug>.html` page now) rather
+ * than a bare in-page anchor: `calloutsFor` is only ever rendered onto a
+ * resource page (Task 5), one directory below the docs it links into, via
+ * `ROOT_NESTED`.
  */
 export type Callout = { text: string; href: string };
 
