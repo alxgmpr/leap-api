@@ -64,6 +64,26 @@
      shape depended on what was stuck to its side. */
   --radius: 4px;
 
+  /* ---------- measure: three fluid values, no steps ----------
+     The rail, the gutter and the column gap used to be three fixed pixel
+     numbers that held still until 820px and then vanished all at once. They
+     now interpolate, so the layout answers every width rather than two of
+     them.
+
+     The percentages are chosen so that at --measure -- the width this design
+     was drawn for -- each one lands on the number it used to be: 1180 * 0.17
+     = 200px of rail, * 0.034 = 40px of gap, * 0.02 = 24px of gutter. So the
+     page at its intended width is unchanged, and the fluidity is entirely
+     about what happens either side of it.
+
+     The clamps hold the ends honest. The rail stops at 160px because below
+     that the longest nav labels wrap to a third line, and at 230px because
+     past that it is not a column of navigation, it is a margin. */
+  --rail: clamp(160px, 17vw, 230px);
+  --gutter: clamp(16px, 2vw, 24px);
+  --col-gap: clamp(20px, 3.4vw, 40px);
+  --measure: 1180px;
+
   /* ---------- surface: greyscale, strictly R=G=B ---------- */
   --paper: #fafafa;
   --panel: #ffffff;
@@ -245,7 +265,7 @@ button,
   display: flex;
   gap: 16px;
   align-items: center;
-  padding: 9px 20px;
+  padding: 9px var(--gutter);
   background: var(--paper);
   border-bottom: 1px solid var(--rule);
 }
@@ -317,11 +337,11 @@ button,
 
 .shell {
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
-  gap: 40px;
-  max-width: 1180px;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: var(--col-gap);
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: 32px 24px 120px;
+  padding: 32px var(--gutter) 120px;
 }
 
 .sidebar {
@@ -821,8 +841,11 @@ button:disabled {
   font-size: var(--t-sm);
 }
 
+/* Column *width* rather than column count, so the browser fits as many as the
+   space allows and drops to one on its own. A count needs a breakpoint to
+   undo it; a width never needs undoing. */
 .nofixture {
-  columns: 2;
+  columns: 17rem 2;
   font-size: var(--t-base);
 }
 
@@ -967,7 +990,7 @@ tr.required td:first-child {
   list-style: none;
   margin: 0;
   padding: 0;
-  columns: 2;
+  columns: 15rem 2;
 }
 
 .toc a {
@@ -1095,10 +1118,17 @@ body.confirmed-only [data-verdict]:not([data-verdict="confirmed"]):hover {
   }
 }
 
+/* The one real breakpoint left. Everything that could be expressed as a fluid
+   value now is, so this query carries only the change that genuinely cannot
+   interpolate: the rail stops being a rail. Below here there is no room for a
+   column of nav beside a column of transcript, and no amount of shrinking
+   makes there be -- so the two stack, which is a different layout rather than
+   a narrower one. The rail reaches 150px just before this fires, so the shape
+   it leaves is close to the shape it had. */
 @media (max-width: 820px) {
   .shell {
     grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    gap: var(--col-gap);
   }
   /* Stacked, the sidebar put 36 links and ~1,400px of scrolling in front of
      the content. The topbar search is the real navigation on a phone, so the
@@ -1113,12 +1143,9 @@ body.confirmed-only [data-verdict]:not([data-verdict="confirmed"]):hover {
     padding-top: 20px;
     border-top: 1px solid var(--rule);
   }
+  /* Full-width now, so the index sets its own column count by width too. */
   .sidebar ul {
-    columns: 2;
-  }
-  .nofixture,
-  .toc ul {
-    columns: 1;
+    columns: 11rem 3;
   }
   .src,
   .chip-verdict {

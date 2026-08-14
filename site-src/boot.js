@@ -204,6 +204,75 @@ if (spySections.length > 0 && navByHash.size > 0) {
   mark();
 }
 
+/* ---------- hold the reading position through a resize ---------- */
+
+// Rewrapping the transcript moves everything below the point of change, so
+// dragging a window edge slides the page out from under the reader: measured
+// 3,399px of drift across a 400px drag, while the document itself grew from
+// 415,096px to 431,868px. The browser's own scroll anchoring does not cover
+// it, because the node it would anchor to is rewrapping too.
+//
+// So the section under the reading line is pinned by hand: note where its top
+// sits relative to the viewport when a drag begins, and put it back after
+// each step. The pin is taken on the first resize event rather than kept
+// continuously up to date on scroll -- keeping it current would mean
+// measuring on every scroll frame to serve an interaction that happens almost
+// never, and one step's worth of drift is ~160px against the 3,399px it
+// removes.
+//
+// Width only. A height-only resize is the mobile address bar sliding away,
+// and correcting for that fights the browser instead of helping the reader.
+if (spySections.length > 0) {
+  const LINE = 90;
+  /** @type {Element | null} */
+  let anchor = null;
+  let anchorTop = 0;
+  let pinned = false;
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
+  let settle;
+  let lastWidth = window.innerWidth;
+
+  const capture = () => {
+    for (const section of spySections) {
+      const box = section.getBoundingClientRect();
+      if (box.bottom > LINE) {
+        anchor = section;
+        anchorTop = box.top;
+        return;
+      }
+    }
+    anchor = null;
+  };
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
+
+    if (!pinned) {
+      capture();
+      pinned = true;
+    } else if (anchor) {
+      const drift = anchor.getBoundingClientRect().top - anchorTop;
+      if (drift !== 0) window.scrollBy(0, drift);
+    }
+
+    // Release once the drag stops, so the next one pins wherever the reader
+    // has since got to.
+    //
+    // The delay has to clear one resize step, not one frame. Laying this
+    // document out again costs ~190ms, and the browser cannot deliver the
+    // next resize event until it has -- so consecutive events during a real
+    // drag arrive that far apart. A 160ms timer expired between every pair
+    // of them, releasing the pin and re-capturing at the position it had
+    // just failed to hold, which measured as no fix at all.
+    clearTimeout(settle);
+    settle = setTimeout(() => {
+      pinned = false;
+      anchor = null;
+    }, 600);
+  });
+}
+
 /* ---------- search ---------- */
 
 const search = document.getElementById("search");
