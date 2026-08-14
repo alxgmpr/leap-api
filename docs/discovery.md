@@ -35,7 +35,7 @@ The advertised TXT record carries at least these fields
 | `SERNUM` | Serial number. | `08676308` |
 | `DEVCLASS` | Device class code. | `081B0101` |
 | `CLAIM_STATUS` | Whether the processor is claimed to a Lutron account. | `Claimed` |
-| `FW_STATUS` | Firmware/lifecycle state. | `0:Rebooting` (during the reboot below) |
+| `FW_STATUS` | Firmware/lifecycle state. | `1:NoUpdate` steady-state; `0:Rebooting` during the reboot below |
 | `NW_STATUS` | Network/cloud reachability. | `InternetWorking` |
 | `ST_STATUS` | System health. | `good` |
 
@@ -50,6 +50,66 @@ The source material notes the advertisement's stated purpose is to advertise
 an SSH port (legacy access, historically used on Caseta) rather than the LEAP
 TLS port directly — a client still needs to separately know or default to
 port 8081 for LEAP itself (`docs/protocol.md`).
+
+### What the live announcement actually looks like
+
+The reboot pcap above is a passive catch. An **active** browse — a PTR query
+for `_lutron._tcp.local` and `_hap._tcp.local` sent onto each processor's own
+VLAN, `$SRC/data/session-2026-08-14/mdns-{qsx,caseta}.txt`, 2026-08-14 — fills
+in the SRV/instance detail and shows the advertisement is **two services, not
+one**, with the same nine `_lutron._tcp` TXT fields seen live at steady state:
+
+- **`_lutron._tcp`** — PTR points at an instance literally named
+  **`Lutron Status`** (not the customizable `BonjourServiceName`; that name is
+  a HomeKit-side field, see below). Its `SRV` gives **port 22** and a target
+  hostname `Lutron-<serial>.local` (the RA3 unit's serial is the same
+  `08676308` the TXT carries; the hostname embeds it), which resolves via an
+  `A` record to the processor's LEAP IP. This is the SSH-advertisement service
+  the note above describes.
+- **`_hap._tcp`** — a *second, separate* advertisement for HomeKit, PTR
+  instance name **`Lutron Processor`** on RA3. Its `SRV` gives **port 4548** —
+  which independently confirms the HAP transport row in `docs/protocol.md`'s
+  Transports table (HAP, TCP 4548) from the wire, not just from the firmware
+  string. Its TXT is the standard Apple HAP keyset, not Lutron's own:
+
+  | HAP TXT key | Meaning | RA3 | Caseta bench |
+  |---|---|---|---|
+  | `md` | Model / accessory name | `Lutron Processor` | `Smart Bridge 2` |
+  | `ci` | Accessory category | `2` (Bridge) | `2` (Bridge) |
+  | `pv` | HAP protocol version | `1.1` | `1.1` |
+  | `ff` | Feature flags | `1` | `1` |
+  | `sf` | Status flags (0 = paired, 1 = discoverable/unpaired) | `0` | `1` |
+  | `c#` | Config number | `8` | `3` |
+  | `s#` | State number | `9` | `3` |
+  | `id` | HAP accessory id (a virtual MAC, **not** the `MACADDR` above) | `<hap-id>` | `<hap-id>` |
+  | `sh` | Setup hash | present | *absent* |
+
+  So HAP identity is distinct from the Lutron identity on the same box: the
+  `_hap._tcp` `id` is its own MAC-shaped value, unrelated to the `_lutron._tcp`
+  `MACADDR`, and the HomeKit instance name (`Lutron Processor`) is not the
+  `BonjourServiceName` the `/service/homekit` endpoint reports either. `sf`
+  tracks HomeKit pairing state — `0` on the RA3 (already HomeKit-paired), `1`
+  on the freshly-set-up Caseta bench (still discoverable).
+
+### Platform contrast: RA3 vs Caseta advertise differently
+
+The same active browse against the Caseta bench (fw `01.124`) shows the
+advertisement is **not uniform across platforms**, in the `_lutron._tcp` TXT
+as well as the HAP name above:
+
+- **`SYSTYPE`** — `RadioRa3Processor` on RA3, **`SmartBridge`** on Caseta.
+  `DEVCLASS` likewise differs by product line (`081B0101` vs `08040100`), as
+  does the `CODEVER` firmware string.
+- **Caseta's `_lutron._tcp` TXT is a subset**: it carries `MACADDR`,
+  `CODEVER`, `DEVCLASS`, `FW_STATUS`, `NW_STATUS`, `ST_STATUS`, `SYSTYPE` —
+  **seven** fields, dropping the `SERNUM` and `CLAIM_STATUS` the RA3
+  advertises. A client keying off `SERNUM` or `CLAIM_STATUS` from mDNS alone
+  cannot assume they are present; they are RA3-side fields here.
+- Both still advertise the `_hap._tcp` service on **port 4548** and the
+  `_lutron._tcp` `SRV` on **port 22**, and both use the `Lutron Status`
+  `_lutron._tcp` instance name and a `Lutron-<id>.local` target hostname — so
+  the *shape* (two services, SSH SRV + HAP SRV, `Lutron Status` instance) is
+  common; the TXT *contents* and the HAP instance name are platform-specific.
 
 ## Other multicast the processor emits (SDDP, SSDP)
 
@@ -74,6 +134,19 @@ both on the SSDP multicast group `239.255.255.250`:
 
   This is how a Control4 controller discovers the processor — and the driver
   name (`…_leap_ra3_processor.c4z`) says Control4 integrates it over LEAP.
+
+  The processor also **answers an active SDDP `SEARCH`**, not only the
+  boot-time `NOTIFY` — a `SEARCH * SDDP/1.0` sent to `239.255.255.250:1902`
+  drew a unicast `SDDP/1.0 200 OK` back from the RA3 within ~1 s
+  (`$SRC/data/session-2026-08-14/sddp-search-qsx.txt`, 2026-08-14), so a
+  controller can discover it on demand between announcements. The response
+  echoes the same `Type`/`Manufacturer`/`Model`/`Driver` identity plus two
+  fields the `NOTIFY` omits — `Primary-Proxy: "lutron_radiora_3_processor"`
+  and `Proxies: "lutron_radiora_3_processor"` — and `Max-Age: 1800`. The
+  **Caseta bench did not answer** the same `SEARCH` at all
+  (`$SRC/data/session-2026-08-14/sddp-search-caseta.txt`): SDDP is a
+  Phoenix/RA3 feature here, absent on the Caseta bridge, matching the same
+  platform split McLEAP and IPL show in `docs/protocol.md`'s Transports table.
 
 - **SSDP (UPnP) M-SEARCH, UDP `:1900`.** The processor itself searches for
   `ST: urn:smartspeaker-audio:service:SpeakerGroup:1` (User-Agent
