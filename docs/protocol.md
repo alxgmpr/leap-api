@@ -170,13 +170,13 @@ set:
 | `CreateRequest` | client → server | Create a resource or send a command (every `*/commandprocessor` endpoint is a `CreateRequest`). Maps to `POST`. |
 | `CreateResponse` | server → client | Reply to a `CreateRequest`. **Now observed on a real resource create**, not only on command-processor writes — see "Resource create and delete" below. |
 | `UpdateRequest` | client → server | Modify an existing resource. Maps to `PUT`. |
-| `UpdateResponse` | server → client | Reply to an `UpdateRequest`. |
+| `UpdateResponse` | server → client | Reply to an `UpdateRequest`. **Now observed** — `200 OK`, `MessageBodyType: OneAreaDefinition`, the updated entity echoed back; see "Resource create and delete". |
 | `DeleteRequest` | client → server | Remove a resource. Maps to `DELETE`. |
 | `DeleteResponse` | server → client | Reply to a `DeleteRequest`. **Now observed** — see "Resource create and delete" below. |
 | `SubscribeRequest` | client → server | Start a subscription on a resource. |
 | `SubscribeResponse` | server → client | Reply to a `SubscribeRequest`, carrying the initial state. |
 | `UnsubscribeRequest` | client → server | End a subscription. |
-| `UnsubscribeResponse` | server → client | Reply to an `UnsubscribeRequest`. |
+| `UnsubscribeResponse` | server → client | Reply to an `UnsubscribeRequest`. **Now observed** — `204 NoContent`, no body, correlated on its own `ClientTag`; see "Resource create and delete". |
 | `ExceptionResponse` | server → client | An error reply distinct from a normal response with an error `StatusCode`. **Now observed**, once — see below. |
 | `CommandResponse` | server → client | Named in the firmware's own communique-type count, and still never seen on the wire in this project's corpus. Every captured command-processor exchange answered as `CreateResponse` instead — 8 in all now, `fixtures/push-probe.json` `seq` 20 and 24 plus 6 more in `fixtures/push-experiments.json`, and all 8 identical in form: `CommuniqueType: CreateResponse`, `StatusCode: 201 Created`, `MessageBodyType: OneZoneStatus`, a `ZoneStatus` body. Two devices and two platforms now (`/zone/4664/commandprocessor` on the RA3 processor, `/zone/2/commandprocessor` on the Caseta bridge), which is broader than the original two frames — but it is still one route family, and says nothing about whether `CommandResponse` is used elsewhere or is a distinct reply type this corpus never provoked. See `docs/mapping.md`'s Commands section for why the rest of the write surface is app RE rather than captured traffic. |
 
@@ -317,6 +317,23 @@ identical read-then-write-back on `/area/{id}` *is* accepted (`200`, and a
 follow-up read shows the state unmoved), so the refusal is specific to the
 zone resource, not to echoing a body in general.
 
+That accepted `/area/32` write, plus a subscribe/unsubscribe on
+`/zone/status`, also captured the two reply frames this project had never
+seen — and the update one partly answers the "same `One<Type>Definition`
+shape?" question above:
+
+- **`UpdateResponse`** — `StatusCode: 200 OK`,
+  `MessageBodyType: OneAreaDefinition`, `Body` carrying the updated entity
+  echoed back. So an update reply mirrors the updated object the same way the
+  resource-create reply mirrors the created one — `One<Type>Definition` in
+  both.
+- **`UnsubscribeResponse`** — from `UnsubscribeRequest /zone/status` after a
+  `SubscribeRequest` on the same URL: `StatusCode: 204 NoContent`, no `Body`,
+  no `MessageBodyType`, correlated on its own `ClientTag`. Bodyless like the
+  successful `DeleteResponse` above. (`fixtures/subscriptions.json` records
+  subscribe *acceptance* only; this is the first `UnsubscribeResponse` frame
+  captured — see `docs/subscriptions.md`, which had it as never observed.)
+
 ## Status codes
 
 `Header.StatusCode` deliberately mimics HTTP status line text — literal
@@ -407,7 +424,19 @@ binary:
 | LEAP (plaintext) | TCP 8080 | Localhost only — not reachable from the network. |
 | LAP | TCP 8083 | Mutual TLS. 25 integrators max. "LAP" is also used elsewhere in the source material as an abbreviation for "Lutron Authentication Protocol" describing the unauthenticated pairing handshake (see "Mutual TLS and certificate provisioning" below); whether that pairing flow and this TCP 8083 transport are the same thing is not established in the available sources, and this document does not assume they are. |
 | HAP | TCP 4548 | HomeKit Accessory Protocol bridging. 20 clients max. |
-| McLEAP | UDP multicast, `239.255.255.255:2647` | 4,000-byte maximum datagram. This resolves a question `$SRC/docs/protocols/leap/index.md` leaves open — it calls the purpose of UDP:2647 "unknown," observing only that the RA3 `/server` endpoint advertises a `UDP` port `2647` endpoint alongside the TLS `8081` one. The firmware-derived spec names the protocol (McLEAP) and its parameters; what McLEAP is used for beyond that (e.g. discovery, keepalive) is not established here. |
+| McLEAP | UDP multicast, `239.255.255.255:2647` | 4,000-byte maximum datagram. This resolves a question `$SRC/docs/protocols/leap/index.md` leaves open — it calls the purpose of UDP:2647 "unknown," observing only that the RA3 `/server` endpoint advertises a `UDP` port `2647` endpoint alongside the TLS `8081` one. The firmware-derived spec names the protocol (McLEAP) and its parameters; what McLEAP is used for beyond that (e.g. discovery, keepalive) is not established here — **a payload capture is still not in hand.** A 2026-08-13 listen on the group (30 s, idle) from the Caseta's subnet returned zero datagrams, which is consistent with the endpoint evidence just below rather than surprising: the QSX/Phoenix processor advertises UDP:2647 but the Caseta bridge does not, and `239.255.255.255` is link-local scope, so a QSX multicast does not reach a listener on a different subnet. Capturing a frame needs a listener on the advertising processor's own subnet. |
+
+What each processor's `/server` advertises live (2026-08-13,
+`$SRC/data/session-2026-08-13/`) ties this firmware-derived table to observed
+endpoints and shows it is not uniform across platforms:
+
+- **QSX/Phoenix (v03.249)** — `/server/1` lists two endpoints, `TCP 8081`
+  and `UDP 2647` (LEAP + McLEAP), and a separate `/server/ipl` object lists
+  `TLS 8902` and `WSS 443` — the IPL transport (see `docs/discovery.md` /
+  `$SRC` for IPL) reachable over both a raw TLS socket and secure WebSocket.
+- **Caseta (v01.124)** — `/server/1` lists only `TCP 8081`. No `UDP 2647`,
+  no `/server/ipl`. So McLEAP and IPL are Phoenix features here, absent on
+  the Caseta bridge, consistent with the McLEAP row above.
 
 ## Mutual TLS and certificate provisioning
 
