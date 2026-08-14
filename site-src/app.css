@@ -366,18 +366,6 @@ h4 {
   padding: 1px 6px;
 }
 
-.send .copy {
-  margin-left: auto;
-  border-color: transparent;
-  color: var(--mute);
-  font-size: 0.72rem;
-  padding: 2px 6px;
-}
-
-.send:hover .copy {
-  border-color: var(--rule);
-}
-
 .sub {
   font-family: var(--mono);
   font-size: 0.68rem;
@@ -436,6 +424,49 @@ h4 {
   overflow-x: auto;
   max-height: 340px;
   overflow-y: auto;
+}
+
+/* ---------- copy control ---------- */
+
+/* site-src/copy.js inserts this wrapper. The control is positioned against it
+   rather than against the block, because a body block is a scroll container
+   and a control inside one scrolls away with the text. */
+.copywrap {
+  position: relative;
+}
+
+.copywrap .copy {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--mute);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 90ms linear;
+}
+
+.copywrap:hover .copy,
+.copywrap .copy:focus-visible {
+  opacity: 1;
+}
+
+.copywrap .copy:hover {
+  color: var(--ink);
+}
+
+/* Nothing hovers on a touch screen, so there the control is simply there. */
+@media (hover: none) {
+  .copywrap .copy {
+    opacity: 1;
+  }
 }
 
 .reply {
