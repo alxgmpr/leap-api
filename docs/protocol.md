@@ -48,7 +48,7 @@ top-level keys:
   `UpdateRequest`) and on most responses. Absent on `204 NoContent` and on
   bodyless requests like `ReadRequest`.
 
-### `Body` is a wrapper, not the payload
+### `Body` wraps the payload
 
 `Body` does **not** contain the payload directly. It contains a single key,
 named by `Header.MessageBodyType`, whose value is the actual payload:

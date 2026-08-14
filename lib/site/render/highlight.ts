@@ -76,7 +76,7 @@ export function renderReply(frame: Frame, root = ""): string {
   // describes what is under that key, not this object.
   const key = Object.keys(frame.Body)[0];
   const wrapperNote = key
-    ? `<p class="wrapnote">The one key <code>${esc(key)}</code> is <code>Header.MessageBodyType</code>; the schema describes what is under it, not this object. <a href="${esc(root)}docs/protocol/index.html#body-is-a-wrapper-not-the-payload">Body is a wrapper</a>.</p>`
+    ? `<p class="wrapnote">The one key <code>${esc(key)}</code> is <code>Header.MessageBodyType</code>; the schema describes what is under it, not this object. <a href="${esc(root)}docs/protocol/index.html#body-wraps-the-payload">The Body wrapper</a>.</p>`
     : "";
 
   return `<details class="reply" data-fidelity="${frame.fidelity}">

@@ -10,7 +10,7 @@ describe("built site", () => {
   test("home page shows the envelope and the wrapper rule", () => {
     const html = readFileSync("site/index.html", "utf8");
     assert.match(html, /CommuniqueType/);
-    assert.match(html, /Body is a wrapper/i);
+    assert.match(html, /Every payload is wrapped/i);
   });
 
   test("assets are copied and referenced relatively", () => {

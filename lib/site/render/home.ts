@@ -52,15 +52,14 @@ HTTP-layer request/response pairing — an HTTP client cannot speak it.</p>
 and <code>Body</code> carries the payload.</p>
 ${example ? renderFrame(example, "Captured from hardware") : ""}
 
-<h2>Body is a wrapper, not the payload</h2>
-<p><code>Body</code> always contains exactly one key, named by
-<code>Header.MessageBodyType</code>, whose value is the actual payload. Every
-schema in this reference describes the <em>unwrapped</em> payload — the value
-under that one key. A client that parses <code>Body</code> itself as the
-payload fails on every response.</p>
-<p>This holds for 438 of the 439 <code>200 OK</code> bodies captured for this
-project. The one exception, RA3's read of <code>/button</code>, returns a bare
-<code>{}</code> — an empty object has no key to wrap.</p>
+<h2>Every payload is wrapped</h2>
+<p><code>Body</code> holds exactly one key, named by
+<code>Header.MessageBodyType</code>, and the payload is that key's value.
+Every schema in this reference describes the value under that key, so a
+client must unwrap <code>Body</code> before parsing. 438 of the 439
+<code>200 OK</code> bodies captured for this project have this shape; the
+one exception, RA3's read of <code>/button</code>, returns a bare
+<code>{}</code>.</p>
 
 <h2>What a session looks like</h2>
 <p>Subscribe, send a command, and watch the processor push the result back on
