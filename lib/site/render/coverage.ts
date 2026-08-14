@@ -1,4 +1,5 @@
 import type { LeapModel } from "../model.ts";
+import { groupNoFixture } from "../no-fixture.ts";
 import { classifyRoutes, readRoutes, summarize } from "../uncovered.ts";
 import { siteNav } from "./home.ts";
 import { esc } from "./html.ts";
@@ -39,9 +40,11 @@ leaving 224 not covered.</dd>
 <dd>${coverage.probedNotInSpec.length}${coverage.probedNotInSpec.length === 0 ? " — every path a corpus answered 200 on is documented." : ""}</dd>
 
 <dt>Covered with no 200 capture</dt>
-<dd>${coverage.specWithoutFixture.length}. Mostly "asked and not answered 200"
-rather than "hardware refused it" — each operation's own page shows what every
-corpus answered.</dd>
+<dd>${coverage.specWithoutFixture.length}, each classified by reason below —
+structural (a GET can never answer 200) or conditional (nothing of that kind is
+configured on the probed home). Mostly "asked and not answered 200" rather than
+"hardware refused it"; each operation's own page shows what every corpus
+answered.</dd>
 
 <dt>Unresolved enums</dt>
 <dd>${coverage.todoEnums} <code>TODO(enum)</code> markers: a type whose members
@@ -102,9 +105,25 @@ The imported tier has had none of that done to it, so it is labelled on every
 page it appears on.</p>
 
 <h2>Paths with no 200 capture</h2>
-<ul class="nofixture">${coverage.specWithoutFixture
-    .map((path) => `<li><code>${esc(path)}</code></li>`)
-    .join("")}</ul>`;
+<p>Every one of the ${coverage.specWithoutFixture.length} falls into one reason
+below. The <strong>structural</strong> reasons can never answer a GET 200 by
+route design — a write verb, a paging projection, a push route, a setup
+listener — so no capture will ever move them off this list. The
+<strong>conditional</strong> reasons are real GET-able resources that answered
+non-200 only because nothing of that kind is configured on the processors
+probed; a home that had one would capture a 200.</p>
+${groupNoFixture(coverage.specWithoutFixture)
+  .map(
+    ({
+      reason,
+      paths,
+    }) => `<h3>${esc(reason.label)} · ${paths.length} <span class="meta">(${reason.kind})</span></h3>
+<p class="meta">${esc(reason.blurb)}</p>
+<ul class="nofixture">${paths
+      .map((path) => `<li><code>${esc(path)}</code></li>`)
+      .join("")}</ul>`,
+  )
+  .join("\n")}`;
 
   return [
     {
