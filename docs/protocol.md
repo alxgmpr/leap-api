@@ -178,7 +178,7 @@ set:
 | `UnsubscribeRequest` | client → server | End a subscription. |
 | `UnsubscribeResponse` | server → client | Reply to an `UnsubscribeRequest`. **Now observed** — `204 NoContent`, no body, correlated on its own `ClientTag`; see "Resource create and delete". |
 | `ExceptionResponse` | server → client | An error reply distinct from a normal response with an error `StatusCode`. **Now observed**, once — see below. |
-| `CommandResponse` | server → client | Named in the firmware's own communique-type count, and still never seen on the wire in this project's corpus. Every captured command-processor exchange answered as `CreateResponse` instead — 8 in all now, `fixtures/push-probe.json` `seq` 20 and 24 plus 6 more in `fixtures/push-experiments.json`, and all 8 identical in form: `CommuniqueType: CreateResponse`, `StatusCode: 201 Created`, `MessageBodyType: OneZoneStatus`, a `ZoneStatus` body. Two devices and two platforms now (`/zone/4664/commandprocessor` on the RA3 processor, `/zone/2/commandprocessor` on the Caseta bridge), which is broader than the original two frames — but it is still one route family, and says nothing about whether `CommandResponse` is used elsewhere or is a distinct reply type this corpus never provoked. See `docs/mapping.md`'s Commands section for why the rest of the write surface is app RE rather than captured traffic. |
+| `CommandResponse` | server → client | Named in the firmware's own communique-type count, and still never seen on the wire in this project's corpus. Every captured command-processor exchange answered as `CreateResponse` instead — 8 in all now, `fixtures/push-probe.json` `seq` 20 and 24 plus 6 more in `fixtures/push-experiments.json`, and all 8 identical in form: `CommuniqueType: CreateResponse`, `StatusCode: 201 Created`, `MessageBodyType: OneZoneStatus`, a `ZoneStatus` body. Two devices and two platforms now (`/zone/4664/commandprocessor` on the RA3 processor, `/zone/2/commandprocessor` on the Caseta bridge), which is broader than the original two frames. A **second route family** now shows the same `CreateResponse`-instead-of-`CommandResponse` substitution with a *different* reply form: a `/button/{id}/commandprocessor` `PressAndRelease` on the Caseta bench (`$SRC/data/session-2026-08-14/`) answered `CreateResponse` too, but `StatusCode: 204 NoContent` with **no body** — not the zone form's `201 Created` / `OneZoneStatus`. So the CommuniqueType is uniformly `CreateResponse` across command-processor routes, while the status and body are resource-dependent (a zone command echoes the zone's new status; a button command acknowledges bare). Still nothing establishes whether `CommandResponse` is used elsewhere or is a distinct reply type this corpus never provoked. See `docs/mapping.md`'s Commands section for why the rest of the write surface is app RE rather than captured traffic, and `docs/subscriptions.md`'s "Button events" for the pushes that `PressAndRelease` provokes. |
 
 ### `ExceptionResponse`, observed
 
@@ -326,13 +326,25 @@ the route table's face-value verb list overstates what a processor accepts:
 `CreateRequest /virtualbutton` is refused `405` on this unit despite the
 firmware table flagging the route CREATE-capable, and `/timeclock` itself is
 GET-only (a timeclock is not LEAP-creatable; a timeclock *event* is). The
-same holds for `UpdateRequest`: handed a zone's own read body straight back,
-`UpdateRequest /zone/{id}` is refused `400` — so the table's `UPDATE` verb on
-`/zone/{id}` does not mean the zone accepts its detail body as an update, and
-zone writes go through the `CreateRequest`/`201` command path above. The
-identical read-then-write-back on `/area/{id}` *is* accepted (`200`, and a
-follow-up read shows the state unmoved), so the refusal is specific to the
-zone resource, not to echoing a body in general.
+same holds for `UpdateRequest` **on QSX**: handed a zone's own read body
+straight back, `UpdateRequest /zone/{id}` is refused `400` — so the table's
+`UPDATE` verb on `/zone/{id}` does not mean the zone accepts its detail body as
+an update, and zone writes go through the `CreateRequest`/`201` command path
+above. The identical read-then-write-back on `/area/{id}` *is* accepted
+(`200`, and a follow-up read shows the state unmoved), so on QSX the refusal
+is specific to the zone resource, not to echoing a body in general.
+
+That zone refusal is itself **platform-specific, not a LEAP rule.** The same
+read-then-write-back handed to the Caseta bench
+(`$SRC/data/session-2026-08-14/`, 2026-08-14) is *accepted* on both resources:
+`UpdateRequest /zone/1` answers `200 OK`, `MessageBodyType: OneZoneDefinition`,
+the zone echoed back — and `UpdateRequest /area/2` answers `200 OK`,
+`OneAreaDefinition`, matching QSX's area behavior. So "a zone rejects its own
+detail body as an update" is a QSX/Phoenix trait; on Caseta the zone accepts
+the echo like an area does. A client cannot assume either answer from the verb
+table — it is processor-dependent. (The definition body carries no `Level`
+— that lives on `/zone/{id}/status` — so echoing it back moves nothing on the
+load either way.)
 
 That accepted `/area/32` write, plus a subscribe/unsubscribe on
 `/zone/status`, also captured the two reply frames this project had never
