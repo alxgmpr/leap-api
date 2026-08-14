@@ -5,7 +5,7 @@
 
 import { composeFrame } from "./compose.js";
 import { attachCopyButtons } from "./copy.js";
-import { pageForLegacyHash } from "./legacy-hash.js";
+import { isOverviewPath, pageForLegacyHash } from "./legacy-hash.js";
 import { buildSearchIndex, filterIndex } from "./search-index.js";
 import { getTransport } from "./transport.js";
 
@@ -14,12 +14,12 @@ const root = document.body.dataset.root ?? "";
 /* ---------- legacy hash redirect ---------- */
 
 // The reference was one document for about half a day, and CI published it
-// -- so old anchors like #resource-zone are still out there. index.html is
+// -- so old anchors like #resource-zone are still out there. The overview is
 // the only page an old link could have landed on (it was the whole
 // document), so the redirect only runs there; every other page is reached
 // by its own URL now and has nothing to redirect from.
 const legacy = pageForLegacyHash(location.hash);
-if (legacy && location.pathname.endsWith("/index.html"))
+if (legacy && isOverviewPath(location.pathname))
   location.replace(`${root}${legacy}`);
 
 /* ---------- copy buttons ---------- */

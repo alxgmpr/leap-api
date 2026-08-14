@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test, { describe } from "node:test";
-import { pageForLegacyHash } from "../site-src/legacy-hash.js";
+import { isOverviewPath, pageForLegacyHash } from "../site-src/legacy-hash.js";
 
 describe("legacy hash redirect", () => {
   test("the overview anchor goes to index.html", () => {
@@ -31,5 +31,25 @@ describe("legacy hash redirect", () => {
     assert.equal(pageForLegacyHash("#not-a-real-section"), null);
     assert.equal(pageForLegacyHash("#"), null);
     assert.equal(pageForLegacyHash(""), null);
+  });
+});
+
+describe("isOverviewPath", () => {
+  test("matches the project site's directory root, with and without a repo prefix", () => {
+    // This is a GitHub Pages project site, served at "/<repo>/" -- an old
+    // single-page link ("https://.../leap-api/#resource-zone") lands here,
+    // with no "index.html" segment anywhere in the pathname.
+    assert.equal(isOverviewPath("/leap-api/"), true);
+    assert.equal(isOverviewPath("/"), true);
+  });
+
+  test("matches the explicit index.html form too", () => {
+    assert.equal(isOverviewPath("/leap-api/index.html"), true);
+    assert.equal(isOverviewPath("/index.html"), true);
+  });
+
+  test("does not match a page that has its own URL", () => {
+    assert.equal(isOverviewPath("/leap-api/resource/zone.html"), false);
+    assert.equal(isOverviewPath("/leap-api/schema/Zone.html"), false);
   });
 });
