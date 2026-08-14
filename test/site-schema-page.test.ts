@@ -49,6 +49,11 @@ describe("schema pages", () => {
     const html = renderSchemaPage(model, entry).html;
     assert.match(html, /Name/);
     assert.match(html, /class="required"/);
+    // The Type column is typeLabel(node, root)'s own output -- the function
+    // this task changed to take a root and emit page URLs. A regression that
+    // dropped it would leave an empty <td></td> and nothing above would
+    // notice.
+    assert.match(html, /<td>string<\/td>/);
   });
 
   test("marks a TODO field as not established", () => {
