@@ -5,10 +5,22 @@
 
 import { composeFrame } from "./compose.js";
 import { attachCopyButtons } from "./copy.js";
+import { pageForLegacyHash } from "./legacy-hash.js";
 import { buildSearchIndex, filterIndex } from "./search-index.js";
 import { getTransport } from "./transport.js";
 
 const root = document.body.dataset.root ?? "";
+
+/* ---------- legacy hash redirect ---------- */
+
+// The reference was one document for about half a day, and CI published it
+// -- so old anchors like #resource-zone are still out there. index.html is
+// the only page an old link could have landed on (it was the whole
+// document), so the redirect only runs there; every other page is reached
+// by its own URL now and has nothing to redirect from.
+const legacy = pageForLegacyHash(location.hash);
+if (legacy && location.pathname.endsWith("/index.html"))
+  location.replace(`${root}${legacy}`);
 
 /* ---------- copy buttons ---------- */
 
@@ -144,126 +156,6 @@ if (filter instanceof HTMLInputElement)
   filter.addEventListener("change", () => {
     document.body.classList.toggle("confirmed-only", filter.checked);
   });
-
-/* ---------- scrollspy ---------- */
-
-// One long scroll: keep the sidebar pointing at the section on screen. The
-// sections are big, so "the current section" is the last one whose top has
-// passed the reading line, not whichever is intersecting the viewport.
-const navByHash = new Map(
-  [...document.querySelectorAll(".sidebar a")].map((a) => [
-    a.getAttribute("href"),
-    a,
-  ]),
-);
-const spySections = [...document.querySelectorAll("main > section.docsec")];
-
-if (spySections.length > 0 && navByHash.size > 0) {
-  let marked = null;
-  const mark = () => {
-    const line = window.scrollY + 90;
-    let current = spySections[0];
-    for (const section of spySections) {
-      if (section.offsetTop <= line) current = section;
-      else break;
-    }
-    if (current === marked) return;
-    marked = current;
-    for (const a of navByHash.values()) a.classList.remove("current");
-    const active = navByHash.get(`#${current.id}`);
-    if (active) {
-      active.classList.add("current");
-      // Keep the highlighted link in the sidebar's own scroll view -- but only
-      // where the sidebar is the sticky rail. Stacked below the content on a
-      // phone, this would yank the page instead.
-      if (window.matchMedia("(min-width: 821px)").matches)
-        active.scrollIntoView({ block: "nearest" });
-    }
-  };
-  let ticking = false;
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        mark();
-      });
-    },
-    { passive: true },
-  );
-  mark();
-}
-
-/* ---------- hold the reading position through a resize ---------- */
-
-// Rewrapping the transcript moves everything below the point of change, so
-// dragging a window edge slides the page out from under the reader: measured
-// 3,399px of drift across a 400px drag, while the document itself grew from
-// 415,096px to 431,868px. The browser's own scroll anchoring does not cover
-// it, because the node it would anchor to is rewrapping too.
-//
-// So the section under the reading line is pinned by hand: note where its top
-// sits relative to the viewport when a drag begins, and put it back after
-// each step. The pin is taken on the first resize event rather than kept
-// continuously up to date on scroll -- keeping it current would mean
-// measuring on every scroll frame to serve an interaction that happens almost
-// never, and one step's worth of drift is ~160px against the 3,399px it
-// removes.
-//
-// Width only. A height-only resize is the mobile address bar sliding away,
-// and correcting for that fights the browser instead of helping the reader.
-if (spySections.length > 0) {
-  const LINE = 90;
-  /** @type {Element | null} */
-  let anchor = null;
-  let anchorTop = 0;
-  let pinned = false;
-  /** @type {ReturnType<typeof setTimeout> | undefined} */
-  let settle;
-  let lastWidth = window.innerWidth;
-
-  const capture = () => {
-    for (const section of spySections) {
-      const box = section.getBoundingClientRect();
-      if (box.bottom > LINE) {
-        anchor = section;
-        anchorTop = box.top;
-        return;
-      }
-    }
-    anchor = null;
-  };
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth === lastWidth) return;
-    lastWidth = window.innerWidth;
-
-    if (!pinned) {
-      capture();
-      pinned = true;
-    } else if (anchor) {
-      const drift = anchor.getBoundingClientRect().top - anchorTop;
-      if (drift !== 0) window.scrollBy(0, drift);
-    }
-
-    // Release once the drag stops, so the next one pins wherever the reader
-    // has since got to.
-    //
-    // The delay has to clear one resize step, not one frame. Laying this
-    // document out again costs ~190ms, and the browser cannot deliver the
-    // next resize event until it has -- so consecutive events during a real
-    // drag arrive that far apart. A 160ms timer expired between every pair
-    // of them, releasing the pin and re-capturing at the position it had
-    // just failed to hold, which measured as no fix at all.
-    clearTimeout(settle);
-    settle = setTimeout(() => {
-      pinned = false;
-      anchor = null;
-    }, 600);
-  });
-}
 
 /* ---------- search ---------- */
 
