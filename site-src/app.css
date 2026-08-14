@@ -11,23 +11,28 @@
  *
  * COLOUR. Two jobs, kept apart so neither dilutes the other.
  *
- *   Chrome is neutral. One accent, --live, means the same thing it always
- *   meant: hardware answered. It marks links, the subscribe flag, callouts,
- *   push events. Nothing else in the chrome gets a hue.
+ *   Every surface is greyscale, strictly R=G=B -- paper, panel, rule, ink,
+ *   mute. Monokai's own canvas is an olive brown (#272822) and its comment
+ *   grey a warm khaki; both were dropped. A tinted background reads as a
+ *   theme applied to the page, and this page is a transcript, so the ground
+ *   under the text says nothing and the text says everything.
  *
- *   Code is Monokai. Inside a .wire, a pre, or a code, the hues mean JSON
- *   token types and nothing else. They are bounded by the frame border, so
- *   they never compete with --live for meaning.
+ *   Hue is reserved. One accent, --live, means what it always meant:
+ *   hardware answered. It marks links, the subscribe flag, callouts, push
+ *   events. Inside a .wire, a pre, or a code, the Monokai hues mean JSON
+ *   token types -- bounded by the frame border, so they never compete with
+ *   --live for meaning.
  *
  * --focus is the one further hue: a Monokai blue reserved for focus rings,
  * so keyboard position is never confused with a hardware signal.
  *
  * Light is the default and dark is a prefers-color-scheme override; the two
- * carry the same hue identities. The dark set is classic Monokai. The light
- * set keeps Monokai's hue relationships but darkens the values that would
- * otherwise fail contrast on paper -- official Monokai Light's orange scores
- * 2.09:1 on #FAFAFA, which is not a link colour. Measured ratios are noted
- * against each token.
+ * carry the same hue identities. Dark runs Monokai's accents unmodified on
+ * near-black. Light keeps their hue relationships but darkens the values
+ * that would otherwise fail on paper -- official Monokai Light's orange
+ * scores 2.09:1 on #FAFAFA, which is not a link colour, and its blue 1.58:1,
+ * which is not a focus ring. Every token clears WCAG AA on both surfaces;
+ * measured ratios are noted against each one.
  */
 
 :root {
@@ -54,12 +59,12 @@
   --w-med: 600;
   --w-bold: 700;
 
-  /* ---------- surface: Monokai Light ---------- */
+  /* ---------- surface: greyscale, strictly R=G=B ---------- */
   --paper: #fafafa;
   --panel: #ffffff;
-  --ink: #29242a; /* 14.6:1 */
-  --mute: #6b6660; /*  5.5:1 */
-  --rule: #e4e2dd;
+  --ink: #262626; /* 14.5:1 */
+  --mute: #666666; /*  5.5:1 */
+  --rule: #e3e3e3;
   --live: #a85a00; /*  4.9:1 -- Monokai orange, darkened for paper */
   --focus: #0e7490; /*  5.1:1 -- Monokai blue, darkened for paper */
 
@@ -75,22 +80,20 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #1e1f1a;
-    --panel: #272822; /* the Monokai canvas */
-    --ink: #f8f8f2; /* 15.6:1 */
-    --mute: #99947f; /*  5.4:1 -- lifted off Monokai's #75715E comment grey,
-                                  which reads at 3.0:1 and is too dim for the
-                                  volume of secondary text this page carries */
-    --rule: #3b3c35;
-    --live: #fd971f; /*  7.6:1 */
-    --focus: #66d9ef; /* 10.1:1 */
+    --paper: #0f0f0f;
+    --panel: #1a1a1a;
+    --ink: #f2f2f2; /* 17.1:1 */
+    --mute: #909090; /*  6.0:1 -- Monokai's own #75715E comment grey reads at
+                                  3.0:1 and is far too dim for the volume of
+                                  secondary text this page carries */
+    --rule: #2e2e2e;
+    --live: #fd971f; /*  8.8:1 */
+    --focus: #66d9ef; /* 11.6:1 */
 
-    --tok-key: #a6e22e; /* 10.7:1 */
-    --tok-str: #e6db74; /* 11.7:1 */
-    --tok-num: #ae81ff; /*  5.8:1 */
-    --tok-lit: #f92672; /*  4.4:1 -- Monokai's signature pink, kept authentic;
-                                     AA-large, and it only ever sets
-                                     true/false/null */
+    --tok-key: #a6e22e; /* 12.4:1 */
+    --tok-str: #e6db74; /* 13.5:1 */
+    --tok-num: #ae81ff; /*  6.7:1 */
+    --tok-lit: #f92672; /*  5.1:1 -- Monokai's signature pink, unmodified */
   }
 }
 
