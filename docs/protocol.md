@@ -168,11 +168,11 @@ set:
 | `ReadRequest` | client → server | Fetch a resource. Maps to `GET`. |
 | `ReadResponse` | server → client | Reply to a `ReadRequest`. |
 | `CreateRequest` | client → server | Create a resource or send a command (every `*/commandprocessor` endpoint is a `CreateRequest`). Maps to `POST`. |
-| `CreateResponse` | server → client | Reply to a `CreateRequest`. |
+| `CreateResponse` | server → client | Reply to a `CreateRequest`. **Now observed on a real resource create**, not only on command-processor writes — see "Resource create and delete" below. |
 | `UpdateRequest` | client → server | Modify an existing resource. Maps to `PUT`. |
 | `UpdateResponse` | server → client | Reply to an `UpdateRequest`. |
 | `DeleteRequest` | client → server | Remove a resource. Maps to `DELETE`. |
-| `DeleteResponse` | server → client | Reply to a `DeleteRequest`. |
+| `DeleteResponse` | server → client | Reply to a `DeleteRequest`. **Now observed** — see "Resource create and delete" below. |
 | `SubscribeRequest` | client → server | Start a subscription on a resource. |
 | `SubscribeResponse` | server → client | Reply to a `SubscribeRequest`, carrying the initial state. |
 | `UnsubscribeRequest` | client → server | End a subscription. |
@@ -224,6 +224,22 @@ alone holds 191 `400`s and 38 `405`s, and being a probe set rather than a
 frame log it records no `CommuniqueType` at all — so nothing in it says which
 form any of those answers took. One frame is not a rule.
 
+A later frame-logged session broadens it past one frame, though not all the
+way to a rule (`$SRC/data/session-2026-08-13/`, an RA3/QSX processor at
+v03.249 and a bare Caseta bridge at v01.124). Every *refused*
+`SubscribeRequest`, `DeleteRequest` and `CreateRequest` in that session came
+back as `ExceptionResponse`, across `405 MethodNotAllowed`, `400 BadRequest`
+and `500 InternalServerError` alike — e.g. `SubscribeRequest
+/zone/546/status` → `405`, `DeleteRequest /area/32` → `500`
+(`{"Message": "Area could not be deleted."}`), `CreateRequest /virtualbutton`
+→ `405`. The three whose full headers were logged (the subscribe refusals)
+carry `MessageBodyType: ExceptionDetail`, matching the frame above; all carry
+a `{"Message": <string>}` body, and the `Message` does not always track the
+status (a `400` on `/zone/546/expanded/status` still read "This request is
+not supported"). So a refused write or subscribe on a live connection is an
+`ExceptionResponse`, consistently — what stays open is only the GET/probe-set
+side, since those captures record no `CommuniqueType`.
+
 Unsolicited subscription pushes are not a distinct `CommuniqueType` in this
 list — they arrive with the same `CommuniqueType`/`Header`/`Body` shape as any
 other frame, distinguished by the client only by `ClientTag` not matching a
@@ -252,6 +268,47 @@ That is, **`ReadResponse` — not `SubscribeResponse`** — with `200 OK`, the
 subscribed URL echoed back, and the subscription's own tag. `Body` carries
 only the fields that changed, not a full snapshot; `docs/subscriptions.md`
 has the details and the client consequences.
+
+### Resource create and delete, observed
+
+Until the `$SRC/data/session-2026-08-13/` session, the only `CreateResponse`
+captured in this project was the command-processor form — `201 Created`,
+`MessageBodyType: OneZoneStatus`, a `ZoneStatus` body (the eight frames the
+`CommandResponse` row above accounts for) — and no `DeleteResponse` had ever
+been seen at all. That session captured a full **create → delete round trip
+on a real resource** (a `TimeclockEvent`, created under `/timeclock/6923`
+then removed; all mutation office-scoped and self-restoring), which settles
+the shape of both replies:
+
+- **`CreateResponse`** — `StatusCode: 201 Created`,
+  `MessageBodyType: OneTimeclockEventDefinition`, and a `Body` carrying the
+  **created object echoed back in full**, not a status summary. So the
+  resource-create reply mirrors the created entity (here a `TimeclockEvent`),
+  where the command-processor reply mirrors the affected zone's status
+  (`OneZoneStatus`) — the `MessageBodyType` names which. Two behaviors of
+  note on this processor:
+  - **Server-assigned ids are in a high, transient-looking range.** The new
+    event came back as `/timeclockevent/2147483646` (2³¹−2), distinct from
+    the low ids of committed objects. Whether this is an uncommitted-object
+    id space or simply the next free id is not established here.
+  - **The create can spawn child objects.** No `ProgrammingModel` was sent,
+    yet the response carried `ProgrammingModel: {href:
+    "/programmingmodel/2147483645"}` — the processor created one for the
+    event.
+- **`DeleteResponse`** — `CommuniqueType: DeleteResponse`,
+  `StatusCode: 204 NoContent`, **no `Body`**. The delete **cascaded**: a
+  follow-up `ReadRequest` for the auto-created `/programmingmodel/2147483645`
+  answered `404`, so removing the event removed its child model too, leaving
+  the timeclock as it was.
+
+One resource family, one processor — this says nothing yet about whether
+other creatable types reply in the same `One<Type>Definition` shape, or
+whether every delete is a bodyless `204`. But `DeleteResponse` and the
+resource-create `CreateResponse` are no longer unobserved. Note also that
+the route table's face-value verb list overstates what a processor accepts:
+`CreateRequest /virtualbutton` is refused `405` on this unit despite the
+firmware table flagging the route CREATE-capable, and `/timeclock` itself is
+GET-only (a timeclock is not LEAP-creatable; a timeclock *event* is).
 
 ## Status codes
 
