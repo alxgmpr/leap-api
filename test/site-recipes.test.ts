@@ -59,6 +59,6 @@ describe("coverage page", () => {
       html,
       new RegExp(String(model.coverage.specWithoutFixture.length)),
     );
-    assert.match(html, /224 genuinely not covered/);
+    assert.match(html, /224 not covered/);
   });
 });

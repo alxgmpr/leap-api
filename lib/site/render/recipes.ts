@@ -52,8 +52,9 @@ export function renderRecipePages(model: LeapModel): Page[] {
       relativeRoot: "../",
       nav: siteNav(model),
       main: `<h1>Recipes</h1>
-<p class="lede">Complete frame sequences that do something, with the real
-captured replies where this project has them.</p>
+<p class="lede">Frame sequences for the common tasks — pairing, discovery,
+reading state, driving a zone, watching for changes — with captured replies
+where this project has them.</p>
 <ul class="recipes">${RECIPES.map(
         (r) =>
           `<li><a href="${esc(r.slug)}/index.html"><strong>${esc(r.title)}</strong></a> — ${esc(r.intent)}</li>`,

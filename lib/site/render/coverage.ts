@@ -20,10 +20,9 @@ export function renderCoveragePage(model: LeapModel): Page[] {
   // them, so adding the two counts overstates what the extraction recovered.
   const firmwareRoutes = readRoutes().length;
 
-  const main = `<h1>What this covers, and what it does not</h1>
-<p class="lede">A reader who looks up a route and finds nothing here cannot tell
-"this route does not exist" from "this route is not written up" without these
-numbers.</p>
+  const main = `<h1>Coverage</h1>
+<p class="lede">A route absent from this reference may not exist, or may just
+not be written up. These numbers tell the two apart.</p>
 
 <dl class="coverage">
 <dt>Covered</dt>
@@ -34,15 +33,15 @@ numbers.</p>
 from this reference. 4 of those are <code>{xid}</code> twins whose
 <code>{id}</code> form is covered — the two forms address the same resource and
 cannot be stated separately, so they are represented rather than missing —
-leaving 224 genuinely not covered.</dd>
+leaving 224 not covered.</dd>
 
 <dt>Probed but missing from this reference</dt>
 <dd>${coverage.probedNotInSpec.length}${coverage.probedNotInSpec.length === 0 ? " — every path a corpus answered 200 on is documented." : ""}</dd>
 
 <dt>Covered with no 200 capture</dt>
-<dd>${coverage.specWithoutFixture.length}. Mostly "asked and not answered 200",
-not "hardware refused it" — the two should not be conflated. Each operation's
-own page shows what every corpus actually answered.</dd>
+<dd>${coverage.specWithoutFixture.length}. Mostly "asked and not answered 200"
+rather than "hardware refused it" — each operation's own page shows what every
+corpus answered.</dd>
 
 <dt>Unresolved enums</dt>
 <dd>${coverage.todoEnums} <code>TODO(enum)</code> markers: a type whose members
@@ -56,9 +55,9 @@ whose response shape is not established.</dd>
 <h2>What the firmware route table has, and in what state</h2>
 <p>The extraction recovered ${firmwareRoutes} route templates. Every one of
 them is now represented here except ${summary["uncovered-path-in-doubt"]},
-whose paths cannot be written down without guessing. But representation is not
-verification, and ${coverage.unverifiedPaths} of these paths are imported
-without it.</p>
+whose paths cannot be written down without guessing — but
+${coverage.unverifiedPaths} of the represented paths are imported without
+verification.</p>
 
 <dl class="coverage">
 <dt>Hand-refined</dt>
@@ -97,12 +96,10 @@ importing one would mean guessing the path before guessing the shape.</dd>
 </details>
 
 <h2>Why the imported tier stays labelled</h2>
-<p>Hand-refining a path family or schema is evidence-checked work — cross-referencing
-captures, correcting mislabels, trimming <code>required</code> to what was actually
-observed. The imported tier has had none of that done to it, which is why it is
-labelled on every page it appears on rather than quietly mixed in. Reading an
-unverified entry as though it were checked is the one mistake this document is
-built to prevent.</p>
+<p>Hand-refining a path family or schema means cross-referencing captures,
+correcting mislabels, and trimming <code>required</code> to what was observed.
+The imported tier has had none of that done to it, so it is labelled on every
+page it appears on.</p>
 
 <h2>Paths with no 200 capture</h2>
 <ul class="nofixture">${coverage.specWithoutFixture

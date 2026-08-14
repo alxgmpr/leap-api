@@ -144,8 +144,8 @@ describe("the coverage page states it", () => {
     assert.match(html, /The paths in doubt · 51/);
   });
 
-  test("says plainly that representation is not verification", () => {
-    assert.match(html, /representation is not\s+verification/);
+  test("says plainly that represented paths can be unverified", () => {
+    assert.match(html, /imported without\s+verification/);
     assert.match(html, /No capture has exercised them/);
     assert.ok(model.resources.length > 0);
   });

@@ -36,7 +36,7 @@ notes, not as evidence for this document. Bringing either platform into the
 conformance corpus this specification is validated against would require new
 capture work, which is out of scope here.
 
-## A second RA3 corpus, and what its refusals show
+## A second RA3 corpus
 
 Task 8's probe campaign reached a configured RA3 processor at a host masked
 throughout this project's public fixtures and this document; every sweep
@@ -91,7 +91,7 @@ to — not a live capability list for any one deployed unit; a specific
 processor's actual configuration, firmware build, and installed
 feature set determine which of those routes it answers on the wire, and
 this unit answers well under half of the routes it was asked about with a
-handler that exists in the binary but declines to serve. This is a real
+handler that exists in the binary but declines to serve. This is a
 finding about how firmware-extracted route tables and live processor
 behavior diverge, not a failure of the probe methodology — see
 `docs/mapping.md` for how this specification's own paths are derived from
@@ -102,7 +102,7 @@ corpus, so "this processor is configured differently" remained a live
 alternative explanation for it; the next section closes that off with a
 second platform.
 
-## The coverage-blind probe, and what two platforms' refusals show
+## The coverage-blind probe
 
 The sweep above deliberately skipped every route this specification already
 documents, so it could only ever answer "what is out there that we have not
@@ -226,8 +226,8 @@ fixtures/sweep-write.json          15
 ```
 
 All three Caseta corpora are `0`, and every RA3-sourced corpus that reads an
-XID-bearing object is not. Three RA3-sourced files also read `0`, and they are
-worth naming so they are not mistaken for counterexamples:
+XID-bearing object is not. Three RA3-sourced files also read `0`; naming them
+keeps them from being mistaken for counterexamples:
 `fixtures/subscriptions.json` stores no bodies at all (its entries are `url`,
 `requestTag`, `subscribeStatus`, `frames`); `fixtures/late-frames.json`'s five
 frames are all `OneFirmwareImageDefinition` reads of `/firmwareimage/{id}`, an
@@ -239,8 +239,8 @@ splits 60 in `ra3-push-pad-0`, 60 in `ra3-push-pad-7`, and **0 in the other
 four**, including all three Caseta runs. The two RA3 runs that carry XIDs are
 the ones that read `/area/{id}/associatedzone` fourteen times each.
 
-The third RA3 run, `ra3-keypad-press`, reads `0` for a reason worth getting
-right, because "it issued no read" is true and is not the cause. It is not
+The third RA3 run, `ra3-keypad-press`, reads `0` for a different reason —
+"it issued no read" is true but is not the cause. It is not
 bodiless: it received three subscribe snapshots, two of them substantial — a
 46-entry `/zone/status` and a full `Project` — and those bodies were counted
 by the `grep` above. They contain no `XID` because **neither object type
@@ -308,7 +308,7 @@ for (const c of ["400", "405", "500"]) {
 500 templates bare 2 prov 2 | only bare: [] | only prov: []
 ```
 
-**Say "templates", not "instances", and the distinction is load-bearing.**
+**Say "templates", not "instances" — the instance counts mislead.**
 The `400` counts happen to agree at instance level too (191 in each), but the
 `405`s do not (38 provisioned, 37 bare) and neither do the `500`s (3 versus
 2). Both differences come from the same place and neither is about method
@@ -356,8 +356,7 @@ to every row of the table above; the `200 → 204` set is *readable* as a
 provisioning effect because the routes are exactly the ones a device list
 feeds, not because the comparison isolates provisioning.
 
-**And the most directly useful thing here: a 200 is not proof of
-provisioning.** A Caseta bridge with zero devices still answers `200 OK`
+**A 200 is not proof of provisioning.** A Caseta bridge with zero devices still answers `200 OK`
 with real content on a great many routes:
 
 ```
@@ -525,7 +524,7 @@ one case, exposes with a broken implementation:
 On RA3, this class of configuration is managed exclusively through Lutron
 Designer (a separate protocol, IPL, on different ports and certificates —
 see `docs/protocol.md`), not through LEAP. This is architectural, not a gap in
-this project's probing: RA3's firmware genuinely does not serve these values
+this project's probing: RA3's firmware does not serve these values
 over LEAP.
 
 ## Generated divergence table
@@ -592,7 +591,7 @@ rather than being omitted. 32 templates diverge between the two platforms:
 | `/zone/{zoneId}/phasesettings` | 404 NotFound | 200 OK |
 | `/zone/{zoneId}/tuningsettings` | 404 NotFound | 200 OK |
 
-Two rows are worth calling out beyond the device-configuration and
+Two rows stand out beyond the device-configuration and
 navigation-model differences already covered above:
 
 - **`/link/{linkId}`: RA3 `200 OK`, Caseta `404 NotFound`.** A direct

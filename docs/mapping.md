@@ -52,9 +52,9 @@ the one key off each captured `Body`, validates that key's value against the
 operation's response schema, and validates the bare `{}` case as-is (no key
 to unwrap). See `docs/protocol.md` for the full envelope account.
 
-This is the single most important fact for implementing a client from this
-document: a reader who parses `Body` itself as the payload will get a
-validation or type error on every single response.
+For a client implementer this is the fact to get right first: a reader who
+parses `Body` itself as the payload will get a validation or type error on
+every response.
 
 ## Why `leaps://` is the server scheme
 

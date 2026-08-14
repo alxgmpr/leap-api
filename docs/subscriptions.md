@@ -11,16 +11,16 @@ See `docs/protocol.md` for the underlying `ClientTag` correlation mechanism
 this all depends on, and `docs/mapping.md` for how `x-leap-subscribable` and
 `x-leap-event-schema` fit into the OpenAPI mapping generally.
 
-## The push probe, and what it is evidence for
+## The push probe and its scope
 
 Everything in this document about *pushed* frames comes from two fixtures:
 `fixtures/push-probe.json` (redacted; 27 frames), the original run described
 in this section, and `fixtures/push-experiments.json`, six later
 single-connection runs keyed by name. Each finding below says which run it
-rests on. The original run's scope is worth stating before its findings,
-because the findings are specific and the scope is narrow.
+rests on. The findings are specific and the original run's scope is narrow,
+so the scope comes first.
 
-The six later runs, and what each one is for:
+The six later runs:
 
 | Run | Platform | Shape |
 |---|---|---|
@@ -72,7 +72,7 @@ hold, restore"`. Two subscriptions were opened, one dimmer zone
 0% → 50% → 0% by LEAP command, and every frame the socket delivered in
 between was logged in order.
 
-That is a real answer to a question that had none, and it is also one
+It is an answer to a question that had none — and it is one
 processor, one installation, one run. **Vive is not tested at all**, here or
 anywhere in this project's push evidence; nothing below should be read as a
 statement about it. Caseta was in that sentence too until
@@ -157,7 +157,7 @@ client router described in `docs/protocol.md`, and that field records that
 each push did in fact reach `onEvent` rather than resolving a pending
 request.
 
-**One control rules out the boring explanation.** With two subscriptions
+**One control rules out a simpler explanation.** With two subscriptions
 live on the same socket simultaneously, each push carried *its own*
 subscription's tag rather than a single connection-wide constant — so the tag
 is per-subscription, not merely per-connection.
@@ -192,8 +192,8 @@ requests were issued before the subscribe, not what they were about.
 
 So the subscribe lands on `lt-18` because the harness's prelude is a
 **fixed length** — 17 requests before the first subscribe — not because
-`lt-18` is special and not by coincidence. Padding is already what that run
-does; what it cannot do is vary. Distinguishing "the tag is copied from the
+`lt-18` is special. That run already pads the counter; what it cannot do is
+vary the padding. Distinguishing "the tag is copied from the
 subscribe request" from "the tag is a function of sequence position" needs a
 run whose prelude is a *different* length, so the subscribe lands on a tag
 other than `lt-18`.
@@ -256,8 +256,8 @@ any push arrives on it. The push probe confirms that ordering directly —
 the `SubscribeResponse` for `lt-18` landed at 610 ms into the run, the first
 push on `lt-18` at 3,845 ms.
 
-What the finding does change is that this is now a **load-bearing
-assumption rather than a free one**. Two client-side consequences follow:
+What the finding does change is that this is now an assumption clients
+depend on rather than a free one. Two client-side consequences follow:
 
 - A client must not reuse `ClientTag` values within a session. This
   project's client uses a monotonic counter (`lt-1`, `lt-2`, ...), so it
@@ -269,7 +269,7 @@ assumption rather than a free one**. Two client-side consequences follow:
   "requests awaiting a reply."
 
 This is distinct from the `102 Processing` behaviour documented in
-`docs/protocol.md`, and the distinction is exact rather than a hedge. A
+`docs/protocol.md`. A
 `102` interim ack and its real `200 OK` roughly a second later are **two
 frames answering one request**, on a tag that is still pending. A
 subscription push arrives on a tag whose request already received its
@@ -280,8 +280,7 @@ different branches.
 ## Push bodies are deltas, not snapshots
 
 The initial `SubscribeResponse` is a full snapshot. The pushes that follow
-are not — this is the single most consequential detail here for anyone
-writing a client.
+are not.
 
 The `/zone/status` subscribe response carried all 46 zones. The push that
 followed the level change carried exactly one entry, for the zone that
@@ -373,7 +372,7 @@ snapshot entries: 46 carrying ZoneLockState: 44
 `ZoneLockState` is on 44 of the 46 snapshot entries, not all of them — the
 two without it are a fan zone and a CCO zone, which report `FanSpeed` and
 `CCOLevel` instead. That does not soften the finding, because **all five
-zones that actually moved during the run do carry `ZoneLockState` in the
+zones that moved during the run do carry `ZoneLockState` in the
 snapshot**, and no push carries it for any of them. Merge per field; do not
 replace.
 
@@ -409,10 +408,6 @@ tags, with different `Url`s (`/zone/4664/commandprocessor` versus
 `/zone/status`), and a client that has issued no command at all will see the
 push and no `201`.
 
-Two samples on one processor is not a latency distribution. Take
-"a couple of hundred milliseconds after the write, and after the write's own
-reply" as the shape of the behaviour, not as a bound.
-
 ## Pushes with no command behind them
 
 Not every push follows a client action. During the hold window between the
@@ -444,7 +439,7 @@ did open two of those (`/area/32/status`, `/area/912/status`, both
 two areas did not emit one for as long as that campaign held its
 subscriptions open.
 
-## A change this client did not command pushes
+## Uncommanded changes push too
 
 Until `ra3-keypad-press` every push in this project followed a write this
 project had itself issued over LEAP, which left the most important question
@@ -459,7 +454,7 @@ for 603 s and sent **no request other than its three `SubscribeRequest`s**
 Zones moved that this client did not move, and the processor reported them.
 
 **Where the evidence stops and testimony begins.** The heading above says
-"a change this client did not command" rather than "a keypad press" on
+"uncommanded changes" rather than "a keypad press" on
 purpose, and the rest of this section holds to that. What the fixture
 establishes is that this client issued no write and that ten zone-status
 pushes arrived anyway. What the fixture does **not** record is who or what
@@ -488,7 +483,7 @@ requests issued: [] reads: []
 pushes: 10 urls: [ '/zone/status' ] tags: [ 'lt-1' ]
 ```
 
-Four further things this run shows, each narrower than it first looks.
+The run shows four further things, each with its own scope limit.
 
 **A hold does not stream the ramp.** Intermediate settled levels do appear —
 nine of the ten pushes carry zone 546, reporting it at 0, 75, 26, 48, 100, 0,
@@ -533,7 +528,7 @@ same socket. A subscribable route that accepts and stays silent is worth
 recording as a clean negative: acceptance of a `SubscribeRequest` says
 nothing about whether that resource ever pushes.
 
-## Caseta pushes, and does two things RA3 never did
+## Caseta push behaviour
 
 `caseta-push-pad-0` is the first Caseta push evidence in this project. The
 bridge has one zone — `fixtures/spec-read-caseta.json`'s `/zone` returns a
@@ -580,7 +575,7 @@ firmware-wide behaviour.
 untagged one on `/zone/2/status/level`, then 46 ms and 19 ms later the tagged
 one on `/zone/status` carrying `lt-5`. **A client keyed purely on `ClientTag`
 drops the untagged frames; a client keyed on `Header.Url` sees each change
-twice.** Both are real hazards and they are opposite ones.
+twice.**
 
 The untagged pushes arrive on `/zone/2/status/level`, which is neither of the
 two URLs the bridge auto-subscribed the client to — the nearer of those is
@@ -625,8 +620,6 @@ This is also where `DiscoveryMechanism` gets its first observed value,
 open string.
 
 ## What this still does not establish
-
-Stated explicitly rather than left as a confident-sounding gap:
 
 - **Which non-LEAP origins.** A change originating outside this client is now
   confirmed to push (`ra3-keypad-press`), so the general form of this gap is
@@ -692,7 +685,7 @@ correct subscribable surface. The accounting from 40 to 20 is:
   `/emergency/{id}/status`, `/loadcontroller/{id}/status`,
   `/natlightopt/{id}/status`, `/profilesession/{id}/status`,
   `/zonetypegroup`, `/zonetypegroup/{id}`, `/zonetypegroup/{id}/status`.
-  Their absence is a genuine open gap in this specification, not a
+  Their absence is an open gap in this specification, not a
   refinement — see the `/loadcontroller/{id}/status` note at the end of this
   section, which is one of these 7.
 - **5 hand-authored corrected paths added**: `/device/status`,
@@ -786,7 +779,7 @@ does not imply a live implementation.
 | `/zone/{zoneId}` | **`405`** | `405 MethodNotAllowed` (`/zone/546`, `/zone/574`). |
 | `/zone/{zoneId}/status` | **`405`** | `405 MethodNotAllowed` (`/zone/546/status`, `/zone/574/status`). `fixtures/subscriptions.json` records status only — its entries are `{url, requestTag, subscribeStatus, frames}`, with no body field — so the refusal body is not captured for this or any other row in this table. A firmware-recovered route (`vendor/leap-routes.json`: `/zone/{id}/status`, verbs `GET`/`SUBSCRIBE`/`UPDATE`) whose `SUBSCRIBE` verb this processor does not honor. **Per-zone status is not subscribable; the collection `/zone/status` is.** |
 
-That last row is worth dwelling on, because it is why the `ClientTag`
+That last row is why the `ClientTag`
 question stayed open as long as it did. The obvious way to watch one light is
 to subscribe to that light's own status URL. On this processor that request
 is refused outright, so it produces no pushes — not because pushes don't

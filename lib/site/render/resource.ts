@@ -229,7 +229,7 @@ function renderEdges(edges: Edge[], documented: Set<string>): string {
   };
 
   return `<details class="links"><summary>Links to other resources · ${edges.length}</summary>
-<p class="meta">Targets are read off real captured <code>href</code> values. A link
+<p class="meta">Targets are read off captured <code>href</code> values. A link
 no capture ever populated is left unresolved rather than guessed from its
 property name.</p>
 <ul class="edges">${edges.map(renderEdge).join("")}</ul>

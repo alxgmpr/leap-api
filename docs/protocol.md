@@ -48,7 +48,7 @@ top-level keys:
   `UpdateRequest`) and on most responses. Absent on `204 NoContent` and on
   bodyless requests like `ReadRequest`.
 
-### `Body` is a wrapper, not the payload — read this before writing a client
+### `Body` is a wrapper, not the payload
 
 `Body` does **not** contain the payload directly. It contains a single key,
 named by `Header.MessageBodyType`, whose value is the actual payload:
@@ -61,7 +61,7 @@ Every schema in this specification (`spec/components/schemas/`) describes
 the **unwrapped payload** — the value of that one key (`{ "href":
 "/zone/518/status", "Level": 100 }` above), not the `{"ZoneStatus": {...}}`
 envelope around it. A client that parses `Body` itself as the payload object
-will fail on every response, because every response actually looks like
+will fail on every response, because every response looks like
 `{"<MessageBodyType>": <payload>}`.
 
 This is confirmed against every response captured in this project's probe
@@ -200,7 +200,7 @@ seen — once, in the `ra3-keypad-press` run, answering a `SubscribeRequest` to
 }
 ```
 
-Four things it settles, and one it does not.
+It settles four things.
 
 - It **is** correlated like any other reply: `ClientTag` `lt-2` matches the
   `SubscribeRequest` that provoked it, and the frame log records
@@ -277,7 +277,7 @@ in this project's design document:
 
 `502` and `504` are included here because they are named in the firmware's own
 list of status codes it can emit, not because any capture in this project's
-corpus shows one — that gap is stated explicitly rather than silently omitted.
+corpus shows one.
 
 ### `102 Processing` — an interim acknowledgement, not a terminal status
 

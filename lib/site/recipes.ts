@@ -88,7 +88,8 @@ export const RECIPES: Recipe[] = [
   {
     slug: "turn-on-a-light",
     title: "Turn on a light",
-    intent: "The write surface: a command processor, and what it answers with.",
+    intent:
+      "Send a command to a zone's command processor and read what it answers.",
     steps: [
       {
         url: "/zone/{zoneId}/commandprocessor",
