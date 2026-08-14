@@ -21,7 +21,7 @@ for "not established".
 
 Content comes in two tiers: hand-refined (checked against captures) and
 imported (`x-leap-verified: false` — the firmware route table taken as-is,
-never exercised on hardware). The site's Coverage page has the current
+never exercised on hardware). The site's Coverage section has the current
 numbers.
 
 ## Use

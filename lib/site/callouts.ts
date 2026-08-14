@@ -4,7 +4,8 @@ import type { Operation } from "./model.ts";
  * A short warning shown at the point of use, deep-linked to the narrative
  * section that explains it in full. The prose is never copied here -- the
  * callout states the consequence for a client author in one sentence and
- * sends them to the document that has the evidence.
+ * sends them to the section that has the evidence. `href` is an in-page
+ * anchor: the whole reference is one document.
  */
 export type Callout = { text: string; href: string };
 
@@ -25,7 +26,7 @@ export function calloutsFor(operation: Operation): Callout[] {
   )
     callouts.push({
       text: "This route answered 102 Processing before the real response, about a second later on the same ClientTag. 102 is not terminal — do not resolve on it.",
-      href: "docs/protocol/index.html#102-processing-an-interim-acknowledgement-not-a-terminal-status",
+      href: "#102-processing-an-interim-acknowledgement-not-a-terminal-status",
     });
 
   // Caseta subscribes the client to this URL at connect without being asked,
@@ -33,14 +34,14 @@ export function calloutsFor(operation: Operation): Callout[] {
   if (operation.url === "/device/status/deviceheard")
     callouts.push({
       text: "Caseta auto-subscribes a client to this URL at connect. Those pushes arrive untagged, so a client keyed purely on ClientTag drops them.",
-      href: "docs/subscriptions/index.html",
+      href: "#doc-subscriptions",
     });
 
   // Pushes reuse the subscribing request's tag, which is no longer pending.
   if (operation.subscribable)
     callouts.push({
       text: "Pushes arrive on this subscription's own ClientTag, after that tag has already been resolved. Never recycle a ClientTag within a session.",
-      href: "docs/protocol/index.html#clienttag-correlation",
+      href: "#clienttag-correlation",
     });
 
   return callouts;

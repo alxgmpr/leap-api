@@ -11,20 +11,20 @@ export function buildSearchIndex(model) {
     index.push({
       kind: "resource",
       title: resource.name,
-      href: `resource/${resource.name}/index.html`,
+      href: `#resource-${resource.name}`,
     });
     for (const operation of resource.operations)
       index.push({
         kind: "operation",
         title: operation.url,
-        href: `resource/${resource.name}/index.html#${operation.operationId || operation.url}`,
+        href: `#${operation.operationId || operation.url}`,
       });
   }
   for (const schema of model.schemas)
     index.push({
       kind: "schema",
       title: schema.name,
-      href: `schema/${schema.name}/index.html`,
+      href: `#schema-${schema.name}`,
     });
   // Every command is sent to a commandprocessor, and the zone one is the only
   // command processor any capture has exercised -- so that is where a
@@ -33,7 +33,7 @@ export function buildSearchIndex(model) {
     index.push({
       kind: "command",
       title: row.commandType,
-      href: "resource/zone/index.html",
+      href: "#resource-zone",
     });
   return index;
 }

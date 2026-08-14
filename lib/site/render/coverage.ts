@@ -1,11 +1,10 @@
 import type { LeapModel } from "../model.ts";
 import { groupNoFixture } from "../no-fixture.ts";
 import { classifyRoutes, readRoutes, summarize } from "../uncovered.ts";
-import { siteNav } from "./home.ts";
 import { esc } from "./html.ts";
-import { type Page, page } from "./layout.ts";
+import type { Section } from "./layout.ts";
 
-export function renderCoveragePage(model: LeapModel): Page[] {
+export function renderCoverageSection(model: LeapModel): Section {
   const { coverage } = model;
   const operations = model.resources.reduce(
     (n, r) => n + r.operations.length,
@@ -21,7 +20,7 @@ export function renderCoveragePage(model: LeapModel): Page[] {
   // them, so adding the two counts overstates what the extraction recovered.
   const firmwareRoutes = readRoutes().length;
 
-  const main = `<h1>Coverage</h1>
+  const main = `<h2 class="part">Coverage</h2>
 <p class="lede">A route absent from this reference may not exist, or may just
 not be written up. These numbers tell the two apart.</p>
 
@@ -43,7 +42,7 @@ leaving 224 not covered.</dd>
 <dd>${coverage.specWithoutFixture.length}, each classified by reason below —
 structural (a GET can never answer 200) or conditional (nothing of that kind is
 configured on the probed home). Mostly "asked and not answered 200" rather than
-"hardware refused it"; each operation's own page shows what every corpus
+"hardware refused it"; each operation's own section shows what every corpus
 answered.</dd>
 
 <dt>Unresolved enums</dt>
@@ -55,7 +54,7 @@ the firmware extraction never recovered.</dd>
 whose response shape is not established.</dd>
 </dl>
 
-<h2>What the firmware route table has, and in what state</h2>
+<h3>What the firmware route table has, and in what state</h3>
 <p>The extraction recovered ${firmwareRoutes} route templates. Every one of
 them is now represented here except ${summary["uncovered-path-in-doubt"]},
 whose paths cannot be written down without guessing — but
@@ -98,13 +97,13 @@ importing one would mean guessing the path before guessing the shape.</dd>
     .join("")}</ul>
 </details>
 
-<h2>Why the imported tier stays labelled</h2>
+<h3>Why the imported tier stays labelled</h3>
 <p>Hand-refining a path family or schema means cross-referencing captures,
 correcting mislabels, and trimming <code>required</code> to what was observed.
 The imported tier has had none of that done to it, so it is labelled on every
 page it appears on.</p>
 
-<h2>Paths with no 200 capture</h2>
+<h3>Paths with no 200 capture</h3>
 <p>Every one of the ${coverage.specWithoutFixture.length} falls into one reason
 below. The <strong>structural</strong> reasons can never answer a GET 200 by
 route design — a write verb, a paging projection, a push route, a setup
@@ -117,7 +116,7 @@ ${groupNoFixture(coverage.specWithoutFixture)
     ({
       reason,
       paths,
-    }) => `<h3>${esc(reason.label)} · ${paths.length} <span class="meta">(${reason.kind})</span></h3>
+    }) => `<h4>${esc(reason.label)} · ${paths.length} <span class="meta">(${reason.kind})</span></h4>
 <p class="meta">${esc(reason.blurb)}</p>
 <ul class="nofixture">${paths
       .map((path) => `<li><code>${esc(path)}</code></li>`)
@@ -125,15 +124,5 @@ ${groupNoFixture(coverage.specWithoutFixture)
   )
   .join("\n")}`;
 
-  return [
-    {
-      path: "coverage/index.html",
-      html: page({
-        title: "Coverage",
-        relativeRoot: "../",
-        nav: siteNav(model),
-        main,
-      }),
-    },
-  ];
+  return { id: "coverage", html: main };
 }

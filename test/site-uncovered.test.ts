@@ -127,9 +127,9 @@ describe("uncovered firmware routes", () => {
   });
 });
 
-describe("the coverage page states it", () => {
+describe("the coverage section states it", () => {
   const model = buildModel();
-  const html = readFileSync("site/coverage/index.html", "utf8");
+  const html = readFileSync("site/index.html", "utf8");
 
   test("reports the extraction's real total, not a derived sum", () => {
     // bundledPaths.size + absent overstates it: 29 bundled paths have no

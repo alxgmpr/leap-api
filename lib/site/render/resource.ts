@@ -4,13 +4,10 @@ import type { LeapModel, Operation, Resource } from "../model.ts";
 import type { Provenance } from "../provenance.ts";
 import { timelineFor } from "../timelines.ts";
 import { renderCopy, renderReply, renderWire } from "./highlight.ts";
-import { siteNav } from "./home.ts";
 import { esc } from "./html.ts";
-import { type Page, page } from "./layout.ts";
+import type { Section } from "./layout.ts";
 import { renderMarkdown, splitInjectedTable } from "./markdown.ts";
 import { renderTimeline } from "./timeline.ts";
-
-const ROOT = "../../";
 
 const VERDICT_NOTE: Record<string, string> = {
   confirmed: "A 200 was captured from hardware.",
@@ -27,7 +24,7 @@ const VERDICT_NOTE: Record<string, string> = {
 /**
  * Corpora collapse to the two product lines. A reader wants to know that RA3
  * and Caseta answered, not which of the seven probe campaigns did the asking
- * -- that stays in the title, and in docs/platforms.md.
+ * -- that stays in the title, and in the platforms doc.
  */
 function platformOf(corpus: string): string {
   return corpus.includes("caseta") ? "caseta" : "ra3";
@@ -69,7 +66,7 @@ function observationTable(operation: Operation): string {
 /**
  * Scalar fields of a parameter schema, so the composer can offer real inputs
  * rather than an empty object. Nested objects and $refs are skipped: they need
- * their own schema page, and the link to it is already on the operation.
+ * their own schema section, and the link to it is already on the operation.
  */
 function parameterFields(
   schemaName: string | null,
@@ -154,15 +151,15 @@ function renderExchange(operation: Operation, model: LeapModel): string {
       ? `<p class="meta">Wire <code>MessageBodyType</code> <code>${esc(operation.bodyType)}</code> — <code>Body</code> wraps the payload under that key.</p>`
       : "",
     operation.eventSchema
-      ? `<p class="meta">Subscribing pushes <a href="${ROOT}schema/${esc(operation.eventSchema)}/index.html">${esc(operation.eventSchema)}</a>, a partial carrying only changed fields. <a href="${ROOT}docs/subscriptions/index.html">Subscriptions</a>.</p>`
+      ? `<p class="meta">Subscribing pushes <a href="#schema-${esc(operation.eventSchema)}">${esc(operation.eventSchema)}</a>, a partial carrying only changed fields. <a href="#doc-subscriptions">Subscriptions</a>.</p>`
       : "",
     prose ? `<div class="prose opdesc">${renderMarkdown(prose)}</div>` : "",
     observationTable(operation),
     operation.responseSchema
-      ? `<p class="meta">Payload schema <a href="${ROOT}schema/${esc(operation.responseSchema)}/index.html">${esc(operation.responseSchema)}</a>.</p>`
+      ? `<p class="meta">Payload schema <a href="#schema-${esc(operation.responseSchema)}">${esc(operation.responseSchema)}</a>.</p>`
       : "",
     operation.requestSchema
-      ? `<p class="meta">Request payload schema <a href="${ROOT}schema/${esc(operation.requestSchema)}/index.html">${esc(operation.requestSchema)}</a>.</p>`
+      ? `<p class="meta">Request payload schema <a href="#schema-${esc(operation.requestSchema)}">${esc(operation.requestSchema)}</a>.</p>`
       : "",
   ]
     .filter(Boolean)
@@ -172,14 +169,14 @@ function renderExchange(operation: Operation, model: LeapModel): string {
 ${calloutsFor(operation)
   .map(
     (c: Callout) =>
-      `<p class="callout">${esc(c.text)} <a href="${ROOT}${esc(c.href)}">Read why</a>.</p>`,
+      `<p class="callout">${esc(c.text)} <a href="${esc(c.href)}">Read why</a>.</p>`,
   )
   .join("")}
 <div class="send"><span class="dir" aria-hidden="true">→</span><span class="ct">${esc(operation.communiqueType.replace("Request", ""))}</span>${operation.subscribable ? '<span class="sub">subscribable</span>' : ""}${renderCopy(operation.request)}</div>
 ${renderWire(operation.request)}
 ${
   replies.length > 0
-    ? replies.map((frame) => renderReply(frame, ROOT)).join("")
+    ? replies.map((frame) => renderReply(frame)).join("")
     : '<div class="reply reply-none"><span class="dir" aria-hidden="true">←</span><span class="shape">no captured reply</span></div>'
 }
 ${timeline ? renderTimeline(timeline, "This exchange on hardware") : ""}
@@ -203,7 +200,7 @@ function renderUrlGroup(
 
   return `<section class="group" data-verdict="${esc(verdict)}">
 <header class="url-head">
-<h2 class="url">${esc(url)}</h2>
+<h3 class="url">${esc(url)}</h3>
 ${evidenceMark(operations.map((o) => o.provenance))}
 </header>
 ${operations.map((operation) => renderExchange(operation, model)).join("")}
@@ -214,8 +211,8 @@ function renderEdges(edges: Edge[], documented: Set<string>): string {
   if (edges.length === 0) return "";
 
   // Three states, and the middle one is real: hardware returns hrefs pointing
-  // at routes this reference does not document. Linking those to a page that
-  // does not exist would be worse than saying so.
+  // at routes this reference does not document. Linking those to a section
+  // that does not exist would be worse than saying so.
   const renderEdge = (edge: Edge): string => {
     const label = `<code>${esc(edge.schema)}.${esc(edge.property)}</code>`;
     if (!edge.target)
@@ -225,7 +222,7 @@ function renderEdges(edges: Edge[], documented: Set<string>): string {
     if (!documented.has(edge.target))
       return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <code>/${esc(edge.target)}</code> ${evidence} <span class="unresolved">not documented here</span></li>`;
 
-    return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <a href="${ROOT}resource/${esc(edge.target)}/index.html">${esc(edge.target)}</a> ${evidence}</li>`;
+    return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <a href="#resource-${esc(edge.target)}">${esc(edge.target)}</a> ${evidence}</li>`;
   };
 
   return `<details class="links"><summary>Links to other resources · ${edges.length}</summary>
@@ -240,37 +237,43 @@ function renderResource(
   resource: Resource,
   model: LeapModel,
   documented: Set<string>,
-): Page {
+): Section {
   const byUrl = new Map<string, Operation[]>();
   for (const operation of resource.operations)
     byUrl.set(operation.url, [...(byUrl.get(operation.url) ?? []), operation]);
 
   const subscribable = resource.operations.filter((o) => o.subscribable).length;
 
-  const main = `<header class="mast">
-<h1>${esc(resource.name)}</h1>
+  const html = `<header class="mast">
+<h2>${esc(resource.name)}</h2>
 <span class="count">${byUrl.size} URL${byUrl.size === 1 ? "" : "s"} · ${resource.operations.length} operation${resource.operations.length === 1 ? "" : "s"}${subscribable > 0 ? ` · ${subscribable} subscribable` : ""}</span>
 </header>
-<p class="legend"><span><span class="dot live">●</span> answered on hardware</span><span><span class="dot">○</span> not observed</span><span>→ you write · ← you read</span></p>
 ${renderEdges(resource.edges, documented)}
 ${[...byUrl.entries()]
   .map(([url, operations]) => renderUrlGroup(url, operations, model))
   .join("")}`;
 
-  return {
-    path: `resource/${resource.name}/index.html`,
-    html: page({
-      title: resource.name,
-      relativeRoot: ROOT,
-      nav: siteNav(model),
-      main,
-    }),
-  };
+  return { id: `resource-${resource.name}`, html };
 }
 
-export function renderResourcePages(model: LeapModel): Page[] {
+/**
+ * The resources part of the scroll: one lead section carrying the legend
+ * once -- it used to be restated on every resource page -- then one section
+ * per resource.
+ */
+export function renderResourceSections(model: LeapModel): Section[] {
   const documented = new Set(model.resources.map((r) => r.name));
-  return model.resources.map((resource) =>
-    renderResource(resource, model, documented),
-  );
+  const lead: Section = {
+    id: "resources",
+    html: `<h2 class="part">Resources</h2>
+<p class="lede">Every addressable URL, grouped by its first path segment, with
+the frames a client writes and the replies hardware gave.</p>
+<p class="legend"><span><span class="dot live">●</span> answered on hardware</span><span><span class="dot">○</span> not observed</span><span>→ you write · ← you read</span></p>`,
+  };
+  return [
+    lead,
+    ...model.resources.map((resource) =>
+      renderResource(resource, model, documented),
+    ),
+  ];
 }

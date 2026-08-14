@@ -1,35 +1,36 @@
 import type { LeapModel } from "../model.ts";
 import { renderFrame } from "./highlight.ts";
 import { esc } from "./html.ts";
-import { type NavItem, type Page, page } from "./layout.ts";
+import type { NavItem, Section } from "./layout.ts";
 import { renderTimeline } from "./timeline.ts";
 
 export function siteNav(model: LeapModel): NavItem[] {
   return [
-    { href: "index.html", label: "Overview" },
-    { href: "recipes/index.html", label: "Recipes" },
-    { href: "coverage/index.html", label: "Coverage" },
+    { href: "#overview", label: "Overview" },
+    { href: "#recipes", label: "Recipes" },
+    { href: "#coverage", label: "Coverage" },
+    { href: "#schemas", label: "Schemas" },
     ...model.docs.map((d) => ({
-      href: `docs/${d.slug}/index.html`,
+      href: `#doc-${d.slug}`,
       label: d.title,
       group: "Protocol",
     })),
     ...model.resources.map((r) => ({
-      href: `resource/${r.name}/index.html`,
+      href: `#resource-${r.name}`,
       label: r.name,
       group: "Resources",
     })),
   ];
 }
 
-export function renderHome(model: LeapModel): Page[] {
+export function renderOverview(model: LeapModel): Section {
   // The most informative real frame available: a captured response with a body.
   const session = model.frameLogs.find((log) => log.id === "push-probe");
   const example = model.frameLogs
     .flatMap((log) => log.frames)
     .find((frame) => frame.Header.StatusCode?.startsWith("200") && frame.Body);
 
-  const main = `
+  const html = `
 <h1>LEAP</h1>
 <p class="lede">LEAP (Lutron Extensible Application Protocol) is the JSON
 protocol Lutron processors and bridges — RA3, HWQS, Caseta — speak for
@@ -75,10 +76,10 @@ ${
 
 <h2>Start here</h2>
 <ul class="entrypoints">
-<li><a href="recipes/index.html">Recipes</a> — frame sequences for the common tasks: pair, discover the layout, read state, drive a zone, watch for changes.</li>
-<li><a href="docs/protocol/index.html">The wire protocol</a> — envelope, framing, status codes, transports.</li>
-<li><a href="docs/subscriptions/index.html">Subscriptions</a> — the lifecycle and the shape of a push.</li>
-<li><a href="coverage/index.html">Coverage</a> — what is documented, what is imported unverified, and what is absent.</li>
+<li><a href="#recipes">Recipes</a> — frame sequences for the common tasks: pair, discover the layout, read state, drive a zone, watch for changes.</li>
+<li><a href="#doc-protocol">The wire protocol</a> — envelope, framing, status codes, transports.</li>
+<li><a href="#doc-subscriptions">Subscriptions</a> — the lifecycle and the shape of a push.</li>
+<li><a href="#coverage">Coverage</a> — what is documented, what is imported unverified, and what is absent.</li>
 </ul>
 
 <h2>Resources</h2>
@@ -86,20 +87,10 @@ ${
 ${model.resources
   .map(
     (r) =>
-      `<li><a href="resource/${esc(r.name)}/index.html">${esc(r.name)}</a> <span class="count">${r.operations.length}</span></li>`,
+      `<li><a href="#resource-${esc(r.name)}">${esc(r.name)}</a> <span class="count">${r.operations.length}</span></li>`,
   )
   .join("")}
 </ul>`;
 
-  return [
-    {
-      path: "index.html",
-      html: page({
-        title: "Overview",
-        relativeRoot: "",
-        nav: siteNav(model),
-        main,
-      }),
-    },
-  ];
+  return { id: "overview", html };
 }

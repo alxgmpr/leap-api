@@ -3,24 +3,33 @@ import { dirname, join } from "node:path";
 import { toClientModel } from "../lib/site/client-model.ts";
 import { assertInvariants } from "../lib/site/invariants.ts";
 import { buildModel } from "../lib/site/model.ts";
-import { renderCoveragePage } from "../lib/site/render/coverage.ts";
-import { renderDocPages } from "../lib/site/render/docs.ts";
-import { renderHome } from "../lib/site/render/home.ts";
-import type { Page } from "../lib/site/render/layout.ts";
-import { renderRecipePages } from "../lib/site/render/recipes.ts";
-import { renderResourcePages } from "../lib/site/render/resource.ts";
-import { renderSchemaPages } from "../lib/site/render/schema.ts";
+import { renderCoverageSection } from "../lib/site/render/coverage.ts";
+import { renderDocSections } from "../lib/site/render/docs.ts";
+import { renderOverview, siteNav } from "../lib/site/render/home.ts";
+import { type Page, page } from "../lib/site/render/layout.ts";
+import { renderRecipeSections } from "../lib/site/render/recipes.ts";
+import { renderResourceSections } from "../lib/site/render/resource.ts";
+import { renderSchemaSection } from "../lib/site/render/schema.ts";
 
 const OUT = "site";
 
 const model = buildModel();
+
+// One document, one scroll: narrative first, then the reference tiers.
+const sections = [
+  renderOverview(model),
+  ...renderDocSections(model),
+  ...renderRecipeSections(model),
+  ...renderResourceSections(model),
+  renderSchemaSection(model),
+  renderCoverageSection(model),
+];
+
 const pages: Page[] = [
-  ...renderHome(model),
-  ...renderResourcePages(model),
-  ...renderSchemaPages(model),
-  ...renderDocPages(model),
-  ...renderRecipePages(model),
-  ...renderCoveragePage(model),
+  {
+    path: "index.html",
+    html: page({ title: "Reference", nav: siteNav(model), sections }),
+  },
 ];
 
 assertInvariants(model, pages);
@@ -37,4 +46,6 @@ writeFileSync(
   JSON.stringify(toClientModel(model)),
   "utf8",
 );
-console.log(`built ${pages.length} pages into ${OUT}/`);
+console.log(
+  `built ${pages.length} page (${sections.length} sections) into ${OUT}/`,
+);

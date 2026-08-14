@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import test, { describe } from "node:test";
 import { buildModel } from "../lib/site/model.ts";
 import { RECIPES } from "../lib/site/recipes.ts";
-import { renderCoveragePage } from "../lib/site/render/coverage.ts";
-import { renderRecipePages } from "../lib/site/render/recipes.ts";
+import { renderCoverageSection } from "../lib/site/render/coverage.ts";
+import { renderRecipeSections } from "../lib/site/render/recipes.ts";
 
 describe("recipes", () => {
   const model = buildModel();
@@ -26,34 +26,34 @@ describe("recipes", () => {
         );
   });
 
-  test("renders an index and a page per recipe", () => {
-    const pages = renderRecipePages(model);
-    assert.equal(pages.length, RECIPES.length + 1);
-    assert.ok(pages.some((p) => p.path === "recipes/index.html"));
+  test("renders an index and a section per recipe", () => {
+    const sections = renderRecipeSections(model);
+    assert.equal(sections.length, RECIPES.length + 1);
+    assert.ok(sections.some((s) => s.id === "recipes"));
   });
 
   test("the turn-on-a-light recipe shows the observed 201 reply", () => {
-    const pages = renderRecipePages(model);
+    const sections = renderRecipeSections(model);
     const html =
-      pages.find((p) => p.path.includes("turn-on-a-light"))?.html ?? "";
+      sections.find((s) => s.id.includes("turn-on-a-light"))?.html ?? "";
     assert.match(html, /201 Created/);
     assert.match(html, /captured-frame/);
   });
 
   test("the subscribe recipe shows a push arriving on the subscription's tag", () => {
-    const pages = renderRecipePages(model);
+    const sections = renderRecipeSections(model);
     const html =
-      pages.find((p) => p.path.includes("watch-for-changes"))?.html ?? "";
+      sections.find((s) => s.id.includes("watch-for-changes"))?.html ?? "";
     assert.match(html, /lt-18/);
     assert.match(html, /ReadResponse/);
   });
 });
 
-describe("coverage page", () => {
+describe("coverage section", () => {
   const model = buildModel();
 
   test("states the uncovered counts plainly", () => {
-    const html = renderCoveragePage(model)[0]?.html ?? "";
+    const html = renderCoverageSection(model).html;
     assert.match(html, /no 200 capture/);
     assert.match(
       html,

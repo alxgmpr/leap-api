@@ -60,45 +60,63 @@ describe("build invariants", () => {
       /duplicate page paths/,
     );
   });
+
+  test("a duplicate anchor id fails the build", () => {
+    // One document means one id space: a doc heading colliding with an
+    // operation id would silently hijack deep links.
+    assert.throws(
+      () =>
+        assertInvariants(model, [
+          {
+            path: "index.html",
+            html: '<h2 id="zone"></h2><article id="zone"></article>',
+          },
+        ]),
+      /duplicate element ids/,
+    );
+  });
 });
 
 describe("generated site", () => {
   const files = walk("site").map((f) => f.replace(/\\/g, "/"));
 
-  test("emits every page type", () => {
-    for (const expected of [
-      "site/index.html",
-      "site/resource/zone/index.html",
-      "site/schema/Zone/index.html",
-      "site/docs/protocol/index.html",
-      "site/recipes/index.html",
-      "site/coverage/index.html",
-    ])
-      assert.ok(files.includes(expected), `${expected} was not generated`);
+  test("is one document", () => {
+    assert.deepEqual(files, ["site/index.html"]);
   });
 
-  test("every internal link resolves to a generated file", () => {
-    const generated = new Set(files);
+  test("every section of the scroll is present", () => {
+    const html = readFileSync("site/index.html", "utf8");
+    for (const anchor of [
+      "overview",
+      "doc-protocol",
+      "recipes",
+      "resource-zone",
+      "schema-Zone",
+      "coverage",
+    ])
+      assert.ok(html.includes(`id="${anchor}"`), `#${anchor} is missing`);
+  });
+
+  test("every internal link resolves to an anchor in the document", () => {
+    const html = readFileSync("site/index.html", "utf8");
+    const ids = new Set(
+      [...html.matchAll(/ id="([^"]+)"/g)].map((m) => m[1] as string),
+    );
     const dead: string[] = [];
-    for (const file of files) {
-      const html = readFileSync(file, "utf8");
-      const dir = file.slice(0, file.lastIndexOf("/"));
-      for (const match of html.matchAll(/href="([^":#]+\.html)(#[^"]*)?"/g)) {
-        const target = new URL(
-          match[1] as string,
-          `file:///${dir}/`,
-        ).pathname.replace(/^\/+/, "");
-        if (!generated.has(target)) dead.push(`${file} -> ${match[1]}`);
-      }
-    }
+    for (const match of html.matchAll(/href="#([^"]+)"/g))
+      if (!ids.has(match[1] as string)) dead.push(`#${match[1]}`);
     assert.deepEqual(dead, []);
   });
 
-  test("no page links to a root-absolute path", () => {
-    for (const file of files)
-      assert.ok(
-        !readFileSync(file, "utf8").includes('href="/'),
-        `${file} uses a root-absolute link, which breaks GitHub Pages subpaths`,
-      );
+  test("no link points at a discrete page or a root-absolute path", () => {
+    const html = readFileSync("site/index.html", "utf8");
+    assert.ok(
+      !/href="[^"#]*\.html/.test(html),
+      "a page link survived the move to one document",
+    );
+    assert.ok(
+      !html.includes('href="/'),
+      "a root-absolute link breaks GitHub Pages subpaths",
+    );
   });
 });

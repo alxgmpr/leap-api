@@ -64,7 +64,7 @@ export function bodyShape(body: Record<string, unknown> | undefined): string {
  * The reply, collapsed to its answer. The summary line is the disclosure
  * trigger, so this needs no JavaScript and no id bookkeeping.
  */
-export function renderReply(frame: Frame, root = ""): string {
+export function renderReply(frame: Frame): string {
   const status = frame.Header.StatusCode ?? "";
   const head = `<span class="dir" aria-hidden="true">←</span><span class="status">${esc(status)}</span><span class="shape">${esc(bodyShape(frame.Body))}</span>${frame.source ? `<span class="src" title="${esc(FIDELITY_NOTE[frame.fidelity])}">${esc(frame.source)}</span>` : ""}`;
 
@@ -76,7 +76,7 @@ export function renderReply(frame: Frame, root = ""): string {
   // describes what is under that key, not this object.
   const key = Object.keys(frame.Body)[0];
   const wrapperNote = key
-    ? `<p class="wrapnote">The one key <code>${esc(key)}</code> is <code>Header.MessageBodyType</code>; the schema describes what is under it, not this object. <a href="${esc(root)}docs/protocol/index.html#body-wraps-the-payload">The Body wrapper</a>.</p>`
+    ? `<p class="wrapnote">The one key <code>${esc(key)}</code> is <code>Header.MessageBodyType</code>; the schema describes what is under it, not this object. <a href="#body-wraps-the-payload">The Body wrapper</a>.</p>`
     : "";
 
   return `<details class="reply" data-fidelity="${frame.fidelity}">

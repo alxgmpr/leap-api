@@ -1,15 +1,15 @@
 import assert from "node:assert/strict";
 import test, { describe } from "node:test";
 import { buildModel } from "../lib/site/model.ts";
-import { renderResourcePages } from "../lib/site/render/resource.ts";
+import { renderResourceSections } from "../lib/site/render/resource.ts";
 
-describe("resource pages", () => {
+describe("resource sections", () => {
   const model = buildModel();
-  const pages = renderResourcePages(model);
-  const zone = pages.find((p) => p.path === "resource/zone/index.html");
+  const sections = renderResourceSections(model);
+  const zone = sections.find((s) => s.id === "resource-zone");
 
-  test("emits one page per resource", () => {
-    assert.equal(pages.length, model.resources.length);
+  test("emits one section per resource, plus the lead", () => {
+    assert.equal(sections.length, model.resources.length + 1);
     assert.ok(zone);
   });
 
@@ -34,7 +34,7 @@ describe("resource pages", () => {
   test("marks subscribable operations and names the pushed schema", () => {
     assert.match(zone?.html ?? "", /class="sub">subscribable/);
     assert.match(zone?.html ?? "", /Subscribing pushes/);
-    assert.match(zone?.html ?? "", /schema\/ZoneStatus\/index\.html/);
+    assert.match(zone?.html ?? "", /#schema-ZoneStatus/);
   });
 
   test("carries one provenance mark per URL, not per verb", () => {
@@ -80,8 +80,7 @@ describe("resource pages", () => {
   test("every operation with a description shows it", () => {
     for (const resource of model.resources) {
       const html =
-        pages.find((p) => p.path === `resource/${resource.name}/index.html`)
-          ?.html ?? "";
+        sections.find((s) => s.id === `resource-${resource.name}`)?.html ?? "";
       const withProse = resource.operations.filter(
         (o) => o.description && !o.description.startsWith("**Platform"),
       ).length;
@@ -121,38 +120,37 @@ describe("resource pages", () => {
   });
 
   test("renders edges, with unresolved ones visibly unresolved", () => {
-    const html =
-      pages.find((p) => p.path === "resource/area/index.html")?.html ?? "";
+    const html = sections.find((s) => s.id === "resource-area")?.html ?? "";
     assert.match(html, /class="edges"/);
     assert.match(html, /data-target="area"|data-target=""/);
   });
 
   test("an observed target is linked once the reference documents it", () => {
     // Zone.CountdownTimer resolves to /countdowntimer from a real captured
-    // href. Before the unverified import there was no page to link to and the
-    // edge rendered as "not documented here"; the import gave it one.
+    // href. Before the unverified import there was no section to link to and
+    // the edge rendered as "not documented here"; the import gave it one.
     const html = zone?.html ?? "";
-    assert.match(html, /resource\/countdowntimer\/index\.html/);
+    assert.match(html, /href="#resource-countdowntimer"/);
   });
 
-  test("an edge to a resource with no page at all is still not linked", () => {
+  test("an edge to a resource with no section at all is still not linked", () => {
     // The guard the test above used to provide: every resolved target that is
-    // linked must have a generated page behind it.
+    // linked must have a rendered section behind it.
     const documented = new Set(model.resources.map((r) => r.name));
     for (const resource of model.resources)
       for (const edge of resource.edges)
         if (edge.target && !documented.has(edge.target)) {
           const html =
-            pages.find((p) => p.path === `resource/${resource.name}/index.html`)
-              ?.html ?? "";
+            sections.find((s) => s.id === `resource-${resource.name}`)?.html ??
+            "";
           assert.ok(
-            !html.includes(`resource/${edge.target}/index.html`),
-            `${edge.schema}.${edge.property} links to a page that does not exist`,
+            !html.includes(`href="#resource-${edge.target}"`),
+            `${edge.schema}.${edge.property} links to a section that does not exist`,
           );
         }
   });
 
-  test("links are relative to the page, not to site root", () => {
+  test("links are in-page anchors, never root-absolute", () => {
     assert.ok(!(zone?.html ?? "").includes('href="/'));
   });
 

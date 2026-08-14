@@ -37,6 +37,13 @@
   box-sizing: border-box;
 }
 
+/* One long scroll: anchors land below the sticky topbar. Jumps are instant
+   on purpose -- smooth-scrolling animates the whole distance, and on a
+   document this tall that is many seconds of blur. */
+[id] {
+  scroll-margin-top: 70px;
+}
+
 body {
   margin: 0;
   background: var(--paper);
@@ -200,6 +207,12 @@ pre {
   background: var(--panel);
 }
 
+/* scrollspy: the section on screen */
+.sidebar li a.current {
+  color: var(--live);
+  background: var(--panel);
+}
+
 .navgroup {
   margin: 16px 0 6px;
   font-size: 0.68rem;
@@ -212,6 +225,25 @@ pre {
 main {
   min-width: 0;
   max-width: 860px;
+}
+
+/* ---------- the scroll's sections ---------- */
+
+.docsec + .docsec {
+  margin-top: 44px;
+  padding-top: 30px;
+  border-top: 1px solid var(--rule);
+}
+
+/* A part heading opens each reference tier: Recipes, Resources, Schemas,
+   Coverage. Same weight as the old per-page h1, because that is what it
+   replaced. */
+h2.part {
+  font-family: var(--mono);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
 }
 
 /* ---------- masthead and type scale ---------- */
@@ -234,6 +266,14 @@ h1 {
   margin: 0;
 }
 
+.mast h2 {
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
 .mast .count {
   margin-left: auto;
   color: var(--mute);
@@ -251,6 +291,11 @@ h2 {
 h3 {
   font-size: 0.98rem;
   margin: 0 0 8px;
+}
+
+h4 {
+  font-size: 0.9rem;
+  margin: 18px 0 8px;
 }
 
 .lede {
@@ -666,6 +711,12 @@ button:disabled {
   font-size: 0.82rem;
 }
 
+/* Long unbroken route templates: wrap them rather than widen the scroll. */
+.nofixture li,
+.resource-grid a {
+  overflow-wrap: anywhere;
+}
+
 .resource-grid {
   list-style: none;
   padding: 0;
@@ -749,6 +800,18 @@ tr.required td:first-child {
   color: var(--ink);
 }
 
+.schema-article {
+  padding: 18px 0 8px;
+  border-top: 1px solid var(--rule);
+  margin-top: 18px;
+}
+
+.schema-article > h3 {
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
 .coverage dt {
   font-family: var(--mono);
   font-size: 0.9rem;
@@ -786,9 +849,16 @@ tr.required td:first-child {
 }
 
 .prose h2,
-.prose h3 {
+.prose h3,
+.prose h4 {
   font-family: var(--mono);
   letter-spacing: -0.01em;
+}
+
+/* A narrative doc's own title, demoted to h2 inside the single scroll. */
+.docsec > article.prose > h2:first-child {
+  font-size: 1.7rem;
+  margin-top: 0;
 }
 
 .toc {

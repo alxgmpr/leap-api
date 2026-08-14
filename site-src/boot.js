@@ -153,6 +153,57 @@ if (filter instanceof HTMLInputElement)
     document.body.classList.toggle("confirmed-only", filter.checked);
   });
 
+/* ---------- scrollspy ---------- */
+
+// One long scroll: keep the sidebar pointing at the section on screen. The
+// sections are big, so "the current section" is the last one whose top has
+// passed the reading line, not whichever is intersecting the viewport.
+const navByHash = new Map(
+  [...document.querySelectorAll(".sidebar a")].map((a) => [
+    a.getAttribute("href"),
+    a,
+  ]),
+);
+const spySections = [...document.querySelectorAll("main > section.docsec")];
+
+if (spySections.length > 0 && navByHash.size > 0) {
+  let marked = null;
+  const mark = () => {
+    const line = window.scrollY + 90;
+    let current = spySections[0];
+    for (const section of spySections) {
+      if (section.offsetTop <= line) current = section;
+      else break;
+    }
+    if (current === marked) return;
+    marked = current;
+    for (const a of navByHash.values()) a.classList.remove("current");
+    const active = navByHash.get(`#${current.id}`);
+    if (active) {
+      active.classList.add("current");
+      // Keep the highlighted link in the sidebar's own scroll view -- but only
+      // where the sidebar is the sticky rail. Stacked below the content on a
+      // phone, this would yank the page instead.
+      if (window.matchMedia("(min-width: 821px)").matches)
+        active.scrollIntoView({ block: "nearest" });
+    }
+  };
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        mark();
+      });
+    },
+    { passive: true },
+  );
+  mark();
+}
+
 /* ---------- search ---------- */
 
 const search = document.getElementById("search");

@@ -1,10 +1,7 @@
 import { Marked } from "marked";
 import type { LeapModel } from "../model.ts";
-import { siteNav } from "./home.ts";
 import { esc, slug } from "./html.ts";
-import { type Page, page } from "./layout.ts";
-
-const ROOT = "../../";
+import type { Section } from "./layout.ts";
 
 /**
  * One id derivation for both sides of the table of contents.
@@ -47,36 +44,37 @@ export function headingAnchors(
   return anchors;
 }
 
-/** Marked, with heading ids matching headingAnchors so the ToC links resolve. */
+/**
+ * Marked, with heading ids matching headingAnchors so the ToC links resolve.
+ *
+ * Headings are demoted one level: the single-page document keeps its one h1
+ * for the site title, so a doc's own `#` title renders as an h2 and its
+ * sections nest under it. The ids do not move -- they derive from the text.
+ */
 function renderer(): Marked {
   const marked = new Marked({ gfm: true });
   marked.use({
     renderer: {
       heading({ tokens, depth }) {
         const text = this.parser.parseInline(tokens);
-        return `<h${depth} id="${headingId(text)}">${text}</h${depth}>\n`;
+        const level = Math.min(depth + 1, 6);
+        return `<h${level} id="${headingId(text)}">${text}</h${level}>\n`;
       },
     },
   });
   return marked;
 }
 
-export function renderDocPages(model: LeapModel): Page[] {
+export function renderDocSections(model: LeapModel): Section[] {
   const marked = renderer();
   return model.docs.map((entry) => {
     const anchors = headingAnchors(entry.markdown);
     const toc = `<nav class="toc"><ul>${anchors
       .map((a) => `<li><a href="#${esc(a.id)}">${esc(a.text)}</a></li>`)
       .join("")}</ul></nav>`;
-    const main = `${toc}<article class="prose">${marked.parse(entry.markdown) as string}</article>`;
     return {
-      path: `docs/${entry.slug}/index.html`,
-      html: page({
-        title: entry.title,
-        relativeRoot: ROOT,
-        nav: siteNav(model),
-        main,
-      }),
+      id: `doc-${entry.slug}`,
+      html: `${toc}<article class="prose">${marked.parse(entry.markdown) as string}</article>`,
     };
   });
 }

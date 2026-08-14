@@ -1,18 +1,15 @@
 import type { SchemaNode } from "../graph.ts";
 import type { LeapModel, SchemaEntry } from "../model.ts";
 import { classifyField } from "../provenance.ts";
-import { siteNav } from "./home.ts";
 import { esc } from "./html.ts";
-import { type Page, page } from "./layout.ts";
+import type { Section } from "./layout.ts";
 import { renderMarkdown } from "./markdown.ts";
-
-const ROOT = "../../";
 
 function typeLabel(node: SchemaNode): string {
   const ref = node.$ref;
   if (typeof ref === "string") {
     const name = ref.split("/").pop() as string;
-    return `<a href="${ROOT}schema/${esc(name)}/index.html">${esc(name)}</a>`;
+    return `<a href="#schema-${esc(name)}">${esc(name)}</a>`;
   }
   if (node.type === "array") {
     const items = node.items as SchemaNode | undefined;
@@ -38,7 +35,7 @@ function renderField(
 </tr>`;
 }
 
-function renderSchema(entry: SchemaEntry, model: LeapModel): Page {
+function renderSchema(entry: SchemaEntry): string {
   const node = entry.node;
   const properties = (node.properties ?? {}) as Record<string, SchemaNode>;
   const required = new Set(
@@ -56,22 +53,21 @@ function renderSchema(entry: SchemaEntry, model: LeapModel): Page {
     ? `<p class="bodytype"><span class="chip chip-verdict chip-${verdict}">${esc(verdict.replace("-", " "))}</span> <span class="observed">observed: ${esc(observed.map(String).join(", "))}</span>${enumValues ? "" : " — recorded as an open <code>string</code>, not a closed set"}</p>`
     : "";
 
-  const main = `<h1>${esc(entry.name)}</h1>
-<p class="lede">This describes the <strong>unwrapped payload</strong> — the value
-under <code>Body</code>'s single key, not the wrapper around it.</p>
+  return `<article class="schema-article" id="schema-${esc(entry.name)}">
+<h3>${esc(entry.name)}</h3>
 ${schemaEvidence}
 ${node.description ? `<div class="prose schema-desc">${renderMarkdown(String(node.description))}</div>` : ""}
-${items ? `<h2>Element type</h2><p>${typeLabel(node)}</p>` : ""}
+${items ? `<h4>Element type</h4><p>${typeLabel(node)}</p>` : ""}
 ${
   enumValues
-    ? `<h2>Members</h2><p class="lede">Every closed enum here is a lower bound — the firmware extraction can never bound a member set. See <a href="${ROOT}docs/mapping/index.html">the mapping notes</a>.</p><ul class="enum">${enumValues
+    ? `<h4>Members</h4><p class="meta">Every closed enum here is a lower bound — the firmware extraction can never bound a member set. See <a href="#doc-mapping">the mapping notes</a>.</p><ul class="enum">${enumValues
         .map((v) => `<li><code>${esc(String(v))}</code></li>`)
         .join("")}</ul>`
     : ""
 }
 ${
   Object.keys(properties).length > 0
-    ? `<h2>Fields</h2><div class="tablewrap"><table class="fields"><thead><tr><th>Field</th><th>Type</th><th>Evidence</th><th>Notes</th></tr></thead><tbody>${Object.entries(
+    ? `<h4>Fields</h4><div class="tablewrap"><table class="fields"><thead><tr><th>Field</th><th>Type</th><th>Evidence</th><th>Notes</th></tr></thead><tbody>${Object.entries(
         properties,
       )
         .map(([name, prop]) => renderField(name, prop, required))
@@ -80,26 +76,25 @@ ${
 }
 ${
   entry.usedBy.length > 0
-    ? `<h2>Used by</h2><ul class="usedby">${[...new Set(entry.usedBy)]
+    ? `<h4>Used by</h4><ul class="usedby">${[...new Set(entry.usedBy)]
         .map(
           (url) =>
-            `<li><a href="${ROOT}resource/${esc(url.split("/")[1] ?? "misc")}/index.html"><code>${esc(url)}</code></a></li>`,
+            `<li><a href="#resource-${esc(url.split("/")[1] ?? "misc")}"><code>${esc(url)}</code></a></li>`,
         )
         .join("")}</ul>`
     : ""
-}`;
-
-  return {
-    path: `schema/${entry.name}/index.html`,
-    html: page({
-      title: entry.name,
-      relativeRoot: ROOT,
-      nav: siteNav(model),
-      main,
-    }),
-  };
+}
+</article>`;
 }
 
-export function renderSchemaPages(model: LeapModel): Page[] {
-  return model.schemas.map((entry) => renderSchema(entry, model));
+/**
+ * All schemas in one section. The unwrapping rule is stated once at the top
+ * instead of once per schema -- it applies identically to all of them.
+ */
+export function renderSchemaSection(model: LeapModel): Section {
+  const html = `<h2 class="part">Schemas</h2>
+<p class="lede">Each schema describes the <strong>unwrapped payload</strong> —
+the value under <code>Body</code>'s single key, not the wrapper around it.</p>
+${model.schemas.map((entry) => renderSchema(entry)).join("\n")}`;
+  return { id: "schemas", html };
 }

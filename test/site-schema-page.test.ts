@@ -1,27 +1,32 @@
 import assert from "node:assert/strict";
 import test, { describe } from "node:test";
 import { buildModel } from "../lib/site/model.ts";
-import { renderSchemaPages } from "../lib/site/render/schema.ts";
+import { renderSchemaSection } from "../lib/site/render/schema.ts";
 
-describe("schema pages", () => {
+describe("schema section", () => {
   const model = buildModel();
-  const pages = renderSchemaPages(model);
+  const section = renderSchemaSection(model);
+  const article = (name: string): string => {
+    const match = new RegExp(
+      `<article class="schema-article" id="schema-${name}">[\\s\\S]*?</article>`,
+    ).exec(section.html);
+    return match?.[0] ?? "";
+  };
 
-  test("emits one page per schema", () => {
-    assert.equal(pages.length, model.schemas.length);
-    assert.ok(pages.some((p) => p.path === "schema/Zone/index.html"));
+  test("emits one article per schema", () => {
+    const count = (section.html.match(/class="schema-article"/g) ?? []).length;
+    assert.equal(count, model.schemas.length);
+    assert.ok(article("Zone"));
   });
 
   test("lists fields with types and required marks", () => {
-    const html =
-      pages.find((p) => p.path === "schema/Zone/index.html")?.html ?? "";
+    const html = article("Zone");
     assert.match(html, /Name/);
     assert.match(html, /class="required"/);
   });
 
   test("marks a TODO field as not established", () => {
-    const html =
-      pages.find((p) => p.path === "schema/Zone/index.html")?.html ?? "";
+    const html = article("Zone");
     assert.match(html, /MaxWattageType[\s\S]{0,600}chip-not-established/);
   });
 
@@ -36,34 +41,27 @@ describe("schema pages", () => {
       ),
     );
     assert.ok(found, "the bundle carries an x-observed-values key somewhere");
-    const html =
-      pages.find((p) => p.path === `schema/${found.name}/index.html`)?.html ??
-      "";
+    const html = article(found.name);
     assert.match(html, /class="observed">observed: /);
   });
 
   test("a deliberately-open type shows its observed values and reads confirmed", () => {
     // ServiceType is the one closed enum hardware falsified -- it is now a
     // bare string carrying x-observed-values at the schema level.
-    const html =
-      pages.find((p) => p.path === "schema/ServiceType/index.html")?.html ?? "";
+    const html = article("ServiceType");
     assert.match(html, /chip-confirmed/);
     assert.match(html, /observed: .*Alexa/);
     assert.match(html, /open <code>string<\/code>, not a closed set/);
   });
 
   test("links back to the operations that use it", () => {
-    const html =
-      pages.find((p) => p.path === "schema/ZoneStatuses/index.html")?.html ??
-      "";
+    const html = article("ZoneStatuses");
     assert.match(html, /\/zone\/status/);
   });
 
   test("renders a collection wrapper as an array of its element type", () => {
-    const html =
-      pages.find((p) => p.path === "schema/ZoneStatuses/index.html")?.html ??
-      "";
+    const html = article("ZoneStatuses");
     assert.match(html, /array of/);
-    assert.match(html, /schema\/ZoneStatus\/index\.html/);
+    assert.match(html, /#schema-ZoneStatus/);
   });
 });

@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync } from "node:fs";
 import test, { describe } from "node:test";
 import { calloutsFor } from "../lib/site/callouts.ts";
 import { buildModel } from "../lib/site/model.ts";
@@ -44,27 +43,17 @@ describe("callouts", () => {
   });
 
   test("every callout anchor resolves in the built site", () => {
-    const pages = new Map<string, string>();
-    const walk = (dir: string): void => {
-      for (const entry of readdirSync(dir, { withFileTypes: true })) {
-        const path = join(dir, entry.name);
-        if (entry.isDirectory()) walk(path);
-        else if (entry.name.endsWith(".html"))
-          pages.set(path.replace(/^site\//, ""), readFileSync(path, "utf8"));
-      }
-    };
-    walk("site");
-
+    const html = readFileSync("site/index.html", "utf8");
     for (const op of operations)
       for (const callout of calloutsFor(op)) {
-        const [file, anchor] = callout.href.split("#");
-        const html = pages.get(file as string);
-        assert.ok(html, `${callout.href} points at a page that does not exist`);
-        if (anchor)
-          assert.ok(
-            html.includes(`id="${anchor}"`),
-            `${callout.href} points at an anchor no heading renders`,
-          );
+        assert.ok(
+          callout.href.startsWith("#"),
+          `${callout.href} is not an in-page anchor`,
+        );
+        assert.ok(
+          html.includes(`id="${callout.href.slice(1)}"`),
+          `${callout.href} points at an anchor nothing renders`,
+        );
       }
   });
 });
