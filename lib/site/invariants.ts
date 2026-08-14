@@ -68,4 +68,29 @@ export function assertInvariants(model: LeapModel, pages: Page[]): void {
         `duplicate element ids in ${p.path}: ${clashes.join(", ")}`,
       );
   }
+
+  // A 557-page reference fails by linking somewhere that was never emitted.
+  // Every href that is not a bare fragment, an external URL, or an asset must
+  // name a page in this build.
+  const built = new Set(pages.map((p) => p.path));
+  for (const p of pages) {
+    const dir = p.path.includes("/")
+      ? `${p.path.slice(0, p.path.lastIndexOf("/"))}/`
+      : "";
+    for (const [, raw] of p.html.matchAll(/href="([^"]+)"/g)) {
+      if (
+        raw.startsWith("#") ||
+        raw.startsWith("http") ||
+        raw.startsWith("mailto:") ||
+        raw.includes("assets/")
+      )
+        continue;
+      const path = raw.split("#")[0];
+      if (path === "") continue;
+      // Resolve "../" against the linking page's own directory.
+      const resolved = new URL(path, `http://x/${dir}`).pathname.slice(1);
+      if (!built.has(resolved))
+        throw new Error(`${p.path} links to ${resolved}, which is not built`);
+    }
+  }
 }

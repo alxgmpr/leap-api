@@ -75,6 +75,33 @@ describe("build invariants", () => {
       /duplicate element ids/,
     );
   });
+
+  test("a link to a page that does not exist fails the build", () => {
+    const model = buildModel();
+    assert.throws(
+      () =>
+        assertInvariants(model, [
+          {
+            path: "index.html",
+            html: `<html><a href="schema/Nope.html">x</a></html>`,
+          },
+        ]),
+      /schema\/Nope\.html/,
+    );
+  });
+
+  test("a link to a page that does exist passes", () => {
+    const model = buildModel();
+    assert.doesNotThrow(() =>
+      assertInvariants(model, [
+        {
+          path: "index.html",
+          html: `<html><a href="schema/Zone.html">x</a></html>`,
+        },
+        { path: "schema/Zone.html", html: "<html></html>" },
+      ]),
+    );
+  });
 });
 
 describe("generated site", () => {

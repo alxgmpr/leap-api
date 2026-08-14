@@ -29,7 +29,12 @@ const sections = [
 const pages: Page[] = [
   {
     path: "index.html",
-    html: page({ title: "Reference", nav: siteNav(model, ROOT_TOP), sections }),
+    html: page({
+      title: "Reference",
+      root: ROOT_TOP,
+      nav: siteNav(model, ROOT_TOP),
+      sections,
+    }),
   },
 ];
 
