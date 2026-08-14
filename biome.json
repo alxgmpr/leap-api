@@ -5,7 +5,8 @@
       "lib/**/*.ts",
       "tools/**/*.ts",
       "test/**/*.ts",
-      "site-src/**/*.js"
+      "site-src/**/*.js",
+      "!**/.claude"
     ],
     "ignoreUnknown": true
   },
