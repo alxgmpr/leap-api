@@ -27,17 +27,64 @@ dns-sd -B _lutron._tcp
 The advertised TXT record carries at least these fields
 (`$SRC/docs/protocols/leap/index.md`):
 
-| Field | Meaning |
-|---|---|
-| `MACADDR` | The device's MAC address. |
-| `CODEVER` | Firmware/code version. |
-| `SYSTYPE` | System type (distinguishes RA3/HWQS from Caseta from other product lines). |
-| `SERNUM` | Serial number. |
+| Field | Meaning | Observed value (RA3, 2026-08-14) |
+|---|---|---|
+| `MACADDR` | The device's MAC address. | `48:84:9d:18:b3:38` |
+| `CODEVER` | Firmware/code version. | `26.05.23f000` |
+| `SYSTYPE` | System type (distinguishes RA3/HWQS from Caseta from other product lines). | `RadioRa3Processor` |
+| `SERNUM` | Serial number. | `08676308` |
+| `DEVCLASS` | Device class code. | `081B0101` |
+| `CLAIM_STATUS` | Whether the processor is claimed to a Lutron account. | `Claimed` |
+| `FW_STATUS` | Firmware/lifecycle state. | `0:Rebooting` (during the reboot below) |
+| `NW_STATUS` | Network/cloud reachability. | `InternetWorking` |
+| `ST_STATUS` | System health. | `good` |
+
+The first four are the fields `$SRC` documents; all nine were **observed
+live** on the wire (`$SRC/data/session-2026-08-13/qsx-reboot.pcap`) — the RA3
+processor re-announcing on `_lutron._tcp.local` (and `_hap._tcp.local`, name
+"Lutron Processor", for HomeKit) as it rebooted. The `SRV` record points at
+**port 22**, matching the source note below that the advertisement's stated
+purpose is the SSH port, not LEAP:
 
 The source material notes the advertisement's stated purpose is to advertise
 an SSH port (legacy access, historically used on Caseta) rather than the LEAP
 TLS port directly — a client still needs to separately know or default to
 port 8081 for LEAP itself (`docs/protocol.md`).
+
+## Other multicast the processor emits (SDDP, SSDP)
+
+mDNS is not the only discovery channel a RA3 processor uses. A reboot capture
+(`$SRC/data/session-2026-08-13/qsx-reboot.pcap`, 2026-08-14) caught two more,
+both on the SSDP multicast group `239.255.255.250`:
+
+- **SDDP (Control4's Simple Device Discovery Protocol), UDP `:1902`.** On
+  shutdown the processor sends `NOTIFY OFFLINE SDDP/1.0`; on boot,
+  `NOTIFY ALIVE SDDP/1.0` with `Max-Age: 1800` and, notably, a **Control4
+  driver identity**:
+
+  ```
+  NOTIFY ALIVE SDDP/1.0
+  From: "10.1.9.2:1902"
+  Host: "Lutron-08676308"
+  Type: "lutron:lutron_radiora_3_processor"
+  Manufacturer: "Lutron"
+  Model: "RadioRA 3 Processor"
+  Driver: "lutron_leap_ra3_processor.c4z"
+  ```
+
+  This is how a Control4 controller discovers the processor — and the driver
+  name (`…_leap_ra3_processor.c4z`) says Control4 integrates it over LEAP.
+
+- **SSDP (UPnP) M-SEARCH, UDP `:1900`.** The processor itself searches for
+  `ST: urn:smartspeaker-audio:service:SpeakerGroup:1` (User-Agent
+  `Go-http-client/1.1`) — i.e. it is the SSDP *client* here, hunting smart
+  speakers, which lines up with the Sonos integration `Service.Type`
+  enumerates (`ServiceType.yaml`).
+
+Neither is LEAP, and neither is on port 2647. Which closes the McLEAP
+question this project carried: see `docs/protocol.md`'s Transports table —
+across that same reboot, nothing appeared on `239.255.255.255:2647` at all,
+and the processor never sourced a single 2647 datagram.
 
 ## Certificate provisioning per platform
 
