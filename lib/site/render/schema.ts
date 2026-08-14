@@ -102,7 +102,7 @@ ${
  * used to sit at the top of the single schemas section.
  */
 export function renderSchemaIndex(model: LeapModel): Section {
-  const html = `<h1 class="part">Schemas</h1>
+  const html = `<h2 class="part">Schemas</h2>
 <p class="lede">Each schema describes the <strong>unwrapped payload</strong> —
 the value under <code>Body</code>'s single key, not the wrapper around it.</p>
 <ul class="resource-grid">${model.schemas

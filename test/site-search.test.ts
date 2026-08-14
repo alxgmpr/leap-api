@@ -43,11 +43,28 @@ describe("search", () => {
     ]);
   });
 
-  test("a schema hit links to its own page, not an anchor", () => {
-    // Schemas split into their own pages in Task 4; every other kind still
-    // lives on index.html and keeps a bare in-page anchor.
-    const hit = index.find((e) => e.kind === "schema" && e.title === "Zone");
-    assert.equal(hit?.href, "schema/Zone.html");
+  test("every hit's href matches the shape the href module builds", () => {
+    // boot.js renders a hit as `${root}${hit.href}`, exactly like href.ts
+    // builds a cross-page link -- so every kind here must name its target
+    // page explicitly, the same way href.resource/operation/schema do, not
+    // a bare "#anchor" that only resolves by accident from index.html
+    // itself and never from any other page (schema pages, as of Task 4).
+    const resource = index.find(
+      (e) => e.kind === "resource" && e.title === "zone",
+    );
+    assert.equal(resource?.href, "index.html#resource-zone");
+
+    const operation = index.find(
+      (e) => e.kind === "operation" && e.title === "/zone/status",
+    );
+    assert.ok(operation?.href.startsWith("index.html#"));
+
+    const command = index.find((e) => e.kind === "command");
+    assert.equal(command?.href, "index.html#resource-zone");
+
+    // Schemas are the one kind with a page of their own as of Task 4.
+    const schema = index.find((e) => e.kind === "schema" && e.title === "Zone");
+    assert.equal(schema?.href, "schema/Zone.html");
   });
 
   test("finds an operation by its URL", () => {

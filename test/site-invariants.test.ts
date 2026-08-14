@@ -102,6 +102,61 @@ describe("build invariants", () => {
       ]),
     );
   });
+
+  test("a fragment missing from its target page fails the build", () => {
+    // The target page exists, but nothing on it carries this id -- exactly
+    // the case the plain page-existence check above cannot catch.
+    const model = buildModel();
+    assert.throws(
+      () =>
+        assertInvariants(model, [
+          {
+            path: "index.html",
+            html: `<html><a href="schema/Zone.html#nope">x</a></html>`,
+          },
+          {
+            path: "schema/Zone.html",
+            html: '<html><h1 id="schema-Zone"></h1></html>',
+          },
+        ]),
+      /schema\/Zone\.html#nope/,
+    );
+  });
+
+  test("a fragment present on its target page passes", () => {
+    const model = buildModel();
+    assert.doesNotThrow(() =>
+      assertInvariants(model, [
+        {
+          path: "index.html",
+          html: `<html><a href="schema/Zone.html#schema-Zone">x</a></html>`,
+        },
+        {
+          path: "schema/Zone.html",
+          html: '<html><h1 id="schema-Zone"></h1></html>',
+        },
+      ]),
+    );
+  });
+
+  test("a bare fragment is checked against the linking page's own ids", () => {
+    const model = buildModel();
+    assert.throws(
+      () =>
+        assertInvariants(model, [
+          { path: "index.html", html: '<a href="#nope">x</a>' },
+        ]),
+      /index\.html#nope/,
+    );
+    assert.doesNotThrow(() =>
+      assertInvariants(model, [
+        {
+          path: "index.html",
+          html: '<h2 id="overview"></h2><a href="#overview">x</a>',
+        },
+      ]),
+    );
+  });
 });
 
 describe("generated site", () => {

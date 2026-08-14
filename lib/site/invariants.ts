@@ -69,28 +69,55 @@ export function assertInvariants(model: LeapModel, pages: Page[]): void {
       );
   }
 
-  // A 557-page reference fails by linking somewhere that was never emitted.
-  // Every href that is not a bare fragment, an external URL, or an asset must
-  // name a page in this build.
+  // A 557-page reference fails two ways: linking somewhere that was never
+  // emitted, or linking at a fragment nothing on the target page carries as
+  // an id. Every href that is not an external URL or an asset must name a
+  // page in this build, and if it carries a fragment, that fragment must be
+  // one of that *target* page's own ids -- not just any id anywhere.
+  //
+  // Before R1, every cross-reference was a bare "#fragment" and the whole
+  // single-page document was one id space, so the fragment half went
+  // unchecked here on the assumption a same-page browser jump either lands
+  // or doesn't. After R1 almost every reference names its target page
+  // explicitly, so the id space is per page: a stale or mistyped fragment
+  // would otherwise still pass (the page it names exists), silently landing
+  // nowhere on that page.
   const built = new Set(pages.map((p) => p.path));
+  const idsByPage = new Map<string, Set<string>>(
+    pages.map((p) => [
+      p.path,
+      new Set(
+        [...p.html.matchAll(/ id="([^"]+)"/g)].map((m) => m[1] as string),
+      ),
+    ]),
+  );
   for (const p of pages) {
     const dir = p.path.includes("/")
       ? `${p.path.slice(0, p.path.lastIndexOf("/"))}/`
       : "";
     for (const [, raw] of p.html.matchAll(/href="([^"]+)"/g)) {
       if (
-        raw.startsWith("#") ||
         raw.startsWith("http") ||
         raw.startsWith("mailto:") ||
         raw.includes("assets/")
       )
         continue;
-      const path = raw.split("#")[0];
-      if (path === "") continue;
-      // Resolve "../" against the linking page's own directory.
-      const resolved = new URL(path, `http://x/${dir}`).pathname.slice(1);
-      if (!built.has(resolved))
-        throw new Error(`${p.path} links to ${resolved}, which is not built`);
+      const [rawPath, fragment] = raw.split("#") as [
+        string,
+        string | undefined,
+      ];
+      // A bare "#fragment" targets the linking page itself; anything else
+      // resolves "../" against that page's own directory.
+      const target =
+        rawPath === ""
+          ? p.path
+          : new URL(rawPath, `http://x/${dir}`).pathname.slice(1);
+      if (!built.has(target))
+        throw new Error(`${p.path} links to ${target}, which is not built`);
+      if (fragment !== undefined && !idsByPage.get(target)?.has(fragment))
+        throw new Error(
+          `${p.path} links to ${target}#${fragment}, which has no matching id`,
+        );
     }
   }
 }

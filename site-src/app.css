@@ -398,8 +398,10 @@ main {
 
 /* A part heading opens each reference tier: Recipes, Resources, Schemas,
    Coverage. Same weight as the old per-page h1, because that is what it
-   replaced. */
-h2.part {
+   replaced. Selector matches the class, not a level -- as each tier splits
+   into its own pages (Task 4 did Schemas) its heading promotes from h2 to
+   h1, and this rule should not need to move when that happens. */
+.part {
   font-family: var(--mono);
   font-size: var(--t-2xl);
   font-weight: var(--w-med);

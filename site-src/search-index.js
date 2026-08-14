@@ -7,25 +7,32 @@
 export function buildSearchIndex(model) {
   /** @type {SearchEntry[]} */
   const index = [];
+  // Every href below is root-relative -- the caller (boot.js) prefixes it
+  // with the current page's own root, the same way lib/site/href.ts builds
+  // links server-side. Resource, operation and command all still live on
+  // index.html, so their hrefs name that page explicitly rather than a bare
+  // "#anchor": a bare fragment only resolves from index.html itself, and a
+  // hit rendered from a schema page (or any later page once more tiers
+  // split) would otherwise point at a fragment on no page at all.
   for (const resource of model.resources) {
     index.push({
       kind: "resource",
       title: resource.name,
-      href: `#resource-${resource.name}`,
+      href: `index.html#resource-${resource.name}`,
     });
     for (const operation of resource.operations)
       index.push({
         kind: "operation",
         title: operation.url,
-        href: `#${operation.operationId || operation.url}`,
+        href: `index.html#${operation.operationId || operation.url}`,
       });
   }
   for (const schema of model.schemas)
     index.push({
       kind: "schema",
-      // Schemas are their own pages (schema/<Name>.html), not an anchor on
-      // this document -- unlike the other kinds below, which still live on
-      // index.html until their own tiers split.
+      // Schemas are their own pages (schema/<Name>.html) as of Task 4, not
+      // an anchor on index.html -- unlike the other kinds here, which still
+      // live there until their own tiers split.
       title: schema.name,
       href: `schema/${schema.name}.html`,
     });
@@ -36,7 +43,7 @@ export function buildSearchIndex(model) {
     index.push({
       kind: "command",
       title: row.commandType,
-      href: "#resource-zone",
+      href: "index.html#resource-zone",
     });
   return index;
 }
