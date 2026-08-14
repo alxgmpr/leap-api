@@ -59,6 +59,11 @@
   --w-med: 600;
   --w-bold: 700;
 
+  /* One radius. Boxes were rounding at 3px and 4px, and the boxes carrying a
+     left accent bar squared off their left corners to meet it -- so a panel's
+     shape depended on what was stuck to its side. */
+  --radius: 4px;
+
   /* ---------- surface: greyscale, strictly R=G=B ---------- */
   --paper: #fafafa;
   --panel: #ffffff;
@@ -227,7 +232,7 @@ button,
   width: 100%;
   padding: 6px 10px;
   border: 1px solid var(--rule);
-  border-radius: 4px;
+  border-radius: var(--radius);
   background: var(--panel);
   color: var(--ink);
   font-size: var(--t-base);
@@ -243,7 +248,7 @@ button,
   list-style: none;
   background: var(--panel);
   border: 1px solid var(--rule);
-  border-radius: 4px;
+  border-radius: var(--radius);
   box-shadow: 0 10px 30px rgb(0 0 0 / 14%);
   max-height: 60vh;
   overflow-y: auto;
@@ -254,7 +259,7 @@ button,
   justify-content: space-between;
   gap: 12px;
   padding: 5px 8px;
-  border-radius: 3px;
+  border-radius: var(--radius);
   text-decoration: none;
   color: var(--ink);
   font-size: var(--t-base);
@@ -302,7 +307,7 @@ button,
 .sidebar li a {
   display: block;
   padding: 2px 6px;
-  border-radius: 3px;
+  border-radius: var(--radius);
   text-decoration: none;
   color: var(--mute);
 }
@@ -458,7 +463,7 @@ h4 {
 
 .ct {
   border: 1px solid var(--rule);
-  border-radius: 3px;
+  border-radius: var(--radius);
   padding: 1px 6px;
 }
 
@@ -482,8 +487,9 @@ h4 {
 /* a warning at the point of use, deep-linked to the evidence */
 .callout {
   margin: 0 0 10px;
-  padding: 7px 12px;
-  border-left: 2px solid var(--live);
+  padding: 8px 12px;
+  border: 1px solid var(--live);
+  border-radius: var(--radius);
   background: var(--panel);
   color: var(--ink);
   font-size: var(--t-base);
@@ -501,8 +507,7 @@ h4 {
   padding: 9px 12px;
   background: var(--panel);
   border: 1px solid var(--rule);
-  border-left: 2px solid var(--ink);
-  border-radius: 0 4px 4px 0;
+  border-radius: var(--radius);
   font-size: var(--t-sm);
   line-height: 1.5;
   white-space: pre-wrap;
@@ -510,17 +515,15 @@ h4 {
   overflow-wrap: anywhere;
 }
 
-/* fidelity is a line weight, not another colour */
-.wire[data-fidelity="captured-frame"] {
-  border-left-color: var(--live);
-}
+/* Fidelity is still a line style rather than a colour, but it is now the
+   whole outline instead of a stripe down one side. Solid is a captured
+   frame; the line breaks up as the evidence does. */
 .wire[data-fidelity="captured-body"] {
-  border-left-color: var(--live);
-  border-left-style: dashed;
+  border-style: dashed;
 }
 .wire[data-fidelity="constructed"] {
-  border-left-color: var(--mute);
-  border-left-style: dotted;
+  border-style: dotted;
+  border-color: var(--mute);
 }
 
 .wire.body {
@@ -647,7 +650,7 @@ div.reply {
 .chip-unverified {
   color: var(--live);
   border: 1px solid currentcolor;
-  border-radius: 3px;
+  border-radius: var(--radius);
   padding: 0 5px;
 }
 
@@ -660,7 +663,7 @@ div.reply {
 .composer {
   padding: 12px;
   border: 1px dashed var(--rule);
-  border-radius: 4px;
+  border-radius: var(--radius);
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -682,7 +685,7 @@ div.reply {
   letter-spacing: var(--track-none);
   padding: 5px 8px;
   border: 1px solid var(--rule);
-  border-radius: 3px;
+  border-radius: var(--radius);
   background: var(--panel);
   color: var(--ink);
   max-width: 190px;
@@ -692,10 +695,10 @@ div.reply {
   flex-basis: 100%;
   font-size: var(--t-sm);
   padding: 9px 12px;
-  border-radius: 0 4px 4px 0;
+  border-radius: var(--radius);
   background: var(--panel);
-  border: 1px solid var(--rule);
-  border-left: 2px dotted var(--mute);
+  /* A composed line is constructed, so it takes the constructed outline. */
+  border: 1px dotted var(--mute);
   white-space: pre-wrap;
   word-break: break-all;
 }
@@ -721,7 +724,7 @@ button {
   font-size: var(--t-sm);
   padding: 5px 10px;
   border: 1px solid var(--rule);
-  border-radius: 3px;
+  border-radius: var(--radius);
   background: var(--panel);
   color: var(--ink);
   cursor: pointer;
@@ -778,7 +781,7 @@ button:disabled {
 .enum li code {
   padding: 2px 8px;
   border: 1px solid var(--rule);
-  border-radius: 3px;
+  border-radius: var(--radius);
   background: var(--panel);
   font-size: var(--t-sm);
 }
@@ -897,8 +900,7 @@ tr.required td:first-child {
 .prose pre {
   padding: 10px 12px;
   border: 1px solid var(--rule);
-  border-left: 2px solid var(--rule);
-  border-radius: 0 4px 4px 0;
+  border-radius: var(--radius);
   background: var(--panel);
   overflow-x: auto;
   font-size: var(--t-sm);
