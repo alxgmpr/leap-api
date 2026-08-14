@@ -1,67 +1,42 @@
 import assert from "node:assert/strict";
 import test, { describe } from "node:test";
+import { href, ROOT_NESTED } from "../lib/site/href.ts";
 import { buildModel } from "../lib/site/model.ts";
-import { renderSchemaSection } from "../lib/site/render/schema.ts";
+import {
+  renderSchemaIndex,
+  renderSchemaPage,
+} from "../lib/site/render/schema.ts";
 
-describe("schema section", () => {
+describe("schema pages", () => {
   const model = buildModel();
-  const section = renderSchemaSection(model);
-  const article = (name: string): string => {
-    const match = new RegExp(
-      `<article class="schema-article" id="schema-${name}">[\\s\\S]*?</article>`,
-    ).exec(section.html);
-    return match?.[0] ?? "";
-  };
+  const zone = model.schemas.find((s) => s.name === "ZoneStatus");
+  if (!zone) throw new Error("ZoneStatus missing from the model");
 
-  test("emits one article per schema", () => {
-    const count = (section.html.match(/class="schema-article"/g) ?? []).length;
-    assert.equal(count, model.schemas.length);
-    assert.ok(article("Zone"));
+  test("one page per schema, with its own h1", () => {
+    const section = renderSchemaPage(model, zone);
+    assert.equal(section.id, "schema-ZoneStatus");
+    assert.match(section.html, /<h1>ZoneStatus<\/h1>/);
   });
 
-  test("lists fields with types and required marks", () => {
-    const html = article("Zone");
-    assert.match(html, /Name/);
-    assert.match(html, /class="required"/);
-  });
-
-  test("marks a TODO field as not established", () => {
-    const html = article("Zone");
-    assert.match(html, /MaxWattageType[\s\S]{0,600}chip-not-established/);
-  });
-
-  test("shows observed values even where the member set is unestablished", () => {
-    // 18 of the 24 fields carrying x-observed-values also carry a TODO(enum).
-    // The chip reads not-established -- seeing a value does not bound a set --
-    // but the values themselves must still be on the page.
-    const found = model.schemas.find((s) =>
-      Object.values((s.node.properties ?? {}) as Record<string, unknown>).some(
-        (p) =>
-          Array.isArray((p as Record<string, unknown>)["x-observed-values"]),
-      ),
+  test("a type reference points at that type's page", () => {
+    const section = renderSchemaPage(model, zone);
+    assert.ok(
+      !section.html.includes('href="#schema-'),
+      "schema references must be page URLs, not anchors",
     );
-    assert.ok(found, "the bundle carries an x-observed-values key somewhere");
-    const html = article(found.name);
-    assert.match(html, /class="observed">observed: /);
   });
 
-  test("a deliberately-open type shows its observed values and reads confirmed", () => {
-    // ServiceType is the one closed enum hardware falsified -- it is now a
-    // bare string carrying x-observed-values at the schema level.
-    const html = article("ServiceType");
-    assert.match(html, /chip-confirmed/);
-    assert.match(html, /observed: .*Alexa/);
-    assert.match(html, /open <code>string<\/code>, not a closed set/);
+  test("the index links every schema", () => {
+    const index = renderSchemaIndex(model);
+    assert.equal(index.id, "schemas");
+    for (const s of model.schemas)
+      assert.ok(
+        index.html.includes(href.schema("", s.name)),
+        `${s.name} missing from the schema index`,
+      );
   });
 
-  test("links back to the operations that use it", () => {
-    const html = article("ZoneStatuses");
-    assert.match(html, /\/zone\/status/);
-  });
-
-  test("renders a collection wrapper as an array of its element type", () => {
-    const html = article("ZoneStatuses");
-    assert.match(html, /array of/);
-    assert.match(html, /#schema-ZoneStatus/);
+  test("href.schema resolves from a nested page", () => {
+    assert.equal(href.schema(ROOT_NESTED, "Zone"), "../schema/Zone.html");
   });
 });

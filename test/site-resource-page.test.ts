@@ -34,7 +34,7 @@ describe("resource sections", () => {
   test("marks subscribable operations and names the pushed schema", () => {
     assert.match(zone?.html ?? "", /class="sub">subscribable/);
     assert.match(zone?.html ?? "", /Subscribing pushes/);
-    assert.match(zone?.html ?? "", /#schema-ZoneStatus/);
+    assert.match(zone?.html ?? "", /href="schema\/ZoneStatus\.html"/);
   });
 
   test("carries one provenance mark per URL, not per verb", () => {
@@ -130,7 +130,7 @@ describe("resource sections", () => {
     // href. Before the unverified import there was no section to link to and
     // the edge rendered as "not documented here"; the import gave it one.
     const html = zone?.html ?? "";
-    assert.match(html, /href="#resource-countdowntimer"/);
+    assert.match(html, /href="index\.html#resource-countdowntimer"/);
   });
 
   test("an edge to a resource with no section at all is still not linked", () => {
@@ -144,7 +144,7 @@ describe("resource sections", () => {
             sections.find((s) => s.id === `resource-${resource.name}`)?.html ??
             "";
           assert.ok(
-            !html.includes(`href="#resource-${edge.target}"`),
+            !html.includes(`href="index.html#resource-${edge.target}"`),
             `${edge.schema}.${edge.property} links to a section that does not exist`,
           );
         }

@@ -107,39 +107,57 @@ describe("build invariants", () => {
 describe("generated site", () => {
   const files = walk("site").map((f) => f.replace(/\\/g, "/"));
 
-  test("is one document", () => {
-    assert.deepEqual(files, ["site/index.html"]);
+  // Task 4 splits schemas out of the single document: index.html plus one
+  // page per schema. Later tasks split resources, docs, recipes and coverage
+  // the same way.
+  test("emits index.html plus one page per schema", () => {
+    const model = buildModel();
+    assert.equal(files.length, model.schemas.length + 1);
+    assert.ok(files.includes("site/index.html"));
+    for (const entry of model.schemas)
+      assert.ok(
+        files.includes(`site/schema/${entry.name}.html`),
+        `schema/${entry.name}.html is missing`,
+      );
   });
 
-  test("every section of the scroll is present", () => {
+  test("every section still on index.html is present", () => {
     const html = readFileSync("site/index.html", "utf8");
     for (const anchor of [
       "overview",
       "doc-protocol",
       "recipes",
       "resource-zone",
-      "schema-Zone",
+      "schemas",
       "coverage",
     ])
       assert.ok(html.includes(`id="${anchor}"`), `#${anchor} is missing`);
   });
 
-  test("every internal link resolves to an anchor in the document", () => {
-    const html = readFileSync("site/index.html", "utf8");
-    const ids = new Set(
-      [...html.matchAll(/ id="([^"]+)"/g)].map((m) => m[1] as string),
-    );
-    const dead: string[] = [];
-    for (const match of html.matchAll(/href="#([^"]+)"/g))
-      if (!ids.has(match[1] as string)) dead.push(`#${match[1]}`);
-    assert.deepEqual(dead, []);
+  test("a schema page carries its own h1 and section anchor", () => {
+    const html = readFileSync("site/schema/Zone.html", "utf8");
+    assert.ok(html.includes('id="schema-Zone"'));
+    assert.match(html, /<h1>Zone<\/h1>/);
   });
 
-  test("no link points at a discrete page or a root-absolute path", () => {
+  test("every same-page anchor resolves within its own page", () => {
+    for (const file of files) {
+      const html = readFileSync(file, "utf8");
+      const ids = new Set(
+        [...html.matchAll(/ id="([^"]+)"/g)].map((m) => m[1] as string),
+      );
+      const dead: string[] = [];
+      for (const match of html.matchAll(/href="#([^"]+)"/g))
+        if (!ids.has(match[1] as string)) dead.push(`#${match[1]}`);
+      assert.deepEqual(dead, [], `${file} has dead same-page anchors`);
+    }
+  });
+
+  test("index.html links to schema pages by URL, not root-absolute", () => {
     const html = readFileSync("site/index.html", "utf8");
     assert.ok(
-      !/href="[^"#]*\.html/.test(html),
-      "a page link survived the move to one document",
+      /href="schema\/\w+\.html"/.test(html),
+      "a schema reference must be a page URL from index.html",
     );
     assert.ok(
       !html.includes('href="/'),

@@ -43,6 +43,13 @@ describe("search", () => {
     ]);
   });
 
+  test("a schema hit links to its own page, not an anchor", () => {
+    // Schemas split into their own pages in Task 4; every other kind still
+    // lives on index.html and keeps a bare in-page anchor.
+    const hit = index.find((e) => e.kind === "schema" && e.title === "Zone");
+    assert.equal(hit?.href, "schema/Zone.html");
+  });
+
   test("finds an operation by its URL", () => {
     const hits = filterIndex(index, "zone/status");
     assert.ok(hits.some((h) => h.title === "/zone/status"));

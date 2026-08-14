@@ -23,8 +23,11 @@ export function buildSearchIndex(model) {
   for (const schema of model.schemas)
     index.push({
       kind: "schema",
+      // Schemas are their own pages (schema/<Name>.html), not an anchor on
+      // this document -- unlike the other kinds below, which still live on
+      // index.html until their own tiers split.
       title: schema.name,
-      href: `#schema-${schema.name}`,
+      href: `schema/${schema.name}.html`,
     });
   // Every command is sent to a commandprocessor, and the zone one is the only
   // command processor any capture has exercised -- so that is where a

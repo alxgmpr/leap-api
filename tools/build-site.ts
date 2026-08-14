@@ -1,7 +1,7 @@
 import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { toClientModel } from "../lib/site/client-model.ts";
-import { ROOT_TOP } from "../lib/site/href.ts";
+import { href, ROOT_NESTED, ROOT_TOP } from "../lib/site/href.ts";
 import { assertInvariants } from "../lib/site/invariants.ts";
 import { buildModel } from "../lib/site/model.ts";
 import { renderCoverageSection } from "../lib/site/render/coverage.ts";
@@ -10,7 +10,10 @@ import { renderOverview, siteNav } from "../lib/site/render/home.ts";
 import { type Page, page } from "../lib/site/render/layout.ts";
 import { renderRecipeSections } from "../lib/site/render/recipes.ts";
 import { renderResourceSections } from "../lib/site/render/resource.ts";
-import { renderSchemaSection } from "../lib/site/render/schema.ts";
+import {
+  renderSchemaIndex,
+  renderSchemaPage,
+} from "../lib/site/render/schema.ts";
 
 const OUT = "site";
 
@@ -22,7 +25,7 @@ const sections = [
   ...renderDocSections(model),
   ...renderRecipeSections(model),
   ...renderResourceSections(model),
-  renderSchemaSection(model),
+  renderSchemaIndex(model),
   renderCoverageSection(model),
 ];
 
@@ -36,6 +39,16 @@ const pages: Page[] = [
       sections,
     }),
   },
+  ...model.schemas.map((entry) => ({
+    path: `schema/${entry.name}.html`,
+    html: page({
+      title: entry.name,
+      root: ROOT_NESTED,
+      nav: siteNav(model, ROOT_NESTED),
+      sections: [renderSchemaPage(model, entry)],
+      current: href.tier(ROOT_NESTED, "schemas"),
+    }),
+  })),
 ];
 
 assertInvariants(model, pages);
