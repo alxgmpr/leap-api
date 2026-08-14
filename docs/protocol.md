@@ -325,7 +325,29 @@ unobserved. Note also that
 the route table's face-value verb list overstates what a processor accepts:
 `CreateRequest /virtualbutton` is refused `405` on this unit despite the
 firmware table flagging the route CREATE-capable, and `/timeclock` itself is
-GET-only (a timeclock is not LEAP-creatable; a timeclock *event* is). The
+GET-only (a timeclock is not LEAP-creatable; a timeclock *event* is). Three
+more CREATE-flagged routes were tried directly in the 2026-08-14 session
+(`$SRC/data/session-2026-08-14/`) and none round-tripped, so the creatable
+surface confirmed on the wire is still just `timeclockevent` and
+`countdowntimer`:
+
+- **`/sequence`** answers `500 InternalServerError` on **both** platforms once
+  the body is well-formed. Getting there is itself a schema correction: the
+  firmware carries a distinct `SequenceCreate` type (not the `Sequence` read
+  type), and the live validator enforces it — a create needs `StepCount` and a
+  `Steps` array of `{Name, SortOrder}`, where `SortOrder` is **1-indexed** and
+  must fall in `1..StepCount` (`"SortOrder must be between 1 and StepCount,
+  inclusive"`). A body satisfying all of that still `500`s, so a sequence is
+  not creatable through this route on either the QSX or Caseta firmware here.
+- **`/area/{id}/areascene`** answers `405 MethodNotAllowed` ("This request is
+  not supported") on both platforms — the areascene collection is GET-only, so
+  scenes are not created by posting to it, even though the QSX office area's
+  collection is populated.
+- **`/preset/{id}/dimmedlevelassignment`** answers `400`: `FadeTime` is
+  required (the read schema marks it optional), and a body carrying it is still
+  rejected `"One or more parameters were invalid"`. No preset anywhere on the
+  processor carries a `dimmedlevelassignment` to copy a known-good body from,
+  so the exact accepted shape is unresolved. The
 same holds for `UpdateRequest` **on QSX**: handed a zone's own read body
 straight back, `UpdateRequest /zone/{id}` is refused `400` — so the table's
 `UPDATE` verb on `/zone/{id}` does not mean the zone accepts its detail body as
