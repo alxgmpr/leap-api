@@ -1,10 +1,11 @@
-# leap-openapi
+# leap-api
 
-An unofficial OpenAPI 3.1 reference for Lutron LEAP (Lutron Extensible
-Application Protocol) — the JSON protocol RA3/HWQS processors and Caseta
-bridges speak over mutual-TLS port 8081. Built from a firmware route and
-type extraction cross-checked against roughly 5,000 requests of probe
-traffic captured on live RA3 and Caseta hardware.
+An unofficial reference for Lutron LEAP (Lutron Extensible Application
+Protocol) — the JSON protocol RA3/HWQS processors and Caseta bridges speak
+over mutual-TLS port 8081. Built from a firmware route and type extraction
+cross-checked against roughly 5,000 requests of probe traffic captured on
+live RA3 and Caseta hardware, and published as a browsable site
+(<https://alxgmpr.github.io/leap-api/>) and an OpenAPI 3.1 document.
 
 **Not affiliated with, endorsed by, or reviewed by Lutron Electronics.**
 Behavior was observed on specific firmware builds and may differ on others.
