@@ -101,7 +101,12 @@ of push evidence of its own, and a section below.
    points at. On the wire they arrive as:
    - `CommuniqueType: "ReadResponse"` — **not** `SubscribeResponse`, and not
      a distinct push communique type. See `docs/protocol.md`'s
-     "The 14 CommuniqueTypes."
+     "The 14 CommuniqueTypes." This holds for the status-snapshot pushes
+     (`ZoneStatus`, `AreaStatus`, `DeviceStatus`) this section is built on,
+     but is **not** universal across resource types: a `/button/{id}/status/event`
+     subscription pushes as `CommuniqueType: "UpdateResponse"` instead — see
+     "Button events" below. What is invariant is the negative: a push is never
+     a `SubscribeResponse` and never a bespoke push communique type.
    - `Header.StatusCode: "200 OK"` and `Header.Url` echoing the subscribed
      URL exactly (`/zone/status`, `/area/1340/status`).
    - `Header.ClientTag` **equal to the originating `SubscribeRequest`'s
@@ -619,6 +624,67 @@ This is also where `DiscoveryMechanism` gets its first observed value,
 `UserInteraction` — one observation, so `DeviceHeard.yaml` keeps the field an
 open string.
 
+## Button events: the push that names the control
+
+Every push above reports a resource's *state* (a zone's level, an area's
+status, a device heard). A button does not have a level to report; it has
+*events* — press, release — and those ride a different subscription with a
+different shape. Captured live on the Caseta bench Pico (`/device/2`, a
+`Pico3ButtonRaiseLower`, buttons `/button/101`–`/button/105`),
+`$SRC/data/session-2026-08-14/button-events-caseta.json`, 2026-08-14:
+
+- **The route is subscribable but undocumented.** `SubscribeRequest
+  /button/101/status/event` answers `SubscribeResponse 204 NoContent` — and,
+  unlike a `/zone/status` subscribe, **no initial-state frame** (a button has
+  no current event to snapshot). The firmware route extraction has no marker
+  for this URL at all: `vendor/leap-routes.json`'s button routes stop at
+  `/button/{id}`, with no `/status` or `/status/event` child, so like
+  `/device/status/deviceheard` it is a route no read sweep could have found.
+
+- **A programmatic press is a usable stand-in for a finger.** Rather than
+  physically pressing the Pico, a `CreateRequest /button/101/commandprocessor`
+  with body `{"Command": {"CommandType": "PressAndRelease"}}` was sent. It
+  answered `CreateResponse 204 NoContent` — **bare, no body**, distinct from a
+  *zone* command's `201 Created` / `OneZoneStatus` (see `docs/protocol.md`'s
+  `CommandResponse` row) — and it produced real event pushes, so the command
+  path exercises the same event surface a physical press would.
+
+- **The push is an `UpdateResponse`, not a `ReadResponse`.** Two frames
+  arrived on the subscription's own `ClientTag` (confirming the tag rule holds
+  here too), ~15 ms apart, each `CommuniqueType: UpdateResponse`,
+  `StatusCode: 200 OK`, `MessageBodyType: OneButtonStatusEvent`,
+  `Url: /button/101/status/event`:
+
+  ```json
+  { "ButtonStatus": { "Button": { "href": "/button/101" },
+                      "ButtonEvent": { "EventType": "Press" } } }
+  { "ButtonStatus": { "Button": { "href": "/button/101" },
+                      "ButtonEvent": { "EventType": "Release" } } }
+  ```
+
+  So one `PressAndRelease` yields a `Press` then a `Release`. This is the one
+  push in the corpus whose body **names the control that acted**
+  (`Button.href`) — and the reason the "which button" gap above is only
+  half-closed: it names the button to a client subscribed to *that button's*
+  event route, and says nothing about the `/zone/status` push a level-watcher
+  sees. The body is a pure event delta — the event and nothing else, no button
+  snapshot — consistent with the delta rule.
+
+- **`EventType` gets two observed members.** `ButtonEvent.yaml` carries
+  `EventType` as an un-recovered TODO enum (the firmware extraction emits no
+  enum members); `Press` and `Release` are now observed on the wire. A Pico
+  press-and-release is the minimal gesture, so holds and double-taps — which
+  the RA3 keypad account (`ra3-keypad-press`) mentions but never subscribed to
+  a button to capture — may add further members; the pair is a lower bound.
+
+The push arriving as `UpdateResponse` is the load-bearing surprise: the
+Lifecycle section above documents status pushes as `ReadResponse`, and that is
+still true for them, but the communique type is **not** uniform across
+subscribable resources. A client dispatching pushes must key on
+`Header.ClientTag` (which resource/subscription) and `MessageBodyType` (what
+shape), not on the communique type, which varies `ReadResponse` vs
+`UpdateResponse` by what is being reported.
+
 ## What this still does not establish
 
 - **Which non-LEAP origins.** A change originating outside this client is now
@@ -633,8 +699,12 @@ open string.
   this entry: three Caseta connections are committed in
   `fixtures/push-experiments.json`, two of them carrying pushes.
 - **Which button, on any platform.** `/zone/status` push bodies name zones and
-  nothing else. Whether some other subscribable route reports the control that
-  acted is untested — no capture here subscribes to one.
+  nothing else. A different route *does* report the control that acted, now
+  that one has been subscribed: `/button/{id}/status/event` pushes a body whose
+  `Button.href` names the button — see "Button events" below. That does not
+  change what a `/zone/status` push carries, though: a client watching zones
+  still cannot attribute a level change to a button from the zone push alone;
+  it would have to subscribe to the button's own event route as well.
 - **Whether a hold really does not stream.** The 1601 ms floor on inter-push
   gaps is strong evidence against live ramp reporting, but it is the absence
   of frames, and the run does not label which presses were holds. A run that
