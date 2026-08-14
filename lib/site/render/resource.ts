@@ -5,6 +5,7 @@ import type { LeapModel, Operation, Resource } from "../model.ts";
 import type { Provenance } from "../provenance.ts";
 import { timelineFor } from "../timelines.ts";
 import { renderReply, renderWire } from "./highlight.ts";
+import { resourceGrid } from "./home.ts";
 import { esc } from "./html.ts";
 import type { Section } from "./layout.ts";
 import { renderMarkdown, splitInjectedTable } from "./markdown.ts";
@@ -269,18 +270,14 @@ ${[...byUrl.entries()]
 /**
  * The resources tier index: its own page (Task 5), carrying the evidence
  * legend once and a grid linking every resource with its operation count --
- * the same `.resource-grid` markup the overview's "Resources" section uses.
+ * the same `.resource-grid` markup the overview's "Resources" section uses,
+ * via the shared `resourceGrid` helper.
  */
 export function renderResourceIndex(model: LeapModel): Section {
   const html = `<h1 class="part">Resources</h1>
 <p class="lede">Every addressable URL, grouped by its first path segment, with
 the frames a client writes and the replies hardware gave.</p>
 <p class="legend"><span><span class="dot live">●</span> answered on hardware</span><span><span class="dot">○</span> not observed</span><span>→ you write · ← you read</span></p>
-<ul class="resource-grid">${model.resources
-    .map(
-      (r) =>
-        `<li><a href="${esc(href.resource(ROOT_TOP, r.name))}">${esc(r.name)}</a> <span class="count">${r.operations.length}</span></li>`,
-    )
-    .join("")}</ul>`;
+<ul class="resource-grid">${resourceGrid(model, ROOT_TOP)}</ul>`;
   return { id: "resources", html };
 }

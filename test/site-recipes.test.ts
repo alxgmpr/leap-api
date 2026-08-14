@@ -2,8 +2,11 @@ import assert from "node:assert/strict";
 import test, { describe } from "node:test";
 import { buildModel } from "../lib/site/model.ts";
 import { RECIPES } from "../lib/site/recipes.ts";
-import { renderCoverageSection } from "../lib/site/render/coverage.ts";
-import { renderRecipeSections } from "../lib/site/render/recipes.ts";
+import { renderCoveragePage } from "../lib/site/render/coverage.ts";
+import {
+  renderRecipeIndex,
+  renderRecipePage,
+} from "../lib/site/render/recipes.ts";
 import {
   classifyRoutes,
   readRoutes,
@@ -31,24 +34,26 @@ describe("recipes", () => {
         );
   });
 
-  test("renders an index and a section per recipe", () => {
-    const sections = renderRecipeSections(model);
-    assert.equal(sections.length, RECIPES.length + 1);
-    assert.ok(sections.some((s) => s.id === "recipes"));
+  test("renders an index and a page per recipe", () => {
+    const index = renderRecipeIndex(model);
+    assert.equal(index.id, "recipes");
+    const pages = RECIPES.map((recipe) => renderRecipePage(model, recipe));
+    assert.equal(pages.length, RECIPES.length);
+    assert.ok(pages.every((p, i) => p.id === `recipe-${RECIPES[i]?.slug}`));
   });
 
   test("the turn-on-a-light recipe shows the observed 201 reply", () => {
-    const sections = renderRecipeSections(model);
-    const html =
-      sections.find((s) => s.id.includes("turn-on-a-light"))?.html ?? "";
+    const recipe = RECIPES.find((r) => r.slug === "turn-on-a-light");
+    assert.ok(recipe);
+    const html = renderRecipePage(model, recipe).html;
     assert.match(html, /201 Created/);
     assert.match(html, /captured-frame/);
   });
 
   test("the subscribe recipe shows a push arriving on the subscription's tag", () => {
-    const sections = renderRecipeSections(model);
-    const html =
-      sections.find((s) => s.id.includes("watch-for-changes"))?.html ?? "";
+    const recipe = RECIPES.find((r) => r.slug === "watch-for-changes");
+    assert.ok(recipe);
+    const html = renderRecipePage(model, recipe).html;
     assert.match(html, /lt-18/);
     assert.match(html, /ReadResponse/);
   });
@@ -58,7 +63,7 @@ describe("coverage section", () => {
   const model = buildModel();
 
   test("states the uncovered counts plainly", () => {
-    const html = renderCoverageSection(model).html;
+    const html = renderCoveragePage(model).html;
     assert.match(html, /no 200 capture/);
     assert.match(
       html,
@@ -71,7 +76,7 @@ describe("coverage section", () => {
   // literal is what keeps it honest -- a number typed here would drift the same
   // way the page's did.
   test("the route accounting is derived, not typed", () => {
-    const html = renderCoverageSection(model).html;
+    const html = renderCoveragePage(model).html;
     // Refined tier only: an imported path does not cover its own firmware
     // route. Classified against every bundled path instead, this reports 0
     // uncovered -- near-total coverage of a surface nobody has verified.
@@ -90,7 +95,7 @@ describe("coverage section", () => {
   });
 
   test("the page and the burndown count the same way", () => {
-    const html = renderCoverageSection(model).html;
+    const html = renderCoveragePage(model).html;
     const last = model.history[model.history.length - 1];
     if (!last) return; // no history file in this checkout
     assert.match(

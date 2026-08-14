@@ -8,10 +8,10 @@
  * It is threaded through from the start so that switching a reference from an
  * in-page anchor to a page URL is a one-line change here, not a hunt.
  *
- * Docs, recipes and coverage still live entirely on index.html, so their
- * hrefs point at `${root}index.html#anchor` -- correct from both the top
- * level and a nested page. `schema` (Task 4) and `resource`/`operation`
- * (Task 5) resolve to real page URLs; recipes and coverage follow in Task 6.
+ * Every kind of reference now resolves to a real page URL: `schema` (Task 4),
+ * `resource`/`operation` (Task 5), and `doc`/`recipe`/the `recipes` and
+ * `coverage` tiers (Task 6). Nothing points at an anchor on index.html
+ * anymore -- index.html is just the overview.
  */
 
 /** Prefix for a page at the site root. */
@@ -26,11 +26,8 @@ export const href = {
     return `${root}index.html`;
   },
   tier(root: string, name: TierName): string {
-    // Resources and schemas are their own top-level pages; recipes and
-    // coverage still live as sections of index.html until Task 6.
-    return name === "resources" || name === "schemas"
-      ? `${root}${name}.html`
-      : `${root}index.html#${name}`;
+    // Every tier is now its own top-level page.
+    return `${root}${name}.html`;
   },
   resource(root: string, name: string): string {
     return `${root}resource/${name}.html`;
@@ -42,12 +39,12 @@ export const href = {
     return `${root}schema/${name}.html`;
   },
   doc(root: string, slug: string): string {
-    return `${root}index.html#doc-${slug}`;
+    return `${root}docs/${slug}.html`;
   },
-  docHeading(root: string, _slug: string, headingId: string): string {
-    return `${root}index.html#${headingId}`;
+  docHeading(root: string, slug: string, headingId: string): string {
+    return `${root}docs/${slug}.html#${headingId}`;
   },
   recipe(root: string, slug: string): string {
-    return `${root}index.html#recipe-${slug}`;
+    return `${root}recipe/${slug}.html`;
   },
 };

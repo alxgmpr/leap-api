@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import test, { describe } from "node:test";
 
 describe("built site", () => {
@@ -25,5 +25,24 @@ describe("built site", () => {
 
   test("ships the model for the client-side enhancements", () => {
     assert.ok(existsSync("site/model.json"));
+  });
+
+  test("every tier has its own page on disk", () => {
+    for (const path of [
+      "site/index.html",
+      "site/resources.html",
+      "site/schemas.html",
+      "site/recipes.html",
+      "site/coverage.html",
+      "site/docs/protocol.html",
+      "site/resource/zone.html",
+      "site/schema/ZoneStatus.html",
+    ])
+      assert.ok(existsSync(path), `${path} missing`);
+  });
+
+  test("no page is anywhere near the old single-document weight", () => {
+    assert.ok(statSync("site/index.html").size < 60_000);
+    assert.ok(statSync("site/schema/ZoneStatus.html").size < 60_000);
   });
 });

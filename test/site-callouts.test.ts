@@ -44,20 +44,28 @@ describe("callouts", () => {
 
   test("every callout anchor resolves in the built site", () => {
     // calloutsFor is only ever rendered onto a resource page, one directory
-    // below index.html -- so every href here must cross back up via "../",
-    // not a bare "#anchor" that would only resolve by accident.
-    const html = readFileSync("site/index.html", "utf8");
+    // below the docs/ pages it links into -- so every href here must cross
+    // back up via "../docs/<slug>.html", not a bare "#anchor" that would
+    // only resolve by accident, and the fragment must be a real id on that
+    // doc's own page (Task 6 gave every doc its own page).
+    const pageCache = new Map<string, string>();
     for (const op of operations)
       for (const callout of calloutsFor(op)) {
-        assert.ok(
-          callout.href.startsWith("../index.html#"),
-          `${callout.href} is not a cross-page anchor into index.html`,
+        assert.match(
+          callout.href,
+          /^\.\.\/docs\/[\w-]+\.html/,
+          `${callout.href} is not a cross-page link into docs/`,
         );
-        const fragment = callout.href.split("#")[1];
-        assert.ok(
-          html.includes(`id="${fragment}"`),
-          `${callout.href} points at an anchor nothing renders`,
-        );
+        const [target, fragment] = callout.href.slice("../".length).split("#");
+        const html =
+          pageCache.get(target as string) ??
+          readFileSync(`site/${target}`, "utf8");
+        pageCache.set(target as string, html);
+        if (fragment !== undefined)
+          assert.ok(
+            html.includes(`id="${fragment}"`),
+            `${callout.href} points at an anchor nothing renders`,
+          );
       }
   });
 });

@@ -15,22 +15,22 @@ describe("href", () => {
     );
   });
 
-  test("resources and schemas are top-level tier pages; recipes and coverage stay on index.html", () => {
+  test("every tier is its own top-level page", () => {
     assert.equal(href.tier(ROOT_TOP, "resources"), "resources.html");
     assert.equal(href.tier(ROOT_TOP, "schemas"), "schemas.html");
-    assert.equal(href.tier(ROOT_TOP, "recipes"), "index.html#recipes");
-    assert.equal(href.tier(ROOT_TOP, "coverage"), "index.html#coverage");
+    assert.equal(href.tier(ROOT_TOP, "recipes"), "recipes.html");
+    assert.equal(href.tier(ROOT_TOP, "coverage"), "coverage.html");
   });
 
   test("docs, recipes and tiers", () => {
-    assert.equal(href.doc(ROOT_TOP, "protocol"), "index.html#doc-protocol");
+    assert.equal(href.doc(ROOT_TOP, "protocol"), "docs/protocol.html");
     assert.equal(
       href.docHeading(ROOT_TOP, "protocol", "the-envelope"),
-      "index.html#the-envelope",
+      "docs/protocol.html#the-envelope",
     );
     assert.equal(
       href.recipe(ROOT_TOP, "turn-on-a-light"),
-      "index.html#recipe-turn-on-a-light",
+      "recipe/turn-on-a-light.html",
     );
     assert.equal(href.overview(ROOT_TOP), "index.html");
   });
@@ -41,5 +41,16 @@ describe("href", () => {
     assert.equal(href.overview(ROOT_NESTED), "../index.html");
     assert.equal(href.tier(ROOT_NESTED, "resources"), "../resources.html");
     assert.equal(href.tier(ROOT_NESTED, "schemas"), "../schemas.html");
+    assert.equal(href.tier(ROOT_NESTED, "recipes"), "../recipes.html");
+    assert.equal(href.tier(ROOT_NESTED, "coverage"), "../coverage.html");
+    assert.equal(href.doc(ROOT_NESTED, "protocol"), "../docs/protocol.html");
+    assert.equal(
+      href.docHeading(ROOT_NESTED, "protocol", "the-envelope"),
+      "../docs/protocol.html#the-envelope",
+    );
+    assert.equal(
+      href.recipe(ROOT_NESTED, "turn-on-a-light"),
+      "../recipe/turn-on-a-light.html",
+    );
   });
 });

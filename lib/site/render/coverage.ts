@@ -5,7 +5,13 @@ import { renderBurndown } from "./burndown.ts";
 import { esc } from "./html.ts";
 import type { Section } from "./layout.ts";
 
-export function renderCoverageSection(model: LeapModel): Section {
+/**
+ * The coverage tier: its own page (Task 6). Headings are promoted one level
+ * from the shared-document form (h2 -> h1, h3 -> h2, h4 -> h3) -- this page
+ * owns its own heading hierarchy outright, the same promotion every other
+ * tier index and entity page makes.
+ */
+export function renderCoveragePage(model: LeapModel): Section {
   const { coverage } = model;
   const operations = model.resources.reduce(
     (n, r) => n + r.operations.length,
@@ -32,7 +38,7 @@ export function renderCoverageSection(model: LeapModel): Section {
   const notCovered = summary.uncovered + summary["uncovered-path-in-doubt"];
   const refinedDirectly = firmwareRoutes - represented - notCovered;
 
-  const main = `<h2 class="part">Coverage</h2>
+  const main = `<h1 class="part">Coverage</h1>
 <p class="lede">A route absent from this reference may not exist, or may just
 not be written up. These numbers tell the two apart.</p>
 
@@ -73,7 +79,7 @@ the firmware extraction never recovered.</dd>
 whose response shape is not established.</dd>
 </dl>
 
-<h3>What the firmware route table has, and in what state</h3>
+<h2>What the firmware route table has, and in what state</h2>
 <p>The extraction recovered ${firmwareRoutes} route templates. Every one of
 them is now represented here except ${summary["uncovered-path-in-doubt"]},
 whose paths cannot be written down without guessing — but
@@ -116,13 +122,13 @@ importing one would mean guessing the path before guessing the shape.</dd>
     .join("")}</ul>
 </details>
 
-<h3>Why the imported tier stays labelled</h3>
+<h2>Why the imported tier stays labelled</h2>
 <p>Hand-refining a path family or schema means cross-referencing captures,
 correcting mislabels, and trimming <code>required</code> to what was observed.
 The imported tier has had none of that done to it, so it is labelled on every
 page it appears on.</p>
 
-<h3>Paths with no 200 capture</h3>
+<h2>Paths with no 200 capture</h2>
 <p>Every one of the ${coverage.specWithoutFixture.length} falls into one reason
 below. The <strong>structural</strong> reasons can never answer a GET 200 by
 route design — a write verb, a paging projection, a push route, a setup
@@ -135,7 +141,7 @@ ${groupNoFixture(coverage.specWithoutFixture)
     ({
       reason,
       paths,
-    }) => `<h4>${esc(reason.label)} · ${paths.length} <span class="meta">(${reason.kind})</span></h4>
+    }) => `<h3>${esc(reason.label)} · ${paths.length} <span class="meta">(${reason.kind})</span></h3>
 <p class="meta">${esc(reason.blurb)}</p>
 <ul class="nofixture">${paths
       .map((path) => `<li><code>${esc(path)}</code></li>`)

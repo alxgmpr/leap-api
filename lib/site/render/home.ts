@@ -25,6 +25,21 @@ export function siteNav(model: LeapModel, root: string): NavItem[] {
   ];
 }
 
+/**
+ * The `.resource-grid` `<li>` list: every resource, linked, with its
+ * operation count. Shared by the overview's "Resources" section and
+ * `renderResourceIndex` -- the two were a byte-identical template kept in
+ * sync by hand.
+ */
+export function resourceGrid(model: LeapModel, root: string): string {
+  return model.resources
+    .map(
+      (r) =>
+        `<li><a href="${esc(href.resource(root, r.name))}">${esc(r.name)}</a> <span class="count">${r.operations.length}</span></li>`,
+    )
+    .join("");
+}
+
 export function renderOverview(model: LeapModel): Section {
   // The most informative real frame available: a captured response with a body.
   const session = model.frameLogs.find((log) => log.id === "push-probe");
@@ -86,12 +101,7 @@ ${
 
 <h2>Resources</h2>
 <ul class="resource-grid">
-${model.resources
-  .map(
-    (r) =>
-      `<li><a href="${esc(href.resource(ROOT_TOP, r.name))}">${esc(r.name)}</a> <span class="count">${r.operations.length}</span></li>`,
-  )
-  .join("")}
+${resourceGrid(model, ROOT_TOP)}
 </ul>`;
 
   return { id: "overview", html };

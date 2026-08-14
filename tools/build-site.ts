@@ -4,11 +4,15 @@ import { toClientModel } from "../lib/site/client-model.ts";
 import { href, ROOT_NESTED, ROOT_TOP } from "../lib/site/href.ts";
 import { assertInvariants } from "../lib/site/invariants.ts";
 import { buildModel } from "../lib/site/model.ts";
-import { renderCoverageSection } from "../lib/site/render/coverage.ts";
-import { renderDocSections } from "../lib/site/render/docs.ts";
+import { RECIPES } from "../lib/site/recipes.ts";
+import { renderCoveragePage } from "../lib/site/render/coverage.ts";
+import { renderDocPage } from "../lib/site/render/docs.ts";
 import { renderOverview, siteNav } from "../lib/site/render/home.ts";
 import { type Page, page } from "../lib/site/render/layout.ts";
-import { renderRecipeSections } from "../lib/site/render/recipes.ts";
+import {
+  renderRecipeIndex,
+  renderRecipePage,
+} from "../lib/site/render/recipes.ts";
 import {
   renderResourceIndex,
   renderResourcePage,
@@ -22,16 +26,9 @@ const OUT = "site";
 
 const model = buildModel();
 
-// One document, one scroll: narrative first, then the tiers still awaiting
-// their own split (docs, recipes, coverage -- Task 6). Resources and schemas
-// have their own pages as of Tasks 4 and 5.
-const sections = [
-  renderOverview(model),
-  ...renderDocSections(model),
-  ...renderRecipeSections(model),
-  renderCoverageSection(model),
-];
-
+// Every narrative doc, every recipe, and coverage now has its own page
+// (Task 6) -- the same one-page-per-entity shape Tasks 4 and 5 gave schemas
+// and resources. index.html carries only the overview.
 const pages: Page[] = [
   {
     path: "index.html",
@@ -39,7 +36,8 @@ const pages: Page[] = [
       title: "Reference",
       root: ROOT_TOP,
       nav: siteNav(model, ROOT_TOP),
-      sections,
+      sections: [renderOverview(model)],
+      current: href.overview(ROOT_TOP),
     }),
   },
   {
@@ -62,6 +60,46 @@ const pages: Page[] = [
       current: href.tier(ROOT_TOP, "schemas"),
     }),
   },
+  {
+    path: "recipes.html",
+    html: page({
+      title: "Recipes",
+      root: ROOT_TOP,
+      nav: siteNav(model, ROOT_TOP),
+      sections: [renderRecipeIndex(model)],
+      current: href.tier(ROOT_TOP, "recipes"),
+    }),
+  },
+  {
+    path: "coverage.html",
+    html: page({
+      title: "Coverage",
+      root: ROOT_TOP,
+      nav: siteNav(model, ROOT_TOP),
+      sections: [renderCoveragePage(model)],
+      current: href.tier(ROOT_TOP, "coverage"),
+    }),
+  },
+  ...model.docs.map((doc) => ({
+    path: `docs/${doc.slug}.html`,
+    html: page({
+      title: doc.title,
+      root: ROOT_NESTED,
+      nav: siteNav(model, ROOT_NESTED),
+      sections: [renderDocPage(model, doc)],
+      current: href.doc(ROOT_NESTED, doc.slug),
+    }),
+  })),
+  ...RECIPES.map((recipe) => ({
+    path: `recipe/${recipe.slug}.html`,
+    html: page({
+      title: recipe.title,
+      root: ROOT_NESTED,
+      nav: siteNav(model, ROOT_NESTED),
+      sections: [renderRecipePage(model, recipe)],
+      current: href.tier(ROOT_NESTED, "recipes"),
+    }),
+  })),
   ...model.resources.map((resource) => ({
     path: `resource/${resource.name}.html`,
     html: page({
@@ -98,6 +136,4 @@ writeFileSync(
   JSON.stringify(toClientModel(model)),
   "utf8",
 );
-console.log(
-  `built ${pages.length} page (${sections.length} sections) into ${OUT}/`,
-);
+console.log(`built ${pages.length} pages into ${OUT}/`);

@@ -1,21 +1,22 @@
 import assert from "node:assert/strict";
 import test, { describe } from "node:test";
 import { buildModel } from "../lib/site/model.ts";
-import { headingAnchors, renderDocSections } from "../lib/site/render/docs.ts";
+import { headingAnchors, renderDocPage } from "../lib/site/render/docs.ts";
 
 describe("narrative doc pages", () => {
   const model = buildModel();
-  const sections = renderDocSections(model);
+  const pages = model.docs.map((doc) => renderDocPage(model, doc));
 
-  test("emits one section per narrative doc", () => {
-    assert.equal(sections.length, 5);
-    assert.ok(sections.some((s) => s.id === "doc-protocol"));
+  test("emits one page per narrative doc", () => {
+    assert.equal(pages.length, 5);
+    assert.ok(pages.some((p) => p.id === "doc-protocol"));
   });
 
   test("renders markdown to HTML", () => {
-    const html = sections.find((s) => s.id === "doc-protocol")?.html ?? "";
-    // Headings demote one level in the single-page scroll: `##` renders h3.
-    assert.match(html, /<h3 id="the-envelope">/);
+    const html = pages.find((p) => p.id === "doc-protocol")?.html ?? "";
+    // Each doc is now its own page (Task 6) and owns its heading hierarchy
+    // outright, so no demotion: `##` renders h2.
+    assert.match(html, /<h2 id="the-envelope">/);
     assert.match(html, /<table>/);
   });
 
@@ -41,7 +42,7 @@ describe("narrative doc pages", () => {
   });
 
   test("builds a table of contents whose links resolve to rendered ids", () => {
-    const html = sections.find((s) => s.id === "doc-subscriptions")?.html ?? "";
+    const html = pages.find((p) => p.id === "doc-subscriptions")?.html ?? "";
     assert.match(html, /class="toc"/);
     const targets = [...html.matchAll(/<a href="#([^"]+)"/g)].map((m) => m[1]);
     assert.ok(targets.length > 5);

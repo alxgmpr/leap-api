@@ -9,6 +9,9 @@
  * Stacked into one total they would draw a line that climbs while the project
  * improves, which is the opposite of what a reader should take away, so they
  * are drawn beside each other instead of on top of each other.
+ *
+ * Only ever embedded in the coverage page (Task 6), one level under its own
+ * h1 -- headings here start at h2 to match.
  */
 import { stackedArea } from "../chart.ts";
 import type { LeapModel } from "../model.ts";
@@ -77,10 +80,10 @@ export function renderBurndown(model: LeapModel): string {
       compact: true,
       caption: `${series.label} — ${series.note}`,
     });
-    return `<div class="multiple"><h4>${esc(series.label)} <span class="count">${series.of(last.metrics)}</span></h4>${chart}</div>`;
+    return `<div class="multiple"><h3>${esc(series.label)} <span class="count">${series.of(last.metrics)}</span></h3>${chart}</div>`;
   }).join("\n");
 
-  return `<h3>Where this stands, and how it got here</h3>
+  return `<h2>Where this stands, and how it got here</h2>
 <p>Measured at each of the ${history.length} commits that touched
 <code>spec/</code>, <code>vendor/</code> or <code>fixtures/</code>, from
 ${day(first.date)} to ${day(last.date)}. Every point is that commit's own
@@ -97,7 +100,7 @@ only when routes get written up. An imported, unverified path does not count as
 covered here — importing 163 of them is the step up near the right-hand end of
 the first small multiple below, and it moved this line not at all.</p>
 
-<h4 class="multiples-title">Open questions against what is already covered</h4>
+<h3 class="multiples-title">Open questions against what is already covered</h3>
 <p class="meta">Not a backlog being burned down. Each of these counts something
 the covered surface raises, so covering more routes adds to them — a path with
 no 200 capture, an unresolved enum or an unverified import only exists to be

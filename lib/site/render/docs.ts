@@ -1,5 +1,5 @@
 import { Marked } from "marked";
-import type { LeapModel } from "../model.ts";
+import type { DocPage, LeapModel } from "../model.ts";
 import { esc, slug } from "./html.ts";
 import type { Section } from "./layout.ts";
 import { jsonFences } from "./markdown.ts";
@@ -48,9 +48,9 @@ export function headingAnchors(
 /**
  * Marked, with heading ids matching headingAnchors so the ToC links resolve.
  *
- * Headings are demoted one level: the single-page document keeps its one h1
- * for the site title, so a doc's own `#` title renders as an h2 and its
- * sections nest under it. The ids do not move -- they derive from the text.
+ * Each doc is now its own page (Task 6), so its own `#` title renders as the
+ * page's h1 and its sections nest under it directly -- no demotion. The ids
+ * do not move -- they derive from the text.
  */
 function renderer(): Marked {
   const marked = new Marked({ gfm: true });
@@ -59,7 +59,7 @@ function renderer(): Marked {
     renderer: {
       heading({ tokens, depth }) {
         const text = this.parser.parseInline(tokens);
-        const level = Math.min(depth + 1, 6);
+        const level = Math.min(depth, 6);
         return `<h${level} id="${headingId(text)}">${text}</h${level}>\n`;
       },
     },
@@ -67,16 +67,15 @@ function renderer(): Marked {
   return marked;
 }
 
-export function renderDocSections(model: LeapModel): Section[] {
+/** One doc, as its own page: an in-page table of contents plus the rendered markdown. */
+export function renderDocPage(_model: LeapModel, entry: DocPage): Section {
   const marked = renderer();
-  return model.docs.map((entry) => {
-    const anchors = headingAnchors(entry.markdown);
-    const toc = `<nav class="toc"><ul>${anchors
-      .map((a) => `<li><a href="#${esc(a.id)}">${esc(a.text)}</a></li>`)
-      .join("")}</ul></nav>`;
-    return {
-      id: `doc-${entry.slug}`,
-      html: `${toc}<article class="prose">${marked.parse(entry.markdown) as string}</article>`,
-    };
-  });
+  const anchors = headingAnchors(entry.markdown);
+  const toc = `<nav class="toc"><ul>${anchors
+    .map((a) => `<li><a href="#${esc(a.id)}">${esc(a.text)}</a></li>`)
+    .join("")}</ul></nav>`;
+  return {
+    id: `doc-${entry.slug}`,
+    html: `${toc}<article class="prose">${marked.parse(entry.markdown) as string}</article>`,
+  };
 }

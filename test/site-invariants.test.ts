@@ -4,6 +4,7 @@ import { join } from "node:path";
 import test, { describe } from "node:test";
 import { assertInvariants } from "../lib/site/invariants.ts";
 import { buildModel } from "../lib/site/model.ts";
+import { RECIPES } from "../lib/site/recipes.ts";
 
 function walk(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
@@ -162,19 +163,25 @@ describe("build invariants", () => {
 describe("generated site", () => {
   const files = walk("site").map((f) => f.replace(/\\/g, "/"));
 
-  // Task 4 split schemas out of the single document; Task 5 splits resources
-  // out too, and promotes both tier indexes (resources.html, schemas.html)
-  // to real pages of their own. Docs, recipes and coverage still live on
-  // index.html until Task 6.
-  test("emits index.html, the two tier indexes, one page per resource and one page per schema", () => {
+  // Task 4 split schemas out of the single document; Task 5 split resources
+  // out too and promoted both tier indexes (resources.html, schemas.html) to
+  // real pages; Task 6 finishes the split -- every doc, every recipe and
+  // coverage now has its own page, and index.html is just the overview.
+  test("emits index.html, every tier index, and one page per resource, schema, doc and recipe", () => {
     const model = buildModel();
     assert.equal(
       files.length,
-      model.resources.length + model.schemas.length + 3,
+      model.resources.length +
+        model.schemas.length +
+        model.docs.length +
+        RECIPES.length +
+        5, // index, resources, schemas, recipes, coverage
     );
     assert.ok(files.includes("site/index.html"));
     assert.ok(files.includes("site/resources.html"));
     assert.ok(files.includes("site/schemas.html"));
+    assert.ok(files.includes("site/recipes.html"));
+    assert.ok(files.includes("site/coverage.html"));
     for (const resource of model.resources)
       assert.ok(
         files.includes(`site/resource/${resource.name}.html`),
@@ -185,14 +192,51 @@ describe("generated site", () => {
         files.includes(`site/schema/${entry.name}.html`),
         `schema/${entry.name}.html is missing`,
       );
+    for (const doc of model.docs)
+      assert.ok(
+        files.includes(`site/docs/${doc.slug}.html`),
+        `docs/${doc.slug}.html is missing`,
+      );
+    for (const recipe of RECIPES)
+      assert.ok(
+        files.includes(`site/recipe/${recipe.slug}.html`),
+        `recipe/${recipe.slug}.html is missing`,
+      );
   });
 
-  test("every section still on index.html is present", () => {
+  test("index.html carries only the overview", () => {
     const html = readFileSync("site/index.html", "utf8");
-    // resource-zone and schemas moved to their own pages in Tasks 5 and 4;
-    // docs, recipes and coverage stay here until Task 6.
-    for (const anchor of ["overview", "doc-protocol", "recipes", "coverage"])
-      assert.ok(html.includes(`id="${anchor}"`), `#${anchor} is missing`);
+    assert.ok(html.includes('id="overview"'), "#overview is missing");
+    // Docs, recipes and coverage moved to their own pages in this task --
+    // nothing but the overview's own section should remain.
+    for (const anchor of ["doc-protocol", "recipes", "coverage"])
+      assert.ok(
+        !html.includes(`id="${anchor}"`),
+        `#${anchor} should have moved off index.html`,
+      );
+  });
+
+  test("a doc page carries its own h1 and a working table of contents", () => {
+    const html = readFileSync("site/docs/protocol.html", "utf8");
+    assert.ok(html.includes('id="doc-protocol"'));
+    assert.match(html, /<h1 id="[\w-]+">/);
+    assert.match(html, /class="toc"/);
+  });
+
+  test("a recipe page carries its own h1 and section anchor", () => {
+    const html = readFileSync(`site/recipe/${RECIPES[0]?.slug}.html`, "utf8");
+    assert.ok(html.includes(`id="recipe-${RECIPES[0]?.slug}"`));
+    assert.match(html, /<h1>/);
+  });
+
+  test("the recipes and coverage tier indexes carry their own promoted heading", () => {
+    const recipes = readFileSync("site/recipes.html", "utf8");
+    assert.ok(recipes.includes('id="recipes"'));
+    assert.match(recipes, /<h1 class="part">Recipes<\/h1>/);
+
+    const coverage = readFileSync("site/coverage.html", "utf8");
+    assert.ok(coverage.includes('id="coverage"'));
+    assert.match(coverage, /<h1 class="part">Coverage<\/h1>/);
   });
 
   test("a resource page carries its own h1 and section anchor", () => {
