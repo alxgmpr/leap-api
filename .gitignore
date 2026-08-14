@@ -11,5 +11,6 @@ CLAUDE.md
 # SDD process workspace (also covered by global gitignore)
 .superpowers/
 
-# Plan documents stay local
+# AI process artifacts stay local (plans, specs, agent workspaces)
 docs/plans/
+docs/superpowers/
