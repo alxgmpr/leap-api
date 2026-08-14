@@ -1027,3 +1027,80 @@ body.confirmed-only [data-verdict]:not([data-verdict="confirmed"]):hover {
     margin-left: 0;
   }
 }
+
+
+/* Charts. No new hues: the burndown wears the amber (hardware answered, work
+ * landed), the small multiples wear a neutral wash, and identity comes from
+ * each cell's own heading rather than from colour. */
+.chart {
+  margin: 18px 0 6px;
+}
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.chart .grid {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+.chart .axis {
+  fill: var(--mute);
+  font: 11px var(--mono);
+}
+.chart .band {
+  fill: var(--ink);
+  font: 12px var(--sans);
+}
+.chart figcaption {
+  color: var(--mute);
+  font-size: 13px;
+  margin-top: 6px;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-top: 8px;
+}
+.legend-key {
+  color: var(--mute);
+  font-size: 13px;
+}
+.legend-key i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+.multiples-title {
+  margin-top: 28px;
+}
+.multiples {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 28px;
+}
+.multiple h4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+}
+.multiple h4 .count {
+  color: var(--live);
+  font: 15px var(--mono);
+}
+.multiple .chart {
+  margin: 8px 0 0;
+}
+@media (max-width: 720px) {
+  .multiples {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

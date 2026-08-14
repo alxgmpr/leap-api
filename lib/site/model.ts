@@ -4,6 +4,7 @@ import { type Coverage, computeCoverage } from "../../tools/check-coverage.ts";
 import { FRAME_FIXTURES } from "../observed-census.ts";
 import { templatePath } from "../platform-matrix.ts";
 import { type CommandRow, parseCommandTable } from "./command-table.ts";
+import { type HistoryPoint, readHistory } from "./coverage-history.ts";
 import {
   buildRequestFrame,
   type Frame,
@@ -51,6 +52,8 @@ export type LeapModel = {
   commandTable: CommandRow[];
   frameLogs: FrameLog[];
   coverage: Coverage;
+  /** Measured coverage per commit, oldest first. Empty until history:coverage runs. */
+  history: HistoryPoint[];
 };
 
 const HTTP_VERBS = ["get", "post", "put", "delete"] as const;
@@ -342,5 +345,6 @@ export function buildModel(): LeapModel {
     ),
     frameLogs: loadFrameLogs(),
     coverage: computeCoverage(),
+    history: readHistory(),
   };
 }

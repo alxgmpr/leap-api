@@ -12,6 +12,7 @@
     "redact": "npx tsx tools/redact.ts",
     "bundle": "npx tsx tools/bundle.ts",
     "coverage": "npx tsx tools/check-coverage.ts",
+    "history:coverage": "npx tsx tools/coverage-history.ts",
     "fields": "npx tsx tools/check-observed-fields.ts",
     "census": "npx tsx tools/derive-census.ts",
     "lint": "biome check .",
