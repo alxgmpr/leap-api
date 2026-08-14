@@ -56,7 +56,11 @@ differ by platform.
   hardcoded `phoenix_root_cert.pem` asset ("Phoenix" is the RA3 platform
   codename) alongside the per-bridge root — the source material treats this
   as suggestive of a platform-wide root CA shared across RA3 processors, but
-  does not confirm it; this document does not assert more than that.
+  does not confirm it; this document does not assert more than that. A live
+  probe of the RA3 LAP listener (see "RA3/QSX: the LAP listener is present but
+  does not run the Caseta handshake" below) does show the processor's *server*
+  cert chaining to a shared `radioRa3-processors-…` intermediate under the
+  Lutron root, and that RA3 does not pair via the Caseta LAP handshake.
 - **Caseta / RA2 Select.** Certificates are issued per bridge. The Android
   app's flow is the `/certificate/root` → CSR → `/pair` one above, but a live
   capture of a different client shows Caseta also accepts a distinct **LAP /
@@ -138,6 +142,39 @@ this project has now watched on the wire. What is *not* established is
 whether the Caseta bridge would also honor the app's `/certificate/root`
 route; only the LAP path was exercised. All PEM blobs in the capture file
 are placeholdered, and no key material is recorded.
+
+### RA3/QSX: the LAP listener is present but does not run the Caseta handshake
+
+The same LAP path was probed against the RA3/QSX processor on 2026-08-13
+(`$SRC/data/session-2026-08-13/lap-recon-qsx.json` and
+`pairing-ra3-capture.json`), and it does **not** pair the way Caseta does:
+
+- **The LAP listener exists on 8083 and is RA3-flavored.** The mutual-TLS
+  connection is refused by the shipped LAP CA (`CERTIFICATE_VERIFY_FAILED:
+  self-signed certificate in certificate chain`) and succeeds only when the
+  server is verified against the **Lutron root CA** — exactly the RA3
+  fall-back `pylutron_caseta` encodes. The processor's own certificate is
+  EC/ECDSA (TLS 1.2, `ECDHE-ECDSA-CHACHA20-POLY1305`), subject
+  `CN=radiora3-<mac>-server`, issued by an intermediate
+  `CN=radioRa3-processors-…` — a per-processor cert under an RA3-processors
+  CA under the Lutron root, distinct from Caseta's LAP CA chain.
+- **But the listener is silent.** Where Caseta sends a `status;` frame
+  (carrying `Permissions`) within milliseconds of connecting, the RA3
+  listener sent **nothing** — zero frames on connect, and zero across a
+  full 180 s pairing attempt that waited for a `PhysicalAccess` status
+  frame. The `pylutron_caseta` LAP flow, which blocks reading status frames
+  until `PhysicalAccess` appears, simply **times out** against RA3. So RA3
+  does not complete the Caseta LAP status-frame handshake; its actual
+  provisioning path is the app's `/certificate/root` LEAP flow above, not
+  this one. (Whether an RA3 access-grant action was performed during the
+  window is not certain, but RA3 emitting no frame at all — matching its
+  silence on plain connect — is the load-bearing observation.)
+- **`/certificate/root` on the already-paired LEAP listener** (8081, with a
+  valid client cert) answers `400 BadRequest`, `CommuniqueType:
+  ExceptionResponse`, `{"Message": "This request is not supported"}` —
+  confirming live the "once paired, `/certificate/root` returns 400" behavior
+  `docs/protocol.md` records, and consistent with that route living on the
+  unauthenticated setup listener rather than the authenticated one.
 
 ## Certificate revocation
 
