@@ -119,6 +119,41 @@ body {
   color: var(--ink);
   font: 1rem/1.55 var(--sans);
   -webkit-text-size-adjust: 100%;
+
+  /* The viewport is the width. Nothing sets a floor under it.
+   *
+   * This page's content is machine identifiers -- route templates, schema
+   * names, parameter names -- and plenty of them are longer than a phone is
+   * wide: /shadelevelwithtiltwhenclosedassignment/{shadelevelwithtiltwhen-
+   * closedassignmentId} measures 695px on its own. An unbreakable token
+   * contributes its full width to the min-content size of every box above
+   * it, so one identifier sets a floor under the whole document and the
+   * page scrolls sideways to accommodate a single word.
+   *
+   * Wrapping was previously opt-in -- .url, .wire, .composed, .nofixture li
+   * and .resource-grid a each asked for it by name. That cannot hold on a
+   * generated page: the markup grows new elements carrying the same strings
+   * and each one has to remember to ask again. Six of them had already been
+   * missed. So the default inverts -- everything wraps, and the few frames
+   * that are meant to scroll opt out below.
+   *
+   * `anywhere` rather than `break-word`: only `anywhere` lowers the
+   * min-content width, and min-content is what the floor is computed from.
+   * Both break in the same places visually; `break-word` would leave the
+   * page just as wide. Neither breaks a word that already fits. */
+  overflow-wrap: anywhere;
+}
+
+/* The opt-outs. Each of these is a frame with its own horizontal scroll, so
+   its content is allowed to run long inside a bounded box -- the scroll
+   stays in the frame and never reaches the page. `white-space: pre` already
+   suppresses wrapping on .wire.body and pre; this states the intent and
+   keeps a stray inherited value from reaching them. */
+.wire.body,
+.prose pre,
+.tablewrap,
+.prose table {
+  overflow-wrap: normal;
 }
 
 a {
@@ -789,12 +824,6 @@ button:disabled {
 .nofixture {
   columns: 2;
   font-size: var(--t-base);
-}
-
-/* Long unbroken route templates: wrap them rather than widen the scroll. */
-.nofixture li,
-.resource-grid a {
-  overflow-wrap: anywhere;
 }
 
 .resource-grid {
