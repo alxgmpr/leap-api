@@ -308,7 +308,14 @@ resource-create `CreateResponse` are no longer unobserved. Note also that
 the route table's face-value verb list overstates what a processor accepts:
 `CreateRequest /virtualbutton` is refused `405` on this unit despite the
 firmware table flagging the route CREATE-capable, and `/timeclock` itself is
-GET-only (a timeclock is not LEAP-creatable; a timeclock *event* is).
+GET-only (a timeclock is not LEAP-creatable; a timeclock *event* is). The
+same holds for `UpdateRequest`: handed a zone's own read body straight back,
+`UpdateRequest /zone/{id}` is refused `400` — so the table's `UPDATE` verb on
+`/zone/{id}` does not mean the zone accepts its detail body as an update, and
+zone writes go through the `CreateRequest`/`201` command path above. The
+identical read-then-write-back on `/area/{id}` *is* accepted (`200`, and a
+follow-up read shows the state unmoved), so the refusal is specific to the
+zone resource, not to echoing a body in general.
 
 ## Status codes
 
