@@ -4,19 +4,70 @@
  * the page is a transcript, not a catalogue. Mono is the display face because
  * the content is machine text; the sans carries prose only.
  *
- * Colour does one job. Ink means observed on hardware, grey means inferred,
- * and a single amber -- the colour of a dimmed incandescent, which is what
- * this protocol is for -- marks links, focus, and the fact that hardware
- * answered. Nothing else gets a hue, so the hue means something.
+ * TYPE. Six sizes, three tracking values, three weights. Every sized rule
+ * names a token -- there are no loose rem literals in this file, so a size
+ * cannot drift a hundredth of a rem away from its neighbour and quietly
+ * become a seventh size. The scale is the whole vocabulary.
+ *
+ * COLOUR. Two jobs, kept apart so neither dilutes the other.
+ *
+ *   Chrome is neutral. One accent, --live, means the same thing it always
+ *   meant: hardware answered. It marks links, the subscribe flag, callouts,
+ *   push events. Nothing else in the chrome gets a hue.
+ *
+ *   Code is Monokai. Inside a .wire, a pre, or a code, the hues mean JSON
+ *   token types and nothing else. They are bounded by the frame border, so
+ *   they never compete with --live for meaning.
+ *
+ * --focus is the one further hue: a Monokai blue reserved for focus rings,
+ * so keyboard position is never confused with a hardware signal.
+ *
+ * Light is the default and dark is a prefers-color-scheme override; the two
+ * carry the same hue identities. The dark set is classic Monokai. The light
+ * set keeps Monokai's hue relationships but darkens the values that would
+ * otherwise fail contrast on paper -- official Monokai Light's orange scores
+ * 2.09:1 on #FAFAFA, which is not a link colour. Measured ratios are noted
+ * against each token.
  */
 
 :root {
-  --paper: #fafaf9;
+  color-scheme: light dark;
+
+  /* ---------- type scale: six steps, nothing between ---------- */
+  --t-xs: 0.7rem; /* micro-labels: TH, chips, .ct, .req, counts */
+  --t-sm: 0.78rem; /* the wire, captions, secondary mono */
+  --t-base: 0.88rem; /* tables, lists, dense secondary prose */
+  --t-lg: 1.05rem; /* .url, h3, schema titles */
+  --t-xl: 1.45rem; /* h2 */
+  --t-2xl: 1.95rem; /* h1, part openers */
+
+  /* Body prose stays at the 1rem root. It is the base the scale is measured
+     from, not a seventh step -- a technical reference is read, not skimmed,
+     and shrinking its prose to 14px buys nothing. */
+
+  /* ---------- tracking: three, keyed to role ---------- */
+  --track-tight: -0.02em; /* mono display headings */
+  --track-label: 0.1em; /* uppercase micro-labels */
+  --track-none: 0;
+
+  /* ---------- weight: regular is the body default, so it needs no token ---------- */
+  --w-med: 600;
+  --w-bold: 700;
+
+  /* ---------- surface: Monokai Light ---------- */
+  --paper: #fafafa;
   --panel: #ffffff;
-  --ink: #141618;
-  --mute: #767b81;
-  --rule: #e4e3df;
-  --live: #a85a00;
+  --ink: #29242a; /* 14.6:1 */
+  --mute: #6b6660; /*  5.5:1 */
+  --rule: #e4e2dd;
+  --live: #a85a00; /*  4.9:1 -- Monokai orange, darkened for paper */
+  --focus: #0e7490; /*  5.1:1 -- Monokai blue, darkened for paper */
+
+  /* ---------- code tokens: Monokai Light ---------- */
+  --tok-key: #4f7300; /*  5.3:1 */
+  --tok-str: #8a6d3b; /*  4.7:1 */
+  --tok-num: #7e57c2; /*  5.0:1 -- official Monokai Light value */
+  --tok-lit: #b32b57; /*  5.9:1 */
 
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
@@ -24,12 +75,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #131517;
-    --panel: #191c1f;
-    --ink: #e9e8e4;
-    --mute: #8b9097;
-    --rule: #282b2e;
-    --live: #e0a24a;
+    --paper: #1e1f1a;
+    --panel: #272822; /* the Monokai canvas */
+    --ink: #f8f8f2; /* 15.6:1 */
+    --mute: #99947f; /*  5.4:1 -- lifted off Monokai's #75715E comment grey,
+                                  which reads at 3.0:1 and is too dim for the
+                                  volume of secondary text this page carries */
+    --rule: #3b3c35;
+    --live: #fd971f; /*  7.6:1 */
+    --focus: #66d9ef; /* 10.1:1 */
+
+    --tok-key: #a6e22e; /* 10.7:1 */
+    --tok-str: #e6db74; /* 11.7:1 */
+    --tok-num: #ae81ff; /*  5.8:1 */
+    --tok-lit: #f92672; /*  4.4:1 -- Monokai's signature pink, kept authentic;
+                                     AA-large, and it only ever sets
+                                     true/false/null */
   }
 }
 
@@ -48,7 +109,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 16px/1.55 var(--sans);
+  font: 1rem/1.55 var(--sans);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -63,7 +124,7 @@ pre {
 }
 
 :focus-visible {
-  outline: 2px solid var(--live);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -77,6 +138,59 @@ pre {
   z-index: 10;
   background: var(--panel);
   padding: 8px;
+}
+
+/* ---------- one micro-label, declared once ----------
+   Uppercase mono at --t-xs with label tracking. Eight rules used to spell
+   this out independently, at five different sizes. */
+
+.search-results .kind,
+.navgroup,
+.mast .count,
+.ct,
+.sub,
+.composer label,
+.paramfields label,
+th,
+.req {
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+/* ---------- mono UI surfaces ----------
+   Everything that is machine text rather than prose. Declared as one group
+   so a new element joins the family by name, not by another copy of
+   `font-family: var(--mono)`. */
+
+.brand,
+.search,
+.search-results li a,
+.sidebar,
+.legend,
+.dir,
+.status,
+.shape,
+.src,
+.chip,
+.observed,
+.edges .evidence,
+.composed,
+.composer input,
+.composer select,
+.paramfields input,
+.resource-grid li,
+.coverage dt,
+.timeline li,
+.timeline figcaption,
+button,
+.more > summary,
+.compose > summary,
+.links > summary,
+.frame-body > summary {
+  font-family: var(--mono);
 }
 
 /* ---------- chrome ---------- */
@@ -94,9 +208,8 @@ pre {
 }
 
 .brand {
-  font-family: var(--mono);
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: var(--w-bold);
+  letter-spacing: var(--track-label);
   text-decoration: none;
   color: var(--ink);
 }
@@ -114,9 +227,7 @@ pre {
   border-radius: 4px;
   background: var(--panel);
   color: var(--ink);
-  font: inherit;
-  font-size: 0.85rem;
-  font-family: var(--mono);
+  font-size: var(--t-base);
 }
 
 .search-results {
@@ -143,8 +254,7 @@ pre {
   border-radius: 3px;
   text-decoration: none;
   color: var(--ink);
-  font-family: var(--mono);
-  font-size: 0.82rem;
+  font-size: var(--t-base);
 }
 
 .search-results li a:hover,
@@ -153,15 +263,8 @@ pre {
   outline: 1px solid var(--live);
 }
 
-.search-results .kind {
-  color: var(--mute);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .filter {
-  font-size: 0.78rem;
+  font-size: var(--t-sm);
   color: var(--mute);
   white-space: nowrap;
   display: flex;
@@ -184,8 +287,7 @@ pre {
   align-self: start;
   max-height: calc(100vh - 80px);
   overflow-y: auto;
-  font-family: var(--mono);
-  font-size: 0.82rem;
+  font-size: var(--t-base);
 }
 
 .sidebar ul {
@@ -215,11 +317,7 @@ pre {
 
 .navgroup {
   margin: 16px 0 6px;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--mute);
-  font-weight: 600;
+  font-weight: var(--w-med);
 }
 
 main {
@@ -240,9 +338,9 @@ main {
    replaced. */
 h2.part {
   font-family: var(--mono);
-  font-size: 1.7rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: var(--t-2xl);
+  font-weight: var(--w-med);
+  letter-spacing: var(--track-tight);
   margin: 0 0 10px;
 }
 
@@ -260,41 +358,43 @@ h2.part {
 
 h1 {
   font-family: var(--mono);
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: var(--t-2xl);
+  font-weight: var(--w-med);
+  letter-spacing: var(--track-tight);
   margin: 0;
 }
 
 .mast h2 {
   font-family: var(--mono);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: var(--t-xl);
+  font-weight: var(--w-med);
+  letter-spacing: var(--track-tight);
   margin: 0;
 }
 
 .mast .count {
   margin-left: auto;
-  color: var(--mute);
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   font-variant-numeric: tabular-nums;
 }
 
 h2 {
-  font-size: 1.15rem;
+  font-size: var(--t-xl);
+  font-weight: var(--w-med);
+  letter-spacing: var(--track-tight);
   margin: 32px 0 10px;
 }
 
 h3 {
-  font-size: 0.98rem;
+  font-size: var(--t-lg);
+  font-weight: var(--w-med);
   margin: 0 0 8px;
 }
 
+/* h4 sits below body size and leans on weight instead. Matching h3's size
+   would have collapsed two levels into one. */
 h4 {
-  font-size: 0.9rem;
+  font-size: var(--t-base);
+  font-weight: var(--w-bold);
   margin: 18px 0 8px;
 }
 
@@ -308,8 +408,7 @@ h4 {
   gap: 20px;
   flex-wrap: wrap;
   color: var(--mute);
-  font-size: 0.76rem;
-  font-family: var(--mono);
+  font-size: var(--t-sm);
   margin: 0 0 28px;
 }
 
@@ -329,9 +428,9 @@ h4 {
 
 .url {
   font-family: var(--mono);
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: var(--t-lg);
+  font-weight: var(--w-med);
+  letter-spacing: var(--track-tight);
   margin: 0;
   word-break: break-all;
 }
@@ -347,8 +446,7 @@ h4 {
 }
 
 .dir {
-  font-family: var(--mono);
-  font-weight: 700;
+  font-weight: var(--w-bold);
   color: var(--ink);
   width: 1.2em;
   flex: none;
@@ -356,11 +454,6 @@ h4 {
 }
 
 .ct {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--mute);
   border: 1px solid var(--rule);
   border-radius: 3px;
   padding: 1px 6px;
@@ -370,7 +463,7 @@ h4 {
   margin-left: auto;
   border-color: transparent;
   color: var(--mute);
-  font-size: 0.72rem;
+  font-size: var(--t-xs);
   padding: 2px 6px;
 }
 
@@ -378,11 +471,8 @@ h4 {
   border-color: var(--rule);
 }
 
+/* The subscribe flag is a hardware fact, so it takes the accent. */
 .sub {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--live);
 }
 
@@ -393,12 +483,12 @@ h4 {
   border-left: 2px solid var(--live);
   background: var(--panel);
   color: var(--ink);
-  font-size: 0.83rem;
+  font-size: var(--t-base);
 }
 
 .wrapnote {
   margin: 8px 0 0 calc(1.2em + 9px);
-  font-size: 0.78rem;
+  font-size: var(--t-sm);
   color: var(--mute);
 }
 
@@ -410,7 +500,7 @@ h4 {
   border: 1px solid var(--rule);
   border-left: 2px solid var(--ink);
   border-radius: 0 4px 4px 0;
-  font-size: 0.79rem;
+  font-size: var(--t-sm);
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-all;
@@ -440,7 +530,7 @@ h4 {
 
 .reply {
   margin-top: 7px;
-  font-size: 0.83rem;
+  font-size: var(--t-base);
 }
 
 .reply > summary,
@@ -463,16 +553,14 @@ div.reply {
 }
 
 .status {
-  font-family: var(--mono);
-  font-weight: 600;
+  font-weight: var(--w-med);
   font-variant-numeric: tabular-nums;
 }
 
 .shape,
 .src {
   color: var(--mute);
-  font-family: var(--mono);
-  font-size: 0.76rem;
+  font-size: var(--t-sm);
 }
 
 .src {
@@ -496,7 +584,7 @@ div.reply {
 .compose,
 .links {
   margin: 10px 0 0 calc(1.2em + 9px);
-  font-size: 0.9rem;
+  font-size: var(--t-base);
 }
 
 .links {
@@ -510,9 +598,7 @@ div.reply {
 .frame-body > summary {
   cursor: pointer;
   color: var(--mute);
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
+  font-size: var(--t-sm);
 }
 
 .more > summary:hover,
@@ -530,7 +616,7 @@ div.reply {
 
 .meta {
   color: var(--mute);
-  font-size: 0.83rem;
+  font-size: var(--t-base);
   margin: 8px 0;
 }
 
@@ -541,8 +627,7 @@ div.reply {
 /* ---------- chips: one mark, not a palette ---------- */
 
 .chip {
-  font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: var(--t-sm);
   color: var(--mute);
   white-space: nowrap;
 }
@@ -584,21 +669,14 @@ div.reply {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 0.72rem;
-  font-family: var(--mono);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--mute);
 }
 
 .composer input,
 .composer select,
 .paramfields input {
-  font: inherit;
-  font-family: var(--mono);
-  font-size: 0.82rem;
+  font-size: var(--t-base);
   text-transform: none;
-  letter-spacing: 0;
+  letter-spacing: var(--track-none);
   padding: 5px 8px;
   border: 1px solid var(--rule);
   border-radius: 3px;
@@ -609,8 +687,7 @@ div.reply {
 
 .composed {
   flex-basis: 100%;
-  font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: var(--t-sm);
   padding: 9px 12px;
   border-radius: 0 4px 4px 0;
   background: var(--panel);
@@ -622,7 +699,7 @@ div.reply {
 
 .command-field {
   flex-basis: 100%;
-  font-size: 0.8rem;
+  font-size: var(--t-sm);
   color: var(--mute);
 }
 
@@ -638,9 +715,7 @@ div.reply {
 }
 
 button {
-  font: inherit;
-  font-family: var(--mono);
-  font-size: 0.76rem;
+  font-size: var(--t-sm);
   padding: 5px 10px;
   border: 1px solid var(--rule);
   border-radius: 3px;
@@ -678,18 +753,17 @@ button:disabled {
 .recipes li {
   padding: 5px 0;
   border-bottom: 1px solid var(--rule);
-  font-size: 0.88rem;
+  font-size: var(--t-base);
 }
 
 .edges .evidence {
   color: var(--mute);
-  font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: var(--t-sm);
 }
 
 .unresolved {
   color: var(--mute);
-  font-size: 0.8rem;
+  font-size: var(--t-sm);
 }
 
 .enum {
@@ -703,12 +777,12 @@ button:disabled {
   border: 1px solid var(--rule);
   border-radius: 3px;
   background: var(--panel);
-  font-size: 0.8rem;
+  font-size: var(--t-sm);
 }
 
 .nofixture {
   columns: 2;
-  font-size: 0.82rem;
+  font-size: var(--t-base);
 }
 
 /* Long unbroken route templates: wrap them rather than widen the scroll. */
@@ -732,8 +806,7 @@ button:disabled {
   justify-content: space-between;
   padding: 8px 12px;
   background: var(--paper);
-  font-family: var(--mono);
-  font-size: 0.85rem;
+  font-size: var(--t-base);
 }
 
 .resource-grid a {
@@ -742,14 +815,14 @@ button:disabled {
 
 .resource-grid .count {
   color: var(--mute);
-  font-size: 0.76rem;
+  font-size: var(--t-sm);
   font-variant-numeric: tabular-nums;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.86rem;
+  font-size: var(--t-base);
 }
 
 .tablewrap,
@@ -766,28 +839,17 @@ td {
   vertical-align: top;
 }
 
-th {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--mute);
-  font-family: var(--mono);
-}
-
 tr.required td:first-child {
-  font-weight: 600;
+  font-weight: var(--w-med);
 }
 
 .req {
-  font-size: 0.65rem;
   color: var(--live);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
 }
 
 .fielddesc {
   color: var(--mute);
-  font-size: 0.82rem;
+  font-size: var(--t-base);
 }
 
 .fielddesc p {
@@ -795,8 +857,7 @@ tr.required td:first-child {
 }
 
 .observed {
-  font-size: 0.78rem;
-  font-family: var(--mono);
+  font-size: var(--t-sm);
   color: var(--ink);
 }
 
@@ -808,21 +869,20 @@ tr.required td:first-child {
 
 .schema-article > h3 {
   font-family: var(--mono);
-  font-size: 1.1rem;
-  letter-spacing: -0.01em;
+  font-size: var(--t-lg);
+  letter-spacing: var(--track-tight);
 }
 
 .coverage dt {
-  font-family: var(--mono);
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: var(--t-base);
+  font-weight: var(--w-med);
   margin-top: 14px;
 }
 
 .coverage dd {
   margin: 3px 0 0;
   color: var(--mute);
-  font-size: 0.9rem;
+  font-size: var(--t-base);
 }
 
 /* ---------- prose ---------- */
@@ -838,7 +898,7 @@ tr.required td:first-child {
   border-radius: 0 4px 4px 0;
   background: var(--panel);
   overflow-x: auto;
-  font-size: 0.79rem;
+  font-size: var(--t-sm);
 }
 
 .prose blockquote {
@@ -852,12 +912,12 @@ tr.required td:first-child {
 .prose h3,
 .prose h4 {
   font-family: var(--mono);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-tight);
 }
 
 /* A narrative doc's own title, demoted to h2 inside the single scroll. */
 .docsec > article.prose > h2:first-child {
-  font-size: 1.7rem;
+  font-size: var(--t-2xl);
   margin-top: 0;
 }
 
@@ -866,7 +926,7 @@ tr.required td:first-child {
   padding: 14px 16px;
   border: 1px solid var(--rule);
   background: var(--panel);
-  font-size: 0.85rem;
+  font-size: var(--t-base);
 }
 
 .toc ul {
@@ -888,7 +948,7 @@ tr.required td:first-child {
 
 .frame .src {
   margin-left: auto;
-  font-size: 0.74rem;
+  font-size: var(--t-sm);
 }
 
 .frame-body {
@@ -921,14 +981,12 @@ tr.required td:first-child {
   align-items: baseline;
   flex-wrap: wrap;
   padding: 4px 0;
-  font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: var(--t-sm);
 }
 
 .timeline figcaption {
-  font-size: 0.75rem;
+  font-size: var(--t-sm);
   color: var(--mute);
-  font-family: var(--mono);
 }
 
 .timeline .tl-url {
@@ -979,15 +1037,21 @@ body.confirmed-only [data-verdict]:not([data-verdict="confirmed"]):hover {
   opacity: 1;
 }
 
+/* ---------- JSON tokens ----------
+   Monokai, scoped to code. Punctuation and structure stay --ink, which is
+   what makes the four coloured tokens legible as tokens. */
+
 .tok-key {
-  color: var(--ink);
+  color: var(--tok-key);
 }
 .tok-str {
-  color: var(--live);
+  color: var(--tok-str);
 }
-.tok-num,
+.tok-num {
+  color: var(--tok-num);
+}
 .tok-lit {
-  color: var(--mute);
+  color: var(--tok-lit);
 }
 
 @media (prefers-reduced-motion: reduce) {

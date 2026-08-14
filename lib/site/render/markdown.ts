@@ -1,4 +1,24 @@
-import { Marked } from "marked";
+import { Marked, type MarkedExtension } from "marked";
+import { highlightJson } from "./highlight.ts";
+
+/**
+ * Colour ```json fences with the tokenizer the wire frames already use, so a
+ * literal quoted in the prose and the same literal in a transcript are the
+ * same object on screen.
+ *
+ * Only json. Returning false is marked's fall-through signal, so every other
+ * language keeps the default plain-text rendering -- this repo emits JSON and
+ * nothing else, and a highlighter guessing at a grammar we do not produce is
+ * how a reference starts colouring tokens that are not there.
+ */
+export const jsonFences: MarkedExtension = {
+  renderer: {
+    code({ text, lang }) {
+      if (lang !== "json") return false;
+      return `<pre><code class="language-json">${highlightJson(text)}</code></pre>\n`;
+    },
+  },
+};
 
 /**
  * Markdown for text embedded inside a page -- operation and schema
@@ -10,6 +30,7 @@ import { Marked } from "marked";
  * emit ids, because their headings are link targets.
  */
 const marked = new Marked({ gfm: true });
+marked.use(jsonFences);
 
 export function renderMarkdown(markdown: string): string {
   return marked.parse(markdown) as string;

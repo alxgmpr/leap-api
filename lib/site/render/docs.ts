@@ -2,6 +2,7 @@ import { Marked } from "marked";
 import type { LeapModel } from "../model.ts";
 import { esc, slug } from "./html.ts";
 import type { Section } from "./layout.ts";
+import { jsonFences } from "./markdown.ts";
 
 /**
  * One id derivation for both sides of the table of contents.
@@ -53,6 +54,7 @@ export function headingAnchors(
  */
 function renderer(): Marked {
   const marked = new Marked({ gfm: true });
+  marked.use(jsonFences);
   marked.use({
     renderer: {
       heading({ tokens, depth }) {
