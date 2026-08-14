@@ -1,4 +1,5 @@
 import { buildRequestFrame } from "../frames.ts";
+import { href, ROOT_TOP } from "../href.ts";
 import type { LeapModel } from "../model.ts";
 import { RECIPES, type Recipe } from "../recipes.ts";
 import { renderFrame } from "./highlight.ts";
@@ -42,7 +43,7 @@ reading state, driving a zone, watching for changes — with captured replies
 where this project has them.</p>
 <ul class="recipes">${RECIPES.map(
       (r) =>
-        `<li><a href="#recipe-${esc(r.slug)}"><strong>${esc(r.title)}</strong></a> — ${esc(r.intent)}</li>`,
+        `<li><a href="${esc(href.recipe(ROOT_TOP, r.slug))}"><strong>${esc(r.title)}</strong></a> — ${esc(r.intent)}</li>`,
     ).join("")}</ul>`,
   };
   return [index, ...RECIPES.map((recipe) => renderRecipe(recipe, model))];

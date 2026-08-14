@@ -1,4 +1,5 @@
 import type { SchemaNode } from "../graph.ts";
+import { href, ROOT_TOP } from "../href.ts";
 import type { LeapModel, SchemaEntry } from "../model.ts";
 import { classifyField } from "../provenance.ts";
 import { esc } from "./html.ts";
@@ -9,7 +10,7 @@ function typeLabel(node: SchemaNode): string {
   const ref = node.$ref;
   if (typeof ref === "string") {
     const name = ref.split("/").pop() as string;
-    return `<a href="#schema-${esc(name)}">${esc(name)}</a>`;
+    return `<a href="${esc(href.schema(ROOT_TOP, name))}">${esc(name)}</a>`;
   }
   if (node.type === "array") {
     const items = node.items as SchemaNode | undefined;
@@ -77,10 +78,10 @@ ${
 ${
   entry.usedBy.length > 0
     ? `<h4>Used by</h4><ul class="usedby">${[...new Set(entry.usedBy)]
-        .map(
-          (url) =>
-            `<li><a href="#resource-${esc(url.split("/")[1] ?? "misc")}"><code>${esc(url)}</code></a></li>`,
-        )
+        .map((url) => {
+          const owner = url.split("/")[1] ?? "misc";
+          return `<li><a href="${esc(href.resource(ROOT_TOP, owner))}"><code>${esc(url)}</code></a></li>`;
+        })
         .join("")}</ul>`
     : ""
 }

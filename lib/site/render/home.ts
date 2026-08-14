@@ -1,22 +1,23 @@
+import { href, ROOT_TOP } from "../href.ts";
 import type { LeapModel } from "../model.ts";
 import { renderFrame } from "./highlight.ts";
 import { esc } from "./html.ts";
 import type { NavItem, Section } from "./layout.ts";
 import { renderTimeline } from "./timeline.ts";
 
-export function siteNav(model: LeapModel): NavItem[] {
+export function siteNav(model: LeapModel, root: string): NavItem[] {
   return [
-    { href: "#overview", label: "Overview" },
-    { href: "#recipes", label: "Recipes" },
-    { href: "#coverage", label: "Coverage" },
-    { href: "#schemas", label: "Schemas" },
+    { href: href.overview(root), label: "Overview" },
+    { href: href.tier(root, "recipes"), label: "Recipes" },
+    { href: href.tier(root, "coverage"), label: "Coverage" },
+    { href: href.tier(root, "schemas"), label: "Schemas" },
     ...model.docs.map((d) => ({
-      href: `#doc-${d.slug}`,
+      href: href.doc(root, d.slug),
       label: d.title,
       group: "Protocol",
     })),
     ...model.resources.map((r) => ({
-      href: `#resource-${r.name}`,
+      href: href.resource(root, r.name),
       label: r.name,
       group: "Resources",
     })),
@@ -76,10 +77,10 @@ ${
 
 <h2>Start here</h2>
 <ul class="entrypoints">
-<li><a href="#recipes">Recipes</a> — frame sequences for the common tasks: pair, discover the layout, read state, drive a zone, watch for changes.</li>
-<li><a href="#doc-protocol">The wire protocol</a> — envelope, framing, status codes, transports.</li>
-<li><a href="#doc-subscriptions">Subscriptions</a> — the lifecycle and the shape of a push.</li>
-<li><a href="#coverage">Coverage</a> — what is documented, what is imported unverified, and what is absent.</li>
+<li><a href="${esc(href.tier(ROOT_TOP, "recipes"))}">Recipes</a> — frame sequences for the common tasks: pair, discover the layout, read state, drive a zone, watch for changes.</li>
+<li><a href="${esc(href.doc(ROOT_TOP, "protocol"))}">The wire protocol</a> — envelope, framing, status codes, transports.</li>
+<li><a href="${esc(href.doc(ROOT_TOP, "subscriptions"))}">Subscriptions</a> — the lifecycle and the shape of a push.</li>
+<li><a href="${esc(href.tier(ROOT_TOP, "coverage"))}">Coverage</a> — what is documented, what is imported unverified, and what is absent.</li>
 </ul>
 
 <h2>Resources</h2>
@@ -87,7 +88,7 @@ ${
 ${model.resources
   .map(
     (r) =>
-      `<li><a href="#resource-${esc(r.name)}">${esc(r.name)}</a> <span class="count">${r.operations.length}</span></li>`,
+      `<li><a href="${esc(href.resource(ROOT_TOP, r.name))}">${esc(r.name)}</a> <span class="count">${r.operations.length}</span></li>`,
   )
   .join("")}
 </ul>`;

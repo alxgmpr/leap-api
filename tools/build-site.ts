@@ -1,6 +1,7 @@
 import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { toClientModel } from "../lib/site/client-model.ts";
+import { ROOT_TOP } from "../lib/site/href.ts";
 import { assertInvariants } from "../lib/site/invariants.ts";
 import { buildModel } from "../lib/site/model.ts";
 import { renderCoverageSection } from "../lib/site/render/coverage.ts";
@@ -28,7 +29,7 @@ const sections = [
 const pages: Page[] = [
   {
     path: "index.html",
-    html: page({ title: "Reference", nav: siteNav(model), sections }),
+    html: page({ title: "Reference", nav: siteNav(model, ROOT_TOP), sections }),
   },
 ];
 

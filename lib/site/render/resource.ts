@@ -1,5 +1,6 @@
 import { type Callout, calloutsFor } from "../callouts.ts";
 import type { Edge } from "../graph.ts";
+import { href, ROOT_TOP } from "../href.ts";
 import type { LeapModel, Operation, Resource } from "../model.ts";
 import type { Provenance } from "../provenance.ts";
 import { timelineFor } from "../timelines.ts";
@@ -151,15 +152,15 @@ function renderExchange(operation: Operation, model: LeapModel): string {
       ? `<p class="meta">Wire <code>MessageBodyType</code> <code>${esc(operation.bodyType)}</code> — <code>Body</code> wraps the payload under that key.</p>`
       : "",
     operation.eventSchema
-      ? `<p class="meta">Subscribing pushes <a href="#schema-${esc(operation.eventSchema)}">${esc(operation.eventSchema)}</a>, a partial carrying only changed fields. <a href="#doc-subscriptions">Subscriptions</a>.</p>`
+      ? `<p class="meta">Subscribing pushes <a href="${esc(href.schema(ROOT_TOP, operation.eventSchema))}">${esc(operation.eventSchema)}</a>, a partial carrying only changed fields. <a href="${esc(href.doc(ROOT_TOP, "subscriptions"))}">Subscriptions</a>.</p>`
       : "",
     prose ? `<div class="prose opdesc">${renderMarkdown(prose)}</div>` : "",
     observationTable(operation),
     operation.responseSchema
-      ? `<p class="meta">Payload schema <a href="#schema-${esc(operation.responseSchema)}">${esc(operation.responseSchema)}</a>.</p>`
+      ? `<p class="meta">Payload schema <a href="${esc(href.schema(ROOT_TOP, operation.responseSchema))}">${esc(operation.responseSchema)}</a>.</p>`
       : "",
     operation.requestSchema
-      ? `<p class="meta">Request payload schema <a href="#schema-${esc(operation.requestSchema)}">${esc(operation.requestSchema)}</a>.</p>`
+      ? `<p class="meta">Request payload schema <a href="${esc(href.schema(ROOT_TOP, operation.requestSchema))}">${esc(operation.requestSchema)}</a>.</p>`
       : "",
   ]
     .filter(Boolean)
@@ -222,7 +223,7 @@ function renderEdges(edges: Edge[], documented: Set<string>): string {
     if (!documented.has(edge.target))
       return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <code>/${esc(edge.target)}</code> ${evidence} <span class="unresolved">not documented here</span></li>`;
 
-    return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <a href="#resource-${esc(edge.target)}">${esc(edge.target)}</a> ${evidence}</li>`;
+    return `<li data-target="${esc(edge.target)}"><span class="dot live">●</span> ${label} → <a href="${esc(href.resource(ROOT_TOP, edge.target))}">${esc(edge.target)}</a> ${evidence}</li>`;
   };
 
   return `<details class="links"><summary>Links to other resources · ${edges.length}</summary>
