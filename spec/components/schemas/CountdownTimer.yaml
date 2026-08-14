@@ -26,6 +26,19 @@ description: |
   than back at the requested URL -- `/zone/6/countdowntimer` answers with
   `href: "/countdowntimer/8"` -- and `AssociatedZone` (a pointer in
   firmware, present on all 11) carries the zone reference instead.
+
+  **Create contract (live, 2026-08-13).** `CreateRequest /countdowntimer`
+  **requires `AssociatedZone`** -- omitting it answers `400 BadRequest`
+  ("The body is missing a required property : AssociatedZone"), so the
+  firmware pointer type understates it for the create path. Create is
+  platform-shaped: it succeeds on a Caseta dimmer zone (`201 Created`,
+  `MessageBodyType: OneCountdownTimerDefinition`, id `/countdowntimer/1`) but
+  answers `500 InternalServerError` ("Countdown timer could not be created.")
+  on the QSX office lamp zones -- consistent with this class being a
+  Caseta-family feature. The bridge also normalizes the submitted body: a
+  create sent `EnabledState: Disabled`, `Timeout: 0:15:00` was stored as
+  `Enabled` / `15:00`. `DeleteRequest /countdowntimer/{id}` answers
+  `204 NoContent`. See `docs/protocol.md`'s "Resource create and delete".
 properties:
   href:
     type: string

@@ -287,10 +287,13 @@ the shape of both replies:
   where the command-processor reply mirrors the affected zone's status
   (`OneZoneStatus`) — the `MessageBodyType` names which. Two behaviors of
   note on this processor:
-  - **Server-assigned ids are in a high, transient-looking range.** The new
-    event came back as `/timeclockevent/2147483646` (2³¹−2), distinct from
-    the low ids of committed objects. Whether this is an uncommitted-object
-    id space or simply the next free id is not established here.
+  - **Server-assigned ids: high on QSX, low on Caseta.** The QSX event came
+    back as `/timeclockevent/2147483646` (2³¹−2), distinct from the low ids of
+    committed objects. That is **not** universal, though: the same session
+    created a `CountdownTimer` on the Caseta bridge (below) and got back a
+    plain `/countdowntimer/1`. So the high/transient-looking id space is a
+    QSX/Phoenix trait, not a LEAP rule — a client must not assume created ids
+    are large or small.
   - **The create can spawn child objects.** No `ProgrammingModel` was sent,
     yet the response carried `ProgrammingModel: {href:
     "/programmingmodel/2147483645"}` — the processor created one for the
@@ -301,10 +304,24 @@ the shape of both replies:
   answered `404`, so removing the event removed its child model too, leaving
   the timeclock as it was.
 
-One resource family, one processor — this says nothing yet about whether
-other creatable types reply in the same `One<Type>Definition` shape, or
-whether every delete is a bodyless `204`. But `DeleteResponse` and the
-resource-create `CreateResponse` are no longer unobserved. Note also that
+A second create/delete round trip, on the other platform and a different
+type, shows the shape generalizes: a `CountdownTimer` created on the Caseta
+bridge (`CreateRequest /countdowntimer`, `AssociatedZone` pointing at a real
+dimmer zone) answered `201 Created`, `MessageBodyType:
+OneCountdownTimerDefinition`, the created object echoed — and
+`DeleteRequest /countdowntimer/1` answered `204 NoContent`, bodiless, the
+resource gone (`404`) after. So `One<Type>Definition`/`201` on create and a
+bodiless `204` on delete now hold across two resource types and both
+platforms. One caveat surfaced there too: **the server may normalize or
+override the submitted body** — a create sent with `EnabledState: Disabled`
+and `Timeout: 0:15:00` came back stored as `Enabled` / `15:00`, so the create
+reply, not the request, is the source of truth for what was persisted.
+(`CountdownTimer` create is also platform-shaped: it succeeds on a Caseta
+dimmer zone but `500`s on the QSX office lamp zones, and `AssociatedZone` is
+required either way — see `CountdownTimer.yaml`.)
+
+`DeleteResponse` and the resource-create `CreateResponse` are no longer
+unobserved. Note also that
 the route table's face-value verb list overstates what a processor accepts:
 `CreateRequest /virtualbutton` is refused `405` on this unit despite the
 firmware table flagging the route CREATE-capable, and `/timeclock` itself is
