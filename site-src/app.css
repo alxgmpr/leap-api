@@ -344,13 +344,28 @@ button,
   padding: 32px var(--gutter) 120px;
 }
 
+/* The rail still scrolls its own 40-odd links, but its scrollbar is hidden:
+   it sat in the gutter between the two columns, so a track that appeared and
+   vanished with the page's length was doing the job of a column divider and
+   doing it inconsistently. A rule in the same gutter does that job on every
+   page. Padding pushes the border out to the middle of the gap and the equal
+   negative margin gives the width back, so the line moves off the rail
+   without narrowing the links (box-sizing is border-box). */
 .sidebar {
   position: sticky;
   top: 58px;
   align-self: start;
   max-height: calc(100vh - 80px);
   overflow-y: auto;
+  scrollbar-width: none;
   font-size: var(--t-base);
+  padding-right: calc(var(--col-gap) / 2);
+  margin-right: calc(var(--col-gap) / -2);
+  border-right: 1px solid var(--rule);
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebar ul {
@@ -1137,11 +1152,16 @@ body.confirmed-only [data-verdict]:not([data-verdict="confirmed"]):hover {
   main {
     order: 1;
   }
+  /* Stacked, the divider turns back: the columns are now one above the other,
+     so the break between them is the border-top it always was. */
   .sidebar {
     order: 2;
     position: static;
     max-height: none;
     padding-top: 20px;
+    padding-right: 0;
+    margin-right: 0;
+    border-right: 0;
     border-top: 1px solid var(--rule);
   }
   /* Full-width now, so the index sets its own column count by width too. */
