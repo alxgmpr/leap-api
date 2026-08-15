@@ -292,16 +292,33 @@ followed the level change carried exactly one entry, for the zone that
 moved:
 
 ```json
-{ "ZoneStatuses": [ { "href": "/zone/4664/status", "Level": 50,
-  "Zone": { "href": "/zone/4664" }, "StatusAccuracy": "Good" } ] }
+{
+  "ZoneStatuses": [
+    {
+      "href": "/zone/4664/status",
+      "Level": 50,
+      "Zone": {
+        "href": "/zone/4664"
+      },
+      "StatusAccuracy": "Good"
+    }
+  ]
+}
 ```
 
 Compare that entry with the same zone's entry in the subscribe-time
 snapshot:
 
 ```json
-{ "href": "/zone/4664/status", "Level": 0, "Zone": { "href": "/zone/4664" },
-  "StatusAccuracy": "Good", "ZoneLockState": "Unlocked" }
+{
+  "href": "/zone/4664/status",
+  "Level": 0,
+  "Zone": {
+    "href": "/zone/4664"
+  },
+  "StatusAccuracy": "Good",
+  "ZoneLockState": "Unlocked"
+}
 ```
 
 The push **omits `ZoneLockState`**, which the snapshot includes. It is not
@@ -421,8 +438,13 @@ subscription delivered an unprompted metering frame (`seq` 23, 9.6 s after
 the level change):
 
 ```json
-{ "AreaStatus": { "href": "/area/1340/status",
-  "InstantaneousPower": 6, "InstantaneousMaxPower": 10 } }
+{
+  "AreaStatus": {
+    "href": "/area/1340/status",
+    "InstantaneousPower": 6,
+    "InstantaneousMaxPower": 10
+  }
+}
 ```
 
 Neither `InstantaneousPower` nor `InstantaneousMaxPower` appears in that
@@ -601,11 +623,23 @@ Two frames arrived at connect (the auto-subscribe pair above); the third, at
 98,499 ms, is a push on `/device/status/deviceheard`:
 
 ```json
-{ "DeviceStatus": { "DeviceHeard": {
-  "DiscoveryMechanism": "UserInteraction",
-  "ModelNumber": "PJ2-3BRL-GXX-X01", "DeviceType": "Pico3ButtonRaiseLower",
-  "SerialNumber": 0, "DeviceClass": { "HexadecimalEncoding": "1070206" },
-  "Link": { "href": "/link/1" }, "ProductId": "17235974" } } }
+{
+  "DeviceStatus": {
+    "DeviceHeard": {
+      "DiscoveryMechanism": "UserInteraction",
+      "ModelNumber": "PJ2-3BRL-GXX-X01",
+      "DeviceType": "Pico3ButtonRaiseLower",
+      "SerialNumber": 0,
+      "DeviceClass": {
+        "HexadecimalEncoding": "1070206"
+      },
+      "Link": {
+        "href": "/link/1"
+      },
+      "ProductId": "17235974"
+    }
+  }
+}
 ```
 
 (`SerialNumber` reads `0` because `lib/redact.ts` zeroes it; the wire carried

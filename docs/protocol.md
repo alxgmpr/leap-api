@@ -27,7 +27,7 @@ top-level keys:
     "StatusCode": "200 OK",
     "MessageBodyType": "ZoneStatus"
   },
-  "Body": { }
+  "Body": {}
 }
 ```
 
@@ -53,7 +53,12 @@ top-level keys:
 named by `Header.MessageBodyType`, whose value is the actual payload:
 
 ```json
-"Body": { "ZoneStatus": { "href": "/zone/518/status", "Level": 100 } }
+"Body": {
+  "ZoneStatus": {
+    "href": "/zone/518/status",
+    "Level": 100
+  }
+}
 ```
 
 Every schema in this specification (`spec/components/schemas/`) describes
@@ -194,7 +199,9 @@ seen — once, in the `ra3-keypad-press` run, answering a `SubscribeRequest` to
     "Url": "/device",
     "ClientTag": "lt-2"
   },
-  "body": { "Message": "This request is not supported" }
+  "body": {
+    "Message": "This request is not supported"
+  }
 }
 ```
 
