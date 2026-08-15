@@ -167,9 +167,10 @@ body {
 /* The opt-outs. Each of these is a frame with its own horizontal scroll, so
    its content is allowed to run long inside a bounded box -- the scroll
    stays in the frame and never reaches the page. `white-space: pre` already
-   suppresses wrapping on .wire.body and pre; this states the intent and
+   suppresses wrapping on .wire and pre; this states the intent and
    keeps a stray inherited value from reaching them. */
-.wire.body,
+.wire,
+.composed,
 .prose pre,
 .tablewrap,
 .prose table {
@@ -547,7 +548,17 @@ h4 {
   color: var(--mute);
 }
 
-/* one frame is one line on the socket, so it is shown as one line */
+/* One frame is one line on the socket, so it is shown as one line -- `pre`,
+   and the overflow goes to a scrollbar on the block rather than folding into
+   a paragraph. `pre-wrap` + `break-all` used to reflow a 700-character frame
+   into eight ragged lines broken mid-token, which reads as a JSON document
+   and loses the one thing the block is here to say: all of it arrived as a
+   single line. The pretty-printed body below it is the place to read the
+   fields; this is the place to see the shape.
+
+   The scroll stays inside the block. Its width comes from the content grid's
+   minmax(0, 1fr) column, so a long frame cannot push a floor under the page
+   -- tools/measure-site.mjs gates document overflow at 0px from 320px up. */
 .wire {
   margin: 8px 0 0 calc(1.2em + 9px);
   padding: 9px 12px;
@@ -556,9 +567,15 @@ h4 {
   border-radius: var(--radius);
   font-size: var(--t-sm);
   line-height: 1.5;
-  white-space: pre-wrap;
-  word-break: break-all;
-  overflow-wrap: anywhere;
+  white-space: pre;
+  word-break: normal;
+  overflow-x: auto;
+  /* Every frame is a scroll container now, and on platforms with classic
+     space-taking scrollbars that is a band under each one. `thin` keeps the
+     affordance -- a reader has to be able to tell there is more line -- at a
+     weight that survives a page carrying thirty frames. Overlay-scrollbar
+     platforms ignore this and show nothing until the block is scrolled. */
+  scrollbar-width: thin;
 }
 
 /* Fidelity is still a line style rather than a colour, but it is now the
@@ -572,10 +589,10 @@ h4 {
   border-color: var(--mute);
 }
 
+/* The body block takes the horizontal scroll from .wire and adds a vertical
+   cap: a 46-zone status reply pretty-prints to hundreds of lines and would
+   otherwise push everything after it off the screen. */
 .wire.body {
-  white-space: pre;
-  word-break: normal;
-  overflow-x: auto;
   max-height: 340px;
   overflow-y: auto;
 }
@@ -788,8 +805,16 @@ div.reply {
   background: var(--panel);
   /* A composed line is constructed, so it takes the constructed outline. */
   border: 1px dotted var(--mute);
-  white-space: pre-wrap;
-  word-break: break-all;
+  /* Same rule as .wire: this is a frame as it would go out on the socket, so
+     it is one line and scrolls. It sits in a flex row, where an item's
+     automatic minimum size is its content -- being a scroll container in the
+     inline axis is what drops that to zero, but min-width states it rather
+     than leaving the row's behaviour resting on that inference. */
+  white-space: pre;
+  word-break: normal;
+  overflow-x: auto;
+  min-width: 0;
+  scrollbar-width: thin;
 }
 
 .command-field {
