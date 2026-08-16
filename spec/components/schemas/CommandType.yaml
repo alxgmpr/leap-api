@@ -27,6 +27,9 @@ description: |
     package identifier, despite the "iOS" heading).
   - `index.md`, "System Actions" section -- one live-captured Caseta v01.123
     response body (`PressAndRelease`), not app RE.
+  - A live write probe against RA3/HWQS firmware v03.x (`GoToScene`) -- see
+    that member's own note below. It is the only member whose *effect* has
+    been observed, not merely its acceptance.
 
   Deliberately NOT included, to avoid inventing values from a name's shape:
   - The Android APK's `*CommandBody` wrapper class names for zone shade-limit
@@ -52,12 +55,6 @@ description: |
     commands are real (the firmware struct has `CCOLevelParameters` and
     `ReceptacleLevelParameters` fields), but their CommandType strings are
     not established.
-  - `GoToScene`: no source states this string. It is inferred only from the
-    Request Creator class name `GoToSceneRequestCreator` and the firmware
-    field `GoToSceneParameters` existing -- and RequestCreator-name
-    stripping is independently shown unreliable elsewhere in the same list
-    (`DimmedLevelRequestCreator` strips to `DimmedLevel`, not the confirmed
-    `GoToDimmedLevel`).
   - The iOS RE table's `IdentifyCommand` sub-commands are written as bare
     "Start, Stop (flash LED)" -- read as a paraphrase of the Android table's
     confirmed `StartIdentify`/`StopIdentify`, not two additional members.
@@ -94,6 +91,23 @@ enum:
   - BeginTransferSession
   # api-discovery.md, Android APK RE, "Other Command Endpoints" table
   - SystemStatusUpdate
+  # Live write probe, RA3/HWQS firmware v03.x. This string was previously
+  # excluded here as unconfirmed name-shape inference from
+  # `GoToSceneRequestCreator`; it is now confirmed on hardware. A
+  # `CreateRequest` to `/area/{areaId}/commandprocessor` carrying
+  # `{"CommandType": "GoToScene", "GoToSceneParameters": {"CurrentScene":
+  # {"href": "/areascene/<id>"}}}` answered `204 NoContent` and the area's
+  # zones moved to the scene's levels and back, fired both ways. The
+  # alternatives were falsified in the same probe: the same body to
+  # `/preset/{id}/commandprocessor` answers
+  # `400 "This command is not supported: \"GoToScene\""`,
+  # `/areascene/{id}/commandprocessor` answers 405, and an `UpdateRequest`
+  # to `/area/{id}/status` setting `CurrentScene` answers 405. All 39
+  # members documented here at the time were tried against
+  # `/preset/{id}/commandprocessor`; only `StartIdentify`/`StopIdentify`
+  # were recognised, which is what sent the search to the firmware's
+  # `GoToSceneParameters` field and then to the area route.
+  - GoToScene
   # index.md, iOS app RE, "Non-Zone Command Classes" table (Sub-commands column)
   - GoToGroupLightingLevel
   - EditDayNightMode

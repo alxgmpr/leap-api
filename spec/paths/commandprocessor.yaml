@@ -172,11 +172,24 @@
       - area
     x-leap-communique-type: CreateRequest
     description: |
-      Send a command to an area. Confirmed accepted CommandType (index.md,
-      `lutron-protocols` docs/protocols/leap/index.md, Non-Zone Command
-      Classes table, iOS app RE): `GoToGroupLightingLevel`
-      (sets all zones in the area at once). The exact parameter field it
-      populates is not established -- see `Command.yaml`.
+      Send a command to an area. Confirmed accepted CommandTypes:
+
+      - `GoToGroupLightingLevel` (index.md, `lutron-protocols`
+        docs/protocols/leap/index.md, Non-Zone Command Classes table, iOS app
+        RE) -- sets all zones in the area at once. The exact parameter field
+        it populates is not established; see `Command.yaml`.
+      - `GoToScene` -- **activates an area scene, and this is the only route
+        that does.** Confirmed by live write probe against RA3/HWQS firmware
+        v03.x: a `CreateRequest` carrying
+        `{"CommandType": "GoToScene", "GoToSceneParameters": {"CurrentScene":
+        {"href": "/areascene/<id>"}}}` answered `204 NoContent`, and the
+        area's zones moved to that scene's levels. The scene is addressed as
+        a reference on the *area's* processor, not by acting on the scene or
+        its preset: the same body to `/preset/{id}/commandprocessor` answers
+        `400 "This command is not supported: \"GoToScene\""`,
+        `/areascene/{id}/commandprocessor` answers `405`, and an
+        `UpdateRequest` to `/area/{id}/status` setting `CurrentScene` answers
+        `405`.
     requestBody:
       required: true
       content:
@@ -184,6 +197,10 @@
           schema:
             $ref: "#/components/schemas/Command"
     responses:
+      "204":
+        description: |
+          No content. Observed for `GoToScene` on RA3/HWQS v03.x; unlike a
+          zone command, the area processor does not echo a status body.
       "200":
         description: Success
     summary: Send area command

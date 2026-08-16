@@ -50,6 +50,7 @@ description: |
   | `BeginTransferSession` | `BeginTransferSessionParameters` (schema `DatabaseTransferSessionCreate`) | api-discovery.md "BeginTransferSessionCommand" section, explicit |
   | `PressAndRelease` | (none) | index.md System Actions -- captured Caseta v01.123 response body has no parameters key (also validated by this repo's own `/system/action` fixture -- see `commandprocessor.yaml` and `system.yaml`) |
   | `SystemStatusUpdate` | not established | api-discovery.md names the CommandType; no Parameters column or matching field name given |
+  | `GoToScene` | `GoToSceneParameters` | live write probe, RA3/HWQS v03.x: `204 NoContent` on `/area/{areaId}/commandprocessor` and the area's zones moved to the scene's levels. The only CommandType here whose effect, not just acceptance, has been observed |
   | `GoToGroupLightingLevel` | not established | index.md Non-Zone Command Classes table; candidate field `GroupLightingLevelParameters` exists but no source ties them together |
   | `EditDayNightMode` | not established | index.md Non-Zone Command Classes table; candidate field `EditDayNightModeParameters` exists but no source ties them together |
   | `EditNaturalShowRamp` | not established | index.md Non-Zone Command Classes table; candidate field `EditNaturalShowRampParameters` exists but no source ties them together |
@@ -77,8 +78,7 @@ description: |
   `*CommandBody` classes -- see `CommandType.yaml` for why those aren't used
   to guess a value), `CCOLevelParameters`, `ReceptacleLevelParameters`
   (candidates for the excluded `CCOZoneGotoLevelCommand`/
-  `ReceptacleZoneGotoLevelCommand` iOS RE names), `GoToSceneParameters`
-  (candidate for the unconfirmed `GoToScene`), `ExtractPairedDevicesParameters`,
+  `ReceptacleZoneGotoLevelCommand` iOS RE names), `ExtractPairedDevicesParameters`,
   `RSSIDiscoveryParameters`, `RequestDeviceHeardParameters`,
   `EMailLogsParameters`, `OccupancyGroupsAssociationsParameters`,
   `BACnetInstanceStrategyParameters`, `LookupResourceParameters`,
