@@ -10,6 +10,17 @@ properties:
     type: string
   Level:
     type: number
+    description: |
+      Read-only-visible in practice: present in a read and in the
+      subscribe-time snapshot, never in a push, even when it changes. Driving
+      a zone in the area produces a `CurrentScene` push and a metering push
+      on `/area/{areaId}/status`, and a level push on `/zone/status`, but no
+      area `Level`. A client tracking this field from a subscription alone
+      holds the value the area had when it subscribed.
+
+      Observed to equal the highest `Level` among the area's zones with
+      `Category.IsLight` true, on all 19 areas of an HWQS v03.249 system;
+      zones that are not lights are excluded. See docs/subscriptions.md.
   OccupancyStatus:
     $ref: "#/components/schemas/OccupancyStatus"
   InstantaneousPower:

@@ -398,6 +398,44 @@ zones that moved during the run do carry `ZoneLockState` in the
 snapshot**, and no push carries it for any of them. Merge per field; do not
 replace.
 
+### An area's `Level` changes without ever being pushed
+
+The delta rule above says unchanged fields are not sent. `AreaStatus.Level`
+is a stronger case: it changes and is *still* not sent. It appears in the
+subscribe snapshot and in reads, and in no push at any point.
+
+The evidence is already in `push-probe.json`. The run drives zone 4664 — a
+`Dimmed`, `IsLight: true` zone whose `AssociatedArea` is `/area/1340` —
+from 0 to 50 and back. The area's level therefore changed twice. Its three
+pushes (`seq` 22, 23, 26, tabulated above) carry `CurrentScene` and the
+metering pair; not one carries `Level`.
+
+A second run on HWQS firmware v03.249 reproduces it deliberately: subscribe
+to one area's status and to `/zone/status`, drive a zone in that area to
+60%, fire two area scenes, and read the area's status after each. Every read
+returns the correct new `Level` (60, then 0, then 25). Every push carries
+`CurrentScene` or `InstantaneousPower`, never `Level`.
+
+So a subscription is not sufficient to track an area's level. A client has
+three options, and only one of them is a subscription:
+
+1. Re-read `/area/{areaId}/status` after each change — a poll wearing a
+   subscription's clothes.
+2. Accept a level that is correct only at connect time.
+3. Derive it from the zone levels, which *are* pushed.
+
+For (3) the aggregation rule is the **highest `Level` among the area's zones
+whose `Category.IsLight` is true**. Checked against 19 areas of a live
+system by reading each area's status and each of its zones': the derived
+value equals the processor's own `AreaStatus.Level` in all 19. Non-light
+zones must be excluded, and one area shows why — its two lights were at 10
+while its `ExhaustFan` zone was `SwitchedLevel: "On"`, `Level: 100`, and the
+processor reported the area at 10.
+
+This is one processor and one firmware version. It is a client strategy, not
+a wire guarantee: nothing in the firmware types says an area's level is a
+maximum, and an area with no light zones has no derived level at all.
+
 ## Timing, and ordering against the command's own response
 
 Both level changes in the capture produced a `/zone/status` push, and in
