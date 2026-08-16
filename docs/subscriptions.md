@@ -796,9 +796,15 @@ only what changed, never a full snapshot) holds across all of them.
   held everywhere it has been tested.
 - **`UnsubscribeResponse`.** Still never captured; no subscription in this
   corpus was ever explicitly torn down rather than dropped with the socket.
-- **Push behaviour under load.** One zone changing on a quiet system, or five
-  zones changing ten times over 27 s. Whether a burst of simultaneous changes
-  coalesces into one push, or produces one push each, is untested.
+- **Push behaviour under load.** A burst *does* coalesce, and the push carries
+  only what moved. Measured on RA3/HWQS v03.x by holding a keypad's raise/lower
+  while subscribed to `/zone/status`: three zones in one area ramped together
+  and produced **12 pushes over 17 s**, roughly one every 1-2 s, each frame
+  carrying a `ZoneStatuses` array of exactly those **3** zones — not one push
+  per zone, and not the whole 46-zone collection the `SubscribeResponse`
+  snapshot had carried. So a push is a delta at the collection level too: the
+  members are those that changed in that tick. What is still untested is a
+  burst spanning *unrelated* zones driven from different sources at once.
 - **Whether the tag is stable for the life of the subscription.** The longest
   interval between a subscribe and a push on its tag anywhere in this corpus
   is 63 s (`ra3-keypad-press`: its `SubscribeResponse` landed at 3,094 ms and
@@ -834,9 +840,16 @@ same as a severed socket, and whether anything is buffered and replayed for a
 client that reconnects quickly (nothing was, at the ~1 s reconnect delay used
 here).
 - **Whether a client may subscribe to the auto-subscribed routes itself.**
-  Caseta pushes on `/device/status/deviceheard` unasked. No `SubscribeRequest`
-  for it was ever sent, on either platform, so whether a client can open that
-  subscription deliberately is unknown.
+  Partly answered. Caseta pushes on `/device/status/deviceheard` unasked. A
+  deliberate `SubscribeRequest` for it on RA3/HWQS v03.x is **accepted**,
+  answering `204 NoContent` — so a client may open it, and the empty body is
+  not a refusal. Whether it ever *pushes* on that platform is a separate
+  question, and one observation says no: with that subscription open alongside
+  `/device/status`, a physical occupancy sensor was walked past and tripped.
+  The only frame either route produced was **none**; the sole push was the
+  containing area's `OccupancyStatus`. One sensor, one event, so this bounds
+  nothing about device joins, which is what the Caseta capture shows the route
+  carrying.
 
 ## The subscribable routes
 
