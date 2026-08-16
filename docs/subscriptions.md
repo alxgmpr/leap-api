@@ -802,9 +802,37 @@ only what changed, never a full snapshot) holds across all of them.
 - **Whether the tag is stable for the life of the subscription.** The longest
   interval between a subscribe and a push on its tag anywhere in this corpus
   is 63 s (`ra3-keypad-press`: its `SubscribeResponse` landed at 3,094 ms and
-  the last push on that tag at 66,337 ms). A subscription held for hours, or one surviving a
-  processor-side reconnect, was not tested — and the tag pair above does not
-  speak to reconnects either.
+  the last push on that tag at 66,337 ms). A subscription held for hours was
+  not tested, and the tag pair above does not speak to reconnects.
+
+## Subscriptions do not survive the connection
+
+This was an open question in this document until a live probe closed it, and
+the answer is the one a client should assume: **a dropped connection drops the
+subscription.**
+
+The measurement, against RA3/HWQS firmware v03.x. A cuttable TCP proxy was
+placed between a client and the processor — TLS terminates at the processor, so
+the proxy is a byte pipe that sees no plaintext — a subscription to
+`/zone/status` was opened through it, and a dimmer was driven to generate
+pushes. Cutting the proxy is a real socket drop from the client's point of
+view. The same experiment was then run twice:
+
+| After reconnecting | Pushes for the same zone change |
+|---|---|
+| client re-issues its `SubscribeRequest` | arrive normally |
+| client does not re-subscribe | **none** |
+
+Two consequences for a client. Requests in flight when the socket dies must be
+failed rather than left pending — the processor never answers them on the new
+connection. And every subscription has to be re-issued after a reconnect;
+holding the tag is not enough, because the tag belonged to a session that no
+longer exists.
+
+What this does not establish: whether a *processor-side* restart behaves the
+same as a severed socket, and whether anything is buffered and replayed for a
+client that reconnects quickly (nothing was, at the ~1 s reconnect delay used
+here).
 - **Whether a client may subscribe to the auto-subscribed routes itself.**
   Caseta pushes on `/device/status/deviceheard` unasked. No `SubscribeRequest`
   for it was ever sent, on either platform, so whether a client can open that
