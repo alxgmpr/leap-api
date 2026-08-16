@@ -174,10 +174,12 @@
     description: |
       Send a command to an area. Confirmed accepted CommandTypes:
 
-      - `GoToGroupLightingLevel` (index.md, `lutron-protocols`
-        docs/protocols/leap/index.md, Non-Zone Command Classes table, iOS app
-        RE) -- sets all zones in the area at once. The exact parameter field
-        it populates is not established; see `Command.yaml`.
+      - `GoToGroupLightingLevel` -- sets all zones in the area at once,
+        carrying `GroupLightingLevelParameters: {"Level": <0-100>}`. Note the
+        missing `GoTo` on the parameter key: the predictable
+        `GoToGroupLightingLevelParameters` is a `400 BadRequest`, and the
+        processor's message names the field it wants. Confirmed by live write
+        probe against RA3/HWQS v03.x (`204 NoContent`).
       - `GoToScene` -- **activates an area scene, and this is the only route
         that does.** Confirmed by live write probe against RA3/HWQS firmware
         v03.x: a `CreateRequest` carrying
