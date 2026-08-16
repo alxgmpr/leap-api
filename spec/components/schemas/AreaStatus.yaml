@@ -27,10 +27,26 @@ properties:
     type: integer
     minimum: 0
     maximum: 4294967295
+    description: |
+      A calculation, not a measurement. At full output an area reports
+      exactly its own `InstantaneousMaxPower` — measured on two areas of an
+      HWQS v03.249 system, 40 of 40 and 10 of 10 — which is the programmed
+      load wattage scaled by level. The dimmers on that system have no
+      current sensing.
+
+      Push-only and sporadic: it appears in no read (0 of 19 areas), and a
+      subscriber sees it at the processor's own cadence rather than on
+      change. One area was held at 0% for two minutes after reporting 10 W
+      and no correcting push arrived, so the last value a client holds may
+      describe a state the system has left.
   InstantaneousMaxPower:
     type: integer
     minimum: 0
     maximum: 4294967295
+    description: |
+      The area's programmed load wattage — the sum Designer was given, not a
+      rating discovered from hardware. `InstantaneousPower` equals this
+      exactly at full output.
   CurrentScene:
     description: |
       Nullable: the wire sends an explicit JSON `null` for an area with no
