@@ -1513,5 +1513,80 @@
       "unverifiedSchemas": 80,
       "refinedPaths": 211
     }
+  },
+  {
+    "sha": "c28c5aaa053c9759e5abf9ce8eb03c7b6f27194c",
+    "date": "2026-08-15T19:55:32-06:00",
+    "subject": "spec: GoToScene confirmed on hardware, and it is an area command",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "68bfac64ed5530d6cae12bd245541bfa4cc0b971",
+    "date": "2026-08-16T13:26:21-06:00",
+    "subject": "docs: an area's Level changes without ever being pushed",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "2c5153ab35e2cf1034fa0cd48d2dfc9aa596891c",
+    "date": "2026-08-16T13:56:07-06:00",
+    "subject": "spec: GoToGroupLightingLevel takes GroupLightingLevelParameters",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "159e2487c441a3809587ea85f29c2016a4e63653",
+    "date": "2026-08-16T14:08:15-06:00",
+    "subject": "spec: area InstantaneousPower is a calculation, not a meter",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 214,
+      "noFixture": 117,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 211
+    }
+  },
+  {
+    "sha": "262acb2612323852b3b27dd3bb1e7705bc1d872f",
+    "date": "2026-08-31T10:22:18-06:00",
+    "subject": "spec: the in-doubt sweep settles 16 of the 51 suspect routes",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 199,
+      "noFixture": 128,
+      "todoEnums": 76,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 226
+    }
   }
 ]
