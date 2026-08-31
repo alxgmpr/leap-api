@@ -1,0 +1,26 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.OccupancyMode`,
+# referenced but never defined by the extraction. One field carries it in the
+# refined tier: OccupancySettings.OccupancyMode.
+#
+# The members are the firmware's own closed set, recovered from the RA3
+# `leap-server` binary -- the same binary `vendor/leap-*.json` was extracted
+# from -- not from the wire (the one observed OccupancySettings omits this
+# pointer field). Two functions agree and corroborate each other:
+# `leap/strategy/viveLaCaseta/internal.getOccupancyMode` (IPC int -> LEAP
+# string, mode 1 -> `Occupancy/Vacancy`, mode 2 -> `Vacancy Only`, default
+# `"unknown occupancy mode %v"`) and its reverse
+# `translateLEAPOccupancyModeToIPC` (LEAP string -> IPC, accepting exactly
+# those two, default `"unsupported OccupancyMode %q"`). So the set is closed
+# on the firmware side, with no LEAP-exposed pure-occupancy mode.
+#
+# Both members carry a slash or a space -- the literal wire strings, not
+# typos.
+type: string
+enum:
+  - "Occupancy/Vacancy"
+  - "Vacancy Only"
+description: |
+  Occupancy-detection mode of an occupancy sensor's settings. Firmware type
+  `leapobj.OccupancyMode`; members recovered from the RA3 `leap-server`
+  binary (see the file header). Never observed on the wire -- the one
+  OccupancySettings any corpus reaches omits this pointer field.

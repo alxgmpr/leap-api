@@ -52,11 +52,7 @@ properties:
   Unoccupied:
     $ref: "#/components/schemas/OccupancySettingsAction"
   OccupancyMode:
-    type: string
-    description: |
-      TODO(enum): members of OccupancyMode were not recovered from the
-      firmware extraction, and hardware has produced none either -- the one
-      observed OccupancySettings omits this pointer field.
+    $ref: "#/components/schemas/OccupancyMode"
   EnabledState:
     $ref: "#/components/schemas/EnabledState"
   PartiallyOccupied:
