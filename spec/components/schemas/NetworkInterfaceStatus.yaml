@@ -3,25 +3,6 @@ properties:
   href:
     type: string
   ConnectedStatus:
-    type: string
-    description: |
-      TODO(enum): members of NetworkInterfaceConnectedStatus were not
-      recovered from the firmware extraction, and hardware has produced
-      exactly one distinct value: `Connected`, via
-      /networkinterface/1/status on RA3 v03.249 and on Caseta v01.123 and
-      v01.124 -- the only 200s any corpus has for that route, and they
-      agree. Counts per corpus are under `x-observed-census`; the two Caseta
-      ones are the same interface reprobed after the bridge was reset, not
-      two interfaces. A disconnected
-      counterpart is implied by the field's name and was never captured,
-      unsurprisingly: the probe reached the processor over that very
-      interface.
-    x-observed-values:
-      - Connected
-    x-observed-census:
-      Connected:
-        spec-read-caseta: 1
-        spec-read-caseta-bare: 1
-        spec-read-ra3: 1
+    $ref: "#/components/schemas/NetworkInterfaceConnectedStatus"
 required:
   - ConnectedStatus

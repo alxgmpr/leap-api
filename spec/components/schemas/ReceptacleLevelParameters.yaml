@@ -1,12 +1,7 @@
 type: object
 properties:
   ReceptacleLevel:
-    type: string
-    description: |
-      TODO(enum): members of ReceptacleLevel were not recovered from the firmware
-      extraction, and nothing anywhere in the corpus carries this firmware type
-      (`leapobj.ReceptacleLevel`): neither platform has a receptacle zone,
-      so ZoneStatus.ReceptacleLevel is unobserved too.
+    $ref: "#/components/schemas/ReceptacleLevel"
   DelayTime:
     type: string
     pattern: ^P(?=.*\d)(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$

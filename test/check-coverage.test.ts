@@ -27,8 +27,14 @@ describe("computeCoverage", () => {
     // deliberately resolved or a new one is deliberately introduced; if
     // either number changes unexpectedly, that's a regression to
     // investigate, not a constant to bump.
+    // 64 (2026-08-31): the firmware-binary enum pass resolved 12 markers
+    // across 7 leapobj types (CCOLevel, ReceptacleLevel, FanSpeed,
+    // ConnectedStatus, NetworkInterfaceConnectedStatus, MaxWattageType,
+    // OccupancySensorSensitivity) by disassembling the RA3 leap-server
+    // functions that consume each value -- exhaustive switches whose member
+    // strings the struct extraction had dropped. See those shared schemas.
     const c = computeCoverage();
-    assert.equal(c.todoEnums, 76);
+    assert.equal(c.todoEnums, 64);
     assert.equal(c.todoResponses, 140);
   });
 });

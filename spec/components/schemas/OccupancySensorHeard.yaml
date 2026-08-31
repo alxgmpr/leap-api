@@ -5,9 +5,7 @@ properties:
     minimum: 0
     maximum: 4294967295
   ConnectedStatus:
-    type: string
-    description: "TODO(enum): members of ConnectedStatus were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/ConnectedStatus"
 required:
   - ID
   - ConnectedStatus

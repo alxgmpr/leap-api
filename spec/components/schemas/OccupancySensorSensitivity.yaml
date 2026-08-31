@@ -1,0 +1,32 @@
+# HAND-AUTHORED shared enum for the firmware type
+# `leapobj.OccupancySensorSensitivity`, referenced but never defined by the
+# extraction. One field carries it in the refined tier:
+# OccupancySensorSettings.Sensitivity.
+#
+# The members are the firmware's own closed set, recovered from the RA3
+# `leap-server` binary -- the same binary `vendor/leap-*.json` was extracted
+# from. `leap/strategy/viveLaCaseta/internal.getOccupancySensorSensitivity`
+# is an exhaustive `switch` over the four members below whose default returns
+# `"unknown sensor sensitivity %v"`, so the set is closed on the firmware
+# side. `Medium` is the one member also seen on the wire (on Caseta); the
+# extraction that recovers the rest is from the RA3 binary, and the type is
+# shared, so the RA3 set is what its `Medium` sits inside.
+#
+# `Ultra Low` is quoted and carries a space -- it is the literal wire string
+# the firmware switch emits, not a typo for `UltraLow`.
+type: string
+enum:
+  - "Ultra Low"
+  - Low
+  - Medium
+  - High
+description: |
+  Sensitivity of an occupancy sensor. Firmware type
+  `leapobj.OccupancySensorSensitivity`; members recovered from the RA3
+  `leap-server` binary (see the file header). `Medium` is observed on the
+  wire, on the single OccupancySensorSettings the Caseta spec probe reaches.
+x-observed-values:
+  - Medium
+x-observed-census:
+  Medium:
+    spec-read-caseta: 2

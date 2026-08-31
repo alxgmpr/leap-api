@@ -14,39 +14,40 @@ description: |
   original Caseta capture and the RA3 v03.249 spec probe. The Caseta spec
   probe reaches one zone and it is dimmed, so it adds none.
 
-  The five enum-typed fields that remain open strings -- CCOLevel,
-  ReceptacleLevel, FanSpeed, StatusAccuracy, ZoneLockState -- are open on
-  purpose, not for want of looking. Each is a real firmware type whose
-  members the extraction failed to recover, and hardware has produced at
-  most **two** distinct values for any of them across every corpus: FanSpeed
-  has two (`High` and `Off`, the same fan zone at different moments) and the
-  other four have one each, ReceptacleLevel none at all. One observed value
-  does not distinguish an enum from a constant, and closing on it asserts
-  the concept is single-valued: an accuracy that is only ever `Good`, a lock
-  state that is only ever `Unlocked`, a CCO that is only ever `Open`. Two
-  values from one physical device does not establish the type's vocabulary
-  either -- a fan that has been seen off and on high says nothing about
-  whether low and medium exist.
+  Three of these enum-typed fields -- CCOLevel, ReceptacleLevel and FanSpeed
+  -- now point at shared closed schemas, and closed on **firmware** evidence
+  rather than wire observation. Hardware had produced at most two distinct
+  values for any of them (FanSpeed `High`/`Off` on one fan zone, CCOLevel
+  `Open`, ReceptacleLevel none), which is no basis to close an enum -- one or
+  two observations do not distinguish an enum from a constant. What closed
+  them is the member list the struct extraction never recovered: the RA3
+  `leap-server` binary's own functions that consume each value are exhaustive
+  `switch`es with a default-error branch, so disassembling them yields the
+  firmware's complete set (the extraction recovers Go `struct` definitions
+  only and drops a `type X string`'s consts, which is why these shipped as
+  bare open strings). See `CCOLevel.yaml`, `ReceptacleLevel.yaml` and
+  `FanSpeed.yaml`; each observed value is a member of its recovered set.
 
-  This specification made that assertion five times before, all of them
-  predating this pass: `Role` (`Installer`), `SessionRole` (`Admin`),
-  `ButtonGroupCategoryType` (`Lights`), `StopIfMovingEnabledState`
-  (`Disabled`) and `SystemLoadSheddingState` (`Disabled`). All five are open
-  strings now, under the criterion `OccupancyStatus.yaml` records: a
-  closed enum needs evidence about the extent of its set, and a one-member
-  enum with no member list from anywhere else has none. No one-member
-  closed enum remains in this specification. That is
-  not the majority treatment -- 24 closed enum schemas still ship against 6
-  documented-open ones -- but it is the whole of the one-member case, and
-  these fields are in it for the same reason. `OccupancyStatus` was the
-  sixth single-observation closure, and the one where a later probe showed
-  what closing costs: it
-  shipped closed on `Unknown` alone, its own note said `Occupied` and
-  `Unoccupied` were expected but unconfirmed, and the coverage-blind probe
-  produced both. That is the precedent this field declines to repeat.
-  Values seen to date are recorded per field under `x-observed-values`, as
-  documentation rather than as an assertion, and counted per corpus under
-  `x-observed-census`.
+  StatusAccuracy and ZoneLockState stay open strings. The same firmware
+  recovery found nothing for them -- their values are not produced anywhere
+  in `leap-server`, which forwards those status fields from other RA3 daemons
+  over IPC rather than computing them -- and hardware has produced one value
+  each (`Good`, `Unlocked`). Closing on a single observation asserts the
+  concept is single-valued: an accuracy that is only ever `Good`, a lock
+  state that is only ever `Unlocked`. This specification made that assertion
+  five times before, all predating this pass: `Role` (`Installer`),
+  `SessionRole` (`Admin`), `ButtonGroupCategoryType` (`Lights`),
+  `StopIfMovingEnabledState` (`Disabled`) and `SystemLoadSheddingState`
+  (`Disabled`), all open strings now, under the criterion
+  `OccupancyStatus.yaml` records: a closed enum needs evidence about the
+  extent of its set, and a one-member enum with no member list from anywhere
+  else has none. `OccupancyStatus` was the case where a later probe showed
+  what closing costs -- it shipped closed on `Unknown` alone, its note said
+  `Occupied` and `Unoccupied` were expected but unconfirmed, and the
+  coverage-blind probe produced both. That is the precedent these two decline
+  to repeat. Values seen to date are recorded per field under
+  `x-observed-values`, as documentation rather than as an assertion, and
+  counted per corpus under `x-observed-census`.
 
   **THE CENSUS AND THIS FILE'S PROSE COUNT ON DIFFERENT BASES**, and the
   difference is worth stating once here rather than four times below. The
@@ -86,89 +87,11 @@ properties:
   SwitchedLevel:
     $ref: "#/components/schemas/SwitchedLevel"
   CCOLevel:
-    type: string
-    description: |
-      TODO(enum): members of CCOLevel were not recovered from the firmware
-      extraction, and hardware has produced exactly one: `Open`, 3
-      observations across the two RA3 corpora (/zone/status and
-      /zone/2520/status, the only CCO zone either reaches; no Caseta
-      corpus reaches one). `x-observed-census` totals 9 on the flat basis
-      this schema's description explains: those 3, plus 1 through
-      /zone/2520/status/expanded and 5 in the RA3 frame logs -- all of them
-      that same zone. A `Closed` counterpart is
-      all but certain and simply never coincided with a probe, which is
-      why this stays an open string.
-    x-observed-values:
-      - Open
-    x-observed-census:
-      Open:
-        fixtures/push-experiments.json: 4
-        fixtures/push-probe.json: 1
-        ra3: 3
-        spec-read-ra3: 1
+    $ref: "#/components/schemas/CCOLevel"
   ReceptacleLevel:
-    type: string
-    description: |
-      TODO(enum): members of ReceptacleLevel were not recovered from the
-      firmware extraction, and hardware has produced nothing either: no
-      probed zone on either platform is a receptacle zone, so no corpus
-      carries this field at all.
+    $ref: "#/components/schemas/ReceptacleLevel"
   FanSpeed:
-    type: string
-    description: |
-      TODO(enum): members of FanSpeed were not recovered from the firmware
-      extraction, and hardware has produced two, both from
-      /zone/1982/status -- the single observed fan zone, on the RA3 side. No
-      Caseta corpus reaches a fan zone and no Caseta frame log carries the
-      field, but for two different reasons: the two Caseta corpora that reach
-      zones at all reach 14 and 1 respectively and none is a fan zone, while
-      the bare-bridge corpus reaches none, answering /zone/status
-      `204 NoContent` and 404ing all 8 per-zone ids. `caseta-push-pad-0`, the
-      one Caseta frame-log run that carries zone statuses, carries no
-      `FanSpeed` either.
-
-      `High`, 6 observations: 3 in the read corpora (`fixtures/ra3.json`
-      via /zone/status and /zone/1982/status, `fixtures/spec-read.json` via
-      /zone/status) and 3 more in subscribe-time snapshots
-      (`fixtures/push-probe.json`, and `ra3-push-pad-0` and `ra3-push-pad-7`
-      in `fixtures/push-experiments.json`). One further `High` comes through
-      /zone/1982/status/expanded and is counted separately as
-      ZoneExpandedStatus, the same convention `SwitchedLevel.yaml` uses.
-
-      `Off`, 1 observation: the /zone/status subscribe snapshot of
-      `ra3-keypad-press` in `fixtures/push-experiments.json`. The fixture
-      stores that snapshot twice -- once as `frames[0]` and once as
-      `subscriptions[0].body` -- so it is two sites and one observation.
-
-      Every one of those seven observations is a **snapshot or a read**, as
-      is the eighth counted separately through the expanded route; no push in
-      any capture carries a `FanSpeed` at all, since pushes are field-level
-      deltas and no fan changed while a capture was open. See
-      `docs/subscriptions.md`.
-
-      `x-observed-census` totals 9, exactly one more than those eight. The
-      expanded-route `High` is already the eighth of them, so it is not the
-      difference; the ninth is the `ra3-keypad-press` snapshot, which the
-      census counts twice because it counts occurrences and not observations.
-      Per value: `High` 7 -- the 6 above plus the expanded one, which the
-      census cannot hold apart; `Off` 2 -- the single observation, stored
-      twice. This field is the clearest case in the file of why the two bases
-      are kept apart.
-
-      Two values on one physical fan at two different moments is a lower
-      bound, not the vocabulary of the type: low and medium counterparts
-      are expected and unobserved, which is why this stays an open string.
-    x-observed-values:
-      - High
-      - "Off"
-    x-observed-census:
-      High:
-        fixtures/push-experiments.json: 2
-        fixtures/push-probe.json: 1
-        ra3: 3
-        spec-read-ra3: 1
-      "Off":
-        fixtures/push-experiments.json: 2
+    $ref: "#/components/schemas/FanSpeed"
   Zone:
     $ref: "#/components/schemas/HyperReference"
   StatusAccuracy:

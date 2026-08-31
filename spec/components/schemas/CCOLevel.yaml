@@ -1,0 +1,35 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.CCOLevel`,
+# referenced but never defined by the extraction. Three fields carry it:
+# ZoneStatus.CCOLevel, CCOLevelParameters.CCOLevel and
+# OccupancySettingsAction.CCOLevel, now all typed against this schema.
+#
+# The members are the firmware's own closed set, recovered from the RA3
+# `leap-server` binary -- the same binary `vendor/leap-*.json` was extracted
+# from -- not from the wire. The struct extraction (GoReSym) recovers Go
+# `struct` definitions only and never emitted a `type X string` plus its
+# consts, which is why this stayed a bare open string; disassembling the
+# function that consumes the value recovers the consts the extraction
+# dropped. `leap/resource.ConvertLEAPCCOLevelToLutronLevel` is an exhaustive
+# `switch` over the two members below whose default branch returns
+# `"%s is not a valid CCO level"`, so the set is closed on the firmware side:
+# anything else is rejected. `Open` is the one member also seen on the wire
+# (ZoneStatus.CCOLevel); `Closed`, which the prior prose called "all but
+# certain", is now firmware-confirmed.
+type: string
+enum:
+  - Open
+  - Closed
+description: |
+  Level of a CCO (contact-closure output) zone. Firmware type
+  `leapobj.CCOLevel`; members recovered from the RA3 `leap-server` binary
+  (see the file header). `Open` is the only value observed on the wire, 3
+  times across the two RA3 corpora on the single CCO zone either reaches
+  (/zone/status and /zone/2520/status); no Caseta corpus reaches a CCO zone.
+x-observed-values:
+  - Open
+x-observed-census:
+  Open:
+    fixtures/push-experiments.json: 4
+    fixtures/push-probe.json: 1
+    ra3: 3
+    spec-read-ra3: 1

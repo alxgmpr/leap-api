@@ -1,0 +1,48 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.FanSpeed`,
+# referenced but never defined by the extraction. Two fields carry it:
+# ZoneStatus.FanSpeed and FanSpeedParameters.FanSpeed, now both typed
+# against this schema.
+#
+# The members are the firmware's own closed set, recovered from the RA3
+# `leap-server` binary -- the same binary `vendor/leap-*.json` was extracted
+# from. The struct extraction recovers Go `struct` definitions only, so a
+# `type X string` plus consts left no member list; two independent functions
+# recover the same five and corroborate each other:
+# `leap/strategy/viveLaCaseta/internal.leapobjFanSpeedToLutronFanSpeed` (an
+# exhaustive `switch` whose default returns `"incorrect fan speed provided,
+# %v"`) and `leap/resource.ConvertLutronLevelToLEAPFanSpeed` (the reverse,
+# emitting the same five). So the set is closed on the firmware side. The two
+# values seen on the wire, `High` and `Off`, are both members -- note the set
+# has no `MediumLow`, though the six-speed reading of the name would expect
+# one.
+type: string
+enum:
+  - "Off"
+  - Low
+  - Medium
+  - MediumHigh
+  - High
+description: |
+  Speed of a fan zone. Firmware type `leapobj.FanSpeed`; members recovered
+  from the RA3 `leap-server` binary (see the file header). Two of the five
+  are observed on the wire, both from the single fan zone RA3 reaches
+  (/zone/1982/status): `High` and `Off`. No Caseta corpus reaches a fan zone.
+
+  Every wire observation is a snapshot or a read -- no push in any capture
+  carries a `FanSpeed`, since pushes are field-level deltas and no fan
+  changed while a capture was open (see docs/subscriptions.md). The
+  `x-observed-census` counts occurrences, not observations: `High` 7 folds
+  in one /zone/1982/status/expanded reading counted separately as
+  ZoneExpandedStatus, and `Off` 2 is one `ra3-keypad-press` snapshot the
+  fixture stores twice (as `frames[0]` and `subscriptions[0].body`).
+x-observed-values:
+  - High
+  - "Off"
+x-observed-census:
+  High:
+    fixtures/push-experiments.json: 2
+    fixtures/push-probe.json: 1
+    ra3: 3
+    spec-read-ra3: 1
+  "Off":
+    fixtures/push-experiments.json: 2

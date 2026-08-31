@@ -1,0 +1,29 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.ReceptacleLevel`,
+# referenced but never defined by the extraction. Three fields carry it:
+# ZoneStatus.ReceptacleLevel, ReceptacleLevelParameters.ReceptacleLevel and
+# OccupancySettingsAction.ReceptacleLevel, now all typed against this schema.
+#
+# The members are the firmware's own closed set, recovered from the RA3
+# `leap-server` binary -- the same binary `vendor/leap-*.json` was extracted
+# from -- not from the wire, which carries this type nowhere (no probed zone
+# on either platform is a receptacle zone). The struct extraction recovers Go
+# `struct` definitions only, so a `type X string` plus consts left no member
+# list; disassembling the consumer recovers it.
+# `leap/resource.ConvertLEAPReceptacleLevelToLutronLevel` is an exhaustive
+# `switch` over the two members below whose default branch returns
+# `"%s is not a valid receptacle level"`, so the set is closed on the
+# firmware side.
+#
+# Members are quoted: unquoted On/Off are booleans under YAML 1.1, and these
+# are the strings the wire sends. Same treatment as LEDState.yaml and
+# SwitchedLevel.yaml.
+type: string
+enum:
+  - "On"
+  - "Off"
+description: |
+  Level of a receptacle zone. Firmware type `leapobj.ReceptacleLevel`;
+  members recovered from the RA3 `leap-server` binary (see the file header).
+  Never observed on the wire -- neither platform has a receptacle zone, so
+  ZoneStatus.ReceptacleLevel is unobserved and this is firmware evidence
+  alone.

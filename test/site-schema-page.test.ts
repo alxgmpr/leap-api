@@ -57,10 +57,13 @@ describe("schema pages", () => {
   });
 
   test("marks a TODO field as not established", () => {
-    const entry = model.schemas.find((s) => s.name === "Zone");
-    if (!entry) throw new Error("Zone missing from the model");
+    // StatusAccuracy stays an open string with an unrecovered member set --
+    // its values are computed by other RA3 daemons and forwarded over IPC,
+    // so the leap-server binary the enum pass read carries none of them.
+    const entry = model.schemas.find((s) => s.name === "ZoneStatus");
+    if (!entry) throw new Error("ZoneStatus missing from the model");
     const html = renderSchemaPage(model, entry).html;
-    assert.match(html, /MaxWattageType[\s\S]{0,600}chip-not-established/);
+    assert.match(html, /StatusAccuracy[\s\S]{0,600}chip-not-established/);
   });
 
   test("shows observed values even where the member set is unestablished", () => {

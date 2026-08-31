@@ -1,0 +1,27 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.ConnectedStatus`,
+# referenced but never defined by the extraction. One field carries it in the
+# refined tier: OccupancySensorHeard.ConnectedStatus.
+#
+# The members are the firmware's own closed set, recovered from the RA3
+# `leap-server` binary -- the same binary `vendor/leap-*.json` was extracted
+# from. `leap/resource.convertConnectionStatusToLEAPSensorConnectedStatus`
+# (the sensor path, which feeds this field) is an exhaustive `switch` over
+# the three members below whose default returns
+# `"unexpected ConnectionStatus: %v"`, so the set is closed on the firmware
+# side. Its sibling `ConvertConnectionStatusToLEAPConnectedStatus` emits the
+# same three for the network-interface field -- see
+# NetworkInterfaceConnectedStatus.yaml, which is that separate firmware type
+# and carries the one wire observation. This field itself
+# (OccupancySensorHeard.ConnectedStatus) is unobserved: no probed sensor
+# emitted a DeviceHeard.
+type: string
+enum:
+  - Unknown
+  - Connected
+  - Disconnected
+description: |
+  Connection state reported for a heard occupancy sensor. Firmware type
+  `leapobj.ConnectedStatus`; members recovered from the RA3 `leap-server`
+  binary (see the file header). Unobserved on the wire; the `Connected`
+  observation on NetworkInterfaceStatus belongs to the separate
+  `leapobj.NetworkInterfaceConnectedStatus`.

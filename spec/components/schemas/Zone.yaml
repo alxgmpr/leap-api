@@ -31,11 +31,7 @@ properties:
   PhaseSettings:
     $ref: "#/components/schemas/HyperReference"
   MaxWattageType:
-    type: string
-    description: |
-      TODO(enum): members of MaxWattageType were not recovered from the
-      firmware extraction. Never observed on RA3 v03.247 or Caseta v01.123
-      (0/41 zones) — see the relaxed `required` list below.
+    $ref: "#/components/schemas/MaxWattageType"
   MaxWattage:
     type: integer
     minimum: 0

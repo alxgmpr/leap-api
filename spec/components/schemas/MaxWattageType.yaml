@@ -1,0 +1,21 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.MaxWattageType`,
+# referenced but never defined by the extraction. One field carries it in the
+# refined tier: Zone.MaxWattageType.
+#
+# The members are the firmware's own closed set, recovered from the RA3
+# `leap-server` binary -- the same binary `vendor/leap-*.json` was extracted
+# from -- not from the wire (0/41 zones on RA3 v03.247 or Caseta v01.123
+# carry it). `leap/strategy/viveLaCaseta/internal.getMaxWattageType` is an
+# exhaustive `switch` over the two members below whose default returns
+# `"unknown power measurement method: %v"`, so the set is closed on the
+# firmware side. The pair distinguishes a measured maximum from a programmed
+# (specified) one.
+type: string
+enum:
+  - Measured
+  - Specified
+description: |
+  Whether a zone's maximum wattage is measured by the hardware or specified
+  in programming. Firmware type `leapobj.MaxWattageType`; members recovered
+  from the RA3 `leap-server` binary (see the file header). Never observed on
+  the wire -- see the relaxed `required` list in Zone.yaml.

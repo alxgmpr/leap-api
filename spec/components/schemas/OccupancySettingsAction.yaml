@@ -32,13 +32,9 @@ properties:
   SwitchedLevel:
     $ref: "#/components/schemas/SwitchedLevel"
   CCOLevel:
-    type: string
-    description: "TODO(enum): members of CCOLevel were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/CCOLevel"
   ReceptacleLevel:
-    type: string
-    description: "TODO(enum): members of ReceptacleLevel were not recovered from the
-      firmware extraction"
+    $ref: "#/components/schemas/ReceptacleLevel"
   FadeTime:
     type: string
     pattern: ^P(?=.*\d)(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?$
