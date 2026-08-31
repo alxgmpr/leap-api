@@ -40,11 +40,12 @@ export function resourceGrid(model: LeapModel, root: string): string {
 
 export function renderOverview(_model: LeapModel): Section {
   const html = `
-<h1>LEAP</h1>
+<h1>LEAP — The Missing Manual</h1>
 <p class="lede">LEAP is the language Lutron's lighting systems — RA3, HomeWorks,
-Caseta — speak on the local network, and this site is an independent reference
-for it: how to connect, what you can ask, what comes back, and how much of that
-is backed by evidence from real hardware.</p>
+Caseta — speak on the local network. Lutron never published a manual for it, so
+this is that manual, reconstructed the hard way: reading firmware, taking apps
+apart, and listening to real hardware talk to itself. How to connect, what you
+can ask, what comes back — with receipts for every claim.</p>
 
 <h2>Start here</h2>
 <ul class="entrypoints">
