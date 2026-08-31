@@ -1603,5 +1603,20 @@
       "unverifiedSchemas": 80,
       "refinedPaths": 226
     }
+  },
+  {
+    "sha": "ecf8fef362dbbce1183381442b7224e035e9726f",
+    "date": "2026-08-31T13:44:23-06:00",
+    "subject": "spec: recover OccupancyMode from the RA3 binary; the enum well is now dry",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 199,
+      "noFixture": 128,
+      "todoEnums": 63,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 226
+    }
   }
 ]
