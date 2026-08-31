@@ -7,10 +7,11 @@ describe("built site", () => {
     assert.ok(existsSync("site/index.html"), "run `npm run build:site` first");
   });
 
-  test("home page shows the envelope and the wrapper rule", () => {
+  test("home page is the intro and the entrypoints, nothing technical", () => {
     const html = readFileSync("site/index.html", "utf8");
-    assert.match(html, /CommuniqueType/);
-    assert.match(html, /Every payload is wrapped/i);
+    assert.match(html, /class="lede"/);
+    assert.match(html, /class="entrypoints"/);
+    assert.doesNotMatch(html, /CommuniqueType/);
   });
 
   test("assets are copied and referenced relatively", () => {
