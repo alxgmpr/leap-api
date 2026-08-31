@@ -8,5 +8,9 @@
   {
     "label": "spec-read-caseta-bare",
     "to": "fixtures/spec-read-caseta-bare.json"
+  },
+  {
+    "label": "spec-read-ra3-indoubt",
+    "to": "fixtures/spec-read-indoubt.json"
   }
 ]

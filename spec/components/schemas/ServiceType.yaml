@@ -124,6 +124,7 @@ x-observed-census:
     spec-read-caseta: 1
     spec-read-caseta-bare: 1
     spec-read-ra3: 1
+    spec-read-ra3-indoubt: 1
   HomeKit:
     caseta: 1
     ra3: 1

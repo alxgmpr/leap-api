@@ -1,0 +1,12 @@
+type: array
+description: |
+  Body of a `ReadRequest` on the `/area/status` collection (MessageBodyType
+  `AreaStatuses`; the wire wraps this array as `{"AreaStatuses": [...]}`,
+  unwrapped here per the MessageBodyType convention). The firmware route
+  table records this route only as the concatenation `/areastatus`; the
+  in-doubt sweep (fixtures/spec-read-indoubt.json, RA3 v03.249) settled the
+  spelling: `/areastatus` answers `400 "This request is not supported"`,
+  `/area/status` answers `200 OK` with the statuses of all 19 areas — the
+  same `AreaStatus` shape `/area/{areaId}/status` returns one at a time.
+items:
+  $ref: "#/components/schemas/AreaStatus"

@@ -10,8 +10,8 @@ describe("site model", () => {
     const verified = model.resources.flatMap((r) =>
       r.operations.filter((o) => o.verified).map((o) => o.url),
     );
-    assert.equal(new Set(verified).size, 211, "the hand-refined tier");
-    assert.equal(new Set(urls).size, 374, "plus the unverified import");
+    assert.equal(new Set(verified).size, 226, "the hand-refined tier");
+    assert.equal(new Set(urls).size, 389, "plus the unverified import");
     assert.ok(model.resources.some((r) => r.name === "zone"));
   });
 

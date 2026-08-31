@@ -222,7 +222,19 @@ addFormats(ajv);
 // counts paths with no `200` body, not paths never asked about. See
 // `spec/paths/device.yaml`. Both numbers are re-derivable; neither is a
 // regression.
-const EXPECTED_MATCHED_CASES = 925;
+//
+// 937 (2026-08-31): the in-doubt sweep import, `spec-read-indoubt.json` --
+// a read-only RA3 v03.249 probe of the 51 concatenation-suspect firmware
+// routes in both spellings. +12, and unlike every earlier corpus import it
+// DID author paths: its 200s all landed on routes the spec did not have.
+// The 12 are exactly its schema-bearing 200s: `/area/status`,
+// `/timeclockevent/status`, `/service/googlehome`, eight
+// `/areascene/{areasceneId}` reads, and `/server` (probed once so the
+// redaction pipeline could classify the capture's platform). The same
+// commit moved `specWithoutFixture` 117 -> 128: eleven more routes the
+// sweep proved to exist by 204/405 entered the refined tier, and a 204/405
+// is precisely "in spec, no 200 body".
+const EXPECTED_MATCHED_CASES = 937;
 let matchedCases = 0;
 
 /** The 200-response schema ref for a path, if the spec declares one. */

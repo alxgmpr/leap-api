@@ -245,6 +245,29 @@
     responses:
       "200":
         description: Success
+/service/googlehome:
+  # HAND-AUTHORED (probe-derived): the firmware route table records this
+  # route only as the concatenation `/servicegooglehome` (GET, no
+  # responseType). The in-doubt sweep (fixtures/spec-read-indoubt.json, RA3
+  # v03.249) settled the spelling: the concatenated form answers `400 "This
+  # request is not supported"`, `/service/googlehome` answers `200 OK` with
+  # body key `Service` holding a single Service object whose
+  # `GoogleHomeProperties` carries `Configuration` and `DataSummary` hrefs —
+  # the same shape `/service/alexa` returns for its service.
+  get:
+    operationId: getServiceGoogleHome
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: Service
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Service"
+    summary: Read the Google Home service
 /service/googlehomedatasummary:
   get:
     operationId: getServiceGoogleHomeDataSummary
@@ -336,6 +359,23 @@
     responses:
       "200":
         description: Success
+/service/ketra:
+  # HAND-AUTHORED (probe-derived): the firmware route table records this
+  # route only as the concatenation `/serviceketra` (GET, no responseType).
+  # The in-doubt sweep (fixtures/spec-read-indoubt.json, RA3 v03.249)
+  # settled the spelling: the concatenated form answers `400 "This request
+  # is not supported"`, `/service/ketra` answers `405 MethodNotAllowed` —
+  # the route exists but refuses a ReadRequest on this system. No body has
+  # ever been observed, so no response schema is asserted.
+  get:
+    operationId: getServiceKetra
+    tags:
+      - service
+    x-leap-communique-type: ReadRequest
+    responses:
+      "200":
+        description: Success
+    summary: Read the Ketra service
 /service/{serviceId}:
   delete:
     operationId: deleteServiceID

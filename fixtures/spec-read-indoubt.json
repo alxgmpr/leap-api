@@ -1,0 +1,984 @@
+{
+  "/area/loadshedding": {
+    "status": "204 NoContent"
+  },
+  "/area/relation": {
+    "status": "204 NoContent"
+  },
+  "/area/scene": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/area/sceneassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/area/status": {
+    "status": "200 OK",
+    "body": {
+      "AreaStatuses": [
+        {
+          "href": "/area/3/status",
+          "OccupancyStatus": "Unknown",
+          "CurrentScene": null
+        },
+        {
+          "href": "/area/32/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/36"
+          }
+        },
+        {
+          "href": "/area/912/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/916"
+          }
+        },
+        {
+          "href": "/area/1208/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1212"
+          }
+        },
+        {
+          "href": "/area/1220/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1224"
+          }
+        },
+        {
+          "href": "/area/1232/status",
+          "Level": 0,
+          "OccupancyStatus": "Unknown",
+          "CurrentScene": {
+            "href": "/areascene/1236"
+          }
+        },
+        {
+          "href": "/area/1244/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1248"
+          }
+        },
+        {
+          "href": "/area/1256/status",
+          "Level": 75,
+          "OccupancyStatus": "Unknown",
+          "CurrentScene": {
+            "href": "/areascene/1262"
+          }
+        },
+        {
+          "href": "/area/1268/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1272"
+          }
+        },
+        {
+          "href": "/area/1280/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1284"
+          }
+        },
+        {
+          "href": "/area/1292/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1296"
+          }
+        },
+        {
+          "href": "/area/1304/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1308"
+          }
+        },
+        {
+          "href": "/area/1316/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1320"
+          }
+        },
+        {
+          "href": "/area/1328/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1332"
+          }
+        },
+        {
+          "href": "/area/1340/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1344"
+          }
+        },
+        {
+          "href": "/area/1352/status",
+          "Level": 0,
+          "OccupancyStatus": "Occupied",
+          "CurrentScene": {
+            "href": "/areascene/1356"
+          }
+        },
+        {
+          "href": "/area/1617/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/1621"
+          }
+        },
+        {
+          "href": "/area/13719/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/13723"
+          }
+        },
+        {
+          "href": "/area/13735/status",
+          "Level": 0,
+          "OccupancyStatus": "Unoccupied",
+          "CurrentScene": {
+            "href": "/areascene/13739"
+          }
+        }
+      ]
+    }
+  },
+  "/area/summary/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/arealoadshedding": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/arearelation": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/areascene": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/areasceneassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/areastatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/areasummary/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/database/transfersession": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/database/transfersessionstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/databasetransfersession": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/databasetransfersessionstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/daylightsensor/status": {
+    "status": "204 NoContent"
+  },
+  "/daylightsensorstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/device/firmwarepackageupdatesession": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/device/rules": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/device/statusexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/device/statusexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicefirmwarepackageupdatesession": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicerules": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicestatusexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/devicestatusexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/emergency/status": {
+    "status": "204 NoContent"
+  },
+  "/emergencystatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/led/settings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/ledsettings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/nodeassociation": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/link/status/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/linknodeassociation": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/linkstatus/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/natlightopt/status": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/natlightoptstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/occupancysensor/settingsassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/occupancysensor/status": {
+    "status": "204 NoContent"
+  },
+  "/occupancysensorsettingsassignment": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/occupancysensorstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/sequence/step": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/sequencestep": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/server/definition": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/server/leappairings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/server/propertydefinition": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serverdefinition": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serverleappairings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serverpropertydefinition": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/alexaconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/alexaconfigaliasassociation": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/autoprog": {
+    "status": "404 NotFound",
+    "body": {
+      "Message": "This resource does not exist : /service/autoprog"
+    }
+  },
+  "/service/bacnetareainstancewith": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/bacnetdefaultsettings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/googlehome": {
+    "status": "200 OK",
+    "body": {
+      "Service": {
+        "href": "/service/googlehome",
+        "Type": "GoogleHome",
+        "GoogleHomeProperties": {
+          "Configuration": {
+            "href": "/service/googlehome/config"
+          },
+          "DataSummary": {
+            "href": "/service/googlehome/datasummary"
+          }
+        }
+      }
+    }
+  },
+  "/service/googlehomeconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/homekitconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/homekitdatasummaryaccessoriesquery": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/homekitdatasummaryassociation": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/iftttconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/service/ketra": {
+    "status": "405 MethodNotAllowed",
+    "body": {
+      "Message": "This resource does not exist"
+    }
+  },
+  "/service/nestdetectiongroup": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicealexaconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicealexaconfigaliasassociation": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serviceautoprog": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicebacnetareainstancewith": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicebacnetdefaultsettings": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicegooglehome": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicegooglehomeconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicehomekitconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicehomekitdatasummaryaccessoriesquery": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicehomekitdatasummaryassociation": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serviceiftttconfig": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/serviceketra": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/servicenestdetectiongroup": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/shadegroup/status": {
+    "status": "405 MethodNotAllowed",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/shadegroupstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/system/loadshedding": {
+    "status": "405 MethodNotAllowed",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/system/loadsheddingstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/system/status": {
+    "status": "405 MethodNotAllowed",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/systemloadshedding": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/systemloadsheddingstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/systemstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/temperaturesensor/status": {
+    "status": "405 MethodNotAllowed",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/temperaturesensorstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/timeclockevent/status": {
+    "status": "200 OK",
+    "body": {
+      "TimeclockEventStatuses": [
+        {
+          "TimeclockEvent": {
+            "href": "/timeclockevent/651"
+          },
+          "EnableState": "Enabled"
+        },
+        {
+          "TimeclockEvent": {
+            "href": "/timeclockevent/676"
+          },
+          "EnableState": "Enabled"
+        },
+        {
+          "TimeclockEvent": {
+            "href": "/timeclockevent/6924"
+          },
+          "EnableState": "Enabled"
+        },
+        {
+          "TimeclockEvent": {
+            "href": "/timeclockevent/6931"
+          },
+          "EnableState": "Enabled"
+        },
+        {
+          "TimeclockEvent": {
+            "href": "/timeclockevent/6938"
+          },
+          "EnableState": "Enabled"
+        },
+        {
+          "TimeclockEvent": {
+            "href": "/timeclockevent/6945"
+          },
+          "EnableState": "Enabled"
+        },
+        {
+          "TimeclockEvent": {
+            "href": "/timeclockevent/10083"
+          },
+          "EnableState": "Enabled"
+        }
+      ]
+    }
+  },
+  "/timeclockeventstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/virtualbutton/summary": {
+    "status": "204 NoContent"
+  },
+  "/virtualbuttonsummary": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/controller": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/statusexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/statusexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/todaylightinggaingroup": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/typegrouploadshedding": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/typegroups/emergencysettings/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zone/typegroupstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonecontroller": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonestatusexpandedquerystringwithexplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonestatusexpandedquerystringwithimplicitpaging": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonetodaylightinggaingroup": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonetypegrouploadshedding": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonetypegroups/emergencysettings/query": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/zonetypegroupstatus": {
+    "status": "400 BadRequest",
+    "body": {
+      "Message": "This request is not supported"
+    }
+  },
+  "/areascene/36": {
+    "status": "200 OK",
+    "body": {
+      "AreaScene": {
+        "href": "/areascene/36",
+        "Name": "<name-205>",
+        "Parent": {
+          "href": "/area/32"
+        },
+        "Preset": {
+          "href": "/preset/36"
+        },
+        "SortOrder": 0
+      }
+    }
+  },
+  "/areascene/916": {
+    "status": "200 OK",
+    "body": {
+      "AreaScene": {
+        "href": "/areascene/916",
+        "Name": "<name-205>",
+        "Parent": {
+          "href": "/area/912"
+        },
+        "Preset": {
+          "href": "/preset/916"
+        },
+        "SortOrder": 0
+      }
+    }
+  },
+  "/areascene/1212": {
+    "status": "200 OK",
+    "body": {
+      "AreaScene": {
+        "href": "/areascene/1212",
+        "Name": "<name-205>",
+        "Parent": {
+          "href": "/area/1208"
+        },
+        "Preset": {
+          "href": "/preset/1212"
+        },
+        "SortOrder": 0
+      }
+    }
+  },
+  "/areascene/1224": {
+    "status": "200 OK",
+    "body": {
+      "AreaScene": {
+        "href": "/areascene/1224",
+        "Name": "<name-205>",
+        "Parent": {
+          "href": "/area/1220"
+        },
+        "Preset": {
+          "href": "/preset/1224"
+        },
+        "SortOrder": 0
+      }
+    }
+  },
+  "/areascene/1236": {
+    "status": "200 OK",
+    "body": {
+      "AreaScene": {
+        "href": "/areascene/1236",
+        "Name": "<name-205>",
+        "Parent": {
+          "href": "/area/1232"
+        },
+        "Preset": {
+          "href": "/preset/1236"
+        },
+        "SortOrder": 0
+      }
+    }
+  },
+  "/areascene/1248": {
+    "status": "200 OK",
+    "body": {
+      "AreaScene": {
+        "href": "/areascene/1248",
+        "Name": "<name-205>",
+        "Parent": {
+          "href": "/area/1244"
+        },
+        "Preset": {
+          "href": "/preset/1248"
+        },
+        "SortOrder": 0
+      }
+    }
+  },
+  "/areascene/1262": {
+    "status": "200 OK",
+    "body": {
+      "AreaScene": {
+        "href": "/areascene/1262",
+        "Name": "<name-207>",
+        "Parent": {
+          "href": "/area/1256"
+        },
+        "Preset": {
+          "href": "/preset/1262"
+        },
+        "SortOrder": 2
+      }
+    }
+  },
+  "/areascene/1272": {
+    "status": "200 OK",
+    "body": {
+      "AreaScene": {
+        "href": "/areascene/1272",
+        "Name": "<name-205>",
+        "Parent": {
+          "href": "/area/1268"
+        },
+        "Preset": {
+          "href": "/preset/1272"
+        },
+        "SortOrder": 0
+      }
+    }
+  },
+  "/server": {
+    "status": "200 OK",
+    "body": {
+      "Servers": [
+        {
+          "href": "/server/1",
+          "Type": "LEAP",
+          "NetworkInterfaces": [
+            {
+              "href": "/networkinterface/1"
+            }
+          ],
+          "EnableState": "Enabled",
+          "LEAPProperties": {
+            "PairingList": {
+              "href": "/server/leap/pairinglist"
+            }
+          },
+          "Endpoints": [
+            {
+              "Protocol": "TCP",
+              "Port": 8081,
+              "AssociatedNetworkInterfaces": null
+            },
+            {
+              "Protocol": "UDP",
+              "Port": 2647,
+              "AssociatedNetworkInterfaces": null
+            }
+          ],
+          "ProtocolVersion": "03.249"
+        },
+        {
+          "href": "/server/ipl",
+          "Type": "IPL",
+          "IPLProperties": {
+            "SystemNumber": 1,
+            "SystemAddress": "<ipv4-1>",
+            "ProcessorID": 0
+          },
+          "Endpoints": [
+            {
+              "Protocol": "TLS",
+              "Port": 8902,
+              "AssociatedNetworkInterfaces": null
+            },
+            {
+              "Protocol": "WSS",
+              "Port": 443,
+              "AssociatedNetworkInterfaces": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

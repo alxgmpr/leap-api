@@ -1,0 +1,13 @@
+type: array
+description: |
+  Body of a `ReadRequest` on the `/timeclockevent/status` collection
+  (MessageBodyType `TimeclockEventStatuses`; the wire wraps this array as
+  `{"TimeclockEventStatuses": [...]}`, unwrapped here per the
+  MessageBodyType convention). The firmware route table records this route
+  only as the concatenation `/timeclockeventstatus`; the in-doubt sweep
+  (fixtures/spec-read-indoubt.json, RA3 v03.249) settled the spelling:
+  the concatenated form answers `400 "This request is not supported"`,
+  `/timeclockevent/status` answers `200 OK` with the status of all 7
+  timeclock events on the system.
+items:
+  $ref: "#/components/schemas/TimeclockEventStatus"

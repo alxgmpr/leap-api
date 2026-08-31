@@ -1,0 +1,21 @@
+# HAND-AUTHORED (probe-derived). The firmware route table has no
+# `/temperaturesensor/...` route under that spelling; it records only the
+# concatenation `/temperaturesensorstatus` (GET+SUBSCRIBE, responseType
+# TemperatureSensorStatus), one of the 51 concatenation-suspect spellings.
+# The in-doubt sweep (2026-08-31, read-only,
+# fixtures/spec-read-indoubt.json, RA3 v03.249) settled it: the
+# concatenated form answers `400 "This request is not supported"`,
+# `/temperaturesensor/status` answers `405 MethodNotAllowed` — the route
+# exists but refuses a ReadRequest on this system. No body has ever been
+# observed, so no response schema is asserted. Only the probed GET is
+# declared; the extraction's SUBSCRIBE verb is unexercised.
+/temperaturesensor/status:
+  get:
+    operationId: getTemperatureSensorStatus
+    tags:
+      - temperaturesensor
+    x-leap-communique-type: ReadRequest
+    responses:
+      "200":
+        description: Success
+    summary: List temperature sensor statuses

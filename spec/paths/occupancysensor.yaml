@@ -1,0 +1,21 @@
+# HAND-AUTHORED (probe-derived). The firmware route table has no
+# `/occupancysensor/...` route under that spelling; it records only the
+# concatenation `/occupancysensorstatus` (GET+SUBSCRIBE, responseType
+# OccupancySensorStatus), one of the 51 concatenation-suspect spellings. The
+# in-doubt sweep (2026-08-31, read-only, fixtures/spec-read-indoubt.json,
+# RA3 v03.249) settled it: the concatenated form answers `400 "This request
+# is not supported"`, `/occupancysensor/status` answers `204 NoContent` —
+# the route exists, and no body has ever been observed (no standalone
+# occupancy sensors on the probed system), so no response schema is
+# asserted. Only the probed GET is declared; the extraction's SUBSCRIBE verb
+# is unexercised.
+/occupancysensor/status:
+  get:
+    operationId: getOccupancySensorStatus
+    tags:
+      - occupancysensor
+    x-leap-communique-type: ReadRequest
+    responses:
+      "200":
+        description: Success
+    summary: List occupancy sensor statuses

@@ -1,0 +1,19 @@
+# HAND-AUTHORED (probe-derived). The firmware route table has no
+# `/daylightsensor/...` route under that spelling; it records only the
+# concatenation `/daylightsensorstatus` (GET, responseType
+# DaylightSensorStatus), one of the 51 concatenation-suspect spellings. The
+# in-doubt sweep (2026-08-31, read-only, fixtures/spec-read-indoubt.json,
+# RA3 v03.249) settled it: the concatenated form answers `400 "This request
+# is not supported"`, `/daylightsensor/status` answers `204 NoContent` — the
+# route exists, and no body has ever been observed (no daylight sensors on
+# the probed system), so no response schema is asserted.
+/daylightsensor/status:
+  get:
+    operationId: getDaylightSensorStatus
+    tags:
+      - daylightsensor
+    x-leap-communique-type: ReadRequest
+    responses:
+      "200":
+        description: Success
+    summary: List daylight sensor statuses

@@ -29,30 +29,51 @@ describe("uncovered firmware routes", () => {
     const total = readRoutes().length;
     const covered = total - absent.length;
     assert.equal(total, 410);
-    assert.equal(absent.length, 228, "the README's own count");
+    // 227 (2026-08-31): the in-doubt sweep confirmed /areascene/{id} at face
+    // value and it was refined under its own spelling, so one more route is
+    // covered (183) and one fewer is absent.
+    assert.equal(absent.length, 227, "the README's own count");
     assert.equal(
       covered,
-      182,
-      "182 firmware routes are refined under their own path",
+      183,
+      "183 firmware routes are refined under their own path",
     );
   });
 
-  test("the five proven mangles classify as represented, not missing", () => {
+  test("the proven mangles classify as represented, not missing", () => {
     // These are the only ground truth available: captures confirmed the
-    // slashed form for each, and the bundle documents them under it.
+    // slashed form for each, and the bundle documents them under it. The
+    // first six were proven one at a time by the original campaigns; the
+    // other fourteen all fell to the in-doubt sweep (2026-08-31,
+    // fixtures/spec-read-indoubt.json), which probed every
+    // concatenation-suspect route in both spellings.
     const corrected = absent
       .filter((r) => r.absence === "represented-corrected")
       .map((r) => r.path)
       .sort();
     assert.deepEqual(corrected, [
+      "/arealoadshedding",
+      "/arearelation",
+      "/areastatus",
+      "/daylightsensorstatus",
       // The concatenation is not always in the leading segment: this one is
       // /device/{id}/buttongroup/expanded, hand-authored in the refined tree.
       "/device/{deviceId}/buttongroupexpanded",
       "/devicestatus",
       "/devicestatus/deviceheard",
+      "/emergencystatus",
       "/occupancygroupstatus",
+      "/occupancysensorstatus",
+      "/servicegooglehome",
+      "/serviceketra",
+      "/shadegroupstatus",
       "/systemaway",
+      "/systemloadshedding",
+      "/systemstatus",
+      "/temperaturesensorstatus",
+      "/timeclockeventstatus",
       "/timeclockstatus",
+      "/virtualbuttonsummary",
     ]);
   });
 
@@ -140,8 +161,8 @@ describe("the coverage section states it", () => {
 
   test("lists both kinds of absence separately", () => {
     assert.match(html, /Imported, unverified — 163 paths, 80 schemas/);
-    assert.match(html, /Not represented — 51 paths/);
-    assert.match(html, /The paths in doubt · 51/);
+    assert.match(html, /Not represented — 36 paths/);
+    assert.match(html, /The paths in doubt · 36/);
   });
 
   test("says plainly that represented paths can be unverified", () => {

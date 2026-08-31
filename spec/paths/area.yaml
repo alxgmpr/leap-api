@@ -54,6 +54,13 @@
 #    the already-refined `AreaSummary`; only `AreaScene` is a new element
 #    type, copied verbatim from the generated file because all 38 observed
 #    instances agree with it.
+#
+# 5. Four routes settled by the in-doubt sweep (2026-08-31, read-only, RA3
+#    v03.249, fixtures/spec-read-indoubt.json), which probed each of the 51
+#    concatenation-suspect firmware routes in both spellings: `/area/status`
+#    and `/areascene/{areasceneId}` with 200 bodies, `/area/loadshedding`
+#    and `/area/relation` proven to exist by 204s. Each entry at the bottom
+#    of this file records its own verdict.
 /area:
   get:
     operationId: getArea
@@ -670,3 +677,108 @@
     responses:
       "200":
         description: Success
+/area/status:
+  # HAND-AUTHORED (probe-derived): the firmware route table records this
+  # route only as the concatenation `/areastatus` (GET+SUBSCRIBE,
+  # responseType AreaStatus), one of the 51 concatenation-suspect spellings.
+  # The in-doubt sweep (fixtures/spec-read-indoubt.json, RA3 v03.249) settled
+  # it: `/areastatus` answers `400 "This request is not supported"`,
+  # `/area/status` answers `200 OK` with body key `AreaStatuses` covering all
+  # 19 areas. Subscribability is the extraction's claim (SUBSCRIBE verb), not
+  # yet exercised on the wire.
+  get:
+    operationId: getAreaStatus
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: AreaStatuses
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaStatuses"
+    x-leap-subscribable: true
+    x-leap-event-schema:
+      $ref: "#/components/schemas/AreaStatus"
+    summary: List all area statuses
+/area/loadshedding:
+  # HAND-AUTHORED (probe-derived): firmware spelling `/arealoadshedding`
+  # (GET, responseType AreaLoadShedding). The in-doubt sweep
+  # (fixtures/spec-read-indoubt.json, RA3 v03.249) settled the spelling:
+  # the concatenated form answers `400 "This request is not supported"`,
+  # `/area/loadshedding` answers `204 NoContent` — the route exists, and no
+  # body has ever been observed (no load-shedding configured on the probed
+  # system), so no response schema is asserted; the per-area
+  # `/area/{areaId}/loadshedding` documents the AreaLoadShedding shape.
+  get:
+    operationId: getAreaLoadShedding
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    responses:
+      "200":
+        description: Success
+    summary: List area load shedding configs
+/area/relation:
+  # HAND-AUTHORED (probe-derived): firmware spelling `/arearelation` (GET,
+  # responseType AreaRelation). The in-doubt sweep
+  # (fixtures/spec-read-indoubt.json, RA3 v03.249) settled the spelling: the
+  # concatenated form answers `400 "This request is not supported"`,
+  # `/area/relation` answers `204 NoContent` — the route exists, and no body
+  # has ever been observed, so no response schema is asserted; the per-area
+  # `/area/{areaId}/relation` documents the AreaRelation shape.
+  get:
+    operationId: getAreaRelation
+    tags:
+      - area
+    x-leap-communique-type: ReadRequest
+    responses:
+      "200":
+        description: Success
+    summary: List area relations
+/areascene/{areasceneId}:
+  # Refined from spec/paths/_generated/areascene.yaml. This is the one
+  # in-doubt route the sweep CONFIRMED at face value: `/areascene/{id}`
+  # answers `200 OK` (8 scenes read on RA3 v03.249,
+  # fixtures/spec-read-indoubt.json) while the slashed reading
+  # `/area/scene/...` and the bare `/areascene` collection both answer
+  # `400 "This request is not supported"` — individual scenes are
+  # addressable at the top level, but they are only enumerable through
+  # `/area/{areaId}/areascene` (see that route's AreaScenes wrapper).
+  # The put is the extraction's claim (UPDATE verb), not yet exercised.
+  get:
+    operationId: getAreaSceneID
+    tags:
+      - areascene
+    x-leap-communique-type: ReadRequest
+    x-leap-body-type: AreaScene
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaScene"
+    summary: Read area scene
+  put:
+    operationId: updateAreaSceneID
+    tags:
+      - areascene
+    x-leap-communique-type: UpdateRequest
+    x-leap-body-type: AreaScene
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaScene"
+    summary: Update area scene
+  parameters:
+    - name: areasceneId
+      in: path
+      required: true
+      schema:
+        type: string
