@@ -1588,5 +1588,20 @@
       "unverifiedSchemas": 80,
       "refinedPaths": 226
     }
+  },
+  {
+    "sha": "79369224aa177ba176504e2509d37bae5e1522df",
+    "date": "2026-08-31T13:13:06-06:00",
+    "subject": "spec: recover 7 leapobj enum member sets from the RA3 binary",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 199,
+      "noFixture": 128,
+      "todoEnums": 64,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 226
+    }
   }
 ]
