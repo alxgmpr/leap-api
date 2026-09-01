@@ -1,0 +1,36 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.ZoneLockState`,
+# referenced but never defined by the extraction. One field carries it in the
+# refined tier: ZoneStatus.ZoneLockState.
+#
+# The members are from app reverse engineering, not the firmware binary: the
+# value is a status the RA3 leap-server forwards from another daemon rather
+# than computing, so it is absent as a static string from every RA3 binary
+# (leap-server, domain-object-manager and the coprocessor images were all
+# searched). The Lutron Android app, which does model it, is the source --
+# `com.lutron.lsb` v26.1.0.4, decompiled with jadx
+# (`lutron-protocols` `docs/protocols/leap/api-discovery.md`), where the
+# Kotlin LEAP layer declares `ZoneLockState` as the three members below.
+# `Unlocked` is the one member also seen on the wire.
+type: string
+enum:
+  - Unlocked
+  - NonEmergencyLocked
+  - EmergencyLocked
+description: |
+  Lock state of a zone. Firmware type `leapobj.ZoneLockState`; members
+  recovered from app RE (see the file header). **Observed-not-exhaustive**:
+  the app enumerates the set it knows, and the firmware may accept more.
+  `Unlocked` is the only value seen on the wire -- 102 observations across
+  the two RA3 corpora (never on Caseta), plus 33 through ZoneExpandedStatus
+  and 36 through /area/{areaId}/associatedzone/status and its expanded form;
+  `x-observed-census` totals 397, the 171 probe-set occurrences plus 226 in
+  the two RA3 frame logs. No probed zone was locked, so the two locked
+  members stand on the app decompile alone.
+x-observed-values:
+  - Unlocked
+x-observed-census:
+  Unlocked:
+    fixtures/push-experiments.json: 180
+    fixtures/push-probe.json: 46
+    ra3: 75
+    spec-read-ra3: 96

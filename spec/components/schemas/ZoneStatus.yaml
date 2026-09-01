@@ -28,13 +28,18 @@ description: |
   bare open strings). See `CCOLevel.yaml`, `ReceptacleLevel.yaml` and
   `FanSpeed.yaml`; each observed value is a member of its recovered set.
 
-  StatusAccuracy and ZoneLockState stay open strings. The same firmware
-  recovery found nothing for them -- their values are not produced anywhere
-  in `leap-server`, which forwards those status fields from other RA3 daemons
-  over IPC rather than computing them -- and hardware has produced one value
-  each (`Good`, `Unlocked`). Closing on a single observation asserts the
-  concept is single-valued: an accuracy that is only ever `Good`, a lock
-  state that is only ever `Unlocked`. This specification made that assertion
+  ZoneLockState now points at a shared closed schema too, but on a different
+  source: its values are not produced anywhere in `leap-server` (which
+  forwards the field from another RA3 daemon rather than computing it, so it
+  is absent from every RA3 binary), and hardware has only ever shown
+  `Unlocked`. The Lutron app decompile supplies the set the firmware
+  withheld -- `Unlocked`, `NonEmergencyLocked`, `EmergencyLocked` -- the same
+  app-RE source that populated `CommandType`. See `ZoneLockState.yaml`.
+
+  StatusAccuracy stays an open string. Neither the firmware recovery nor the
+  app decompile produced its set, and hardware has shown one value (`Good`).
+  Closing on a single observation asserts the concept is single-valued: an
+  accuracy that is only ever `Good`. This specification made that assertion
   five times before, all predating this pass: `Role` (`Installer`),
   `SessionRole` (`Admin`), `ButtonGroupCategoryType` (`Lights`),
   `StopIfMovingEnabledState` (`Disabled`) and `SystemLoadSheddingState`
@@ -44,8 +49,8 @@ description: |
   else has none. `OccupancyStatus` was the case where a later probe showed
   what closing costs -- it shipped closed on `Unknown` alone, its note said
   `Occupied` and `Unoccupied` were expected but unconfirmed, and the
-  coverage-blind probe produced both. That is the precedent these two decline
-  to repeat. Values seen to date are recorded per field under
+  coverage-blind probe produced both. That is the precedent StatusAccuracy
+  declines to repeat. Values seen to date are recorded per field under
   `x-observed-values`, as documentation rather than as an assertion, and
   counted per corpus under `x-observed-census`.
 
@@ -131,26 +136,6 @@ properties:
   DualSetPointHVACStatus:
     $ref: "#/components/schemas/DualSetPointHVACStatus"
   ZoneLockState:
-    type: string
-    description: |
-      TODO(enum): members of ZoneLockState were not recovered from the
-      firmware extraction, and hardware has produced exactly one:
-      `Unlocked`, 102 observations across the two RA3 corpora (the field
-      never appears on any of the three Caseta corpora), plus 33 through
-      ZoneExpandedStatus and 36 through
-      /area/{areaId}/associatedzone/status and its expanded form.
-      `x-observed-census` totals 397 -- those 171 probe-set occurrences plus
-      226 in the two RA3 frame logs, which this paragraph had never counted.
-      A `Locked`
-      counterpart is implied by the field's own name; no probed zone was
-      locked.
-    x-observed-values:
-      - Unlocked
-    x-observed-census:
-      Unlocked:
-        fixtures/push-experiments.json: 180
-        fixtures/push-probe.json: 46
-        ra3: 75
-        spec-read-ra3: 96
+    $ref: "#/components/schemas/ZoneLockState"
 required:
   - StatusAccuracy

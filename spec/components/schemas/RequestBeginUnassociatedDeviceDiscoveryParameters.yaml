@@ -1,13 +1,9 @@
 type: object
 properties:
   PowerCycleDiscovery:
-    type: string
-    description: "TODO(enum): members of PowerCycleDiscovery were not recovered from
-      the firmware extraction"
+    $ref: "#/components/schemas/PowerCycleDiscovery"
   RemoteAddressingDeviceAccessibility:
-    type: string
-    description: "TODO(enum): members of RemoteAddressingDeviceAccessibility were
-      not recovered from the firmware extraction"
+    $ref: "#/components/schemas/RemoteAddressingDeviceAccessibility"
 required:
   - PowerCycleDiscovery
   - RemoteAddressingDeviceAccessibility

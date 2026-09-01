@@ -1,9 +1,7 @@
 type: object
 properties:
   DiscoveryMechanism:
-    type: string
-    description: "TODO(enum): members of DiscoveryMechanism were not recovered from
-      the firmware extraction"
+    $ref: "#/components/schemas/DiscoveryMechanism"
   SerialNumber:
     type: integer
     minimum: 0

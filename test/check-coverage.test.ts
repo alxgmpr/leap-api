@@ -36,8 +36,14 @@ describe("computeCoverage", () => {
     // 63 are not recoverable this way: their values are computed by other RA3
     // daemons (which carry no leapobj types) or the RF coprocessor, and are
     // absent as static strings from every available RA3 binary.
+    // 58 (2026-09-01): the app-RE pass resolved 5 more markers across 4
+    // leapobj types the firmware binary could not give (their values are
+    // forwarded from other daemons, absent as static strings): ZoneLockState,
+    // DiscoveryMechanism, PowerCycleDiscovery and
+    // RemoteAddressingDeviceAccessibility, all enumerated in the decompiled
+    // Lutron app (api-discovery.md), the same source as CommandType.
     const c = computeCoverage();
-    assert.equal(c.todoEnums, 63);
+    assert.equal(c.todoEnums, 58);
     assert.equal(c.todoResponses, 140);
   });
 });

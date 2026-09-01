@@ -1,0 +1,28 @@
+# HAND-AUTHORED shared enum for the firmware type `leapobj.DiscoveryMechanism`,
+# referenced but never defined by the extraction. Two fields carry it:
+# DeviceHeard.DiscoveryMechanism and CacheDeviceHeardParameters.DiscoveryMechanism.
+#
+# The members are from app reverse engineering: `leapobj.DiscoveryMechanism`
+# is a named type the struct extraction left undefined, and its values are not
+# static strings in the RA3 binary. The Lutron Android app declares them --
+# `com.lutron.lsb` v26.1.0.4, decompiled with jadx
+# (`lutron-protocols` `docs/protocols/leap/api-discovery.md`). `UserInteraction`
+# is the one member also seen on the wire (a Caseta device-join push).
+type: string
+enum:
+  - UserInteraction
+  - UnassociatedDeviceDiscovery
+  - UserInitiatedChannelChange
+description: |
+  How a heard device was discovered. Firmware type
+  `leapobj.DiscoveryMechanism`; members recovered from app RE (see the file
+  header). **Observed-not-exhaustive**: the app enumerates the set it knows,
+  and the firmware may accept more. `UserInteraction` is the only value seen
+  on the wire -- one observation, the `caseta-device-join` run of
+  fixtures/push-experiments.json, an unprompted push on
+  /device/status/deviceheard carrying a Pico3ButtonRaiseLower's DeviceHeard.
+x-observed-values:
+  - UserInteraction
+x-observed-census:
+  UserInteraction:
+    fixtures/push-experiments.json: 1

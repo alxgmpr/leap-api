@@ -1,0 +1,22 @@
+# HAND-AUTHORED shared enum for the firmware type
+# `leapobj.RemoteAddressingDeviceAccessibility`, referenced but never defined
+# by the extraction. One field carries it:
+# RequestBeginUnassociatedDeviceDiscoveryParameters.RemoteAddressingDeviceAccessibility.
+#
+# The members are from app reverse engineering -- this is a request parameter
+# no capture in this project sends, so the wire says nothing about it, and its
+# values are not static strings in the RA3 binary. The Lutron Android app
+# declares them -- `com.lutron.lsb` v26.1.0.4, decompiled with jadx
+# (`lutron-protocols` `docs/protocols/leap/api-discovery.md`).
+type: string
+enum:
+  - AllDevices
+  - AccessibleDevices
+  - InaccessibleDevices
+description: |
+  Which devices remote addressing reaches in an unassociated-device-discovery
+  session. Firmware type `leapobj.RemoteAddressingDeviceAccessibility`;
+  members recovered from app RE (see the file header).
+  **Observed-not-exhaustive**: the app enumerates the set it knows, and the
+  firmware may accept more. Never seen on the wire -- no capture sends this
+  discovery request.

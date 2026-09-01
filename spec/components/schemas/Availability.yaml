@@ -7,10 +7,13 @@
 type: string
 description: |
   Whether the processor currently has a live view of the resource. The
-  firmware extraction did not recover the full enum; the members below are
-  every value observed on the wire, and unlisted values are possible -- a
-  two-member set for a field named "availability" is very likely a lower
-  bound, not the whole type.
+  firmware extraction did not recover the full enum. `Available` and
+  `Unknown` are observed on the wire; `Unavailable` is from app RE -- the
+  Lutron Android app decompile (`com.lutron.lsb` v26.1.0.4, jadx;
+  `lutron-protocols` `docs/protocols/leap/api-discovery.md`) enumerates the
+  field as `Available`, `Unavailable`, `Unknown`, which is the lower bound
+  the field name always suggested. **Observed-not-exhaustive**: the app
+  enumerates the set it knows, and the firmware may accept more.
 
   `DeviceStatus.Availability` (via /device/status and
   /device/{deviceId}/status): `Unknown` 85 -- RA3 v03.247 31, Caseta
@@ -41,4 +44,5 @@ description: |
   reported unavailable.
 enum:
   - Available
+  - Unavailable
   - Unknown
