@@ -1633,5 +1633,20 @@
       "unverifiedSchemas": 80,
       "refinedPaths": 226
     }
+  },
+  {
+    "sha": "2e4aad39796a82382050952016c0314c48c54084",
+    "date": "2026-09-01T11:12:06-06:00",
+    "subject": "site: publish the machine-readable surface for agent consumers",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 199,
+      "noFixture": 128,
+      "todoEnums": 58,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 226
+    }
   }
 ]
