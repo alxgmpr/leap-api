@@ -33,7 +33,7 @@ info:
     the 439 `200 OK` bodies captured for this project (the one exception,
     RA3's `GET /button`, returns a bare `{}` with nothing to wrap). A client
     that treats `Body` itself as the payload will fail on every response.
-    See `docs/protocol.md` and `docs/mapping.md` for the full account.
+    See the protocol and mapping docs (linked below) for the full account.
 
     This document maps LEAP onto OpenAPI as follows:
 
@@ -49,15 +49,39 @@ info:
     | `Body` | request and response content |
 
     Schemas are derived from a firmware extraction of a RadioRA3 processor and
-    validated against response bodies captured from live hardware. See
-    `docs/mapping.md` for the full account.
+    validated against response bodies captured from live hardware.
+
+    **Reading this document.** Content comes in two tiers. Anything marked
+    `x-leap-verified: false` (on a path item, operation, or schema) is
+    imported from the firmware route/type extraction as-is and has never
+    been exercised on hardware; everything else is hand-refined and
+    validated against captured traffic. `x-leap-platforms` on an operation
+    records what each platform (RA3, Caseta) actually returned when probed.
+    Every closed `enum` is a lower bound — the members observed or
+    recovered, not a promise the set is complete. Where something is
+    inferred rather than confirmed, the text says "not established".
+
+    The narrative docs are published alongside this file and are required
+    reading before writing a client:
+
+    - Transport, framing, envelopes, tags, status codes:
+      <https://alxgmpr.github.io/leap-api/docs/protocol.md>
+    - Subscribe semantics and push frames:
+      <https://alxgmpr.github.io/leap-api/docs/subscriptions.md>
+    - RA3-vs-Caseta divergence:
+      <https://alxgmpr.github.io/leap-api/docs/platforms.md>
+    - Discovery, pairing, and mTLS certificates:
+      <https://alxgmpr.github.io/leap-api/docs/discovery.md>
+    - How LEAP was mapped onto OpenAPI and how this spec was derived:
+      <https://alxgmpr.github.io/leap-api/docs/mapping.md>
 
     Not an official Lutron document.
 servers:
   - url: leaps://{host}:8081
     description: >-
       Processor or bridge. The scheme is deliberately not http — see
-      docs/protocol.md for the real transport.
+      https://alxgmpr.github.io/leap-api/docs/protocol.md for the real
+      transport.
     variables:
       host:
         default: 192.168.1.10

@@ -25,6 +25,18 @@ imported (`x-leap-verified: false` — the firmware route table taken as-is,
 never exercised on hardware). The site's Coverage section has the current
 numbers.
 
+## For agents (machine-readable)
+
+- Spec: <https://alxgmpr.github.io/leap-api/openapi.yaml> (also
+  [`openapi.json`](https://alxgmpr.github.io/leap-api/openapi.json))
+- Index of everything: <https://alxgmpr.github.io/leap-api/llms.txt>
+- Docs as raw markdown: `https://alxgmpr.github.io/leap-api/docs/<name>.md`
+
+Schemas describe the **unwrapped** payload — `Body` is a one-key wrapper
+named by `Header.MessageBodyType`. Read
+[protocol.md](https://alxgmpr.github.io/leap-api/docs/protocol.md) before
+writing a client.
+
 ## Use
 
 ```bash
