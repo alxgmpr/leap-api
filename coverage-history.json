@@ -1618,5 +1618,20 @@
       "unverifiedSchemas": 80,
       "refinedPaths": 226
     }
+  },
+  {
+    "sha": "eb825bcf703eabb2817523de1c1ac887ef05f2ff",
+    "date": "2026-09-01T10:38:05-06:00",
+    "subject": "spec: recover 4 more enums from the Lutron app decompile",
+    "metrics": {
+      "firmwareRoutes": 410,
+      "uncoveredRoutes": 199,
+      "noFixture": 128,
+      "todoEnums": 58,
+      "todoResponses": 140,
+      "unverifiedPaths": 163,
+      "unverifiedSchemas": 80,
+      "refinedPaths": 226
+    }
   }
 ]
