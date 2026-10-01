@@ -59,12 +59,12 @@ describe("search", () => {
     );
     assert.ok(operation?.href.startsWith("resource/zone.html#"));
 
-    // A command lands on its own member of the CommandType enum page --
+    // A command lands on its own row of Command's CommandType table --
     // GoToGroupLightingLevel is an area command, so no resource page fits all.
     const command = index.find(
       (e) => e.kind === "command" && e.title === "GoToGroupLightingLevel",
     );
-    assert.equal(command?.href, "schema/CommandType.html#GoToGroupLightingLevel");
+    assert.equal(command?.href, "schema/Command.html#GoToGroupLightingLevel");
 
     // Schemas are the one kind with a page of their own as of Task 4.
     const schema = index.find((e) => e.kind === "schema" && e.title === "Zone");
@@ -101,9 +101,9 @@ describe("search", () => {
     );
   });
 
-  test("a command hit lands on its own CommandType member", () => {
+  test("a command hit lands on its own row of the Command table", () => {
     for (const hit of index.filter((e) => e.kind === "command"))
-      assert.equal(hit.href, `schema/CommandType.html#${hit.title}`);
+      assert.equal(hit.href, `schema/Command.html#${hit.title}`);
   });
 
   test("finds an operation by its URL", () => {

@@ -946,6 +946,10 @@ table {
   font-size: var(--t-base);
 }
 
+tr:target td {
+  background: var(--rule);
+}
+
 .tablewrap,
 .prose table {
   display: block;

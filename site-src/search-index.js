@@ -34,14 +34,15 @@ export function buildSearchIndex(model) {
       title: schema.name,
       href: `schema/${schema.name}.html`,
     });
-  // A command hit lands on its own member of the CommandType enum. Commands
-  // go to several different commandprocessors (zone, area, system...), so no
-  // one resource page is the right target for all of them.
+  // A command hit lands on its own row of Command's CommandType table, which
+  // names its parameter field and the evidence. Commands go to several
+  // different commandprocessors (zone, area, system...), so no one resource
+  // page is the right target for all of them.
   for (const row of model.commandTable)
     index.push({
       kind: "command",
       title: row.commandType,
-      href: `schema/CommandType.html#${row.commandType}`,
+      href: `schema/Command.html#${row.commandType}`,
     });
   return index;
 }

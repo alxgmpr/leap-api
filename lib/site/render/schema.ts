@@ -38,12 +38,26 @@ function renderField(
 }
 
 /**
+ * Give each row of Command's CommandType table an id, so search can land on
+ * the row that names a command's parameter field and its evidence. Only rows
+ * whose first cell is a known CommandType: no other table can mint an id.
+ */
+function anchorCommandRows(html: string, model: LeapModel): string {
+  const known = new Set(model.commandTable.map((row) => row.commandType));
+  return html.replace(
+    /<tr>\n<td><code>([^<]+)<\/code><\/td>/g,
+    (row, name: string) =>
+      known.has(name) ? row.replace("<tr>", `<tr id="${name}">`) : row,
+  );
+}
+
+/**
  * One schema, as its own page. Headings are promoted one level from the
  * shared-document form (h3 -> h1, h4 -> h2): a schema page owns its heading
  * hierarchy outright instead of nesting under the single-page document's h1.
  */
 export function renderSchemaPage(
-  _model: LeapModel,
+  model: LeapModel,
   entry: SchemaEntry,
 ): Section {
   const root = ROOT_NESTED;
@@ -64,9 +78,13 @@ export function renderSchemaPage(
     ? `<p class="bodytype"><span class="chip chip-verdict chip-${verdict}">${esc(verdict.replace("-", " "))}</span> <span class="observed">observed: ${esc(observed.map(String).join(", "))}</span>${enumValues ? "" : " — recorded as an open <code>string</code>, not a closed set"}</p>`
     : "";
 
+  const description = node.description
+    ? renderMarkdown(String(node.description))
+    : "";
+
   const html = `<h1>${esc(entry.name)}</h1>
 ${schemaEvidence}
-${node.description ? `<div class="prose schema-desc">${renderMarkdown(String(node.description))}</div>` : ""}
+${description ? `<div class="prose schema-desc">${entry.name === "Command" ? anchorCommandRows(description, model) : description}</div>` : ""}
 ${items ? `<h2>Element type</h2><p>${typeLabel(node, root)}</p>` : ""}
 ${
   enumValues
