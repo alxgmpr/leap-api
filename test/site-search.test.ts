@@ -71,6 +71,41 @@ describe("search", () => {
     assert.equal(schema?.href, "schema/Zone.html");
   });
 
+  test("every hit lands on a built page that carries its anchor", () => {
+    // A hit pointing at a real page but no anchor on it lands at the top of
+    // a page that may never mention the term -- command hits once all went
+    // to resource/zone.html, which most commands never appear on.
+    const pages = new Map<string, string>();
+    const broken = index.filter((hit) => {
+      const [page, anchor] = hit.href.split("#");
+      const file = `site/${page}`;
+      if (!pages.has(file)) {
+        try {
+          pages.set(file, readFileSync(file, "utf8"));
+        } catch {
+          return true;
+        }
+      }
+      if (anchor === undefined) return false;
+      const html = pages.get(file) ?? "";
+      const escaped = anchor
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+      return !html.includes(`id="${escaped}"`);
+    });
+    assert.deepEqual(
+      broken.map((h) => `${h.kind} ${h.title} -> ${h.href}`),
+      [],
+    );
+  });
+
+  test("a command hit lands on its own CommandType member", () => {
+    for (const hit of index.filter((e) => e.kind === "command"))
+      assert.equal(hit.href, `schema/CommandType.html#${hit.title}`);
+  });
+
   test("finds an operation by its URL", () => {
     const hits = filterIndex(index, "zone/status");
     assert.ok(hits.some((h) => h.title === "/zone/status"));
