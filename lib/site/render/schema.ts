@@ -71,7 +71,7 @@ ${items ? `<h2>Element type</h2><p>${typeLabel(node, root)}</p>` : ""}
 ${
   enumValues
     ? `<h2>Members</h2><p class="meta">Every closed enum here is a lower bound — the firmware extraction can never bound a member set.</p><ul class="enum">${enumValues
-        .map((v) => `<li><code>${esc(String(v))}</code></li>`)
+        .map((v) => `<li id="${esc(String(v))}"><code>${esc(String(v))}</code></li>`)
         .join("")}</ul>`
     : ""
 }

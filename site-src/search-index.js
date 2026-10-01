@@ -34,14 +34,14 @@ export function buildSearchIndex(model) {
       title: schema.name,
       href: `schema/${schema.name}.html`,
     });
-  // Every command is sent to a commandprocessor, and the zone one is the only
-  // command processor any capture has exercised -- so that is where a
-  // CommandType search usefully lands, on the zone resource's own page.
+  // A command hit lands on its own member of the CommandType enum. Commands
+  // go to several different commandprocessors (zone, area, system...), so no
+  // one resource page is the right target for all of them.
   for (const row of model.commandTable)
     index.push({
       kind: "command",
       title: row.commandType,
-      href: "resource/zone.html",
+      href: `schema/CommandType.html#${row.commandType}`,
     });
   return index;
 }

@@ -892,6 +892,10 @@ button:disabled {
   gap: 6px;
 }
 
+.enum li:target code {
+  border-color: var(--ink);
+}
+
 .enum li code {
   padding: 2px 8px;
   border: 1px solid var(--rule);
